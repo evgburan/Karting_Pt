@@ -353,10 +353,13 @@
     <div class="card" style="margin-bottom:12px;">
       <div class="card-title">Начисление очков</div>
       <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
-        🏁 <strong>За гонку:</strong> места 1–15 получают очки по схеме F1 — от 25 за победу до 1 за 15-е место. С 16-го места — 0 очков. Бонус +1 за быстрейший круг.
+        🏁 <strong>За гонку:</strong> места 1–15 получают очки от 25 до 1. С 16-го — 0. Бонус +1 за быстрейший круг.
       </p>
-      <p style="font-size:13px;line-height:1.6;">
-        📊 <strong>Общий зачёт:</strong> берём лучшие результаты из половины всех гонок (округляем вверх) плюс +2 очка за каждое участие. Пропуск одной гонки не выбивает из борьбы — важна скорость, а не посещаемость.
+      <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
+        📊 <strong>Общий зачёт:</strong> считаются лучшие 4 результата за сезон + 3 очка за каждый старт. Пропустил гонку — не страшно, плохой результат можно выбросить. Важна скорость, а не посещаемость.
+      </p>
+      <p style="font-size:13px;line-height:1.6;color:var(--muted);">
+        Пример: приехал 5 раз, худшую гонку выбросил — считаются лучшие 4 + 15 бонусных очков за старты.
       </p>
     </div>
     <div class="standings-table">
@@ -531,13 +534,13 @@ function buildStandings() {
     });
   });
 
-  const totalSlots = RACES.reduce((s, race) => s + race.groups.length, 0); // 3
-  const bestN = Math.ceil(totalSlots / 2); // 2
+  const bestN = 4; // берём лучшие 4 результата из всего сезона
+  const BONUS_PER_RACE = 3; // +3 очка за каждый старт
 
   return Object.entries(map).map(([key, d]) => {
     const sorted = [...d.races].sort((a, b) => b.pts - a.pts);
     const base = sorted.slice(0, bestN).reduce((s, r) => s + r.pts, 0);
-    const bonus = d.races.length * 2;
+    const bonus = d.races.length * BONUS_PER_RACE;
     return { key, ...d, totalPts: base + bonus, raceCount: d.races.length };
   }).sort((a, b) => b.totalPts - a.totalPts);
 }
