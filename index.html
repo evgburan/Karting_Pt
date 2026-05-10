@@ -229,10 +229,12 @@
   .form-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; display: block; }
   .form-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; width: 100%; transition: border-color 0.15s; }
   .form-input:focus { border-color: var(--text); }
-  .tg-btn { background: #229ED9; color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
-  .or-div { text-align: center; font-size: 11px; color: var(--muted); position: relative; padding: 2px 0; }
-  .or-div::before, .or-div::after { content: ''; position: absolute; top: 50%; width: 38%; height: 1px; background: var(--border); }
-  .or-div::before { left: 0; } .or-div::after { right: 0; }
+  .photo-upload-area { border: 2px dashed var(--border); border-radius: 10px; padding: 16px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; position: relative; }
+  .photo-upload-area:hover, .photo-upload-area.has-photo { border-color: var(--text); background: var(--surface2); }
+  .photo-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .photo-preview { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+  .photo-upload-icon { font-size: 28px; margin-bottom: 4px; }
+  .photo-upload-lbl { font-size: 12px; color: var(--muted); }
   .check-label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; }
   .check-input { display: none; }
   .check-box { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; position: relative; transition: all 0.15s; background: #fff; }
@@ -252,7 +254,7 @@
   .photo-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .venue-map { width: 100%; height: 200px; border: none; display: block; }
 </style>
-<script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="kataemsia_chatom_bot" data-size="large" data-onauth="onTelegramAuth(user)" data-request-access="write" style="display:none" id="tg-widget"></script>
+
 </head>
 <body>
 
@@ -700,14 +702,18 @@ function openReg() {
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">Регистрация · KIP</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">23 мая 2026 · Palmela · свободно ${MAX - regs.length} мест</div>
     <div class="reg-form">
-      <button class="tg-btn" onclick="openTelegramLogin()">
-        <svg viewBox="0 0 24 24" width="17" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.247l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.95 14.382l-2.95-.924c-.64-.203-.652-.64.136-.953l11.527-4.445c.534-.194 1.001.13.899.187z"/></svg>
-        Войти через Telegram
-      </button>
-      <div id="tg-photo-preview" style="min-height:0;"></div>
-      <div class="or-div">или заполни вручную</div>
       <div>
-        <label class="form-lbl">Имя</label>
+        <label class="form-lbl">Фото (необязательно)</label>
+        <div class="photo-upload-area" id="photo-drop" onclick="document.getElementById('rphoto').click()">
+          <div id="photo-drop-inner">
+            <div class="photo-upload-icon">📷</div>
+            <div class="photo-upload-lbl">Нажми чтобы загрузить фото</div>
+          </div>
+          <input type="file" id="rphoto" accept="image/*" style="display:none" onchange="handlePhotoChange(this)">
+        </div>
+      </div>
+      <div>
+        <label class="form-lbl">Имя *</label>
         <input class="form-input" id="rn" placeholder="Имя и фамилия для гонки" type="text">
       </div>
       <div>
@@ -728,7 +734,26 @@ function openReg() {
       <button class="btn-cancel" onclick="closeRegModal()">Отмена</button>
     </div>
   `;
+  _photoDataUrl = null;
   document.getElementById('reg-modal').classList.add('open');
+}
+
+let _photoDataUrl = null;
+
+function handlePhotoChange(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    _photoDataUrl = e.target.result;
+    const inner = document.getElementById('photo-drop-inner');
+    if (inner) {
+      inner.innerHTML = `<img src="${_photoDataUrl}" class="photo-preview" alt="фото"><div class="photo-upload-lbl" style="margin-top:6px;color:var(--green);">✓ Фото загружено</div>`;
+    }
+    const drop = document.getElementById('photo-drop');
+    if (drop) drop.classList.add('has-photo');
+  };
+  reader.readAsDataURL(file);
 }
 
 function closeRegModal(e) {
@@ -736,49 +761,8 @@ function closeRegModal(e) {
     document.getElementById('reg-modal').classList.remove('open');
 }
 
-function openTelegramLogin() {
-  // Кликаем на скрытый виджет Telegram
-  const widget = document.getElementById('tg-widget');
-  if (widget) {
-    // Telegram widget создаёт iframe с кнопкой — триггерим его
-    const iframe = widget.nextElementSibling;
-    if (iframe) { iframe.click(); return; }
-  }
-  // Fallback: открываем авторизацию напрямую
-  const botName = 'kataemsia_chatom_bot';
-  const origin = encodeURIComponent(window.location.origin + window.location.pathname);
-  window.open(
-    `https://oauth.telegram.org/auth?bot_id=8789317455&origin=${origin}&return_to=${origin}`,
-    'tgauth', 'width=550,height=470'
-  );
-}
 
-function onTelegramAuth(user) {
-  // user = { id, first_name, last_name, username, photo_url, auth_date, hash }
-  const name = [user.first_name, user.last_name].filter(Boolean).join(' ');
-  const handle = user.username ? '@' + user.username : '';
-  const photoUrl = user.photo_url || null;
-  const telegramId = user.id;
 
-  // Сохраняем данные TG и показываем форму с предзаполненными данными
-  _tgUser = { name, handle, photoUrl, telegramId };
-
-  // Обновляем поля формы если они ещё открыты
-  const nameEl = document.getElementById('rn');
-  const handleEl = document.getElementById('rh');
-  if (nameEl) nameEl.value = name;
-  if (handleEl) handleEl.value = handle;
-
-  // Показываем аватарку если есть
-  if (photoUrl) {
-    const preview = document.getElementById('tg-photo-preview');
-    if (preview) {
-      preview.innerHTML = `<img src="${photoUrl}" style="width:40px;height:40px;border-radius:50%;margin-right:8px;vertical-align:middle;"> <span style="font-size:13px;color:var(--green);">✓ Войдено как ${name}</span>`;
-    }
-  }
-}
-
-let _tgUser = null;
 
 function submitReg() {
   const name = document.getElementById('rn').value.trim();
@@ -787,9 +771,8 @@ function submitReg() {
   const briefing = document.getElementById('rp').checked;
   if (!name) { document.getElementById('rn').focus(); return; }
   if (handle && !handle.startsWith('@')) handle = '@' + handle;
-  const photoUrl = _tgUser ? _tgUser.photoUrl : null;
-  const telegramId = _tgUser ? _tgUser.telegramId : null;
-  finishReg(name, handle, beginner, briefing, photoUrl, telegramId);
+  const photoUrl = _photoDataUrl || null;
+  finishReg(name, handle, beginner, briefing, photoUrl, null);
 }
 
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxOSdlV8X5tudSGACM6j6WgfKyeP0feQ9dTrFHS4BNnr2GKe2GQvLvNtRp8pnveuVG-/exec';
