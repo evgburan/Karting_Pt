@@ -335,7 +335,7 @@
     </div>
 
     <div class="card">
-      <div class="card-title" id="reg-list-title">Зарегистрированы (0 / 36)</div>
+      <div class="card-title" id="reg-list-title">Уже едут (0 / 36)</div>
       <div id="reg-list-body"><div style="text-align:center;padding:14px 0;color:var(--muted);font-size:13px;">Пока никого — будь первым!</div></div>
     </div>
 
@@ -792,7 +792,7 @@ async function finishReg(name, handle, beginner, briefing, photoUrl, telegramId)
   regs.push({ name, handle, beginner, briefing, photoUrl: photoUrl || null, telegramId: telegramId || null });
   document.getElementById('spots-left').textContent = MAX - regs.length;
   document.getElementById('spots-fill').style.width = (regs.length / MAX * 100) + '%';
-  document.getElementById('reg-list-title').textContent = `Зарегистрированы (${regs.length} / ${MAX})`;
+  document.getElementById('reg-list-title').textContent = `Уже едут (${regs.length} / ${MAX})`;
   document.getElementById('reg-list-body').innerHTML = regs.map((r, i) => `
     <div class="reg-item">
       <div class="reg-num">${i+1}</div>
@@ -838,7 +838,7 @@ async function finishReg(name, handle, beginner, briefing, photoUrl, telegramId)
   } catch(err) {
     console.warn('Sheets sync failed:', err);
   }
-  _tgUser = null;
+  _photoDataUrl = null;
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -902,6 +902,54 @@ renderStandings();
 renderDrivers();
 tick();
 setInterval(tick, 1000);
+
+// Подтягиваем список зарегистрированных из Sheets при загрузке
+async function loadRegsFromSheets() {
+  try {
+    const res = await fetch(SHEETS_URL, { method: 'GET', mode: 'no-cors' });
+    // no-cors не даёт читать ответ — нужен JSONP или другой метод
+    // Используем script-tag трюк вместо fetch
+  } catch(e) {}
+}
+
+// JSONP-загрузка (единственный способ с no-cors Apps Script)
+function loadRegs() {
+  const script = document.createElement('script');
+  // callback передаём через URL
+  const cbName = '_sheetsCallback';
+  window[cbName] = function(data) {
+    if (!data || !data.regs) return;
+    // Очищаем и заполняем массив regs
+    regs.length = 0;
+    data.regs.forEach(r => regs.push({ name: r.name, handle: r.handle, beginner: r.beginner, briefing: r.briefing, photoUrl: null }));
+    // Обновляем UI
+    const left = MAX - regs.length;
+    const el = document.getElementById('spots-left');
+    const fill = document.getElementById('spots-fill');
+    const title = document.getElementById('reg-list-title');
+    if (el) el.textContent = left;
+    if (fill) fill.style.width = (regs.length / MAX * 100) + '%';
+    if (title) title.textContent = `Уже едут (${regs.length} / ${MAX})`;
+    if (document.getElementById('reg-list-body')) {
+      document.getElementById('reg-list-body').innerHTML = regs.map((r, i) => `
+        <div class="reg-item">
+          <div class="reg-num">${i+1}</div>
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:14px;flex-shrink:0;">${r.name[0]}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:14px;font-weight:500;">${r.name}${r.beginner?' <span style="font-size:10px;color:var(--accent-red);">Н</span>':''}</div>
+            ${r.handle ? `<div style="font-size:11px;color:var(--muted);">${r.handle}</div>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+    document.body.removeChild(script);
+    delete window[cbName];
+  };
+  script.src = SHEETS_URL + '?callback=' + cbName;
+  script.onerror = function() { document.body.removeChild(script); };
+  document.body.appendChild(script);
+}
+loadRegs();
 </script>
 </body>
 </html>
