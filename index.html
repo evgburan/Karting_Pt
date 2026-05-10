@@ -229,11 +229,11 @@
   .form-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; display: block; }
   .form-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; width: 100%; transition: border-color 0.15s; }
   .form-input:focus { border-color: var(--text); }
-  .photo-upload-area { border: 2px dashed var(--border); border-radius: 10px; padding: 16px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; position: relative; }
+  .photo-upload-area { border: 1.5px dashed var(--border); border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: border-color 0.15s, background 0.15s; position: relative; display: flex; align-items: center; gap: 10px; }
   .photo-upload-area:hover, .photo-upload-area.has-photo { border-color: var(--text); background: var(--surface2); }
   .photo-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .photo-preview { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
-  .photo-upload-icon { font-size: 28px; margin-bottom: 4px; }
+  .photo-preview { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; }
+  .photo-upload-icon { font-size: 20px; flex-shrink: 0; }
   .photo-upload-lbl { font-size: 12px; color: var(--muted); }
   .check-label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; }
   .check-input { display: none; }
@@ -301,7 +301,8 @@
       <p class="event-desc">📅 Встречаемся в <strong>15:30</strong> и стартуем в <strong>16:00</strong>.</p>
       <p class="event-desc">🏎️ Формат такой: квалификация 5 минут, затем гонка 10 минут. После меняемся картами и повторяем — ещё 5+10 мин!</p>
       <p class="event-desc">🏆 За каждую гонку начисляются очки — по итогам будет два подиума: <strong>общий зачёт</strong> и <strong>зачёт начинающих</strong>.</p>
-      <p class="event-desc" style="margin-bottom:14px;">🛞 Едем на картах <strong>Sodi RT-10 390сс</strong>.</p>
+      <p class="event-desc">🛞 Едем на картах <strong>Sodi RT-10 390сс</strong>.</p>
+      <p class="event-desc" style="margin-bottom:14px;">💶 Стоимость участия — <strong>€70</strong>.</p>
 
       <div class="spots-bar">
         <div class="spots-row">
@@ -359,10 +360,16 @@
         🏁 <strong>За гонку:</strong> места 1–15 получают очки от 25 до 1. С 16-го — 0. Бонус +1 за быстрейший круг.
       </p>
       <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
-        📊 <strong>Общий зачёт:</strong> считаются лучшие 4 результата за сезон + 3 очка за каждый старт. Пропустил гонку — не страшно, плохой результат можно выбросить. Важна скорость, а не посещаемость.
+        📊 <strong>Общий зачёт:</strong> за каждый приезд +3 очка к сумме. Плохие результаты автоматически вылетают из зачёта — чем больше гонок, тем больше «плохих» можно выбросить:
       </p>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.8;margin-bottom:10px;">
+        1–3 гонки → ничего не выбрасываем<br>
+        4–7 гонок → худшая 1 не считается<br>
+        8–11 гонок → худшие 2 не считаются<br>
+        12+ гонок → худшие 3 не считаются
+      </div>
       <p style="font-size:13px;line-height:1.6;color:var(--muted);">
-        Пример: приехал 5 раз, худшую гонку выбросил — считаются лучшие 4 + 15 бонусных очков за старты.
+        Пример: поехал 6 раз, одну гонку завалил — она вылетает, считаются лучшие 5 + 18 бонусных очков за старты.
       </p>
     </div>
     <div class="standings-table">
@@ -518,7 +525,8 @@ const SAFETY_LABEL = { g:'🟢 Чисто едет', y:'🟡 Осторожно'
 // STANDINGS
 // Каждая группа = отдельный зачётный результат
 // Итого "гонок" для зачёта: KIRO(1) + Campera_A(1) + Campera_B(1) = 3 слота
-// bestN = ceil(3/2) = 2
+// Отбрасываем худшие 30% гонок (округление вниз), остальные идут в зачёт
+// Например: 3 гонки → drop 0, считаются 3; 5 гонок → drop 1, считаются 4; 10 гонок → drop 3, считаются 7
 // ══════════════════════════════════════════════════════════════════
 
 function norm(h) { return (h||'').toLowerCase().replace('@',''); }
@@ -537,14 +545,16 @@ function buildStandings() {
     });
   });
 
-  const bestN = 4; // берём лучшие 4 результата из всего сезона
   const BONUS_PER_RACE = 3; // +3 очка за каждый старт
 
   return Object.entries(map).map(([key, d]) => {
+    const n = d.races.length;
+    const drop = Math.floor(n / 4); // каждые 4 гонки одна отваливается
+    const keep = n - drop;
     const sorted = [...d.races].sort((a, b) => b.pts - a.pts);
-    const base = sorted.slice(0, bestN).reduce((s, r) => s + r.pts, 0);
-    const bonus = d.races.length * BONUS_PER_RACE;
-    return { key, ...d, totalPts: base + bonus, raceCount: d.races.length };
+    const base = sorted.slice(0, keep).reduce((s, r) => s + r.pts, 0);
+    const bonus = n * BONUS_PER_RACE;
+    return { key, ...d, totalPts: base + bonus, raceCount: n, drop };
   }).sort((a, b) => b.totalPts - a.totalPts);
 }
 
@@ -703,16 +713,6 @@ function openReg() {
     <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">23 мая 2026 · Palmela · свободно ${MAX - regs.length} мест</div>
     <div class="reg-form">
       <div>
-        <label class="form-lbl">Фото (необязательно)</label>
-        <div class="photo-upload-area" id="photo-drop" onclick="document.getElementById('rphoto').click()">
-          <div id="photo-drop-inner">
-            <div class="photo-upload-icon">📷</div>
-            <div class="photo-upload-lbl">Нажми чтобы загрузить фото</div>
-          </div>
-          <input type="file" id="rphoto" accept="image/*" style="display:none" onchange="handlePhotoChange(this)">
-        </div>
-      </div>
-      <div>
         <label class="form-lbl">Имя *</label>
         <input class="form-input" id="rn" placeholder="Имя и фамилия для гонки" type="text">
       </div>
@@ -730,6 +730,16 @@ function openReg() {
         <span class="check-box"></span>
         <span class="check-txt">🟢 Хочу приехать к 15:00 на <strong>мини-разбор трассы</strong></span>
       </label>
+      <div>
+        <label class="form-lbl">Фото профиля (необязательно)</label>
+        <div class="photo-upload-area" id="photo-drop" onclick="document.getElementById('rphoto').click()">
+          <div id="photo-drop-inner">
+            <div class="photo-upload-icon">📷</div>
+            <div class="photo-upload-lbl">Нажми чтобы загрузить фото</div>
+          </div>
+          <input type="file" id="rphoto" accept="image/*" style="display:none" onchange="handlePhotoChange(this)">
+        </div>
+      </div>
       <button class="btn-reg" onclick="submitReg()">Подтвердить →</button>
       <button class="btn-cancel" onclick="closeRegModal()">Отмена</button>
     </div>
@@ -748,7 +758,7 @@ function handlePhotoChange(input) {
     _photoDataUrl = e.target.result;
     const inner = document.getElementById('photo-drop-inner');
     if (inner) {
-      inner.innerHTML = `<img src="${_photoDataUrl}" class="photo-preview" alt="фото"><div class="photo-upload-lbl" style="margin-top:6px;color:var(--green);">✓ Фото загружено</div>`;
+      inner.innerHTML = `<img src="${_photoDataUrl}" class="photo-preview" alt="фото"><div class="photo-upload-lbl" style="color:var(--green);">✓ Фото загружено</div>`;
     }
     const drop = document.getElementById('photo-drop');
     if (drop) drop.classList.add('has-photo');
@@ -802,7 +812,18 @@ async function finishReg(name, handle, beginner, briefing, photoUrl, telegramId)
       <div class="success-icon">🏁</div>
       <div class="success-title">Ты в гонке!</div>
       <div class="success-sub">${name}<br>Ждём тебя 23 мая в Palmela${extras?'<br><span style="font-size:12px;margin-top:6px;display:block;">'+extras+'</span>':''}</div>
-      <button class="btn-cancel" style="margin-top:20px;" onclick="closeRegModal()">Закрыть</button>
+      <div style="margin-top:16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px 14px;text-align:left;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">💶 Оплата · €70</div>
+        <div style="font-size:13px;line-height:1.7;color:var(--text);">
+          <strong>Mbway:</strong> 910 165 833<br>
+          <span style="color:var(--muted);font-size:12px;">Evgenii Buran</span>
+        </div>
+        <div style="margin-top:8px;font-size:13px;line-height:1.7;color:var(--text);">
+          <strong>IBAN:</strong> PT50 0023 0000 4571 3940 1029 4<br>
+          <span style="color:var(--muted);font-size:12px;">Evgenii Buran</span>
+        </div>
+      </div>
+      <button class="btn-cancel" style="margin-top:16px;" onclick="closeRegModal()">Закрыть</button>
     </div>
   `;
 
