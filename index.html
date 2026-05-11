@@ -1375,13 +1375,31 @@ async function finishReg(name, handle, beginner, briefing, photoBase64, telegram
   try {
     const payload = { name, handle, beginner, briefing, telegram_id: telegramId || null, source: 'portal' };
     if (photoBase64) payload.photoBase64 = photoBase64;
-    fetch(SHEETS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' }, // text/plain обходит preflight CORS
-      body: JSON.stringify(payload)
-    }).then(r => r.json()).then(res => {
-      console.log('Sheets OK:', res);
-    }).catch(err => console.warn('Sheets error:', err));
+    console.log('Отправляем payload, фото:', photoBase64 ? 'есть (' + Math.round(photoBase64.length/1024) + 'KB)' : 'нет');
+    // Используем no-cors чтобы избежать проблем с редиректом,
+    // но фото шлём отдельным запросом если оно есть
+    if (photoBase64) {
+      // Шлём с фото через обычный fetch (Apps Script должен принять)
+      fetch(SHEETS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+      }).then(r => {
+        console.log('Sheets status:', r.status, r.url);
+        return r.text();
+      }).then(txt => {
+        console.log('Sheets response:', txt.substring(0, 200));
+      }).catch(err => console.warn('Sheets error:', err));
+    } else {
+      // Без фото — no-cors достаточно
+      fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      });
+    }
   } catch(err) {
     console.warn('Sheets sync failed:', err);
   }
