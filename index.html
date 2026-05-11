@@ -260,7 +260,10 @@
 
 <nav>
   <div class="logo">Катаемся<br><em>Чатом</em></div>
-  <div class="nav-meta">PT · 2026</div>
+  <a href="https://t.me/+xF4eAlUWBddjMjgy" target="_blank" style="display:flex;align-items:center;gap:5px;background:var(--text);color:#fff;text-decoration:none;border-radius:20px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">
+    <svg viewBox="0 0 24 24" width="13" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.247l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.95 14.382l-2.95-.924c-.64-.203-.652-.64.136-.953l11.527-4.445c.534-.194 1.001.13.899.187z"/></svg>
+    Join us
+  </a>
 </nav>
 
 <!-- PAGE: ГЛАВНАЯ -->
@@ -378,6 +381,8 @@
       <button id="btn-beg" onclick="filterStandings('beg',this)" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">🏆 Начинающие</button>
     </div>
 
+    <div id="nominations-block" class="card" style="margin-bottom:12px;"></div>
+
     <div class="standings-table">
       <div class="st-header" style="grid-template-columns:30px 1fr 38px 38px 48px;">
         <span>#</span><span>Гонщик</span><span style="text-align:center;">Гонок</span><span style="text-align:center;">Avg</span><span style="text-align:center;">Очки</span>
@@ -386,6 +391,32 @@
     </div>
   </div>
 
+</div>
+
+<!-- PAGE: HEAD TO HEAD -->
+<div class="page" id="page-h2h">
+  <div class="page-header">
+    <div class="page-eyebrow">Сравнение</div>
+    <div class="page-title">Head to Head</div>
+  </div>
+  <div style="padding:0 14px 12px;">
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <div style="flex:1;position:relative;">
+        <select id="h2h-select1" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
+          <option value="">Гонщик 1...</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--muted);">⚔️</div>
+      <div style="flex:1;position:relative;">
+        <select id="h2h-select2" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
+          <option value="">Гонщик 2...</option>
+        </select>
+      </div>
+    </div>
+    <div id="h2h-page-result">
+      <div style="text-align:center;padding:40px 0;color:var(--muted);font-size:13px;">Выбери двух гонщиков для сравнения</div>
+    </div>
+  </div>
 </div>
 
 <!-- PAGE: ГОНЩИКИ -->
@@ -413,11 +444,23 @@
   </div>
 </div>
 
+<!-- H2H MODAL -->
+<div class="modal-overlay" id="h2h-modal" onclick="closeH2H(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div id="h2h-body"></div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <button class="bnav-item active" onclick="showPage('main',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     Гонка
+  </button>
+  <button class="bnav-item" onclick="showPage('h2h',this);initH2HPage()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"/><line x1="12" y1="8" x2="12" y2="16"/><polyline points="8 12 12 8 16 12"/></svg>
+    1v1
   </button>
   <button class="bnav-item" onclick="showPage('drivers',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -438,7 +481,7 @@ const BEGINNERS = {
   'p_stanis': true, 'bashalex0100': true, 'ilikru': true, 'iva_capital': true,
   'antonakentiev': true, 'kamilla_ashrafedinova': true, 'm_levman': true, 'cometodaria': true,
   // Campera April
-  'okitori': false, 'vankastor': true, 'uzlos': true, 'bashalex': true,
+  'okitori': false, 'vankastor': true, 'uzlos': true, 'bashalex0100': true,
   'mike1844': true, 'hlomzik': false, 'kivy13': true, 'borisovdm': true, 'sqmme': true,
   'victorianiki': true,
   // Group B
@@ -492,7 +535,7 @@ const RACES = [
           { pos:5,  name:'Rinat Galliamov',       handle:'@okitori',               r1:11,             r2:6,             total:17 },
           { pos:6,  name:'Ivan Kastornov',        handle:'@vankastor',             r1:7,              r2:9,             total:16 },
           { pos:7,  name:'Henriikh Hruz',         handle:'@uzlos',                 r1:0,              r2:16,            total:16 },
-          { pos:8,  name:'Alex Bash',             handle:'@Bashalex',              r1:8,              r2:7,             total:15 },
+          { pos:8,  name:'Alex Bashlykov',       handle:'@bashalex0100',              r1:8,              r2:7,             total:15 },
           { pos:9,  name:'Viktor Ivanov',         handle:'@iva_capital',           r1:5,              r2:8,             total:13 },
           { pos:10, name:'Mikhail Nikitin',       handle:'@mike1844',              r1:6,              r2:4,             total:10 },
           { pos:11, name:'Ilia Nikolaev',         handle:'@ilikru',                r1:9,              r2:0,             total:9  },
@@ -784,6 +827,341 @@ function renderDrivers() {
 }
 
 // ══════════════════════════════════════════════════════════════════
+// FASTEST LAPS + NOMINATIONS + HEAD TO HEAD
+// ══════════════════════════════════════════════════════════════════
+
+// Считаем быстрые круги по ключу гонщика из исходных RACES
+function countFastestLaps(key) {
+  let count = 0;
+  RACES.forEach(race => {
+    race.groups.forEach(group => {
+      group.results.forEach(r => {
+        const k = norm(r.handle) || norm(r.name);
+        if (k === key) {
+          if (r.r1fl) count++;
+          if (r.r2fl) count++;
+        }
+      });
+    });
+  });
+  return count;
+}
+
+// Номинации
+function buildNominations() {
+  const noms = [];
+
+  // 1. ⚡ В ударе — больше всего быстрых кругов
+  let maxFL = 0;
+  STANDINGS.forEach(d => {
+    const fl = countFastestLaps(d.key);
+    if (fl > maxFL) maxFL = fl;
+  });
+  if (maxFL > 0) {
+    const leaders = STANDINGS.filter(d => countFastestLaps(d.key) === maxFL);
+    noms.push({
+      icon: '⚡',
+      title: 'В ударе',
+      desc: `${maxFL} быстр. ${maxFL === 1 ? 'круг' : maxFL < 5 ? 'круга' : 'кругов'}`,
+      drivers: leaders,
+    });
+  }
+
+  // 2. 🚀 Прогресс — рост среднего от первых гонок к последним (мин. 2 гонки)
+  let maxGrowth = -Infinity, progressWinner = null;
+  STANDINGS.forEach(d => {
+    if (d.races.length < 2) return;
+    // Сортируем по дате, первая половина vs вторая
+    const sorted = [...d.races].sort((a,b) => a.date.localeCompare(b.date));
+    const half = Math.max(1, Math.floor(sorted.length / 2));
+    const first = sorted.slice(0, half).reduce((s,r) => s + r.pts, 0) / half;
+    const second = sorted.slice(half).reduce((s,r) => s + r.pts, 0) / (sorted.length - half);
+    const growth = second - first;
+    if (growth > maxGrowth) { maxGrowth = growth; progressWinner = d; }
+  });
+  if (progressWinner && maxGrowth > 0) {
+    noms.push({
+      icon: '🚀',
+      title: 'Прогресс',
+      desc: `+${Math.round(maxGrowth * 10) / 10} оч./гонку`,
+      drivers: [progressWinner],
+    });
+  }
+
+  return noms;
+}
+
+function renderNominations() {
+  const noms = buildNominations();
+  if (!noms.length) return '';
+  return `
+    <div style="margin-bottom:12px;">
+      <div class="card-title" style="padding:0 0 10px;">🏅 Номинации</div>
+      ${noms.map(n => {
+        const d = n.drivers[0];
+        const photo = getPhoto(d.handle, d.name);
+        const av = avatarDiv(photo, d.name[0], 36);
+        const extra = n.drivers.length > 1 ? ` +${n.drivers.length-1}` : '';
+        return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);">
+          <div style="font-size:22px;width:30px;text-align:center;">${n.icon}</div>
+          ${av}
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:600;font-size:13px;">${n.title}</div>
+            <div style="font-size:11px;color:var(--muted);">${d.name}${extra} · ${n.desc}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+// ── HEAD TO HEAD ──────────────────────────────────────────────────
+
+let _h2hKey1 = null, _h2hKey2 = null;
+
+function openH2H(key1) {
+  _h2hKey1 = key1;
+  _h2hKey2 = null;
+  const d1 = STANDINGS.find(x => x.key === key1);
+
+  // Build opponent picker
+  const others = STANDINGS.filter(x => x.key !== key1);
+  const pickerRows = others.map(d => {
+    const photo = getPhoto(d.handle, d.name);
+    const av = avatarDiv(photo, d.name[0], 32);
+    return `<div onclick="loadH2H('${key1}','${d.key}')" style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
+      ${av}
+      <div>
+        <div style="font-size:13px;font-weight:600;">${d.name}</div>
+        <div style="font-size:11px;color:var(--muted);">${d.handle||'—'}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('h2h-body').innerHTML = `
+    <div style="padding:16px 16px 0;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;margin-bottom:4px;">
+        ⚔️ ${d1.name}
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Выбери соперника для сравнения</div>
+    </div>
+    ${pickerRows}
+  `;
+  document.getElementById('h2h-modal').classList.add('open');
+}
+
+function loadH2H(key1, key2) {
+  const d1 = STANDINGS.find(x => x.key === key1);
+  const d2 = STANDINGS.find(x => x.key === key2);
+  if (!d1 || !d2) return;
+
+  // Find shared races (by race label)
+  const shared = [];
+  d1.races.forEach(r1 => {
+    const r2 = d2.races.find(r => r.race === r1.race);
+    if (r2) shared.push({ race: r1.race, date: r1.date, pts1: r1.pts, pos1: r1.pos, pts2: r2.pts, pos2: r2.pos });
+  });
+
+  const w1 = shared.filter(r => r.pts1 > r.pts2).length;
+  const w2 = shared.filter(r => r.pts2 > r.pts1).length;
+  const ties = shared.filter(r => r.pts1 === r.pts2).length;
+  const avg1 = shared.length ? Math.round(shared.reduce((s,r)=>s+r.pts1,0)/shared.length*10)/10 : 0;
+  const avg2 = shared.length ? Math.round(shared.reduce((s,r)=>s+r.pts2,0)/shared.length*10)/10 : 0;
+
+  const ph1 = getPhoto(d1.handle, d1.name);
+  const ph2 = getPhoto(d2.handle, d2.name);
+  const av1 = avatarDiv(ph1, d1.name[0], 44);
+  const av2 = avatarDiv(ph2, d2.name[0], 44);
+
+  const scoreColor1 = w1 > w2 ? 'var(--green)' : w1 < w2 ? 'var(--accent-red)' : 'var(--muted)';
+  const scoreColor2 = w2 > w1 ? 'var(--green)' : w2 < w1 ? 'var(--accent-red)' : 'var(--muted)';
+
+  const sharedRows = shared.length === 0
+    ? `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Совместных гонок пока нет</div>`
+    : shared.map(r => {
+        const win1 = r.pts1 > r.pts2, win2 = r.pts2 > r.pts1;
+        return `<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);gap:8px;">
+          <div style="text-align:left;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${win1?'var(--green)':'var(--text)'};">${r.pts1}</div>
+            <div style="font-size:10px;color:var(--muted);">P${r.pos1}</div>
+          </div>
+          <div style="text-align:center;font-size:10px;color:var(--muted);white-space:nowrap;">${r.race.replace('Campera Karting · ','').replace('KIRO Karting','KIRO')}</div>
+          <div style="text-align:right;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${win2?'var(--green)':'var(--text)'};">${r.pts2}</div>
+            <div style="font-size:10px;color:var(--muted);">P${r.pos2}</div>
+          </div>
+        </div>`;
+      }).join('');
+
+  document.getElementById('h2h-body').innerHTML = `
+    <div style="padding:16px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">⚔️ Head to Head</div>
+
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="text-align:center;">
+          <div style="display:flex;justify-content:center;margin-bottom:6px;">${av1}</div>
+          <div style="font-size:12px;font-weight:600;line-height:1.2;">${d1.name.split(' ')[0]}</div>
+          <div style="font-size:10px;color:var(--muted);">${d1.handle||'—'}</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1;">
+            <span style="color:${scoreColor1};">${w1}</span>
+            <span style="color:var(--muted);font-size:16px;">–</span>
+            <span style="color:${scoreColor2};">${w2}</span>
+          </div>
+          ${ties > 0 ? `<div style="font-size:10px;color:var(--muted);">${ties} ничья</div>` : ''}
+          <div style="font-size:9px;color:var(--muted);margin-top:2px;">${shared.length} совм. гонок</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="display:flex;justify-content:center;margin-bottom:6px;">${av2}</div>
+          <div style="font-size:12px;font-weight:600;line-height:1.2;">${d2.name.split(' ')[0]}</div>
+          <div style="font-size:10px;color:var(--muted);">${d2.handle||'—'}</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;">${avg1}</div>
+          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Avg очков</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;">${avg2}</div>
+          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Avg очков</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--surface2);padding:8px 16px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:grid;grid-template-columns:1fr auto 1fr;">
+      <span>${d1.name.split(' ')[0]}</span><span>Гонка</span><span style="text-align:right;">${d2.name.split(' ')[0]}</span>
+    </div>
+    ${sharedRows}
+  `;
+}
+
+function closeH2H(e) {
+  if (!e || e.target === document.getElementById('h2h-modal'))
+    document.getElementById('h2h-modal').classList.remove('open');
+}
+
+// H2H PAGE — встроенная страница
+function initH2HPage() {
+  const s1 = document.getElementById('h2h-select1');
+  const s2 = document.getElementById('h2h-select2');
+  if (s1.options.length > 1) return; // уже заполнено
+  STANDINGS.forEach(d => {
+    const opt1 = new Option(d.name, d.key);
+    const opt2 = new Option(d.name, d.key);
+    s1.add(opt1);
+    s2.add(opt2);
+  });
+}
+
+function updateH2HPage() {
+  const key1 = document.getElementById('h2h-select1').value;
+  const key2 = document.getElementById('h2h-select2').value;
+  const el = document.getElementById('h2h-page-result');
+
+  if (!key1 || !key2) {
+    el.innerHTML = `<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:13px;">Выбери двух гонщиков для сравнения</div>`;
+    return;
+  }
+  if (key1 === key2) {
+    el.innerHTML = `<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:13px;">Выбери разных гонщиков 😄</div>`;
+    return;
+  }
+
+  const d1 = STANDINGS.find(x => x.key === key1);
+  const d2 = STANDINGS.find(x => x.key === key2);
+
+  // Совместные гонки
+  const shared = [];
+  d1.races.forEach(r1 => {
+    const r2 = d2.races.find(r => r.race === r1.race);
+    if (r2) shared.push({ race: r1.race, date: r1.date, pts1: r1.pts, pos1: r1.pos, pts2: r2.pts, pos2: r2.pos });
+  });
+
+  const w1 = shared.filter(r => r.pts1 > r.pts2).length;
+  const w2 = shared.filter(r => r.pts2 > r.pts1).length;
+  const ties = shared.filter(r => r.pts1 === r.pts2).length;
+  const avg1 = shared.length ? Math.round(shared.reduce((s,r)=>s+r.pts1,0)/shared.length*10)/10 : 0;
+  const avg2 = shared.length ? Math.round(shared.reduce((s,r)=>s+r.pts2,0)/shared.length*10)/10 : 0;
+  const fl1 = countFastestLaps(key1);
+  const fl2 = countFastestLaps(key2);
+
+  const ph1 = getPhoto(d1.handle, d1.name);
+  const ph2 = getPhoto(d2.handle, d2.name);
+  const av1 = avatarDiv(ph1, d1.name[0], 48);
+  const av2 = avatarDiv(ph2, d2.name[0], 48);
+
+  const sc1 = w1 > w2 ? 'var(--green)' : w1 < w2 ? 'var(--accent-red)' : 'var(--muted)';
+  const sc2 = w2 > w1 ? 'var(--green)' : w2 < w1 ? 'var(--accent-red)' : 'var(--muted)';
+
+  const bar = (v1, v2, label) => {
+    const total = v1 + v2 || 1;
+    const pct1 = Math.round(v1/total*100);
+    const pct2 = 100 - pct1;
+    return `<div style="margin-bottom:10px;">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;text-align:center;">${label}</div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;text-align:right;">${v1}</div>
+        <div style="flex:1;height:6px;border-radius:3px;overflow:hidden;background:var(--border);display:flex;">
+          <div style="width:${pct1}%;background:var(--accent-red);transition:width .3s;"></div>
+        </div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;">${v2}</div>
+      </div>
+    </div>`;
+  };
+
+  const sharedRows = shared.length === 0
+    ? `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Совместных гонок пока нет</div>`
+    : shared.map(r => {
+        const win1 = r.pts1 > r.pts2, win2 = r.pts2 > r.pts1;
+        const label = r.race.replace('KIRO Karting','KIRO').replace('Campera Karting · ','');
+        return `<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:8px;">
+          <div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:${win1?'var(--green)':win2?'var(--muted)':'var(--text)'};">${r.pts1}</div>
+            <div style="font-size:10px;color:var(--muted);">P${r.pos1}</div>
+          </div>
+          <div style="text-align:center;font-size:10px;color:var(--muted);white-space:nowrap;padding:0 4px;">${label}</div>
+          <div style="text-align:right;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:${win2?'var(--green)':win1?'var(--muted)':'var(--text)'};">${r.pts2}</div>
+            <div style="font-size:10px;color:var(--muted);">P${r.pos2}</div>
+          </div>
+        </div>`;
+      }).join('');
+
+  el.innerHTML = `
+    <div class="card" style="margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="text-align:center;">
+          <div style="display:flex;justify-content:center;margin-bottom:6px;">${av1}</div>
+          <div style="font-size:12px;font-weight:600;">${d1.name.split(' ')[0]}</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1;">
+            <span style="color:${sc1};">${w1}</span><span style="color:var(--muted);font-size:18px;"> – </span><span style="color:${sc2};">${w2}</span>
+          </div>
+          ${ties > 0 ? `<div style="font-size:10px;color:var(--muted);">${ties} ничья</div>` : ''}
+          <div style="font-size:9px;color:var(--muted);margin-top:2px;">${shared.length} совм. гонок</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="display:flex;justify-content:center;margin-bottom:6px;">${av2}</div>
+          <div style="font-size:12px;font-weight:600;">${d2.name.split(' ')[0]}</div>
+        </div>
+      </div>
+      ${bar(d1.totalPts, d2.totalPts, 'Очков в зачёте')}
+      ${bar(avg1, avg2, `Avg в общих гонках`)}
+      ${bar(fl1, fl2, '⚡ Быстрых кругов')}
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--surface2);padding:8px 14px;display:grid;grid-template-columns:1fr auto 1fr;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">
+        <span>${d1.name.split(' ')[0]}</span><span style="text-align:center;">Гонка</span><span style="text-align:right;">${d2.name.split(' ')[0]}</span>
+      </div>
+      <div style="padding:0 14px;">${sharedRows}</div>
+    </div>
+  `;
+}
+// ══════════════════════════════════════════════════════════════════
 // PROFILE MODAL
 // ══════════════════════════════════════════════════════════════════
 
@@ -795,6 +1173,7 @@ function openProfile(key) {
   const best = Math.max(...d.races.map(r => r.pts));
   const avg = Math.round(d.races.reduce((s, r) => s + r.pts, 0) / d.races.length);
   const votesLabel = votes === 0 ? 'Голосов пока нет' : `${votes} голос${votes===1?'':votes<5?'а':'ов'}`;
+  const flCount = countFastestLaps(d.key);
 
   document.getElementById('profile-body').innerHTML = `
     <div class="profile-head">
@@ -810,7 +1189,8 @@ function openProfile(key) {
       <div class="stat-block"><div class="stat-val">${d.raceCount}</div><div class="stat-lbl">Гонок</div></div>
       <div class="stat-block"><div class="stat-val">${avg}</div><div class="stat-lbl">Среднее</div></div>
       <div class="stat-block"><div class="stat-val">${best}</div><div class="stat-lbl">Лучший</div></div>
-      <div class="stat-block" style="grid-column:span 2;">
+      <div class="stat-block"><div class="stat-val" style="color:var(--accent-red);">⚡${flCount}</div><div class="stat-lbl">Быстр. круг</div></div>
+      <div class="stat-block">
         <div class="stat-val" style="font-size:13px;">${pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : '#'+pos}</div>
         <div class="stat-lbl">Место в зачёте</div>
       </div>
@@ -822,6 +1202,12 @@ function openProfile(key) {
         <div class="safety-votes">${votesLabel}</div>
       </div>
       <span class="safety-dot s${rating}" style="width:10px;height:10px;"></span>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <button onclick="document.getElementById('profile-modal').classList.remove('open');openH2H('${d.key}')" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.5px;cursor:pointer;color:var(--text);">
+        ⚔️ Head to Head — сравнить с другим гонщиком
+      </button>
     </div>
 
     <div class="section-lbl">История гонок</div>
@@ -1062,6 +1448,9 @@ renderStandings();
 renderDrivers();
 tick();
 setInterval(tick, 1000);
+// Номинации
+const nomEl = document.getElementById('nominations-block');
+if (nomEl) nomEl.innerHTML = renderNominations();
 
 // Подтягиваем список зарегистрированных из Sheets при загрузке
 async function loadRegsFromSheets() {
