@@ -165,10 +165,9 @@
 
   /* STANDINGS */
   .standings-table { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .st-header { display: grid; grid-template-columns: 30px 1fr 38px 48px; padding: 8px 12px; background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .st-header { display: grid; grid-template-columns: 30px 1fr 38px 38px 48px; padding: 8px 12px; background: var(--surface2); border-bottom: 1px solid var(--border); }
   .st-header span { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
-  .st-header span:nth-child(3), .st-header span:last-child { text-align: center; }
-  .st-row { display: grid; grid-template-columns: 30px 1fr 38px 48px; padding: 10px 12px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer; transition: background 0.1s; }
+  .st-row { display: grid; grid-template-columns: 30px 1fr 38px 38px 48px; padding: 10px 12px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer; transition: background 0.1s; }
   .st-row:last-child { border-bottom: none; }
   .st-row:hover { background: var(--surface2); }
   .st-row.p1 { border-left: 3px solid var(--gold); }
@@ -361,21 +360,27 @@
         🏁 <strong>За гонку:</strong> места 1–15 получают очки от 25 до 1. С 16-го — 0. Бонус +1 за быстрейший круг.
       </p>
       <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
-        📊 <strong>Общий зачёт:</strong> за каждый приезд +3 очка к сумме. Плохие результаты автоматически вылетают из зачёта — чем больше гонок, тем больше «плохих» можно выбросить:
+        📊 <strong>Общий зачёт:</strong> Campera считает каждую из двух гонок (R1 и R2) как отдельный этап. Плохие результаты вылетают:
       </p>
       <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.8;margin-bottom:10px;">
-        1–3 гонки → ничего не выбрасываем<br>
-        4–7 гонок → худшая 1 не считается<br>
-        8–11 гонок → худшие 2 не считаются<br>
-        12+ гонок → худшие 3 не считаются
+        1–3 этапа → все считаются<br>
+        4–5 этапов → лучшие 4<br>
+        6–8 этапов → лучшие 5<br>
+        9+ этапов → лучшие 6
       </div>
       <p style="font-size:13px;line-height:1.6;color:var(--muted);">
-        Пример: поехал 6 раз, одну гонку завалил — она вылетает, считаются лучшие 5 + 18 бонусных очков за старты.
+        Пример: участвовал в KIRO + оба заезда Campera A = 3 этапа → все 3 считаются.
       </p>
     </div>
+
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <button id="btn-all" onclick="filterStandings('all',this)" style="background:var(--text);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Все</button>
+      <button id="btn-beg" onclick="filterStandings('beg',this)" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">🏆 Начинающие</button>
+    </div>
+
     <div class="standings-table">
-      <div class="st-header">
-        <span>#</span><span>Гонщик</span><span>Гонок</span><span>Очки</span>
+      <div class="st-header" style="grid-template-columns:30px 1fr 38px 38px 48px;">
+        <span>#</span><span>Гонщик</span><span style="text-align:center;">Гонок</span><span style="text-align:center;">Avg</span><span style="text-align:center;">Очки</span>
       </div>
       <div id="standings-body"></div>
     </div>
@@ -423,11 +428,23 @@
 <script>
 // ══════════════════════════════════════════════════════════════════
 // DATA
-// Гонка 1: KIRO 28.03 — одна гонка, один результат
-// Гонка 2: Campera 12.04 Группа A — две гонки (Race1 + Race2), Total
-// Гонка 3: Campera 12.04 Группа B — две гонки (Race1 + Race2), Total
-// В зачёт идёт Total каждой группы как отдельная гонка для каждого участника
+// Этап = одна гонка (Race1 + Race2 в группе → отдельные этапы)
+// Кампера 12.04: каждая гонка (R1, R2) в каждой группе = свой этап
+// Итого этапов: KIRO(1) + CamperaA_R1(1) + CamperaA_R2(1) + CamperaB_R1(1) + CamperaB_R2(1) = 5
 // ══════════════════════════════════════════════════════════════════
+
+// Начинающие: true = да
+const BEGINNERS = {
+  'p_stanis': true, 'bashalex0100': true, 'ilikru': true, 'iva_capital': true,
+  'antonakentiev': true, 'kamilla_ashrafedinova': true, 'm_levman': true, 'cometodaria': true,
+  // Campera April
+  'okitori': false, 'vankastor': true, 'uzlos': true, 'bashalex': true,
+  'mike1844': true, 'hlomzik': false, 'kivy13': true, 'borisovdm': true, 'sqmme': true,
+  'victorianiki': true,
+  // Group B
+  'edititov': true, 'gramuserrt': true, 'wijuwiju': true, 'sergosh686': false,
+  'fikuspikus333': true, 'olegka060400': true, 'katasonov': true, 'oleg_svirskiy': true, 'oleksi': true,
+};
 
 const RACES = [
   {
@@ -437,7 +454,7 @@ const RACES = [
     location: 'KIRO Karting',
     groups: [
       {
-        label: null, // одна группа, без подзаголовка
+        label: null,
         results: [
           { pos:1,  name:'Sasha Yelkhovenka',     handle:'@fire_wheels',             r1:25, r1fl:true, r2:null, total:26 },
           { pos:2,  name:'Dimas Calcai',           handle:'@dimasccd',                r1:20, r2:null, total:20 },
@@ -514,52 +531,85 @@ const RACES = [
   }
 ];
 
-// Safety: все зелёные пока, с кол-вом голосов (0 = ещё не голосовали)
-const SAFETY_VOTES = {}; // handle -> votes count, all default green
-
-function getSafety(handle) {
-  return { rating: 'g', votes: SAFETY_VOTES[handle] || 0 };
-}
+// Safety: все зелёные пока
+const SAFETY_VOTES = {};
+function getSafety(handle) { return { rating: 'g', votes: SAFETY_VOTES[handle] || 0 }; }
 const SAFETY_LABEL = { g:'🟢 Чисто едет', y:'🟡 Осторожно', r:'🔴 Опасный' };
 
 // ══════════════════════════════════════════════════════════════════
 // STANDINGS
-// Каждая группа = отдельный зачётный результат
-// Итого "гонок" для зачёта: KIRO(1) + Campera_A(1) + Campera_B(1) = 3 слота
-// Отбрасываем худшие 30% гонок (округление вниз), остальные идут в зачёт
-// Например: 3 гонки → drop 0, считаются 3; 5 гонок → drop 1, считаются 4; 10 гонок → drop 3, считаются 7
+// Каждая ГОНКА (R1 и R2) в каждой группе = отдельный зачётный этап
+// Campera Гр.A → R1 как этап + R2 как этап (итого очки за каждую)
+// Campera Гр.B → R1 как этап + R2 как этап
+// KIRO → одна гонка = один этап
+//
+// Формула зачёта (по кол-ву этапов участника):
+//   1–3  → все считаются
+//   4–5  → лучшие 4
+//   6–8  → лучшие 5
+//   9+   → лучшие 6
 // ══════════════════════════════════════════════════════════════════
 
 function norm(h) { return (h||'').toLowerCase().replace('@',''); }
 
+function isBeginnerKey(key) {
+  return BEGINNERS[key] === true;
+}
+
 function buildStandings() {
   const map = {};
 
-  RACES.forEach(race => {
-    race.groups.forEach(group => {
-      const raceLabel = group.label ? `${race.location} · ${group.label}` : race.location;
-      group.results.forEach(r => {
-        const key = norm(r.handle) || norm(r.name);
-        if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', races: [] };
-        map[key].races.push({ race: raceLabel, date: race.date, pts: r.total, pos: r.pos });
-      });
+  // KIRO: одна гонка — total очков как один этап
+  RACES[0].groups[0].results.forEach(r => {
+    const key = norm(r.handle) || norm(r.name);
+    if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', races: [], beginner: isBeginnerKey(key) };
+    map[key].races.push({ race: 'KIRO 28.03', date: '28 мар', pts: r.total, pos: r.pos });
+  });
+
+  // Campera 12.04: R1 и R2 как отдельные этапы
+  RACES[1].groups.forEach(group => {
+    const grp = group.label; // 'Группа A' / 'Группа B'
+    group.results.forEach(r => {
+      const key = norm(r.handle) || norm(r.name);
+      if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', races: [], beginner: isBeginnerKey(key) };
+      // R1
+      if (r.r1 !== null && r.r1 !== undefined) {
+        const pts1 = r.r1 + (r.r1fl ? 1 : 0);
+        map[key].races.push({ race: `Campera ${grp} · Гонка 1`, date: '12 апр', pts: pts1, pos: r.pos });
+      }
+      // R2
+      if (r.r2 !== null && r.r2 !== undefined) {
+        const pts2 = r.r2 + (r.r2fl ? 1 : 0);
+        map[key].races.push({ race: `Campera ${grp} · Гонка 2`, date: '12 апр', pts: pts2, pos: r.pos });
+      }
     });
   });
 
-  const BONUS_PER_RACE = 3; // +3 очка за каждый старт
-
   return Object.entries(map).map(([key, d]) => {
     const n = d.races.length;
-    const drop = Math.floor(n / 4); // каждые 4 гонки одна отваливается
-    const keep = n - drop;
+    // Сколько лучших результатов считается
+    let keep;
+    if (n <= 3)      keep = n;
+    else if (n <= 5) keep = 4;
+    else if (n <= 8) keep = 5;
+    else             keep = 6;
+
     const sorted = [...d.races].sort((a, b) => b.pts - a.pts);
-    const base = sorted.slice(0, keep).reduce((s, r) => s + r.pts, 0);
-    const bonus = n * BONUS_PER_RACE;
-    return { key, ...d, totalPts: base + bonus, raceCount: n, drop };
-  }).sort((a, b) => b.totalPts - a.totalPts);
+    const counted = sorted.slice(0, keep);
+    const base = counted.reduce((s, r) => s + r.pts, 0);
+    const avg = n > 0 ? Math.round((d.races.reduce((s,r)=>s+r.pts,0) / n) * 10) / 10 : 0;
+    return {
+      key, ...d,
+      totalPts: base,
+      raceCount: n,
+      keep,
+      avg,
+    };
+  }).sort((a, b) => b.totalPts - a.totalPts || b.avg - a.avg);
 }
 
 const STANDINGS = buildStandings();
+
 
 // ══════════════════════════════════════════════════════════════════
 // RENDER
@@ -570,8 +620,9 @@ function sdot(handle) {
   return `<span class="safety-dot s${s}"></span>`;
 }
 
-// Helper: get photo from registered users by handle or name match
+// Helper: get photo — сначала из зарегистрированных (сессия), потом из localStorage
 function getPhoto(handle, name) {
+  // 1. Из текущей сессии (regs array)
   const h = (handle||'').replace('@','').toLowerCase();
   const n = (name||'').toLowerCase();
   const match = regs.find(r => {
@@ -580,7 +631,9 @@ function getPhoto(handle, name) {
     const rn = (r.name||'').toLowerCase();
     return (h && rh && rh === h) || rn === n;
   });
-  return match ? match.photoUrl : null;
+  if (match) return match.photoUrl;
+  // 2. Из localStorage (сохранённые ранее)
+  return getPhotoLocal(handle, name);
 }
 
 function avatarDiv(photoUrl, letter, size) {
@@ -592,51 +645,105 @@ function avatarDiv(photoUrl, letter, size) {
 }
 
 // Race chips
+// Flat list of individual race views for "Прошедшие"
+function buildRaceViews() {
+  const views = [];
+  RACES.forEach(race => {
+    if (race.groups.length === 1 && !race.groups[0].label) {
+      // KIRO: одна гонка
+      views.push({
+        chipLabel: race.chipLabel,
+        date: race.date,
+        groupLabel: null,
+        location: race.location,
+        results: race.groups[0].results.map(r => ({
+          pos: r.pos, name: r.name, handle: r.handle,
+          pts: r.total, fl: r.r1fl || false,
+        })),
+      });
+    } else {
+      race.groups.forEach(group => {
+        // Гонка 1
+        const r1rows = [...group.results]
+          .map(r => ({ name: r.name, handle: r.handle, pts: r.r1 + (r.r1fl ? 1 : 0), fl: r.r1fl || false }))
+          .sort((a,b) => b.pts - a.pts)
+          .map((r,i) => ({ ...r, pos: i+1 }));
+        views.push({
+          chipLabel: `${group.label} · Г1`,
+          date: race.date,
+          groupLabel: `${group.label} · Гонка 1`,
+          location: race.location,
+          results: r1rows,
+        });
+        // Гонка 2
+        const r2rows = group.results
+          .filter(r => r.r2 !== null && r.r2 !== undefined)
+          .map(r => ({ name: r.name, handle: r.handle, pts: r.r2 + (r.r2fl ? 1 : 0), fl: r.r2fl || false }))
+          .sort((a,b) => b.pts - a.pts)
+          .map((r,i) => ({ ...r, pos: i+1 }));
+        if (r2rows.length) {
+          views.push({
+            chipLabel: `${group.label} · Г2`,
+            date: race.date,
+            groupLabel: `${group.label} · Гонка 2`,
+            location: race.location,
+            results: r2rows,
+          });
+        }
+      });
+    }
+  });
+  return views;
+}
+
+const RACE_VIEWS = buildRaceViews();
+
 function renderChips() {
-  document.getElementById('race-chips').innerHTML = RACES.map((r, i) =>
-    `<button class="race-chip${i===0?' active':''}" onclick="selectRace(${i},this)">${r.chipLabel}</button>`
+  document.getElementById('race-chips').innerHTML = RACE_VIEWS.map((v, i) =>
+    `<button class="race-chip${i===0?' active':''}" onclick="selectRace(${i},this)">${v.chipLabel}</button>`
   ).join('');
 }
 
 // Results panel
 function renderResults(idx) {
-  const race = RACES[idx];
-  let html = '';
-  race.groups.forEach(group => {
-    if (group.label) {
-      html += `<div class="res-sub">${race.date} · ${group.label}</div>`;
-    } else {
-      html += `<div class="res-sub">${race.date}</div>`;
-    }
-    group.results.forEach(r => {
-      const pc = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
-      const fl1 = r.r1fl ? ` <span style="font-size:9px;color:var(--accent-red);">⚡R1</span>` : '';
-      const fl2 = r.r2fl ? ` <span style="font-size:9px;color:var(--accent-red);">⚡R2</span>` : '';
-      const sub = r.r2 !== null && r.r2 !== undefined
-        ? `<div style="font-size:10px;color:var(--muted);">R1: ${r.r1}${fl1} &nbsp;R2: ${r.r2}${fl2}</div>`
-        : '';
-      const photo = getPhoto(r.handle, r.name);
-      const av = avatarDiv(photo, r.name[0], 32);
-      html += `<div class="result-row ${pc}" onclick="openProfile('${norm(r.handle)||norm(r.name)}')">
-        <div class="res-pos">${r.pos}</div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          ${av}
-          <div>
-            <div class="res-name">${r.name}${sdot(r.handle)}</div>
-            ${r.handle ? `<div class="res-handle">${r.handle}</div>` : ''}
-            ${sub}
-          </div>
+  const v = RACE_VIEWS[idx];
+  let html = `<div class="res-sub">${v.date} · ${v.groupLabel || v.location}</div>`;
+  v.results.forEach(r => {
+    const pc = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
+    const fl = r.fl ? ` <span style="font-size:9px;color:var(--accent-red);">⚡FL</span>` : '';
+    const photo = getPhoto(r.handle, r.name);
+    const av = avatarDiv(photo, r.name[0], 32);
+    html += `<div class="result-row ${pc}" onclick="openProfile('${norm(r.handle)||norm(r.name)}')">
+      <div class="res-pos">${r.pos}</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${av}
+        <div>
+          <div class="res-name">${r.name}${sdot(r.handle)}${fl}</div>
+          ${r.handle ? `<div class="res-handle">${r.handle}</div>` : ''}
         </div>
-        <div class="res-pts">${r.total}</div>
-      </div>`;
-    });
+      </div>
+      <div class="res-pts">${r.pts}</div>
+    </div>`;
   });
   document.getElementById('results-body').innerHTML = html;
 }
 
 // Standings
+let _standingsFilter = 'all';
+function filterStandings(f, btn) {
+  _standingsFilter = f;
+  document.getElementById('btn-all').style.background = f==='all' ? 'var(--text)' : 'var(--surface2)';
+  document.getElementById('btn-all').style.color = f==='all' ? '#fff' : 'var(--muted)';
+  document.getElementById('btn-beg').style.background = f==='beg' ? 'var(--text)' : 'var(--surface2)';
+  document.getElementById('btn-beg').style.color = f==='beg' ? '#fff' : 'var(--muted)';
+  renderStandings();
+}
+
 function renderStandings() {
-  document.getElementById('standings-body').innerHTML = STANDINGS.map((d, i) => {
+  const list = _standingsFilter === 'beg'
+    ? STANDINGS.filter(d => d.beginner)
+    : STANDINGS;
+  document.getElementById('standings-body').innerHTML = list.map((d, i) => {
     const pc = i===0?'p1':i===1?'p2':i===2?'p3':'';
     const photo = getPhoto(d.handle, d.name);
     const av = avatarDiv(photo, d.name[0], 28);
@@ -650,6 +757,7 @@ function renderStandings() {
         </div>
       </div>
       <div class="st-races">${d.raceCount}</div>
+      <div class="st-races" style="color:var(--muted);">${d.avg}</div>
       <div class="st-pts">${d.totalPts}</div>
     </div>`;
   }).join('');
@@ -801,6 +909,21 @@ function handlePhotoChange(input) {
   reader.readAsDataURL(file);
 }
 
+// Сохраняем фото гонщиков в localStorage по нику/имени
+function savePhotoLocally(handle, name, photoDataUrl) {
+  try {
+    const key = 'photos_' + (handle||'').replace('@','').toLowerCase() + '_' + (name||'').toLowerCase().replace(/\s+/g,'_');
+    localStorage.setItem(key, photoDataUrl);
+  } catch(e) {}
+}
+
+function getPhotoLocal(handle, name) {
+  try {
+    const key = 'photos_' + (handle||'').replace('@','').toLowerCase() + '_' + (name||'').toLowerCase().replace(/\s+/g,'_');
+    return localStorage.getItem(key);
+  } catch(e) { return null; }
+}
+
 function closeRegModal(e) {
   if (!e || e.target === document.getElementById('reg-modal'))
     document.getElementById('reg-modal').classList.remove('open');
@@ -825,6 +948,8 @@ const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxvhbmv3-cbEknSBAv46
 async function finishReg(name, handle, beginner, briefing, photoUrl, telegramId) {
   if (regs.length >= MAX) return;
   regs.push({ name, handle, beginner, briefing, photoUrl: photoUrl || null, telegramId: telegramId || null });
+  // Сохраняем фото локально чтобы не пропадало после перезагрузки
+  if (photoUrl) savePhotoLocally(handle, name, photoUrl);
   document.getElementById('spots-left').textContent = MAX - regs.length;
   document.getElementById('spots-fill').style.width = (regs.length / MAX * 100) + '%';
   document.getElementById('reg-list-title').textContent = `Уже едут (${regs.length} / ${MAX})`;
