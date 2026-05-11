@@ -232,7 +232,8 @@
   .photo-upload-area { border: 1.5px dashed var(--border); border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: border-color 0.15s, background 0.15s; position: relative; display: flex; align-items: center; gap: 10px; }
   .photo-upload-area:hover, .photo-upload-area.has-photo { border-color: var(--text); background: var(--surface2); }
   .photo-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .photo-preview { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; }
+  .photo-preview { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; aspect-ratio: 1; }
+  .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; aspect-ratio: 1; }
   .photo-upload-icon { font-size: 20px; flex-shrink: 0; }
   .photo-upload-lbl { font-size: 12px; color: var(--muted); }
   .check-label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; }
@@ -569,6 +570,27 @@ function sdot(handle) {
   return `<span class="safety-dot s${s}"></span>`;
 }
 
+// Helper: get photo from registered users by handle or name match
+function getPhoto(handle, name) {
+  const h = (handle||'').replace('@','').toLowerCase();
+  const n = (name||'').toLowerCase();
+  const match = regs.find(r => {
+    if (!r.photoUrl) return false;
+    const rh = (r.handle||'').replace('@','').toLowerCase();
+    const rn = (r.name||'').toLowerCase();
+    return (h && rh && rh === h) || rn === n;
+  });
+  return match ? match.photoUrl : null;
+}
+
+function avatarDiv(photoUrl, letter, size) {
+  const sz = size || 40;
+  if (photoUrl) {
+    return `<img src="${photoUrl}" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;aspect-ratio:1;flex-shrink:0;">`;
+  }
+  return `<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${letter}</div>`;
+}
+
 // Race chips
 function renderChips() {
   document.getElementById('race-chips').innerHTML = RACES.map((r, i) =>
@@ -593,12 +615,17 @@ function renderResults(idx) {
       const sub = r.r2 !== null && r.r2 !== undefined
         ? `<div style="font-size:10px;color:var(--muted);">R1: ${r.r1}${fl1} &nbsp;R2: ${r.r2}${fl2}</div>`
         : '';
+      const photo = getPhoto(r.handle, r.name);
+      const av = avatarDiv(photo, r.name[0], 32);
       html += `<div class="result-row ${pc}" onclick="openProfile('${norm(r.handle)||norm(r.name)}')">
         <div class="res-pos">${r.pos}</div>
-        <div>
-          <div class="res-name">${r.name}${sdot(r.handle)}</div>
-          ${r.handle ? `<div class="res-handle">${r.handle}</div>` : ''}
-          ${sub}
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${av}
+          <div>
+            <div class="res-name">${r.name}${sdot(r.handle)}</div>
+            ${r.handle ? `<div class="res-handle">${r.handle}</div>` : ''}
+            ${sub}
+          </div>
         </div>
         <div class="res-pts">${r.total}</div>
       </div>`;
@@ -611,11 +638,16 @@ function renderResults(idx) {
 function renderStandings() {
   document.getElementById('standings-body').innerHTML = STANDINGS.map((d, i) => {
     const pc = i===0?'p1':i===1?'p2':i===2?'p3':'';
+    const photo = getPhoto(d.handle, d.name);
+    const av = avatarDiv(photo, d.name[0], 28);
     return `<div class="st-row ${pc}" onclick="openProfile('${d.key}')">
       <div class="st-pos">${i+1}</div>
-      <div style="min-width:0;">
-        <div class="st-name">${d.name}${sdot(d.handle)}</div>
-        <div class="st-handle">${d.handle||'—'}</div>
+      <div style="display:flex;align-items:center;gap:7px;min-width:0;">
+        ${av}
+        <div style="min-width:0;">
+          <div class="st-name">${d.name}${sdot(d.handle)}</div>
+          <div class="st-handle">${d.handle||'—'}</div>
+        </div>
       </div>
       <div class="st-races">${d.raceCount}</div>
       <div class="st-pts">${d.totalPts}</div>
@@ -625,9 +657,12 @@ function renderStandings() {
 
 // Drivers
 function renderDrivers() {
-  document.getElementById('drivers-list').innerHTML = STANDINGS.map(d => `
+  document.getElementById('drivers-list').innerHTML = STANDINGS.map(d => {
+    const photo = getPhoto(d.handle, d.name);
+    const av = avatarDiv(photo, d.name[0], 40);
+    return `
     <div class="driver-card" onclick="openProfile('${d.key}')">
-      <div class="avatar">${d.name[0]}</div>
+      ${av}
       <div style="flex:1;min-width:0;">
         <div style="font-weight:600;font-size:13px;">${d.name}${sdot(d.handle)}</div>
         <div style="font-size:11px;color:var(--muted);">${d.handle||'—'} · ${d.raceCount} гон.</div>
@@ -637,7 +672,7 @@ function renderDrivers() {
         <div style="font-size:10px;color:var(--muted);">очков</div>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -655,7 +690,7 @@ function openProfile(key) {
 
   document.getElementById('profile-body').innerHTML = `
     <div class="profile-head">
-      <div class="profile-avatar">${d.name[0]}</div>
+      ${(()=>{ const ph=getPhoto(d.handle,d.name); return ph ? `<img src="${ph}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;aspect-ratio:1;flex-shrink:0;">` : `<div class="profile-avatar">${d.name[0]}</div>`; })()}
       <div>
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;line-height:1.1;">${d.name}</div>
         <div style="font-size:12px;color:var(--muted);margin-top:2px;">${d.handle||'—'} · ${pos}-е место</div>
@@ -785,7 +820,7 @@ function submitReg() {
   finishReg(name, handle, beginner, briefing, photoUrl, null);
 }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxOSdlV8X5tudSGACM6j6WgfKyeP0feQ9dTrFHS4BNnr2GKe2GQvLvNtRp8pnveuVG-/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxvhbmv3-cbEknSBAv467As3u7-d4CsDgTNKyK9LkFtry-rlgmy4xFOjBeieCcjMFzI/exec';
 
 async function finishReg(name, handle, beginner, briefing, photoUrl, telegramId) {
   if (regs.length >= MAX) return;
@@ -797,7 +832,7 @@ async function finishReg(name, handle, beginner, briefing, photoUrl, telegramId)
     <div class="reg-item">
       <div class="reg-num">${i+1}</div>
       ${r.photoUrl
-        ? `<img src="${r.photoUrl}" style="width:32px;height:32px;border-radius:50%;flex-shrink:0;">`
+        ? `<img src="${r.photoUrl}" style="width:32px;height:32px;border-radius:50%;flex-shrink:0;object-fit:cover;aspect-ratio:1;">`
         : `<div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:14px;flex-shrink:0;">${r.name[0]}</div>`
       }
       <div style="flex:1;min-width:0;">
