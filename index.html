@@ -359,19 +359,22 @@
     <div class="card" style="margin-bottom:12px;">
       <div class="card-title">Начисление очков</div>
       <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
-        🏁 <strong>За гонку:</strong> места 1–15 получают очки от 25 до 1. С 16-го — 0. Бонус +1 за быстрейший круг.
+        🏁 <strong>За каждую гонку:</strong> 1-е место — 25 очков, 2-е — 18, 3-е — 15... до 15-го места (1 очко). С 16-го места — 0. Кто едет быстрейший круг в гонке — получает бонус +1 очко.
       </p>
       <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
-        📊 <strong>Общий зачёт:</strong> Campera считает каждую из двух гонок (R1 и R2) как отдельный этап. Плохие результаты вылетают:
+        📊 <strong>Итоговый зачёт:</strong> Очки суммируются по всем гонкам сезона. На каждом событии Campera проводит по две гонки — каждая считается отдельно. Если ты пропустил гонку — просто получаешь 0 за неё.
       </p>
-      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.8;margin-bottom:10px;">
-        1–3 этапа → все считаются<br>
-        4–5 этапов → лучшие 4<br>
-        6–8 этапов → лучшие 5<br>
-        9+ этапов → лучшие 6
+      <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
+        🗑️ <strong>Худшие результаты не считаются</strong> — чем больше гонок ты проехал, тем больше плохих результатов можно отбросить:
+      </p>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 14px;font-size:12px;line-height:2;margin-bottom:10px;">
+        <span style="color:var(--muted);">1–3 гонки в сезоне</span> → <strong>все идут в зачёт</strong><br>
+        <span style="color:var(--muted);">4–5 гонок</span> → <strong>лучшие 4 результата</strong><br>
+        <span style="color:var(--muted);">6–8 гонок</span> → <strong>лучшие 5 результатов</strong><br>
+        <span style="color:var(--muted);">9+ гонок</span> → <strong>лучшие 6 результатов</strong>
       </div>
-      <p style="font-size:13px;line-height:1.6;color:var(--muted);">
-        Пример: участвовал в KIRO + оба заезда Campera A = 3 этапа → все 3 считаются.
+      <p style="font-size:12px;line-height:1.6;color:var(--muted);">
+        Например: проехал 6 гонок за сезон — худший результат автоматически не считается. Проехал 3 — все три идут в зачёт. Чем больше стартов, тем больше права на ошибку.
       </p>
     </div>
 
@@ -1368,16 +1371,17 @@ async function finishReg(name, handle, beginner, briefing, photoBase64, telegram
     </div>
   `;
 
-  // Отправляем в Google Sheets + фото в Drive (no-cors)
+  // Отправляем в Google Sheets + фото в Drive
   try {
     const payload = { name, handle, beginner, briefing, telegram_id: telegramId || null, source: 'portal' };
     if (photoBase64) payload.photoBase64 = photoBase64;
     fetch(SHEETS_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' }, // text/plain обходит preflight CORS
       body: JSON.stringify(payload)
-    });
+    }).then(r => r.json()).then(res => {
+      console.log('Sheets OK:', res);
+    }).catch(err => console.warn('Sheets error:', err));
   } catch(err) {
     console.warn('Sheets sync failed:', err);
   }
