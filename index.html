@@ -259,13 +259,12 @@
 <body>
 
 <nav>
-  <div class="logo">Катаемся<br><em>Чатом</em></div>
+  <div class="logo" id="logo-tap" onclick="_logoTap()">Катаемся<br><em>Чатом</em></div>
   <a href="https://t.me/+xF4eAlUWBddjMjgy" target="_blank" style="display:flex;align-items:center;gap:5px;background:var(--text);color:#fff;text-decoration:none;border-radius:20px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">
     <svg viewBox="0 0 24 24" width="13" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.247l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.95 14.382l-2.95-.924c-.64-.203-.652-.64.136-.953l11.527-4.445c.534-.194 1.001.13.899.187z"/></svg>
     Join us
   </a>
 </nav>
-
 <!-- PAGE: ГЛАВНАЯ -->
 <div class="page active" id="page-main">
 
@@ -663,9 +662,8 @@ function sdot(handle) {
   return `<span class="safety-dot s${s}"></span>`;
 }
 
-// Helper: get photo — сначала из зарегистрированных (сессия), потом из localStorage
+// Helper: get photo — из массива regs (Drive URL приходит через loadRegs)
 function getPhoto(handle, name) {
-  // 1. Из текущей сессии (regs array)
   const h = (handle||'').replace('@','').toLowerCase();
   const n = (name||'').toLowerCase();
   const match = regs.find(r => {
@@ -674,9 +672,7 @@ function getPhoto(handle, name) {
     const rn = (r.name||'').toLowerCase();
     return (h && rh && rh === h) || rn === n;
   });
-  if (match) return match.photoUrl;
-  // 2. Из localStorage (сохранённые ранее)
-  return getPhotoLocal(handle, name);
+  return match ? match.photoUrl : null;
 }
 
 function avatarDiv(photoUrl, letter, size) {
@@ -1037,8 +1033,13 @@ function loadH2H(key1, key2) {
   `;
 }
 
+// Тройной тап по логотипу = скрытое меню бэкапа фото
+let _logoTaps = 0, _logoTimer = null;
+function _logoTap() {
+  // зарезервировано для будущего использования
+}
+
 function closeH2H(e) {
-  if (!e || e.target === document.getElementById('h2h-modal'))
     document.getElementById('h2h-modal').classList.remove('open');
 }
 
@@ -1284,39 +1285,34 @@ function handlePhotoChange(input) {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(e) {
-    _photoDataUrl = e.target.result;
-    const inner = document.getElementById('photo-drop-inner');
-    if (inner) {
-      inner.innerHTML = `<img src="${_photoDataUrl}" class="photo-preview" alt="фото"><div class="photo-upload-lbl" style="color:var(--green);">✓ Фото загружено</div>`;
-    }
-    const drop = document.getElementById('photo-drop');
-    if (drop) drop.classList.add('has-photo');
+    // Сжимаем до 800px и quality 0.7 чтобы не перегружать запрос
+    const img = new Image();
+    img.onload = function() {
+      const MAX = 800;
+      let w = img.width, h = img.height;
+      if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
+      else        { if (h > MAX) { w = w * MAX / h; h = MAX; } }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      _photoDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+      const inner = document.getElementById('photo-drop-inner');
+      if (inner) inner.innerHTML = `<img src="${_photoDataUrl}" class="photo-preview" alt="фото"><div class="photo-upload-lbl" style="color:var(--green);">✓ Фото загружено</div>`;
+      const drop = document.getElementById('photo-drop');
+      if (drop) drop.classList.add('has-photo');
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-// Сохраняем фото гонщиков в localStorage по нику/имени
-function savePhotoLocally(handle, name, photoDataUrl) {
-  try {
-    const key = 'photos_' + (handle||'').replace('@','').toLowerCase() + '_' + (name||'').toLowerCase().replace(/\s+/g,'_');
-    localStorage.setItem(key, photoDataUrl);
-  } catch(e) {}
-}
-
-function getPhotoLocal(handle, name) {
-  try {
-    const key = 'photos_' + (handle||'').replace('@','').toLowerCase() + '_' + (name||'').toLowerCase().replace(/\s+/g,'_');
-    return localStorage.getItem(key);
-  } catch(e) { return null; }
-}
+// ── PHOTO STORAGE ─────────────────────────────────────────────────
+// Фото хранятся в Google Drive, URL приходит через Sheets API (loadRegs)
 
 function closeRegModal(e) {
   if (!e || e.target === document.getElementById('reg-modal'))
     document.getElementById('reg-modal').classList.remove('open');
 }
-
-
-
 
 function submitReg() {
   const name = document.getElementById('rn').value.trim();
@@ -1325,17 +1321,16 @@ function submitReg() {
   const briefing = document.getElementById('rp').checked;
   if (!name) { document.getElementById('rn').focus(); return; }
   if (handle && !handle.startsWith('@')) handle = '@' + handle;
-  const photoUrl = _photoDataUrl || null;
-  finishReg(name, handle, beginner, briefing, photoUrl, null);
+  const photoBase64 = _photoDataUrl || null;
+  finishReg(name, handle, beginner, briefing, photoBase64, null);
 }
 
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxvhbmv3-cbEknSBAv467As3u7-d4CsDgTNKyK9LkFtry-rlgmy4xFOjBeieCcjMFzI/exec';
 
-async function finishReg(name, handle, beginner, briefing, photoUrl, telegramId) {
+async function finishReg(name, handle, beginner, briefing, photoBase64, telegramId) {
   if (regs.length >= MAX) return;
-  regs.push({ name, handle, beginner, briefing, photoUrl: photoUrl || null, telegramId: telegramId || null });
-  // Сохраняем фото локально чтобы не пропадало после перезагрузки
-  if (photoUrl) savePhotoLocally(handle, name, photoUrl);
+  // Показываем фото из base64 сразу (потом придёт Drive URL)
+  regs.push({ name, handle, beginner, briefing, photoUrl: photoBase64 || null, telegramId: telegramId || null });
   document.getElementById('spots-left').textContent = MAX - regs.length;
   document.getElementById('spots-fill').style.width = (regs.length / MAX * 100) + '%';
   document.getElementById('reg-list-title').textContent = `Уже едут (${regs.length} / ${MAX})`;
@@ -1373,13 +1368,15 @@ async function finishReg(name, handle, beginner, briefing, photoUrl, telegramId)
     </div>
   `;
 
-  // Отправляем в Google Sheets (no-cors — ответ не читаем, но данные доходят)
+  // Отправляем в Google Sheets + фото в Drive (no-cors)
   try {
+    const payload = { name, handle, beginner, briefing, telegram_id: telegramId || null, source: 'portal' };
+    if (photoBase64) payload.photoBase64 = photoBase64;
     fetch(SHEETS_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, handle, beginner, briefing, telegram_id: telegramId || null, source: 'portal' })
+      body: JSON.stringify(payload)
     });
   } catch(err) {
     console.warn('Sheets sync failed:', err);
@@ -1464,14 +1461,17 @@ async function loadRegsFromSheets() {
 // JSONP-загрузка (единственный способ с no-cors Apps Script)
 function loadRegs() {
   const script = document.createElement('script');
-  // callback передаём через URL
   const cbName = '_sheetsCallback';
   window[cbName] = function(data) {
     if (!data || !data.regs) return;
-    // Очищаем и заполняем массив regs
     regs.length = 0;
-    data.regs.forEach(r => regs.push({ name: r.name, handle: r.handle, beginner: r.beginner, briefing: r.briefing, photoUrl: null }));
-    // Обновляем UI
+    data.regs.forEach(r => regs.push({
+      name: r.name,
+      handle: r.handle,
+      beginner: r.beginner,
+      briefing: r.briefing,
+      photoUrl: r.photoUrl || null   // ← теперь берём с Drive
+    }));
     const left = MAX - regs.length;
     const el = document.getElementById('spots-left');
     const fill = document.getElementById('spots-fill');
@@ -1483,7 +1483,10 @@ function loadRegs() {
       document.getElementById('reg-list-body').innerHTML = regs.map((r, i) => `
         <div class="reg-item">
           <div class="reg-num">${i+1}</div>
-          <div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:14px;flex-shrink:0;">${r.name[0]}</div>
+          ${r.photoUrl
+            ? `<img src="${r.photoUrl}" style="width:32px;height:32px;border-radius:50%;flex-shrink:0;object-fit:cover;aspect-ratio:1;">`
+            : `<div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:14px;flex-shrink:0;">${r.name[0]}</div>`
+          }
           <div style="flex:1;min-width:0;">
             <div style="font-size:14px;font-weight:500;">${r.name}${r.beginner?' <span style="font-size:10px;color:var(--accent-red);">Н</span>':''}</div>
             ${r.handle ? `<div style="font-size:11px;color:var(--muted);">${r.handle}</div>` : ''}
@@ -1491,6 +1494,8 @@ function loadRegs() {
         </div>
       `).join('');
     }
+    // Обновляем аватарки в standings/drivers если уже отрисованы
+    renderDrivers();
     document.body.removeChild(script);
     delete window[cbName];
   };
