@@ -1429,6 +1429,7 @@ function switchTab(name, btn) {
 function selectRace(idx, btn) {
   document.querySelectorAll('.race-chip').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
+  window._currentResultIdx = idx;
   renderResults(idx);
 }
 
@@ -1525,8 +1526,10 @@ function loadRegs() {
         </div>
       `).join('');
     }
-    // Обновляем аватарки в standings/drivers если уже отрисованы
+    // Обновляем аватарки везде после загрузки фото
     renderDrivers();
+    renderStandings();
+    renderResults(window._currentResultIdx || 0);
     document.body.removeChild(script);
     delete window[cbName];
   };
