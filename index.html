@@ -667,13 +667,20 @@ function sdot(handle) {
 
 // Helper: get photo — из массива regs (Drive URL приходит через loadRegs)
 function getPhoto(handle, name) {
-  const h = (handle||'').replace('@','').toLowerCase();
-  const n = (name||'').toLowerCase();
+  const h = (handle||'').replace(/^@/,'').toLowerCase().trim();
+  const n = (name||'').toLowerCase().trim();
   const match = regs.find(r => {
     if (!r.photoUrl) return false;
-    const rh = (r.handle||'').replace('@','').toLowerCase();
-    const rn = (r.name||'').toLowerCase();
-    return (h && rh && rh === h) || rn === n;
+    const rh = (r.handle||'').replace(/^@/,'').toLowerCase().trim();
+    const rn = (r.name||'').toLowerCase().trim();
+    // Точное совпадение по нику или имени
+    if (h && rh && rh === h) return true;
+    if (n && rn && rn === n) return true;
+    // Совпадение по первому слову имени (имя без фамилии)
+    const firstName = n.split(' ')[0];
+    const rFirstName = rn.split(' ')[0];
+    if (firstName && rFirstName && firstName === rFirstName && firstName.length > 2) return true;
+    return false;
   });
   return match ? match.photoUrl : null;
 }
@@ -1178,9 +1185,10 @@ function openProfile(key) {
   if (!d) return;
   const pos = STANDINGS.indexOf(d) + 1;
   const { rating, votes } = getSafety(d.handle);
-  const best = Math.max(...d.races.map(r => r.pts));
-  const avg = Math.round(d.races.reduce((s, r) => s + r.pts, 0) / d.races.length);
+  const best = d.races.length ? Math.max(...d.races.map(r => r.pts)) : 0;
+  const avg = d.races.length ? Math.round(d.races.reduce((s, r) => s + r.pts, 0) / d.races.length) : 0;
   const votesLabel = votes === 0 ? 'Голосов пока нет' : `${votes} голос${votes===1?'':votes<5?'а':'ов'}`;
+  const medal = pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : ('#' + pos);
   const flCount = countFastestLaps(d.key);
 
   document.getElementById('profile-body').innerHTML = `
@@ -1197,11 +1205,8 @@ function openProfile(key) {
       <div class="stat-block"><div class="stat-val">${d.raceCount}</div><div class="stat-lbl">Гонок</div></div>
       <div class="stat-block"><div class="stat-val">${avg}</div><div class="stat-lbl">Среднее</div></div>
       <div class="stat-block"><div class="stat-val">${best}</div><div class="stat-lbl">Лучший</div></div>
-      <div class="stat-block"><div class="stat-val" style="color:var(--accent-red);">⚡${flCount}</div><div class="stat-lbl">Быстр. круг</div></div>
-      <div class="stat-block">
-        <div class="stat-val" style="font-size:13px;">${pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : '#'+pos}</div>
-        <div class="stat-lbl">Место в зачёте</div>
-      </div>
+      <div class="stat-block"><div class="stat-val" style="color:var(--accent-red);">FL:${flCount}</div><div class="stat-lbl">Быстр. круг</div></div>
+      <div class="stat-block"><div class="stat-val" style="font-size:15px;">${medal}</div><div class="stat-lbl">Место</div></div>
     </div>
 
     <div class="safety-card">
