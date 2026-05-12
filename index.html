@@ -993,7 +993,10 @@ function loadH2H(key1, key2) {
 
   document.getElementById('h2h-body').innerHTML = `
     <div style="padding:16px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">⚔️ Head to Head</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <button onclick="openH2H('${key1}')" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--muted);">← Назад</button>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">⚔️ Head to Head</div>
+      </div>
 
       <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:16px;">
         <div style="text-align:center;">
@@ -1043,7 +1046,8 @@ function _logoTap() {
 }
 
 function closeH2H(e) {
-    document.getElementById('h2h-modal').classList.remove('open');
+    if (!e || e.target === document.getElementById('h2h-modal'))
+        document.getElementById('h2h-modal').classList.remove('open');
 }
 
 // H2H PAGE — встроенная страница
