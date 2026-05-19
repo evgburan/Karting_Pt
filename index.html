@@ -651,7 +651,7 @@ const I18N = {
     form_name: 'Name *', form_name_ph: 'Full name for the race',
     form_tg: 'Telegram', form_tg_ph: 'Telegram username (with @ or without)',
     check_beg: '🏆 I want to enter the <strong>beginners standings</strong>',
-    check_brief: '🟢 I\'ll arrive at 15:00 for the <strong>track walkthrough</strong>',
+    check_brief: '🟢 I\'ll arrive at 15:00 for the <strong>track briefing</strong>',
     photo_lbl: 'Profile photo (optional)', photo_btn: 'Tap to upload photo',
     photo_done: '✓ Photo uploaded',
     btn_confirm: 'Confirm →', btn_cancel: 'Cancel', btn_close: 'Close',
@@ -1566,25 +1566,25 @@ function openReg() {
     <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">23 ${t('reg_sub')} ${MAX - regs.length} ${t('reg_spots')}</div>
     <div class="reg-form">
       <div>
-        <label class="form-lbl">Имя *</label>
-        <input class="form-input" id="rn" placeholder="Имя и фамилия для гонки" type="text">
+        <label class="form-lbl">${t('form_name')}</label>
+        <input class="form-input" id="rn" placeholder="${t('form_name_ph')}" type="text">
       </div>
       <div>
-        <label class="form-lbl">Telegram</label>
-        <input class="form-input" id="rh" placeholder="Ник в Telegram (с @ или без)" type="text">
+        <label class="form-lbl">${t('form_tg')}</label>
+        <input class="form-input" id="rh" placeholder="${t('form_tg_ph')}" type="text">
       </div>
       <label class="check-label">
         <input type="checkbox" id="rb" class="check-input">
         <span class="check-box"></span>
-        <span class="check-txt">🏆 Хочу участвовать в <strong>зачёте начинающих</strong></span>
+        <span class="check-txt">${t('check_beg')}</span>
       </label>
       <label class="check-label">
         <input type="checkbox" id="rp" class="check-input">
         <span class="check-box"></span>
-        <span class="check-txt">🟢 Хочу приехать к 15:00 на <strong>мини-разбор трассы</strong></span>
+        <span class="check-txt">${t('check_brief')}</span>
       </label>
       <div>
-        <label class="form-lbl">Фото профиля (необязательно)</label>
+        <label class="form-lbl">${t('photo_lbl')}</label>
         <div class="photo-upload-area" id="photo-drop" onclick="document.getElementById('rphoto').click()">
           <div id="photo-drop-inner">
             <div class="photo-upload-icon">📷</div>
