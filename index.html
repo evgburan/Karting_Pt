@@ -843,7 +843,7 @@ const BEGINNERS = {
 const RACES = [
   {
     id: 'kiro',
-    chipLabel: '28 Мар · KIRO',
+    chipLabel: '28 Мар · Kiro',
     date: '28 марта 2026',
     location: 'KIRO Karting',
     photo: 'kiro',
@@ -1068,7 +1068,7 @@ function renderLastRace() {
     clean_title:   { ru:'Чистая борьба',   en:'Clean racing',pt:'Pilotagem limpa' },
     dirty_title:   { ru:'Жёстко ездит!',   en:'Rough driver',pt:'Pilotagem dura' },
     pending:       { ru:'Идёт подсчёт…',   en:'Counting…',   pt:'A contar…' },
-    from_q:        { ru:'квали',           en:'Q',           pt:'Q' },
+    from_q:        { ru:'Квал.',           en:'Q',           pt:'Q' },
     finish:        { ru:'финиш',           en:'fin',         pt:'fin' },
     fell:          { ru:'упал в Г1, взлетел в Г2',
                      en:'fell in R1, flew in R2',
@@ -1094,7 +1094,7 @@ function renderLastRace() {
           <div class="nom-icon">⚡</div>
           <div class="nom-title">${nt('fl_title')}</div>
           <div class="nom-driver">${winner.name.split(' ')[0]}</div>
-          <div class="nom-desc">${time} kph</div>
+          <div class="nom-desc">${time}</div>
         </div>`;
   }
 
@@ -1121,7 +1121,7 @@ function renderLastRace() {
           <div class="nom-icon">🔥</div>
           <div class="nom-title">${nt('phoenix_title')}</div>
           <div class="nom-driver">${phoenixWinner.name.split(' ')[0]}</div>
-          <div class="nom-desc">${nt('fell')} +${maxRebound}</div>
+          <div class="nom-desc">${{ ru: `Г2 лучше Г1 на ${maxRebound} поз.`, en: `+${maxRebound} places R1→R2`, pt: `+${maxRebound} lugares C1→C2` }[_lang]}</div>
         </div>`;
   }
 
@@ -1342,7 +1342,7 @@ function buildRaceViews() {
           .map(r => ({ name: r.name, handle: r.handle, pts: r.r1 + (r.r1fl ? 1 : 0), fl: r.r1fl || false }))
           .sort((a,b) => b.pts - a.pts).map((r,i) => ({ ...r, pos: i+1 }));
         views.push({
-          chipLabel: race.chipLabel + ' · R1',
+          chipLabel: race.chipLabel + ' · Г1',
           date: race.date, groupLabel: race.location + ' · Race 1',
           location: race.location, photo: race.photo || null,
           results: r1rows,
@@ -1352,7 +1352,7 @@ function buildRaceViews() {
           .map(r => ({ name: r.name, handle: r.handle, pts: r.r2 + (r.r2fl ? 1 : 0), fl: r.r2fl || false }))
           .sort((a,b) => b.pts - a.pts).map((r,i) => ({ ...r, pos: i+1 }));
         if (r2rows.length) views.push({
-          chipLabel: race.chipLabel + ' · R2',
+          chipLabel: race.chipLabel + ' · Г2',
           date: race.date, groupLabel: race.location + ' · Race 2',
           location: race.location, photo: race.photo || null,
           results: r2rows,
@@ -1366,7 +1366,7 @@ function buildRaceViews() {
           .sort((a,b) => b.pts - a.pts)
           .map((r,i) => ({ ...r, pos: i+1 }));
         views.push({
-          chipLabel: `${race.date.replace(' 2026','').replace('апреля','Апр').replace('марта','Мар').replace('мая','Мая')} · ${group.label ? group.label.replace('Группа ','') : ''} · R1`,
+          chipLabel: `${race.date.replace(' 2026','').replace('апреля','Апр').replace('марта','Мар').replace('мая','Мая')} · Campera ${group.label.replace('Группа ','').replace('А','A').replace('В','B')} · Г1`,
           date: race.date,
           groupLabel: `${race.location} · ${group.label} · Race 1`,
           location: race.location,
@@ -1381,7 +1381,7 @@ function buildRaceViews() {
           .map((r,i) => ({ ...r, pos: i+1 }));
         if (r2rows.length) {
           views.push({
-            chipLabel: `${group.label ? group.label+' · ' : ''}Г2`,
+            chipLabel: `${race.date.replace(' 2026','').replace('апреля','Апр').replace('марта','Мар').replace('мая','Мая')} · Campera ${group.label.replace('Группа ','').replace('А','A').replace('В','B')} · Г2`,
             date: race.date,
             groupLabel: `${group.label} · Гонка 2`,
             location: race.location,
