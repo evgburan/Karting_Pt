@@ -323,7 +323,7 @@
       </div>
       <div class="venue-overlay">
         <div class="venue-name-block">
-          <div class="venue-label" id="venue-label-next">Следующая гонка · 6 июня 2026</div>
+          <div class="venue-label" id="venue-label-next">Следующая гонка · 7 июня 2026</div>
           <div class="venue-name">Kartódromo de<br>Almeirím</div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
@@ -340,7 +340,7 @@
       <!-- Event card -->
       <div class="event-card">
         <div class="event-eyebrow" id="next-eyebrow">⚡ О гонке</div>
-        <p class="event-desc" id="next-desc1">📅 Встречаемся <strong>6 июня</strong> в <strong>14:30</strong> и стартуем в <strong>15:00</strong>.</p>
+        <p class="event-desc" id="next-desc1">📅 Встречаемся <strong>7 июня</strong> в <strong>14:30</strong> и стартуем в <strong>15:00</strong>.</p>
         <p class="event-desc" id="next-desc-venue">🆕 Совершенно новый современный картодром — открылся меньше двух месяцев назад! Свежий асфальт, свежие карты, ухоженная территория, есть кафе. Хорошая возможность познакомиться с трассой одними из первых.</p>
         <p class="event-desc" id="next-desc2">🏎️ Формат такой: квалификация 5 минут, затем гонка 10 минут. После меняемся картами и повторяем — ещё 5+10 мин!</p>
         <p class="event-desc" id="next-desc3">🏆 За каждую гонку начисляются очки — по итогам будет два подиума: <strong>общий зачёт</strong> и <strong>зачёт начинающих</strong>.</p>
@@ -522,9 +522,9 @@
 const I18N = {
   ru: {
     title: 'Катаемся Чатом',
-    next_race: 'Следующая гонка · 6 июня 2026',
+    next_race: 'Следующая гонка · 7 июня 2026',
     about_race: '⚡ О гонке',
-    desc1: '📅 Встречаемся <strong>6 июня</strong> в <strong>14:30</strong> и стартуем в <strong>15:00</strong>.',
+    desc1: '📅 Встречаемся <strong>7 июня</strong> в <strong>14:30</strong> и стартуем в <strong>15:00</strong>.',
     desc_venue: '🆕 Совершенно новый современный картодром — открылся меньше двух месяцев назад! Свежий асфальт, свежие карты, ухоженная территория, есть кафе. Хорошая возможность познакомиться с трассой одними из первых.',
     desc2: '🏎️ Формат такой: квалификация 5 минут, затем гонка 10 минут. После меняемся картами и повторяем — ещё 5+10 мин!',
     desc3: '🏆 За каждую гонку начисляются очки — по итогам будет два подиума: <strong>общий зачёт</strong> и <strong>зачёт начинающих</strong>.',
@@ -771,7 +771,7 @@ function setLang(lang) {
   st('cd-d-lbl', t('cd_d')); st('cd-h-lbl', t('cd_h')); st('cd-m-lbl', t('cd_m')); st('cd-s-lbl', t('cd_s'));
   // venue
   const venueLabel = document.getElementById('venue-label-next');
-  if (venueLabel) venueLabel.textContent = { ru: 'Следующая гонка · 6 июня 2026', pt: 'Próxima corrida · 7 jun 2026', en: 'Next race · Jun 7, 2026' }[lang] || 'Следующая гонка · 6 июня 2026';
+  if (venueLabel) venueLabel.textContent = { ru: 'Следующая гонка · 7 июня 2026', pt: 'Próxima corrida · 7 jun 2026', en: 'Next race · Jun 7, 2026' }[lang] || 'Следующая гонка · 7 июня 2026';
   sq('.venue-link span', t('on_map'));
   // event card in tab-next
   const nextEyebrow = document.getElementById('next-eyebrow'); if(nextEyebrow) nextEyebrow.textContent = t('about_race');
@@ -1216,9 +1216,9 @@ function renderLastRace() {
           <div class="nom-icon">🤝</div>
           <div class="nom-title">${nt('clean_title')}</div>
           <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
-            <div style="display:flex;align-items:center;gap:6px;">${av1}<div class="nom-driver">${cw1.name.split(' ')[0]}</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">${av1}<div class="nom-driver">${cw1.name.split(' ')[0]} ${cw1.name.split(' ')[1]?.[0]||''}.</div></div>
             <div style="color:var(--muted2);font-size:11px;">·</div>
-            <div style="display:flex;align-items:center;gap:6px;">${av2}<div class="nom-driver">${cw2.name.split(' ')[0]}</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">${av2}<div class="nom-driver">${cw2.name.split(' ')[0]} ${cw2.name.split(' ')[1]?.[0]||''}.</div></div>
           </div>
           <div class="nom-desc">+3 голоса у каждого</div>
         </div>`;
@@ -1536,9 +1536,9 @@ function renderRaceNominations(raceId) {
             <div class="nom-icon">🤝</div>
             <div class="nom-title">${nt('clean')}</div>
             <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
-              <div style="display:flex;align-items:center;gap:6px;">${av1}<div class="nom-driver">${cw1.name.split(' ')[0]}</div></div>
+              <div style="display:flex;align-items:center;gap:6px;">${av1}<div class="nom-driver">${cw1.name.split(' ')[0]} ${cw1.name.split(' ')[1]?.[0]||''}.</div></div>
               <div style="color:var(--muted2);font-size:11px;">·</div>
-              <div style="display:flex;align-items:center;gap:6px;">${av2}<div class="nom-driver">${cw2.name.split(' ')[0]}</div></div>
+              <div style="display:flex;align-items:center;gap:6px;">${av2}<div class="nom-driver">${cw2.name.split(' ')[0]} ${cw2.name.split(' ')[1]?.[0]||''}.</div></div>
             </div>
             <div class="nom-desc">+3 голоса у каждого</div>
           </div>`;
@@ -2082,7 +2082,7 @@ function openProfile(key) {
 
   document.getElementById('profile-body').innerHTML = `
     <div class="profile-head">
-      ${(()=>{ const ph=getPhoto(d.handle,d.name); return ph ? `<img src="${ph}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;aspect-ratio:1;flex-shrink:0;">` : `<div class="profile-avatar">${d.name[0]}</div>`; })()}
+      ${avatarDiv(getPhoto(d.handle, d.name), d.name[0], 52)}
       <div>
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;line-height:1.1;">${d.name}</div>
         <div style="font-size:12px;color:var(--muted);margin-top:2px;">${d.handle||'—'} · ${pos}-е место</div>
@@ -2142,7 +2142,7 @@ const regs = [];
 function openReg() {
   document.getElementById('reg-content').innerHTML = `
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">${t('reg_title')}</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">6 июня · Almeirím · свободно ${MAX - regs.length} ${t('reg_spots')}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">7 июня · Almeirím · свободно ${MAX - regs.length} ${t('reg_spots')}</div>
     <div class="reg-form">
       <div>
         <label class="form-lbl">${t('form_name')}</label>
@@ -2219,7 +2219,7 @@ function submitReg() {
   finishReg(name, handle, beginner, false, photoBase64, null);
 }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz8fYlLxNGZL3taup9rhzzNyU2z9m_wVN1iTSzy8uecfe6lcYtU5oSAVuVkh5cwlL4K8g/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzi-548OM5TfOxiZMZUJT7VbZDxFkv5TnldcuqA9fLgnkSktBm4N6U4caeFTvMTDNxU/exec';
 
 async function finishReg(name, handle, beginner, briefing, photoBase64, telegramId) {
   if (regs.length >= MAX) return;
@@ -2322,7 +2322,7 @@ function showPage(name, btn) {
 // COUNTDOWN
 
 function tick() {
-  // Дата гонки — Almeirím 6 июня 2026
+  // Дата гонки — Almeirím 7 июня 2026
   const target = new Date('2026-06-07T15:00:00+01:00');
   const diff = target - new Date();
   if (diff <= 0) {
