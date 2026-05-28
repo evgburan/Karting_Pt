@@ -306,7 +306,7 @@
 <div class="page active" id="page-main">
 
   <div class="inner-tabs">
-    <button class="inner-tab active" onclick="switchTab('next',this)">Последняя</button>
+    <button class="inner-tab active" onclick="switchTab('next',this)" id="tab-btn-next">Следующая</button>
     <button class="inner-tab" onclick="switchTab('results',this)">Прошедшие</button>
     <button class="inner-tab" onclick="switchTab('standings',this)">Зачёт</button>
   </div>
@@ -317,40 +317,81 @@
     <!-- Venue photo slider -->
     <div class="venue-block">
       <div class="photo-slider" id="photo-slider">
-        <div class="photo-slide active-slide"><img src="photos/kip-karts.jpg" alt="KIP karts"></div>
-        <div class="photo-slide"><img src="photos/kip-aerial.webp" alt="KIP track aerial"></div>
-      </div>
-      <div class="slide" style="position:absolute;inset:0;background:#111;overflow:hidden;opacity:0;transition:opacity 0.8s ease;">
-        <img src="photos/podium.png" style="width:100%;height:100%;object-fit:cover;object-position:center 35%;" alt="Podium KIP">
+        <div class="photo-slide active-slide"><img src="photos/ka-ready.jpg" alt="KA grid"></div>
+        <div class="photo-slide"><img src="photos/ka-karts.jpg" alt="KA karts"></div>
+        <div class="photo-slide"><img src="photos/ka-aerial.jpg" alt="KA aerial"></div>
       </div>
       <div class="venue-overlay">
         <div class="venue-name-block">
-          <div class="venue-label">Последняя гонка · 23 мая 2026</div>
-          <div class="venue-name">Kartódromo Internacional<br>de Palmela</div>
+          <div class="venue-label" id="venue-label-next">Следующая гонка · 7 июня 2026</div>
+          <div class="venue-name">Kartódromo de<br>Almeirím</div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-          <img src="photos/avatar-small.png" class="kip-logo-overlay" alt="KIP logo" style="width:44px;height:44px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,0.9);padding:3px;">
-          <a href="https://maps.app.goo.gl/YktVAY4uJcGpSDyz5" target="_blank" class="venue-link">
+          <a href="https://maps.app.goo.gl/frsgdhG3NaRrtyCp8" target="_blank" class="venue-link">
             <svg viewBox="0 0 24 24" width="11" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            На карте
+            <span>На карте</span>
           </a>
         </div>
       </div>
     </div>
 
-    <div id="last-race-wrap"></div>
+    <div style="padding: 0 14px;">
 
-    <!-- hidden IDs needed by JS loadRegs -->
-    <span id="spots-left" style="display:none">36</span>
-    <span id="spots-fill" style="display:none"></span>
-    <span id="reg-list-title" style="display:none"></span>
-    <span id="reg-list-body" style="display:none"></span>
+      <!-- Event card -->
+      <div class="event-card">
+        <div class="event-eyebrow" id="next-eyebrow">⚡ О гонке</div>
+        <p class="event-desc" id="next-desc1">📅 Встречаемся <strong>7 июня</strong> в <strong>14:30</strong> и стартуем в <strong>15:00</strong>.</p>
+        <p class="event-desc" id="next-desc-venue">🆕 Совершенно новый современный картодром — открылся меньше двух месяцев назад! Свежий асфальт, свежие карты, ухоженная территория, есть кафе. Хорошая возможность познакомиться с трассой одними из первых.</p>
+        <p class="event-desc" id="next-desc2">🏎️ Формат такой: квалификация 5 минут, затем гонка 10 минут. После меняемся картами и повторяем — ещё 5+10 мин!</p>
+        <p class="event-desc" id="next-desc3">🏆 За каждую гонку начисляются очки — по итогам будет два подиума: <strong>общий зачёт</strong> и <strong>зачёт начинающих</strong>.</p>
+        <p class="event-desc" id="next-desc4">🛞 Едем на картах <strong>TonyKart 270сс</strong> (9 л.с.) — чуть слабее прошлых, зато стабильная управляемость и проще начать для всех.</p>
+        <p class="event-desc" id="next-desc5">💶 Стоимость участия — <strong>€70</strong>.</p>
+
+        <div class="spots-bar">
+          <div class="spots-row">
+            <span class="spots-lbl" id="next-spots-lbl">Свободных мест</span>
+            <span class="spots-val"><span id="spots-left">20</span> / 20</span>
+          </div>
+          <div class="prog-track"><div class="prog-fill" id="spots-fill" style="width:0%"></div></div>
+        </div>
+
+        <button class="btn-reg" onclick="openReg()" id="next-btn-reg">Зарегистрироваться →</button>
+
+        <div class="beginner-note" id="next-beg-note">🟢 <strong>Начинающим:</strong> можно участвовать в отдельном зачёте — просто отметь галочку при регистрации.</div>
+
+        <div class="countdown" id="countdown">
+          <div class="cd-block"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl" id="cd-d-lbl">Дней</div></div>
+          <div class="cd-block"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl" id="cd-h-lbl">Часов</div></div>
+          <div class="cd-block"><div class="cd-num" id="cd-m">--</div><div class="cd-lbl" id="cd-m-lbl">Мин</div></div>
+          <div class="cd-block"><div class="cd-num" id="cd-s">--</div><div class="cd-lbl" id="cd-s-lbl">Сек</div></div>
+        </div>
+      </div>
+
+      <!-- Schedule -->
+      <div class="card">
+        <div class="card-title" id="next-sched-title">Расписание</div>
+        <div class="sched-row"><div class="sched-time">14:30</div><div class="sched-txt" id="next-s1">Сбор и регистрация</div></div>
+        <div class="sched-row"><div class="sched-time">14:45</div><div class="sched-txt" id="next-s2">Брифинг</div></div>
+        <div class="sched-row"><div class="sched-time">15:00</div><div class="sched-txt" id="next-s3">🏁 Старт заездов</div></div>
+        <div class="sched-row"><div class="sched-time">16:00</div><div class="sched-txt" id="next-s4">🏆 Подиум и результаты</div></div>
+      </div>
+
+      <!-- Registration list -->
+      <div class="card">
+        <div class="card-title" id="reg-list-title">Уже едут (0 / 20)</div>
+        <div id="reg-list-body">
+          <div style="text-align:center;padding:14px 0;color:var(--muted);font-size:13px;" id="nobody-yet-msg">Пока никого — будь первым!</div>
+        </div>
+      </div>
+
+    </div>
 
   </div>
 
   <!-- ── ПРОШЕДШИЕ ── -->
   <div class="inner-panel" id="tab-results">
     <div class="race-selector" id="race-chips"></div>
+    <div id="race-nominations"></div>
     <div class="results-table">
       <div class="res-table-header">
         <span>#</span><span>Гонщик</span><span style="text-align:right;">Очки</span>
@@ -481,16 +522,17 @@
 const I18N = {
   ru: {
     title: 'Катаемся Чатом',
-    next_race: 'Следующая гонка · 23 мая 2026',
+    next_race: 'Следующая гонка · 7 июня 2026',
     about_race: '⚡ О гонке',
-    desc1: '📅 Встречаемся <strong>23 мая</strong> в <strong>15:30</strong> и стартуем в <strong>16:00</strong>.',
+    desc1: '📅 Встречаемся <strong>7 июня</strong> в <strong>14:30</strong> и стартуем в <strong>15:00</strong>.',
+    desc_venue: '🆕 Совершенно новый современный картодром — открылся меньше двух месяцев назад! Свежий асфальт, свежие карты, ухоженная территория, есть кафе. Хорошая возможность познакомиться с трассой одними из первых.',
     desc2: '🏎️ Формат такой: квалификация 5 минут, затем гонка 10 минут. После меняемся картами и повторяем — ещё 5+10 мин!',
     desc3: '🏆 За каждую гонку начисляются очки — по итогам будет два подиума: <strong>общий зачёт</strong> и <strong>зачёт начинающих</strong>.',
-    desc4: '🛞 Едем на картах <strong>Sodi RT-10 390сс</strong>.',
+    desc4: '🛞 Едем на картах <strong>TonyKart 270сс</strong> (9 л.с.) — чуть слабее прошлых, зато стабильная управляемость и проще начать для всех.',
     desc5: '💶 Стоимость участия — <strong>€70</strong>.',
     spots_lbl: 'Свободных мест',
     btn_reg: 'Зарегистрироваться →',
-    beginner_note: '🟢 <strong>Начинающим:</strong> можно приехать раньше, к 15:00 — вместе разберём схему трассы и правильные траектории, плюс возьмём дополнительную прокатную сессию, чтобы попрактиковаться перед стартом.',
+    beginner_note: '🟢 <strong>Начинающим:</strong> можно участвовать в отдельном зачёте — просто отметь галочку при регистрации.',
     cd_d: 'Дней', cd_h: 'Часов', cd_m: 'Мин', cd_s: 'Сек',
     schedule: 'Расписание',
     s1: 'Сбор и регистрация', s2: 'Брифинг', s3: '🏁 Старт заездов', s4: '🏆 Подиум и результаты',
@@ -522,17 +564,18 @@ const I18N = {
     nav_race: 'Гонка', nav_1v1: '1v1', nav_drivers: 'Гонщики',
     race_today: 'Гонка сегодня! 🏁',
     on_map: 'На карте',
-    reg_title: 'Регистрация · KIP',
+    reg_title: 'Регистрация · Almeirím',
     reg_sub: 'мая 2026 · Palmela · свободно',
     reg_spots: 'мест',
     form_name: 'Имя *', form_name_ph: 'Имя и фамилия для гонки',
     form_tg: 'Telegram', form_tg_ph: 'Ник в Telegram (с @ или без)',
     check_beg: '🏆 Хочу участвовать в <strong>зачёте начинающих</strong>',
     check_brief: '🟢 Хочу приехать к 15:00 на <strong>мини-разбор трассы</strong>',
-    photo_lbl: 'Фото профиля (необязательно)', photo_btn: 'Нажми чтобы загрузить фото',
+    photo_lbl: 'Фото профиля', photo_btn: 'Добавь фото, если не добавлял ранее',
     photo_done: '✓ Фото загружено',
+    privacy_note: 'Имя, ник и фото будут видны посетителям этой страницы.',
     btn_confirm: 'Подтвердить →', btn_cancel: 'Отмена', btn_close: 'Закрыть',
-    success_title: 'Ты в гонке!', success_date: 'Ждём тебя 23 мая в Palmela',
+    success_title: 'Ты в гонке!', success_date: 'Ждём тебя в Almeirím',
     pay_title: '💶 Оплата · €70',
     stat_pts: 'Очков', stat_races: 'Гонок', stat_avg: 'Среднее', stat_best: 'Лучший', stat_fl: 'Быстр. круг', stat_pos: 'Место в зачёте',
     h2h_btn: '⚔️ Head to Head — сравнить с другим гонщиком',
@@ -555,16 +598,17 @@ const I18N = {
   },
   pt: {
     title: 'Kart Chat',
-    next_race: 'Próxima corrida · 23 maio 2026',
+    next_race: 'Próxima corrida · 7 jun 2026',
     about_race: '⚡ Sobre a corrida',
-    desc1: '📅 Encontramo-nos a <strong>23 de maio</strong> às <strong>15:30</strong> e partimos às <strong>16:00</strong>.',
+    desc1: '📅 Encontramo-nos a <strong>7 de junho</strong> às <strong>14:30</strong> e partimos às <strong>15:00</strong>.',
+    desc_venue: '🆕 Kartódromo completamente novo — abriu há menos de dois meses! Asfalto fresco, pistas largas, tudo novinho em folha.',
     desc2: '🏎️ Formato: qualificação de 5 minutos, depois corrida de 10 minutos. Depois trocamos de karts e repetimos — mais 5+10 min!',
     desc3: '🏆 Cada corrida dá pontos — haverá dois pódios: <strong>classificação geral</strong> e <strong>classificação de iniciantes</strong>.',
-    desc4: '🛞 Pilotamos karts <strong>Sodi RT-10 390cc</strong>.',
+    desc4: '🛞 Pilotamos karts <strong>TonyKart 270cc</strong> (9 cv) — um pouco mais lentos que os anteriores, mas com melhor maneabilidade e condições iguais para todos.',
     desc5: '💶 Taxa de participação — <strong>€70</strong>.',
     spots_lbl: 'Lugares disponíveis',
     btn_reg: 'Inscrever-me →',
-    beginner_note: '🟢 <strong>Iniciantes:</strong> podem chegar mais cedo, às 15:00 — vamos analisar o traçado e as trajetórias certas, e fazer uma sessão extra para praticar antes da largada.',
+    beginner_note: '🟢 <strong>Iniciantes:</strong> podes entrar na classificação separada de iniciantes — basta marcar a caixa ao registares-te.',
     cd_d: 'Dias', cd_h: 'Horas', cd_m: 'Min', cd_s: 'Seg',
     schedule: 'Horário',
     s1: 'Concentração e registo', s2: 'Briefing', s3: '🏁 Início das corridas', s4: '🏆 Pódio e resultados',
@@ -596,17 +640,18 @@ const I18N = {
     nav_race: 'Corrida', nav_1v1: '1v1', nav_drivers: 'Pilotos',
     race_today: 'Corrida hoje! 🏁',
     on_map: 'No mapa',
-    reg_title: 'Inscrição · KIP',
+    reg_title: 'Inscrição · Almeirím',
     reg_sub: 'maio 2026 · Palmela · disponível',
     reg_spots: 'lugares',
     form_name: 'Nome *', form_name_ph: 'Nome e apelido para a corrida',
     form_tg: 'Telegram', form_tg_ph: 'Username do Telegram (com @ ou sem)',
     check_beg: '🏆 Quero participar na <strong>classificação de iniciantes</strong>',
     check_brief: '🟢 Quero chegar às 15:00 para o <strong>mini-briefing do traçado</strong>',
-    photo_lbl: 'Foto de perfil (opcional)', photo_btn: 'Clica para carregar foto',
+    photo_lbl: 'Foto de perfil', photo_btn: 'Adiciona foto, se ainda não o fizeste',
     photo_done: '✓ Foto carregada',
+    privacy_note: 'O nome, username e foto ficarão visíveis para os visitantes desta página.',
     btn_confirm: 'Confirmar →', btn_cancel: 'Cancelar', btn_close: 'Fechar',
-    success_title: 'Estás na corrida!', success_date: 'Esperamos-te a 23 de maio em Palmela',
+    success_title: 'Estás na corrida!', success_date: 'Esperamos-te em Almeirím',
     pay_title: '💶 Pagamento · €70',
     stat_pts: 'Pontos', stat_races: 'Corridas', stat_avg: 'Média', stat_best: 'Melhor', stat_fl: 'V. rápida', stat_pos: 'Posição geral',
     h2h_btn: '⚔️ Head to Head — comparar com outro piloto',
@@ -629,16 +674,17 @@ const I18N = {
   },
   en: {
     title: 'Kart Chat',
-    next_race: 'Next race · May 23, 2026',
+    next_race: 'Next race · Jun 7, 2026',
     about_race: '⚡ About the race',
-    desc1: '📅 Meet on <strong>May 23</strong> at <strong>15:30</strong>, race starts at <strong>16:00</strong>.',
+    desc1: '📅 Meet on <strong>June 7</strong> at <strong>14:30</strong>, race starts at <strong>15:00</strong>.',
+    desc_venue: '🆕 Brand new kartodrome — opened less than two months ago! Fresh tarmac, wide layouts, everything spanking new.',
     desc2: '🏎️ Format: 5-minute qualifying, then a 10-minute race. Then we swap karts and repeat — another 5+10 min!',
     desc3: '🏆 Points are awarded for each race — two podiums: <strong>overall standings</strong> and <strong>beginners standings</strong>.',
-    desc4: '🛞 We race <strong>Sodi RT-10 390cc</strong> karts.',
+    desc4: '🛞 We race <strong>TonyKart 270cc</strong> karts (9 hp) — slightly slower than previous races, but great handling and equal conditions for everyone.',
     desc5: '💶 Entry fee — <strong>€70</strong>.',
     spots_lbl: 'Spots available',
     btn_reg: 'Register →',
-    beginner_note: '🟢 <strong>Beginners:</strong> you can arrive earlier at 15:00 — we\'ll walk through the track layout and ideal lines, plus get an extra rental session to practice before the start.',
+    beginner_note: '🟢 <strong>Beginners:</strong> you can enter the separate beginners standings — just tick the box when you register.',
     cd_d: 'Days', cd_h: 'Hours', cd_m: 'Min', cd_s: 'Sec',
     schedule: 'Schedule',
     s1: 'Arrival & registration', s2: 'Briefing', s3: '🏁 Race start', s4: '🏆 Podium & results',
@@ -670,17 +716,18 @@ const I18N = {
     nav_race: 'Race', nav_1v1: '1v1', nav_drivers: 'Drivers',
     race_today: 'Race day! 🏁',
     on_map: 'On map',
-    reg_title: 'Registration · KIP',
+    reg_title: 'Registration · Almeirím',
     reg_sub: 'May 2026 · Palmela ·',
     reg_spots: 'spots left',
     form_name: 'Name *', form_name_ph: 'Full name for the race',
     form_tg: 'Telegram', form_tg_ph: 'Telegram username (with @ or without)',
     check_beg: '🏆 I want to enter the <strong>beginners standings</strong>',
     check_brief: '🟢 I\'ll arrive at 15:00 for the <strong>track briefing</strong>',
-    photo_lbl: 'Profile photo (optional)', photo_btn: 'Tap to upload photo',
+    photo_lbl: 'Profile photo', photo_btn: 'Add a photo if you haven\'t yet',
     photo_done: '✓ Photo uploaded',
+    privacy_note: 'Your name, handle and photo will be visible to visitors of this page.',
     btn_confirm: 'Confirm →', btn_cancel: 'Cancel', btn_close: 'Close',
-    success_title: 'You\'re in!', success_date: 'See you May 23 in Palmela',
+    success_title: 'You\'re in!', success_date: 'See you in Almeirím',
     pay_title: '💶 Payment · €70',
     stat_pts: 'Points', stat_races: 'Races', stat_avg: 'Average', stat_best: 'Best', stat_fl: 'Fast lap', stat_pos: 'Standing',
     h2h_btn: '⚔️ Head to Head — compare with another driver',
@@ -723,26 +770,31 @@ function setLang(lang) {
   // countdown labels
   st('cd-d-lbl', t('cd_d')); st('cd-h-lbl', t('cd_h')); st('cd-m-lbl', t('cd_m')); st('cd-s-lbl', t('cd_s'));
   // venue
-  sq('.venue-label', t('next_race'));
+  const venueLabel = document.getElementById('venue-label-next');
+  if (venueLabel) venueLabel.textContent = { ru: 'Следующая гонка · 7 июня 2026', pt: 'Próxima corrida · 7 jun 2026', en: 'Next race · Jun 7, 2026' }[lang] || 'Следующая гонка · 7 июня 2026';
   sq('.venue-link span', t('on_map'));
-  // event card
-  sq('.event-eyebrow', t('about_race'));
-  const descs = document.querySelectorAll('.event-desc');
-  ['desc1','desc2','desc3','desc4','desc5'].forEach((k,i) => { if (descs[i]) descs[i].innerHTML = t(k); });
-  sq('.spots-lbl', t('spots_lbl'));
-  const btnReg = document.querySelector('.btn-reg[onclick="openReg()"]');
-  if (btnReg) btnReg.textContent = t('btn_reg');
-  sq('.beginner-note', t('beginner_note'));
-  // schedule
-  sq('.card-title', t('schedule'));
-  const schedRows = document.querySelectorAll('.sched-txt');
-  ['s1','s2','s3','s4'].forEach((k,i) => { if (schedRows[i]) schedRows[i].textContent = t(k); });
-  // reg list title (only if not dynamically set)
-  const rlt = document.getElementById('reg-list-title');
-  if (rlt && !regs.length) rlt.innerHTML = `${t('already_racing')} (0 / 36)`;
-  else if (rlt) rlt.innerHTML = `${t('already_racing')} (${regs.length} / 36)`;
-  const rlb = document.getElementById('reg-list-body');
-  if (rlb && !regs.length) rlb.innerHTML = `<div style="text-align:center;padding:14px 0;color:var(--muted);font-size:13px;">${t('nobody_yet')}</div>`;
+  // event card in tab-next
+  const nextEyebrow = document.getElementById('next-eyebrow'); if(nextEyebrow) nextEyebrow.textContent = t('about_race');
+  const nd1=document.getElementById('next-desc1'); if(nd1) nd1.innerHTML=t('desc1');
+  const ndv=document.getElementById('next-desc-venue'); if(ndv) ndv.innerHTML=t('desc_venue');
+  const nd2=document.getElementById('next-desc2'); if(nd2) nd2.innerHTML=t('desc2');
+  const nd3=document.getElementById('next-desc3'); if(nd3) nd3.innerHTML=t('desc3');
+  const nd4=document.getElementById('next-desc4'); if(nd4) nd4.innerHTML=t('desc4');
+  const nd5=document.getElementById('next-desc5'); if(nd5) nd5.innerHTML=t('desc5');
+  const nextSpotsLbl=document.getElementById('next-spots-lbl'); if(nextSpotsLbl) nextSpotsLbl.textContent=t('spots_lbl');
+  const nextBtnReg=document.getElementById('next-btn-reg'); if(nextBtnReg) nextBtnReg.textContent=t('btn_reg');
+  const nextBegNote=document.getElementById('next-beg-note'); if(nextBegNote) nextBegNote.innerHTML=t('beginner_note');
+  const nextSchedTitle=document.getElementById('next-sched-title'); if(nextSchedTitle) nextSchedTitle.textContent=t('schedule');
+  const ns1=document.getElementById('next-s1'); if(ns1) ns1.textContent=t('s1');
+  const ns2=document.getElementById('next-s2'); if(ns2) ns2.textContent=t('s2');
+  const ns3=document.getElementById('next-s3'); if(ns3) ns3.textContent=t('s3');
+  const ns4=document.getElementById('next-s4'); if(ns4) ns4.textContent=t('s4');
+  // tab labels
+  const tabBtnNext = document.getElementById('tab-btn-next');
+  if(tabBtnNext) tabBtnNext.textContent = { ru:'Следующая', pt:'Próxima', en:'Upcoming' }[lang] || 'Следующая';
+  // reg list title
+  const rlt2 = document.getElementById('reg-list-title');
+  if (rlt2) rlt2.textContent = `${t('already_racing')} (${regs.length} / 36)`;
   // inner tabs
   const tabs = document.querySelectorAll('.inner-tab');
   if (tabs[0]) tabs[0].textContent = t('tab_upcoming');
@@ -970,9 +1022,37 @@ const RACES = [
   },
 ];
 
-// Safety: все зелёные пока
-const SAFETY_VOTES = {};
-function getSafety(handle) { return { rating: 'g', votes: SAFETY_VOTES[handle] || 0 }; }
+// Safety votes — KIP Palmela 23 мая 2026
+// ключ: handle без @ в нижнем регистре
+const SAFETY_VOTES = {
+  'dimasccd':              { pos: 2, neg: 0 },
+  'igor a':                { pos: 3, neg: 0 },
+  'renatashrafedinov':     { pos: 1, neg: 0 },
+  'evgenybu':              { pos: 2, neg: 0 },
+  'conkylot':              { pos: 1, neg: 2 },
+  'fire_wheels':           { pos: 1, neg: 1 },
+  'moresabbath':           { pos: 1, neg: 0 },
+  'peterprins':            { pos: 3, neg: 0 },
+  'just_igor_q':           { pos: 2, neg: 0 },
+  'ilyushinas':            { pos: 1, neg: 0 },
+  'iva_capital':           { pos: 1, neg: 0 },
+  'karen_makaren':         { pos: 1, neg: 0 },
+  'apexpc721':             { pos: 1, neg: 0 },
+  'sxuxs':                 { pos: 1, neg: 0 },
+  'kamilla_ashrafedinova': { pos: 1, neg: 1 },
+};
+// Гонщики без handle — по имени
+const SAFETY_BY_NAME = {
+  'ben piche': { pos: 1, neg: 0 },
+};
+
+function getSafety(handle, name) {
+  const h = (handle||'').replace('@','').toLowerCase().trim();
+  const n = (name||'').toLowerCase().trim();
+  const v = (h && SAFETY_VOTES[h]) || (n && SAFETY_BY_NAME[n]) || { pos: 0, neg: 0 };
+  const rating = v.neg > 0 ? 'y' : 'g';
+  return { rating, pos: v.pos, neg: v.neg };
+}
 function SAFETY_LABEL(r){ return I18N[_lang||'ru'].safety[r]||I18N['ru'].safety[r]; }
 
 // LAST RACE — KIP Palmela · 23 мая 2026
@@ -1125,21 +1205,36 @@ function renderLastRace() {
         </div>`;
   }
 
-  // 4. Clean racing — teaser
-  html += `
-        <div class="nom-card nom-pending">
+  // 4. Clean racing — Igor Arkhangelskii + Peter Prins (оба по 3 голоса)
+  const cw1 = LAST_RACE.groups.flatMap(g=>g.results).find(r=>r.name==='Igor Arkhangelskii');
+  const cw2 = LAST_RACE.groups.flatMap(g=>g.results).find(r=>r.name==='Peter Prins');
+  if (cw1 || cw2) {
+    const av1 = cw1 ? avatarDiv(getPhoto(cw1.handle,cw1.name), cw1.name[0], 28) : '';
+    const av2 = cw2 ? avatarDiv(getPhoto(cw2.handle,cw2.name), cw2.name[0], 28) : '';
+    html += `
+        <div class="nom-card" style="position:relative;">
           <div class="nom-icon">🤝</div>
           <div class="nom-title">${nt('clean_title')}</div>
-          <div class="nom-driver" style="color:var(--muted)">${nt('pending')}</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+            <div style="display:flex;align-items:center;gap:6px;">${av1}<div class="nom-driver">${cw1.name.split(' ')[0]}</div></div>
+            <div style="color:var(--muted2);font-size:11px;">·</div>
+            <div style="display:flex;align-items:center;gap:6px;">${av2}<div class="nom-driver">${cw2.name.split(' ')[0]}</div></div>
+          </div>
+          <div class="nom-desc">+3 голоса у каждого</div>
         </div>`;
+  }
 
-  // 5. Rough driver — teaser
-  html += `
-        <div class="nom-card nom-pending">
+  // 5. Rough driver — Denys Belimenko (2 голоса "Есть вопросы к вождению")
+  const dirtyWinner = LAST_RACE.groups.flatMap(g=>g.results).find(r=>r.name==='Denys Belimenko');
+  if (dirtyWinner) {
+    html += `
+        <div class="nom-card">
           <div class="nom-icon">💥</div>
           <div class="nom-title">${nt('dirty_title')}</div>
-          <div class="nom-driver" style="color:var(--muted)">${nt('pending')}</div>
+          <div class="nom-driver">${dirtyWinner.name.split(' ')[0]}</div>
+          <div class="nom-desc">−2 голоса сообщества</div>
         </div>`;
+  }
 
   html += `</div>`; // end nom-cards
 
@@ -1294,30 +1389,166 @@ const STANDINGS = buildStandings();
 
 // RENDER
 
-function sdot(handle) {
-  const s = getSafety(handle).rating;
+function sdot(handle, name) {
+  const s = getSafety(handle, name).rating;
   return `<span class="safety-dot s${s}"></span>`;
 }
 
-// Helper: get photo — из массива regs (Drive URL приходит через loadRegs)
+// =============================================================
+// ФОТО ГОНЩИКОВ
+// Порядок поиска:
+//   1) photos/{telegram_handle}.jpg  (в репозитории GitHub)
+//   2) photos/{имя-фамилия}.jpg      (транслит, через дефис)
+//   3) Drive URL из последней регистрации (если есть)
+//   4) Инициал (заглушка)
+//
+// Чтобы добавить фото: положи файл в папку photos/ репозитория.
+// Имя файла: ник без @ (напр. evgeny.jpg) ИЛИ имя-фамилия (напр. evgeny-buran.jpg)
+// =============================================================
+
+// Вызывается из onerror img-тегов — переключает на следующий URL в цепочке
+function _tryNextPhoto(img) {
+  const srcs = JSON.parse(img.dataset.srcs || '[]');
+  const idx = parseInt(img.dataset.idx || '0') + 1;
+  if (idx < srcs.length) {
+    img.dataset.idx = idx;
+    img.src = srcs[idx];
+  } else {
+    img.style.display = 'none';
+    const fb = img.nextElementSibling;
+    if (fb) fb.style.display = 'flex';
+  }
+}
+
 function getPhoto(handle, name) {
-  const h = (handle||'').replace('@','').toLowerCase();
-  const n = (name||'').toLowerCase();
-  const match = regs.find(r => {
+  const h = (handle||'').replace('@','').toLowerCase().trim();
+  const n = (name||'').toLowerCase().trim();
+
+  // Собираем цепочку URL для fallback
+  const urls = [];
+  if (h) urls.push(`photos/${h}.jpg`);
+  if (n) urls.push(`photos/${n.replace(/\s+/g, '-')}.jpg`);
+
+  // Drive URL из регистрации (если есть)
+  const reg = regs.find(r => {
     if (!r.photoUrl) return false;
     const rh = (r.handle||'').replace('@','').toLowerCase();
     const rn = (r.name||'').toLowerCase();
     return (h && rh && rh === h) || rn === n;
   });
-  return match ? match.photoUrl : null;
+  if (reg?.photoUrl) urls.push(reg.photoUrl);
+
+  return urls.length ? urls : null;
 }
 
-function avatarDiv(photoUrl, letter, size) {
+function avatarDiv(photoUrls, letter, size) {
   const sz = size || 40;
-  if (photoUrl) {
-    return `<img src="${photoUrl}" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;aspect-ratio:1;flex-shrink:0;">`;
+  const initials = `<div style="display:none;width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${letter}</div>`;
+  if (!photoUrls || !photoUrls.length) {
+    return `<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${letter}</div>`;
   }
-  return `<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${letter}</div>`;
+  const srcsJson = JSON.stringify(photoUrls).replace(/"/g,'&quot;');
+  return `<span style="position:relative;display:inline-flex;flex-shrink:0;"><img src="${photoUrls[0]}" data-srcs="${srcsJson}" data-idx="0" onerror="_tryNextPhoto(this)" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;aspect-ratio:1;flex-shrink:0;">${initials}</span>`;
+}
+
+// RACE NOMINATIONS — shown in Прошедшие when KIP race is selected
+function renderRaceNominations(raceId) {
+  if (raceId !== 'kip-may') return '';
+
+  const allResults = LAST_RACE.groups.flatMap(g => g.results);
+
+  // 1. Fastest laps
+  const flR1 = allResults.filter(r => r.r1fl);
+  const flR2 = allResults.filter(r => r.r2fl);
+
+  // 2. Biggest quali→race gain (charge)
+  let maxGain = -Infinity, chargeWinner = null;
+  allResults.forEach(r => {
+    const gain1 = (r.q1 || 99) - r.r1pos;
+    const gain2 = (r.q2 || 99) - r.r2pos;
+    const best = Math.max(gain1, gain2);
+    if (best > maxGain) { maxGain = best; chargeWinner = r; }
+  });
+
+  // 3. Biggest R1→R2 improvement (phoenix)
+  let maxRebound = -Infinity, phoenixWinner = null;
+  allResults.forEach(r => {
+    const d = r.r1pos - r.r2pos;
+    if (d > maxRebound) { maxRebound = d; phoenixWinner = r; }
+  });
+
+  const nomT = {
+    fl:      { ru:'Быстрейший круг', en:'Fastest lap',    pt:'Volta mais rápida' },
+    charge:  { ru:'Мощный прорыв',   en:'Big charge',     pt:'Grande remontada' },
+    phoenix: { ru:'Феникс',          en:'Phoenix',        pt:'Fénix' },
+    clean:   { ru:'Чистая борьба',   en:'Clean racing',   pt:'Pilotagem limpa' },
+    dirty:   { ru:'Жёстко ездит!',   en:'Rough driver',   pt:'Pilotagem dura' },
+    pending: { ru:'Идёт подсчёт…',   en:'Counting…',      pt:'A contar…' },
+    event:   { ru:'KIP Palmela · 23 мая 2026', en:'KIP Palmela · May 23 2026', pt:'KIP Palmela · 23 maio 2026' },
+  };
+  const nt = k => nomT[k][_lang] || nomT[k]['ru'];
+
+  function nomCard(icon, title, driver, desc, pending) {
+    if (pending) return `
+      <div class="nom-card nom-pending">
+        <div class="nom-icon">${icon}</div>
+        <div class="nom-title">${title}</div>
+        <div class="nom-driver" style="color:var(--muted)">${nt('pending')}</div>
+      </div>`;
+    const ph = driver ? getPhoto(driver.handle, driver.name) : null;
+    const av = driver ? avatarDiv(ph, driver.name[0], 28) : '';
+    return `
+      <div class="nom-card" style="position:relative;">
+        <div class="nom-icon">${icon}</div>
+        <div class="nom-title">${title}</div>
+        <div style="display:flex;align-items:center;gap:7px;margin-top:2px;">
+          ${av}
+          <div class="nom-driver">${driver ? driver.name.split(' ')[0] : ''}</div>
+        </div>
+        <div class="nom-desc">${desc}</div>
+      </div>`;
+  }
+
+  const flWinner = flR1[0] || flR2[0];
+  const flDesc = flWinner
+    ? (flWinner.r1fl ? '1:04.007 · Г1' : '1:04.209 · Г2')
+    : '';
+
+  const chargeIsR1 = chargeWinner && ((chargeWinner.q1||99) - chargeWinner.r1pos) >= ((chargeWinner.q2||99) - chargeWinner.r2pos);
+  const chargeDesc = chargeWinner ? `Q${chargeIsR1 ? chargeWinner.q1 : chargeWinner.q2} → P${chargeIsR1 ? chargeWinner.r1pos : chargeWinner.r2pos} (+${maxGain})` : '';
+
+  const phoenixDesc = phoenixWinner ? { ru:`+${maxRebound} поз. Г1→Г2`, en:`+${maxRebound} places R1→R2`, pt:`+${maxRebound} lugares C1→C2` }[_lang] : '';
+
+  return `
+    <div style="padding:14px 14px 0;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">🏅 ${{ ru:'Номинации', en:'Awards', pt:'Destaques' }[_lang]}</div>
+      <div class="nom-cards" style="margin-bottom:14px;">
+        ${flWinner ? nomCard('⚡', nt('fl'), flWinner, flDesc, false) : ''}
+        ${chargeWinner && maxGain > 0 ? nomCard('🚀', nt('charge'), chargeWinner, chargeDesc, false) : ''}
+        ${phoenixWinner && maxRebound > 0 ? nomCard('🔥', nt('phoenix'), phoenixWinner, phoenixDesc, false) : ''}
+        ${(()=>{
+          const cw1 = allResults.find(r=>r.name==='Igor Arkhangelskii');
+          const cw2 = allResults.find(r=>r.name==='Peter Prins');
+          if (!cw1 && !cw2) return '';
+          const av1 = cw1 ? avatarDiv(getPhoto(cw1.handle,cw1.name), cw1.name[0], 28) : '';
+          const av2 = cw2 ? avatarDiv(getPhoto(cw2.handle,cw2.name), cw2.name[0], 28) : '';
+          return `<div class="nom-card" style="position:relative;">
+            <div class="nom-icon">🤝</div>
+            <div class="nom-title">${nt('clean')}</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+              <div style="display:flex;align-items:center;gap:6px;">${av1}<div class="nom-driver">${cw1.name.split(' ')[0]}</div></div>
+              <div style="color:var(--muted2);font-size:11px;">·</div>
+              <div style="display:flex;align-items:center;gap:6px;">${av2}<div class="nom-driver">${cw2.name.split(' ')[0]}</div></div>
+            </div>
+            <div class="nom-desc">+3 голоса у каждого</div>
+          </div>`;
+        })()}
+        ${(()=>{
+          const dw = allResults.find(r=>r.name==='Denys Belimenko');
+          return dw ? nomCard('💥', nt('dirty'), dw, '−2 голоса сообщества', false) : '';
+        })()}
+      </div>
+    </div>`;
 }
 
 // Race chips
@@ -1406,6 +1637,15 @@ function renderChips() {
 // Results panel
 function renderResults(idx) {
   const v = RACE_VIEWS[idx];
+
+  // Nominations block — only for KIP race
+  const nomEl = document.getElementById('race-nominations');
+  if (nomEl) {
+    const raceId = RACES.find(r => v.chipLabel.includes('KIP') || v.chipLabel.includes('Мая'))?.id;
+    const isKIP = v.chipLabel.includes('KIP') || v.chipLabel.includes('Мая');
+    nomEl.innerHTML = isKIP ? renderRaceNominations('kip-may') : '';
+  }
+
   const photoSrc = v.photo ? RACE_PHOTOS[v.photo] : null;
   let html = photoSrc
     ? `<div style="width:100%;aspect-ratio:4/3;max-height:220px;overflow:hidden;border-radius:10px;margin-bottom:10px;"><img src="${photoSrc}" style="width:100%;height:100%;object-fit:cover;display:block;" alt="race photo"></div>`
@@ -1421,7 +1661,7 @@ function renderResults(idx) {
       <div style="display:flex;align-items:center;gap:8px;">
         ${av}
         <div>
-          <div class="res-name">${r.name}${sdot(r.handle)}${fl}</div>
+          <div class="res-name">${r.name}${sdot(r.handle, r.name)}${fl}</div>
           ${r.handle ? `<div class="res-handle">${r.handle}</div>` : ''}
         </div>
       </div>
@@ -1459,7 +1699,7 @@ function renderStandings() {
       <div style="display:flex;align-items:center;gap:7px;min-width:0;">
         ${av}
         <div style="min-width:0;">
-          <div class="st-name">${d.name}${sdot(d.handle)}</div>
+          <div class="st-name">${d.name}${sdot(d.handle, d.name)}</div>
           <div class="st-handle">${d.handle||'—'}</div>
         </div>
       </div>
@@ -1479,7 +1719,7 @@ function renderDrivers() {
     <div class="driver-card" onclick="openProfile('${d.key}')">
       ${av}
       <div style="flex:1;min-width:0;">
-        <div style="font-weight:600;font-size:13px;">${d.name}${sdot(d.handle)}</div>
+        <div style="font-weight:600;font-size:13px;">${d.name}${sdot(d.handle, d.name)}</div>
         <div style="font-size:11px;color:var(--muted);">${d.handle||'—'} · ${d.raceCount} ${t('races_sfx')}</div>
       </div>
       <div style="text-align:right;">
@@ -1834,10 +2074,10 @@ function openProfile(key) {
   const d = STANDINGS.find(x => x.key === key);
   if (!d) return;
   const pos = STANDINGS.indexOf(d) + 1;
-  const { rating, votes } = getSafety(d.handle);
+  const { rating, pos: safePos, neg: safeNeg } = getSafety(d.handle, d.name);
   const best = Math.max(...d.races.map(r => r.pts));
   const avg = Math.round(d.races.reduce((s, r) => s + r.pts, 0) / d.races.length);
-  const votesLabel = votes === 0 ? t('votes_none') : `${votes} голос${votes===1?'':votes<5?'а':'ов'}`;
+  const votesLabel = (safePos === 0 && safeNeg === 0) ? t('votes_none') : `+${safePos} / −${safeNeg}`;
   const flCount = countFastestLaps(d.key);
 
   document.getElementById('profile-body').innerHTML = `
@@ -1896,13 +2136,13 @@ function closeProfileModal(e) {
 
 // REGISTRATION
 
-const MAX = 36;
+const MAX = 20;
 const regs = [];
 
 function openReg() {
   document.getElementById('reg-content').innerHTML = `
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">${t('reg_title')}</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">23 ${t('reg_sub')} ${MAX - regs.length} ${t('reg_spots')}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">7 июня · Almeirím · свободно ${MAX - regs.length} ${t('reg_spots')}</div>
     <div class="reg-form">
       <div>
         <label class="form-lbl">${t('form_name')}</label>
@@ -1917,11 +2157,6 @@ function openReg() {
         <span class="check-box"></span>
         <span class="check-txt">${t('check_beg')}</span>
       </label>
-      <label class="check-label">
-        <input type="checkbox" id="rp" class="check-input">
-        <span class="check-box"></span>
-        <span class="check-txt">${t('check_brief')}</span>
-      </label>
       <div>
         <label class="form-lbl">${t('photo_lbl')}</label>
         <div class="photo-upload-area" id="photo-drop" onclick="document.getElementById('rphoto').click()">
@@ -1931,6 +2166,7 @@ function openReg() {
           </div>
           <input type="file" id="rphoto" accept="image/*" style="display:none" onchange="handlePhotoChange(this)">
         </div>
+        <div style="font-size:11px;color:var(--muted2);margin-top:5px;line-height:1.4;">${t('privacy_note')}</div>
       </div>
       <button class="btn-reg" onclick="submitReg()">${t('btn_confirm')}</button>
       <button class="btn-cancel" onclick="closeRegModal()">${t('btn_cancel')}</button>
@@ -1968,9 +2204,6 @@ function handlePhotoChange(input) {
   reader.readAsDataURL(file);
 }
 
-// ── PHOTO STORAGE ─────────────────────────────────────────────────
-// Фото хранятся в Google Drive, URL приходит через Sheets API (loadRegs)
-
 function closeRegModal(e) {
   if (!e || e.target === document.getElementById('reg-modal'))
     document.getElementById('reg-modal').classList.remove('open');
@@ -1980,36 +2213,33 @@ function submitReg() {
   const name = document.getElementById('rn').value.trim();
   let handle = document.getElementById('rh').value.trim();
   const beginner = document.getElementById('rb').checked;
-  const briefing = document.getElementById('rp').checked;
   if (!name) { document.getElementById('rn').focus(); return; }
   if (handle && !handle.startsWith('@')) handle = '@' + handle;
   const photoBase64 = _photoDataUrl || null;
-  finishReg(name, handle, beginner, briefing, photoBase64, null);
+  finishReg(name, handle, beginner, false, photoBase64, null);
 }
 
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzi-548OM5TfOxiZMZUJT7VbZDxFkv5TnldcuqA9fLgnkSktBm4N6U4caeFTvMTDNxU/exec';
 
 async function finishReg(name, handle, beginner, briefing, photoBase64, telegramId) {
   if (regs.length >= MAX) return;
-  // Показываем фото из base64 сразу (потом придёт Drive URL)
+  // Добавляем в regs — Drive URL придёт позже через loadRegs, GitHub-фото подтянется автоматически
   regs.push({ name, handle, beginner, briefing, photoUrl: photoBase64 || null, telegramId: telegramId || null });
   const _sl=document.getElementById('spots-left'); if(_sl) _sl.textContent=MAX-regs.length;
   const _sf=document.getElementById('spots-fill'); if(_sf) _sf.style.width=(regs.length/MAX*100)+'%';
   document.getElementById('reg-list-title').textContent = `${t("already_racing")} (${regs.length} / ${MAX})`;
+  const nymsg = document.getElementById('nobody-yet-msg'); if(nymsg) nymsg.style.display='none';
   document.getElementById('reg-list-body').innerHTML = regs.map((r, i) => `
     <div class="reg-item">
       <div class="reg-num">${i+1}</div>
-      ${r.photoUrl
-        ? `<img src="${r.photoUrl}" style="width:32px;height:32px;border-radius:50%;flex-shrink:0;object-fit:cover;aspect-ratio:1;">`
-        : `<div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:14px;flex-shrink:0;">${r.name[0]}</div>`
-      }
+      ${avatarDiv(getPhoto(r.handle, r.name), r.name[0], 32)}
       <div style="flex:1;min-width:0;">
         <div style="font-size:14px;font-weight:500;">${r.name}${r.beginner?' <span style="font-size:10px;color:var(--accent-red);">Н</span>':""}</div>
         ${r.handle ? `<div style="font-size:11px;color:var(--muted);">${r.handle}</div>` : ''}
       </div>
     </div>
   `).join('');
-  const extras = [beginner?t('extra_beg'):'', briefing?t('extra_brief'):''].filter(Boolean).join(' · ');
+  const extras = [beginner?t('extra_beg'):''].filter(Boolean).join(' · ');
   document.getElementById('reg-content').innerHTML = `
     <div class="success-box">
       <div class="success-icon">🏁</div>
@@ -2092,7 +2322,9 @@ function showPage(name, btn) {
 // COUNTDOWN
 
 function tick() {
-  const diff = new Date('2026-05-23T16:00:00+01:00') - new Date();
+  // Дата гонки — Almeirím 7 июня 2026
+  const target = new Date('2026-06-07T15:00:00+01:00');
+  const diff = target - new Date();
   if (diff <= 0) {
     const cdEl = document.getElementById('countdown'); if (cdEl) cdEl.innerHTML = `<div style="grid-column:span 4;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:10px;color:var(--accent-red);">${t('race_today')}</div>`;
     return;
@@ -2120,22 +2352,6 @@ renderChips();
 renderResults(0);
 renderStandings();
 renderDrivers();
-renderLastRace();
-
-  // Slider
-  const _sl = document.getElementById('photo-slider');
-  if (_sl) {
-    const _slides = _sl.querySelectorAll('.slide');
-    if (_slides.length > 1) {
-      let _cur = 0;
-      _slides[0].style.opacity = '1';
-      setInterval(() => {
-        _slides[_cur].style.opacity = '0';
-        _cur = (_cur + 1) % _slides.length;
-        _slides[_cur].style.opacity = '1';
-      }, 4000);
-    }
-  }
 tick();
 setInterval(tick, 1000);
 // Номинации
@@ -2165,13 +2381,12 @@ function loadRegs() {
     if (title) title.textContent = `${t("already_racing")} (${regs.length} / ${MAX})`;
     const rlb = document.getElementById('reg-list-body');
     if (rlb) {
+      const nymsg = document.getElementById('nobody-yet-msg');
+      if (nymsg) nymsg.style.display = regs.length ? 'none' : 'block';
       rlb.innerHTML = regs.map((r, i) => `
         <div class="reg-item">
           <div class="reg-num">${i+1}</div>
-          ${r.photoUrl
-            ? `<img src="${r.photoUrl}" style="width:32px;height:32px;border-radius:50%;flex-shrink:0;object-fit:cover;aspect-ratio:1;">`
-            : `<div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:14px;flex-shrink:0;">${r.name[0]}</div>`
-          }
+          ${avatarDiv(getPhoto(r.handle, r.name), r.name[0], 32)}
           <div style="flex:1;min-width:0;">
             <div style="font-size:14px;font-weight:500;">${r.name}${r.beginner?' <span style="font-size:10px;color:var(--accent-red);">Н</span>':''}</div>
             ${r.handle ? `<div style="font-size:11px;color:var(--muted);">${r.handle}</div>` : ''}
