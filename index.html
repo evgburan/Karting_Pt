@@ -6,6 +6,7 @@
 <title>Катаемся Чатом</title>
 <link rel="icon" href="photos/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="photos/favicon.png">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -407,7 +408,7 @@
     <div class="card" style="margin-bottom:12px;">
       <div class="card-title">Начисление очков</div>
       <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
-        🏁 <strong>За каждую гонку:</strong> 1-е — 28 очков, 2-е — 23, 3-е — 19... с 4-го по 15-е — от 16 до 4. С 16-го места — 3 очка (за участие). Быстрейший круг — бонус +1.
+        🏁 <strong>За каждую гонку:</strong> 1-е — 25 очков, 2-е — 20, 3-е — 16, 4-е — 13, 5-е — 11, 6-е — 10... с 13-го — минимум 3 очка. Быстрейший круг — бонус +1.
       </p>
       <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
         📊 <strong>Итоговый зачёт:</strong> Очки суммируются по всем гонкам сезона. На каждом событии Campera проводит по две гонки — каждая считается отдельно. Если ты пропустил гонку — просто получаешь 0 за неё.
@@ -520,7 +521,30 @@
 
 <script>
 
-// i18n — RU / PT / EN
+// ── Telegram Mini App ──────────────────────────────────────────
+const TG = window.Telegram?.WebApp;
+const TG_USER = TG?.initDataUnsafe?.user || null;
+
+if (TG) {
+  TG.ready();
+  TG.expand();
+  // Цвет хедера под портал
+  try { TG.setHeaderColor('#f4f4f0'); } catch(e) {}
+}
+
+// Данные пользователя из Telegram (если открыто как Mini App)
+function getTgName() {
+  if (!TG_USER) return '';
+  return [TG_USER.first_name, TG_USER.last_name].filter(Boolean).join(' ');
+}
+function getTgHandle() {
+  return TG_USER?.username ? '@' + TG_USER.username : '';
+}
+function getTgId() {
+  return TG_USER?.id ? String(TG_USER.id) : null;
+}
+
+
 const I18N = {
   ru: {
     title: 'Катаемся Чатом',
@@ -542,18 +566,24 @@ const I18N = {
     nobody_yet: 'Пока никого — будь первым!',
     tab_upcoming: 'Гонка', tab_results: 'Прошедшие', tab_standings: 'Зачёт',
     pts_title: 'Начисление очков',
-    pts1: `🏁 <strong>За каждую гонку:</strong> 1-е — 28 очков, 2-е — 23, 3-е — 19... с 4-го по 15-е — от 16 до 4. С 16-го места — 3 очка (за участие). Быстрейший круг — бонус +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
+    pts1: `🏁 <strong>За каждую гонку:</strong> 1-е — 25 очков, 2-е — 20, 3-е — 16, 4-е — 13, 5-е — 11, затем убывает. С 13-го места — минимум 3 очка. Быстрейший круг — бонус +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
 <tr style="background:var(--surface2)"><th style="padding:4px 8px;text-align:left;font-weight:700;">Позиция</th><th style="padding:4px 8px;text-align:center;font-weight:700;">Очки</th></tr>
-<tr><td style="padding:3px 8px;">1</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">28</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;">2</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">23</td></tr>
-<tr><td style="padding:3px 8px;">3</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">19</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;">4–5</td><td style="padding:3px 8px;text-align:center;">16 / 14</td></tr>
-<tr><td style="padding:3px 8px;">6–10</td><td style="padding:3px 8px;text-align:center;">13 → 9</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;">11–15</td><td style="padding:3px 8px;text-align:center;">8 → 4</td></tr>
-<tr><td style="padding:3px 8px;">16+</td><td style="padding:3px 8px;text-align:center;">3</td></tr>
+<tr><td style="padding:3px 8px;">1</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">25</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">2</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">20</td></tr>
+<tr><td style="padding:3px 8px;">3</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">16</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">4</td><td style="padding:3px 8px;text-align:center;">13</td></tr>
+<tr><td style="padding:3px 8px;">5</td><td style="padding:3px 8px;text-align:center;">11</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">6</td><td style="padding:3px 8px;text-align:center;">10</td></tr>
+<tr><td style="padding:3px 8px;">7</td><td style="padding:3px 8px;text-align:center;">9</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">8</td><td style="padding:3px 8px;text-align:center;">8</td></tr>
+<tr><td style="padding:3px 8px;">9</td><td style="padding:3px 8px;text-align:center;">7</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">10</td><td style="padding:3px 8px;text-align:center;">6</td></tr>
+<tr><td style="padding:3px 8px;">11</td><td style="padding:3px 8px;text-align:center;">5</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">12</td><td style="padding:3px 8px;text-align:center;">4</td></tr>
+<tr><td style="padding:3px 8px;">13+</td><td style="padding:3px 8px;text-align:center;">3 (мин)</td></tr>
 <tr style="background:var(--surface2)"><td style="padding:3px 8px;color:var(--muted);">⚡ Быстрейший круг</td><td style="padding:3px 8px;text-align:center;font-weight:700;">+1</td></tr>
 </table>`,
-    pts2: '📊 <strong>Итоговый зачёт:</strong> Очки суммируются по всем гонкам сезона. Каждая гонка считается отдельно. Даже если финишировал последним — получаешь 3 очка за участие.',
+    pts2: '📊 <strong>Итоговый зачёт:</strong> Очки суммируются по всем гонкам сезона. Каждая гонка считается отдельно. С 13-го места и ниже — минимум 3 очка.',
     pts3: '🗑️ <strong>Худшие результаты не считаются</strong> — чем больше гонок ты проехал, тем больше плохих результатов можно отбросить:',
     drops_html: `<span style="color:var(--muted);">1–3 гонки в сезоне</span> → <strong>все идут в зачёт</strong><br><span style="color:var(--muted);">4–5 гонок</span> → <strong>лучшие 4 результата</strong><br><span style="color:var(--muted);">6–8 гонок</span> → <strong>лучшие 5 результатов</strong><br><span style="color:var(--muted);">9+ гонок</span> → <strong>лучшие 6 результатов</strong>`,
     pts_note: 'Например: проехал 6 гонок за сезон — худший результат автоматически не считается. Проехал 3 — все три идут в зачёт. Чем больше стартов, тем больше права на ошибку.',
@@ -618,18 +648,24 @@ const I18N = {
     nobody_yet: 'Ainda ninguém — sê o primeiro!',
     tab_upcoming: 'Corrida', tab_results: 'Anteriores', tab_standings: 'Classificação',
     pts_title: 'Sistema de pontos',
-    pts1: `🏁 <strong>Por corrida</strong> — 1.º — 28 pts, 2.º — 23, 3.º — 19... do 4.º ao 15.º — de 16 a 4. Do 16.º — 3 pts (participação). Volta mais rápida — bónus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
+    pts1: `🏁 <strong>Por corrida</strong> — 1.º — 25 pts, 2.º — 20, 3.º — 16, 4.º — 13, 5.º — 11, 6.º — 10... Do 13.º — mínimo 3 pts. Volta mais rápida — bónus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
 <tr style="background:var(--surface2)"><th style="padding:4px 8px;text-align:left;font-weight:700;">Posição</th><th style="padding:4px 8px;text-align:center;font-weight:700;">Pts</th></tr>
-<tr><td style="padding:3px 8px;">1</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">28</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;">2</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">23</td></tr>
-<tr><td style="padding:3px 8px;">3</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">19</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;">4–5</td><td style="padding:3px 8px;text-align:center;">16 / 14</td></tr>
-<tr><td style="padding:3px 8px;">6–10</td><td style="padding:3px 8px;text-align:center;">13 → 9</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;">11–15</td><td style="padding:3px 8px;text-align:center;">8 → 4</td></tr>
-<tr><td style="padding:3px 8px;">16+</td><td style="padding:3px 8px;text-align:center;">3</td></tr>
+<tr><td style="padding:3px 8px;">1</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">25</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">2</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">20</td></tr>
+<tr><td style="padding:3px 8px;">3</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">16</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">4</td><td style="padding:3px 8px;text-align:center;">13</td></tr>
+<tr><td style="padding:3px 8px;">5</td><td style="padding:3px 8px;text-align:center;">11</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">6</td><td style="padding:3px 8px;text-align:center;">10</td></tr>
+<tr><td style="padding:3px 8px;">7</td><td style="padding:3px 8px;text-align:center;">9</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">8</td><td style="padding:3px 8px;text-align:center;">8</td></tr>
+<tr><td style="padding:3px 8px;">9</td><td style="padding:3px 8px;text-align:center;">7</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">10</td><td style="padding:3px 8px;text-align:center;">6</td></tr>
+<tr><td style="padding:3px 8px;">11</td><td style="padding:3px 8px;text-align:center;">5</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">12</td><td style="padding:3px 8px;text-align:center;">4</td></tr>
+<tr><td style="padding:3px 8px;">13+</td><td style="padding:3px 8px;text-align:center;">3 (mín)</td></tr>
 <tr style="background:var(--surface2)"><td style="padding:3px 8px;color:var(--muted);">⚡ Volta mais rápida</td><td style="padding:3px 8px;text-align:center;font-weight:700;">+1</td></tr>
 </table>`,
-    pts2: '📊 <strong>Classificação geral:</strong> Os pontos acumulam em todas as corridas da época. Cada corrida conta separadamente. Mesmo no último lugar — recebes 3 pontos de participação.',
+    pts2: '📊 <strong>Classificação geral:</strong> Os pontos acumulam em todas as corridas da época. Cada corrida conta separadamente. Mesmo no último lugar — recebes no mínimo 3 pontos do 13.º lugar em diante.',
     pts3: '🗑️ <strong>Os piores resultados não contam</strong> — quanto mais corridas fizeres, mais podes descartar:',
     drops_html: `<span style="color:var(--muted);">1–3 corridas na época</span> → <strong>todas contam</strong><br><span style="color:var(--muted);">4–5 corridas</span> → <strong>os 4 melhores resultados</strong><br><span style="color:var(--muted);">6–8 corridas</span> → <strong>os 5 melhores resultados</strong><br><span style="color:var(--muted);">9+ corridas</span> → <strong>os 6 melhores resultados</strong>`,
     pts_note: 'Exemplo: com 6 corridas na época, o pior resultado não conta. Com 3 — todos contam. Quanto mais starts, mais margem para errar.',
@@ -694,18 +730,24 @@ const I18N = {
     nobody_yet: 'Nobody yet — be the first!',
     tab_upcoming: 'Race', tab_results: 'Past', tab_standings: 'Standings',
     pts_title: 'Points system',
-    pts1: `🏁 <strong>Per race</strong> — 1st — 28 pts, 2nd — 23, 3rd — 19... 4th–15th — from 16 to 4. 16th+ — 3 pts (participation). Fastest lap — bonus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
+    pts1: `🏁 <strong>Per race</strong> — 1st — 25 pts, 2nd — 20, 3rd — 16, 4th — 13, 5th — 11, 6th — 10... 13th+ — minimum 3 pts. Fastest lap — bonus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
 <tr style="background:var(--surface2)"><th style="padding:4px 8px;text-align:left;font-weight:700;">Position</th><th style="padding:4px 8px;text-align:center;font-weight:700;">Pts</th></tr>
-<tr><td style="padding:3px 8px;">1st</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">28</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;">2nd</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">23</td></tr>
-<tr><td style="padding:3px 8px;">3rd</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">19</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;">4th–5th</td><td style="padding:3px 8px;text-align:center;">16 / 14</td></tr>
-<tr><td style="padding:3px 8px;">6th–10th</td><td style="padding:3px 8px;text-align:center;">13 → 9</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;">11th–15th</td><td style="padding:3px 8px;text-align:center;">8 → 4</td></tr>
-<tr><td style="padding:3px 8px;">16th+</td><td style="padding:3px 8px;text-align:center;">3</td></tr>
+<tr><td style="padding:3px 8px;">1st</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">25</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">2nd</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">20</td></tr>
+<tr><td style="padding:3px 8px;">3rd</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">16</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">4th</td><td style="padding:3px 8px;text-align:center;">13</td></tr>
+<tr><td style="padding:3px 8px;">5th</td><td style="padding:3px 8px;text-align:center;">11</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">6th</td><td style="padding:3px 8px;text-align:center;">10</td></tr>
+<tr><td style="padding:3px 8px;">7th</td><td style="padding:3px 8px;text-align:center;">9</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">8th</td><td style="padding:3px 8px;text-align:center;">8</td></tr>
+<tr><td style="padding:3px 8px;">9th</td><td style="padding:3px 8px;text-align:center;">7</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">10th</td><td style="padding:3px 8px;text-align:center;">6</td></tr>
+<tr><td style="padding:3px 8px;">11th</td><td style="padding:3px 8px;text-align:center;">5</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;">12th</td><td style="padding:3px 8px;text-align:center;">4</td></tr>
+<tr><td style="padding:3px 8px;">13th+</td><td style="padding:3px 8px;text-align:center;">3 (min)</td></tr>
 <tr style="background:var(--surface2)"><td style="padding:3px 8px;color:var(--muted);">⚡ Fastest lap</td><td style="padding:3px 8px;text-align:center;font-weight:700;">+1</td></tr>
 </table>`,
-    pts2: '📊 <strong>Overall standings:</strong> Points accumulate across all season races. Each race counts separately. Even last place earns 3 participation points.',
+    pts2: '📊 <strong>Overall standings:</strong> Points accumulate across all season races. Each race counts separately. 13th place and below earns a minimum of 3 points.',
     pts3: '🗑️ <strong>Worst results are dropped</strong> — the more races you run, the more you can discard:',
     drops_html: `<span style="color:var(--muted);">1–3 races in season</span> → <strong>all count</strong><br><span style="color:var(--muted);">4–5 races</span> → <strong>best 4 results</strong><br><span style="color:var(--muted);">6–8 races</span> → <strong>best 5 results</strong><br><span style="color:var(--muted);">9+ races</span> → <strong>best 6 results</strong>`,
     pts_note: 'Example: if you\'ve run 6 races, your worst result is automatically dropped. 3 races — all three count. More starts = more room for error.',
@@ -773,7 +815,7 @@ function setLang(lang) {
   st('cd-d-lbl', t('cd_d')); st('cd-h-lbl', t('cd_h')); st('cd-m-lbl', t('cd_m')); st('cd-s-lbl', t('cd_s'));
   // venue
   const venueLabel = document.getElementById('venue-label-next');
-  if (venueLabel) venueLabel.textContent = { ru: 'Следующая гонка · 6 июня 2026', pt: 'Próxima corrida · 6 jun 2026', en: 'Next race · Jun 6, 2026' }[lang] || 'Следующая гонка · 6 июня 2026';
+  if (venueLabel) venueLabel.textContent = t('next_race');
   sq('.venue-link span', t('on_map'));
   // event card in tab-next
   const nextEyebrow = document.getElementById('next-eyebrow'); if(nextEyebrow) nextEyebrow.textContent = t('about_race');
@@ -841,11 +883,14 @@ function setLang(lang) {
   if (bnavs[2]) bnavs[2].lastChild.textContent = t('nav_drivers');
   // results header
   const rh = document.querySelectorAll('.res-table-header span');
-  if (rh.length >= 3) { rh[0].textContent=t('races_header')[0]; rh[1].textContent=t('races_header')[1]; }
+  if (rh.length >= 3) { rh[0].textContent=t('races_header')[0]; rh[1].textContent=t('races_header')[1]; rh[2].textContent=t('races_header')[2]; }
   // standings header
   const sh = document.querySelectorAll('.st-header span');
   if (sh.length >= 5) { sh[0].textContent=t('standings_header')[0]; sh[1].textContent=t('standings_header')[1]; sh[2].textContent=t('standings_header')[2]; sh[4].textContent=t('standings_header')[4]; }
   // re-render dynamic content
+  RACE_VIEWS = buildRaceViews();
+  STANDINGS = buildStandings();
+  renderChips();
   renderStandings();
   renderDrivers();
   renderResults(_currentRaceIdx || 0);
@@ -1312,14 +1357,30 @@ function isBegForEvent(key, eventId) {
   return BEGINNERS[eventId] ? BEGINNERS[eventId].has(key) : false;
 }
 
+// ── Исправленная шкала очков ──────────────────────────────────
+// 1=25, 2=20, 3=16, 4=13, 5=11, 6=10, 7=9, 8=8, 9=7, 10=6, 11=5, 12=4, 13+=3(мин)
+// fixBase: ремаппинг базовых очков (без бонуса за FL)
+function fixBase(v) {
+  if (v >= 11) return v;   // места 1-5: без изменений
+  if (v >= 3)  return v + 1; // места 6-12: +1
+  return 3;                // места 13+: минимум 3
+}
+// fixKipBase: дополнительно исправляет неверно введённые 2-е (18→20) и 3-е (15→16) места
+function fixKipBase(v) {
+  if (v === 18) return 20;
+  if (v === 15) return 16;
+  return fixBase(v);
+}
+
 function buildStandings() {
   const map = {};
 
-  // KIRO: одна гонка — total очков как один этап
+  // KIRO: одна гонка
   RACES[0].groups[0].results.forEach(r => {
     const key = norm(r.handle) || norm(r.name);
     if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', races: [] };
-    map[key].races.push({ race: 'KIRO 28.03', date: '28 мар', pts: r.total, pos: r.pos, beg: isBegForEvent(key, 'kiro') });
+    const kiroPts = fixBase(r.r1) + (r.r1fl ? 1 : 0);
+    map[key].races.push({ race: 'KIRO 28.03', date: translateShortDate('28 мар'), pts: kiroPts, pos: r.pos, beg: isBegForEvent(key, 'kiro') });
   });
 
   // Campera 12.04: R1 и R2 как отдельные этапы
@@ -1330,28 +1391,28 @@ function buildStandings() {
       if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', races: [] };
       const beg = isBegForEvent(key, 'campera-apr');
       if (r.r1 !== null && r.r1 !== undefined) {
-        const pts1 = r.r1 + (r.r1fl ? 1 : 0);
-        map[key].races.push({ race: `Campera ${grp} · Гонка 1`, date: '12 апр', pts: pts1, pos: r.pos, beg });
+        const pts1 = fixBase(r.r1) + (r.r1fl ? 1 : 0);
+        map[key].races.push({ race: `Campera ${grp} · ${{ ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru']}`, date: translateShortDate('12 апр'), pts: pts1, pos: r.pos, beg });
       }
       if (r.r2 !== null && r.r2 !== undefined) {
-        const pts2 = r.r2 + (r.r2fl ? 1 : 0);
-        map[key].races.push({ race: `Campera ${grp} · Гонка 2`, date: '12 апр', pts: pts2, pos: r.pos, beg });
+        const pts2 = fixBase(r.r2) + (r.r2fl ? 1 : 0);
+        map[key].races.push({ race: `Campera ${grp} · ${{ ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru']}`, date: translateShortDate('12 апр'), pts: pts2, pos: r.pos, beg });
       }
     });
   });
 
-  // KIP 23.05: одна группа, R1 и R2 как отдельные этапы
+  // KIP 23.05: R1 и R2 как отдельные этапы
   RACES[2].groups[0].results.forEach(r => {
     const key = norm(r.handle) || norm(r.name);
     if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', races: [] };
     const beg = isBegForEvent(key, 'kip');
     if (r.r1 !== null && r.r1 !== undefined) {
-      const pts1 = r.r1 + (r.r1fl ? 1 : 0);
-      map[key].races.push({ race: 'KIP 23.05 · Гонка 1', date: '23 мая', pts: pts1, pos: r.pos, beg });
+      const pts1 = fixKipBase(r.r1) + (r.r1fl ? 1 : 0);
+      map[key].races.push({ race: `KIP 23.05 · ${{ ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru']}`, date: translateShortDate('23 мая'), pts: pts1, pos: r.pos, beg });
     }
     if (r.r2 !== null && r.r2 !== undefined) {
-      const pts2 = r.r2 + (r.r2fl ? 1 : 0);
-      map[key].races.push({ race: 'KIP 23.05 · Гонка 2', date: '23 мая', pts: pts2, pos: r.pos, beg });
+      const pts2 = fixKipBase(r.r2) + (r.r2fl ? 1 : 0);
+      map[key].races.push({ race: `KIP 23.05 · ${{ ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru']}`, date: translateShortDate('23 мая'), pts: pts2, pos: r.pos, beg });
     }
   });
 
@@ -1386,7 +1447,7 @@ function buildStandings() {
   }).sort((a, b) => b.totalPts - a.totalPts || b.avg - a.avg);
 }
 
-const STANDINGS = buildStandings();
+let STANDINGS = buildStandings();
 
 
 // RENDER
@@ -1555,6 +1616,40 @@ function renderRaceNominations(raceId) {
     </div>`;
 }
 
+
+// ── Локализация названий гонок и дат ──────────────────────────
+const MONTH_RU_ABBR  = { 'Янв':'Jan', 'Фев':'Feb', 'Мар':'Mar', 'Апр':'Apr', 'Мая':'May', 'Июн':'Jun', 'Июл':'Jul', 'Авг':'Aug', 'Сен':'Sep', 'Окт':'Oct', 'Ноя':'Nov', 'Дек':'Dec' };
+const MONTH_RU_ABBR_PT = { 'Янв':'Jan', 'Фев':'Fev', 'Мар':'Mar', 'Апр':'Abr', 'Мая':'Mai', 'Июн':'Jun', 'Июл':'Jul', 'Авг':'Ago', 'Сен':'Set', 'Окт':'Out', 'Ноя':'Nov', 'Дек':'Dez' };
+const MONTH_RU_FULL  = { 'января':'January','февраля':'February','марта':'March','апреля':'April','мая':'May','июня':'June','июля':'July','августа':'August','сентября':'September','октября':'October','ноября':'November','декабря':'December' };
+const MONTH_RU_FULL_PT = { 'января':'janeiro','февраля':'fevereiro','марта':'março','апреля':'abril','мая':'maio','июня':'junho','июля':'julho','августа':'agosto','сентября':'setembro','октября':'outubro','ноября':'novembro','декабря':'dezembro' };
+const MONTH_RU_SHORT = { 'мар':'Mar','апр':'Apr','мая':'May','июн':'Jun','июл':'Jul','авг':'Aug','сен':'Sep','окт':'Oct','ноя':'Nov','дек':'Dec' };
+const MONTH_RU_SHORT_PT = { 'мар':'Mar','апр':'Abr','мая':'Mai','июн':'Jun','июл':'Jul','авг':'Ago','сен':'Set','окт':'Out','ноя':'Nov','дек':'Dez' };
+
+function _applyMap(str, map) {
+  let r = str;
+  Object.entries(map).forEach(([ru, loc]) => { r = r.split(ru).join(loc); });
+  return r;
+}
+
+function translateChip(chip) {
+  const lang = _lang || 'ru';
+  if (lang === 'ru') return chip;
+  return _applyMap(chip, lang === 'pt' ? MONTH_RU_ABBR_PT : MONTH_RU_ABBR);
+}
+
+function translateFullDate(date) {
+  const lang = _lang || 'ru';
+  if (lang === 'ru') return date;
+  return _applyMap(date, lang === 'pt' ? MONTH_RU_FULL_PT : MONTH_RU_FULL);
+}
+
+function translateShortDate(date) {
+  const lang = _lang || 'ru';
+  if (lang === 'ru') return date;
+  return _applyMap(date, lang === 'pt' ? MONTH_RU_SHORT_PT : MONTH_RU_SHORT);
+}
+
+
 // Race chips
 // Flat list of individual race views for "Прошедшие"
 function buildRaceViews() {
@@ -1566,8 +1661,8 @@ function buildRaceViews() {
       if (!hasR2) {
         // Single race (KIRO)
         views.push({
-          chipLabel: race.chipLabel,
-          date: race.date, groupLabel: null,
+          chipLabel: translateChip(race.chipLabel),
+          date: translateFullDate(race.date), groupLabel: null,
           location: race.location, photo: race.photo || null,
           results: g.results.map(r => ({ pos: r.pos, name: r.name, handle: r.handle, pts: r.total, fl: r.r1fl || false })),
         });
@@ -1577,8 +1672,8 @@ function buildRaceViews() {
           .map(r => ({ name: r.name, handle: r.handle, pts: r.r1 + (r.r1fl ? 1 : 0), fl: r.r1fl || false }))
           .sort((a,b) => b.pts - a.pts).map((r,i) => ({ ...r, pos: i+1 }));
         views.push({
-          chipLabel: race.chipLabel + ' · ' + { ru:'Г1', pt:'C1', en:'R1' }[_lang||'ru'],
-          date: race.date, groupLabel: race.location + ' · ' + { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
+          chipLabel: translateChip(race.chipLabel) + ' · ' + { ru:'Г1', pt:'C1', en:'R1' }[_lang||'ru'],
+          date: translateFullDate(race.date), groupLabel: race.location + ' · ' + { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
           location: race.location, photo: race.photo || null,
           results: r1rows,
         });
@@ -1587,8 +1682,8 @@ function buildRaceViews() {
           .map(r => ({ name: r.name, handle: r.handle, pts: r.r2 + (r.r2fl ? 1 : 0), fl: r.r2fl || false }))
           .sort((a,b) => b.pts - a.pts).map((r,i) => ({ ...r, pos: i+1 }));
         if (r2rows.length) views.push({
-          chipLabel: race.chipLabel + ' · ' + { ru:'Г2', pt:'C2', en:'R2' }[_lang||'ru'],
-          date: race.date, groupLabel: race.location + ' · ' + { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
+          chipLabel: translateChip(race.chipLabel) + ' · ' + { ru:'Г2', pt:'C2', en:'R2' }[_lang||'ru'],
+          date: translateFullDate(race.date), groupLabel: race.location + ' · ' + { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
           location: race.location, photo: race.photo || null,
           results: r2rows,
         });
@@ -1618,7 +1713,7 @@ function buildRaceViews() {
         const r2GroupLabel = { ru:`${group.label} · Гонка 2`, pt:`Grupo ${grpLbl} · Corrida 2`, en:`Group ${grpLbl} · Race 2` }[_lang||'ru'];
         views.push({
           chipLabel: `${dateAbbr(race.date)} · Campera ${grpLbl} · ${r1lbl}`,
-          date: race.date,
+          date: translateFullDate(race.date),
           groupLabel: r1GroupLabel,
           location: race.location,
           photo: race.photo || null,
@@ -1646,7 +1741,7 @@ function buildRaceViews() {
   return views;
 }
 
-const RACE_VIEWS = buildRaceViews();
+let RACE_VIEWS = buildRaceViews();
 
 function renderChips() {
   document.getElementById('race-chips').innerHTML = RACE_VIEWS.map((v, i) =>
@@ -1661,8 +1756,8 @@ function renderResults(idx) {
   // Nominations block — only for KIP race
   const nomEl = document.getElementById('race-nominations');
   if (nomEl) {
-    const raceId = RACES.find(r => v.chipLabel.includes('KIP') || v.chipLabel.includes('Мая'))?.id;
-    const isKIP = v.chipLabel.includes('KIP') || v.chipLabel.includes('Мая');
+    const raceId = RACES.find(r => v.chipLabel.includes('KIP') || v.chipLabel.includes('May') || v.chipLabel.includes('Mai') || v.chipLabel.includes('Мая'))?.id;
+    const isKIP = v.chipLabel.includes('KIP') || v.chipLabel.includes('May') || v.chipLabel.includes('Mai') || v.chipLabel.includes('Мая');
     nomEl.innerHTML = isKIP ? renderRaceNominations('kip-may') : '';
   }
 
@@ -2160,17 +2255,22 @@ const MAX = 20;
 const regs = [];
 
 function openReg() {
+  const tgName   = getTgName();
+  const tgHandle = getTgHandle();
+  const isTg     = !!TG_USER;
+
   document.getElementById('reg-content').innerHTML = `
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">${t('reg_title')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">${t('reg_sub')} · ${MAX - regs.length} ${t('reg_spots')}</div>
+    ${isTg ? `<div style="font-size:12px;background:#e8f5e9;border:1px solid #c8e6c9;border-radius:8px;padding:8px 12px;margin-bottom:12px;color:#2d5a30;">✓ Данные подтянулись из Telegram</div>` : ''}
     <div class="reg-form">
       <div>
         <label class="form-lbl">${t('form_name')}</label>
-        <input class="form-input" id="rn" placeholder="${t('form_name_ph')}" type="text">
+        <input class="form-input" id="rn" placeholder="${t('form_name_ph')}" type="text" value="${tgName}">
       </div>
       <div>
         <label class="form-lbl">${t('form_tg')}</label>
-        <input class="form-input" id="rh" placeholder="${t('form_tg_ph')}" type="text">
+        <input class="form-input" id="rh" placeholder="${t('form_tg_ph')}" type="text" value="${tgHandle}"${isTg && tgHandle ? ' readonly style="opacity:0.6"' : ''}>
       </div>
       <label class="check-label">
         <input type="checkbox" id="rb" class="check-input">
@@ -2236,7 +2336,8 @@ function submitReg() {
   if (!name) { document.getElementById('rn').focus(); return; }
   if (handle && !handle.startsWith('@')) handle = '@' + handle;
   const photoBase64 = _photoDataUrl || null;
-  finishReg(name, handle, beginner, false, photoBase64, null);
+  const telegramId = getTgId();
+  finishReg(name, handle, beginner, false, photoBase64, telegramId);
 }
 
 // ⬇ Вставь сюда URL нового деплоя из «Almeirim Reg» → Extensions → Apps Script → Deploy
@@ -2266,16 +2367,11 @@ async function finishReg(name, handle, beginner, briefing, photoBase64, telegram
       <div class="success-icon">🏁</div>
       <div class="success-title">${t('success_title')}</div>
       <div class="success-sub">${name}<br>${t('success_date')}${extras?'<br><span style="font-size:12px;margin-top:6px;display:block;">'+extras+'</span>':''}</div>
-      <div style="margin-top:16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px 14px;text-align:left;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">${t('pay_title')}</div>
-        <div style="font-size:13px;line-height:1.7;color:var(--text);">
-          <strong>Mbway:</strong> 910 165 833<br>
-          <span style="color:var(--muted);font-size:12px;">Evgenii Buran</span>
-        </div>
-        <div style="margin-top:8px;font-size:13px;line-height:1.7;color:var(--text);">
-          <strong>IBAN:</strong> PT50 0023 0000 4571 3940 1029 4<br>
-          <span style="color:var(--muted);font-size:12px;">Evgenii Buran</span>
-        </div>
+      <div style="margin-top:16px;">
+        <a href="https://buy.stripe.com/fZu5kEdbnaP11309fCeZ200" target="_blank" rel="noopener" style="display:block;background:var(--accent-red);color:#fff;text-align:center;padding:14px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-decoration:none;text-transform:uppercase;">
+          💳 ${t('pay_title')} →
+        </a>
+        <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--muted);">Карта · MBway · Apple Pay · Google Pay</div>
       </div>
       <button class="btn-cancel" style="margin-top:16px;" onclick="closeRegModal()">${t('btn_close')}</button>
     </div>
