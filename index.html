@@ -962,7 +962,7 @@ const RACES = [
           { pos:10, name:'Alex Bashlykov',         handle:'@bashalex0100',            r1:5,  r2:null, total:5  },
           { pos:11, name:'Ilia Nikolaev',          handle:'@ilikru',                  r1:4,  r2:null, total:4  },
           { pos:12, name:'Viktor Ivanov',          handle:'@iva_capital',             r1:3,  r2:null, total:3  },
-          { pos:13, name:'Anton Kent',             handle:'@AntonAkentiev',           r1:2,  r2:null, total:2  },
+          { pos:13, name:'Anton Kent',             handle:'@AntonAkentiev',           r1:2,  r2:null, total:2, hideHandle:true  },
           { pos:14, name:'Kamila Ashrafedinova',   handle:'@kamilla_ashrafedinova',   r1:1,  r2:null, total:1  },
           { pos:15, name:'Mikhail Levman',         handle:'@m_levman',                r1:0,  r2:null, total:0  },
           { pos:16, name:'Daria Iankovich',        handle:'@cometodaria',             r1:0,  r2:null, total:0  },
@@ -1321,7 +1321,7 @@ function renderLastRace() {
               <td>${medal}</td>
               <td>
                 <div style="font-size:13px;font-weight:600;line-height:1.2;">${r.name}</div>
-                ${r.handle ? `<div style="font-size:10px;color:var(--muted);">${r.handle}</div>` : ''}
+                ${visHandle(r.handle, r.hideHandle) ? `<div style="font-size:10px;color:var(--muted);">${visHandle(r.handle, r.hideHandle)}</div>` : ''}
               </td>
               <td style="color:var(--muted);font-size:13px;">${r.q1||r.qualifying}</td>
               <td>${r.r1pos}${r1fl}</td>
@@ -1357,6 +1357,31 @@ function isBegForEvent(key, eventId) {
   return BEGINNERS[eventId] ? BEGINNERS[eventId].has(key) : false;
 }
 
+
+// ── Приватность ников ────────────────────────────────────────────
+// Гонщики с hideHandle:true в RACES + зарегистрированные с hide_handle:true
+const HIDDEN_HANDLES = new Set();
+
+// Инициализируем из RACES data
+function initPrivacy() {
+  HIDDEN_HANDLES.clear();
+  RACES.forEach(race => {
+    race.groups.forEach(g => {
+      g.results.forEach(r => {
+        if (r.hideHandle && r.handle) HIDDEN_HANDLES.add(r.handle.replace('@','').toLowerCase());
+      });
+    });
+  });
+}
+
+// Возвращает handle для отображения ('' если скрыт)
+function visHandle(handle, hideFlag) {
+  if (!handle) return '';
+  if (hideFlag) return '';
+  if (HIDDEN_HANDLES.has(handle.replace('@','').toLowerCase())) return '';
+  return handle;
+}
+
 // ── Исправленная шкала очков ──────────────────────────────────
 // 1=25, 2=20, 3=16, 4=13, 5=11, 6=10, 7=9, 8=8, 9=7, 10=6, 11=5, 12=4, 13+=3(мин)
 // fixBase: ремаппинг базовых очков (без бонуса за FL)
@@ -1378,7 +1403,7 @@ function buildStandings() {
   // KIRO: одна гонка
   RACES[0].groups[0].results.forEach(r => {
     const key = norm(r.handle) || norm(r.name);
-    if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', races: [] };
+    if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
     const kiroPts = fixBase(r.r1) + (r.r1fl ? 1 : 0);
     map[key].races.push({ race: 'KIRO 28.03', date: translateShortDate('28 мар'), pts: kiroPts, pos: r.pos, beg: isBegForEvent(key, 'kiro') });
   });
@@ -1388,7 +1413,7 @@ function buildStandings() {
     const grp = group.label;
     group.results.forEach(r => {
       const key = norm(r.handle) || norm(r.name);
-      if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', races: [] };
+      if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
       const beg = isBegForEvent(key, 'campera-apr');
       if (r.r1 !== null && r.r1 !== undefined) {
         const pts1 = fixBase(r.r1) + (r.r1fl ? 1 : 0);
@@ -1404,7 +1429,7 @@ function buildStandings() {
   // KIP 23.05: R1 и R2 как отдельные этапы
   RACES[2].groups[0].results.forEach(r => {
     const key = norm(r.handle) || norm(r.name);
-    if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', races: [] };
+    if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
     const beg = isBegForEvent(key, 'kip');
     if (r.r1 !== null && r.r1 !== undefined) {
       const pts1 = fixKipBase(r.r1) + (r.r1fl ? 1 : 0);
@@ -1447,6 +1472,7 @@ function buildStandings() {
   }).sort((a, b) => b.totalPts - a.totalPts || b.avg - a.avg);
 }
 
+initPrivacy();
 let STANDINGS = buildStandings();
 
 
@@ -1777,7 +1803,7 @@ function renderResults(idx) {
         ${av}
         <div>
           <div class="res-name">${r.name}${sdot(r.handle, r.name)}${fl}</div>
-          ${r.handle ? `<div class="res-handle">${r.handle}</div>` : ''}
+          ${visHandle(r.handle, r.hideHandle) ? `<div class="res-handle">${visHandle(r.handle, r.hideHandle)}</div>` : ''}
         </div>
       </div>
       <div class="res-pts">${r.pts}</div>
@@ -1815,7 +1841,7 @@ function renderStandings() {
         ${av}
         <div style="min-width:0;">
           <div class="st-name">${d.name}${sdot(d.handle, d.name)}</div>
-          <div class="st-handle">${d.handle||'—'}</div>
+          <div class="st-handle">${visHandle(d.handle, d.hideHandle)||'—'}</div>
         </div>
       </div>
       <div class="st-races">${races}</div>
@@ -1835,7 +1861,7 @@ function renderDrivers() {
       ${av}
       <div style="flex:1;min-width:0;">
         <div style="font-weight:600;font-size:13px;">${d.name}${sdot(d.handle, d.name)}</div>
-        <div style="font-size:11px;color:var(--muted);">${d.handle||'—'} · ${d.raceCount} ${t('races_sfx')}</div>
+        <div style="font-size:11px;color:var(--muted);">${visHandle(d.handle, d.hideHandle)||''} ${visHandle(d.handle,d.hideHandle)?'· ':''} ${d.raceCount} ${t('races_sfx')}</div>
       </div>
       <div style="text-align:right;">
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;">${d.totalPts}</div>
@@ -2200,7 +2226,7 @@ function openProfile(key) {
       ${avatarDiv(getPhoto(d.handle, d.name), d.name[0], 52)}
       <div>
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;line-height:1.1;">${d.name}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${d.handle||'—'} · ${pos}-е место</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${visHandle(d.handle,d.hideHandle)||''} ${visHandle(d.handle,d.hideHandle)?'·':''} ${pos}-е место</div>
       </div>
     </div>
 
@@ -2288,6 +2314,11 @@ function openReg() {
         </div>
         <div style="font-size:11px;color:var(--muted2);margin-top:5px;line-height:1.4;">${t('privacy_note')}</div>
       </div>
+      <label class="check-label" style="margin-top:0;">
+        <input type="checkbox" id="rph" class="check-input">
+        <span class="check-box"></span>
+        <span class="check-txt" style="font-size:12px;color:var(--muted);">Скрыть мой @ник на портале</span>
+      </label>
       <button class="btn-reg" onclick="submitReg()">${t('btn_confirm')}</button>
       <button class="btn-cancel" onclick="closeRegModal()">${t('btn_cancel')}</button>
     </div>
@@ -2335,18 +2366,20 @@ function submitReg() {
   const beginner = document.getElementById('rb').checked;
   if (!name) { document.getElementById('rn').focus(); return; }
   if (handle && !handle.startsWith('@')) handle = '@' + handle;
-  const photoBase64 = _photoDataUrl || null;
-  const telegramId = getTgId();
-  finishReg(name, handle, beginner, false, photoBase64, telegramId);
+  const photoBase64  = _photoDataUrl || null;
+  const telegramId  = getTgId();
+  const hideHandle  = document.getElementById('rph')?.checked || false;
+  finishReg(name, handle, beginner, false, photoBase64, telegramId, hideHandle);
 }
 
 // ⬇ Вставь сюда URL нового деплоя из «Almeirim Reg» → Extensions → Apps Script → Deploy
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz8fYlLxNGZL3taup9rhzzNyU2z9m_wVN1iTSzy8uecfe6lcYtU5oSAVuVkh5cwlL4K8g/exec';
 
-async function finishReg(name, handle, beginner, briefing, photoBase64, telegramId) {
+async function finishReg(name, handle, beginner, briefing, photoBase64, telegramId, hideHandle) {
   if (regs.length >= MAX) return;
   // Добавляем в regs — Drive URL придёт позже через loadRegs, GitHub-фото подтянется автоматически
-  regs.push({ name, handle, beginner, briefing, photoUrl: photoBase64 || null, telegramId: telegramId || null });
+  regs.push({ name, handle, beginner, briefing, photoUrl: photoBase64 || null, telegramId: telegramId || null, hideHandle: hideHandle || false });
+  if (hideHandle && handle) HIDDEN_HANDLES.add(handle.replace('@','').toLowerCase());
   const _sl=document.getElementById('spots-left'); if(_sl) _sl.textContent=MAX-regs.length;
   const _sf=document.getElementById('spots-fill'); if(_sf) _sf.style.width=(regs.length/MAX*100)+'%';
   document.getElementById('reg-list-title').textContent = `${t("already_racing")} (${regs.length} / ${MAX})`;
@@ -2357,7 +2390,7 @@ async function finishReg(name, handle, beginner, briefing, photoBase64, telegram
       ${avatarDiv(getPhoto(r.handle, r.name), r.name[0], 32)}
       <div style="flex:1;min-width:0;">
         <div style="font-size:14px;font-weight:500;">${r.name}${r.beginner?' <span style="font-size:10px;color:var(--accent-red);">Н</span>':""}</div>
-        ${r.handle ? `<div style="font-size:11px;color:var(--muted);">${r.handle}</div>` : ''}
+        ${visHandle(r.handle, r.hideHandle) ? `<div style="font-size:11px;color:var(--muted);">${visHandle(r.handle, r.hideHandle)}</div>` : ''}
       </div>
     </div>
   `).join('');
@@ -2506,7 +2539,7 @@ function loadRegs() {
           ${avatarDiv(getPhoto(r.handle, r.name), r.name[0], 32)}
           <div style="flex:1;min-width:0;">
             <div style="font-size:14px;font-weight:500;">${r.name}${r.beginner?' <span style="font-size:10px;color:var(--accent-red);">Н</span>':''}</div>
-            ${r.handle ? `<div style="font-size:11px;color:var(--muted);">${r.handle}</div>` : ''}
+            ${visHandle(r.handle, r.hideHandle) ? `<div style="font-size:11px;color:var(--muted);">${visHandle(r.handle, r.hideHandle)}</div>` : ''}
           </div>
         </div>
       `).join('');
