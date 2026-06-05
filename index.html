@@ -931,7 +931,7 @@ const BEGINNERS = {
     'ssecsd',              // Evgenii Egoshin
     'sxuxs',               // Leonid Kondratev
     'ilikru',              // Илья Н.
-    'yaroslav_adv',        // Yaroslav Derevyagin
+    'yaroslav_adv',        // Yarik
     'kamilla_ashrafedinova', // Kamilla
     'nepochatius',         // Maksym Nepochatykh
     'elfin13',             // Victor Y
@@ -1058,7 +1058,7 @@ const RACES = [
           { pos:22, name:'Alex Bash',               handle:'@bashalex0100',          r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:23, name:'Leonid Kondratev',        handle:'@sxuxs',                 r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:24, name:'Илья Н.',                 handle:'@Ilikru',                r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
-          { pos:25, name:'Yaroslav Derevyagin',     handle:'@yaroslav_adv',          r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
+          { pos:25, name:'Yarik',     handle:'@yaroslav_adv',          r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:26, name:'Kamilla Ashrafedinova',   handle:'@kamilla_ashrafedinova', r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:27, name:'Maksym Nepochatykh',      handle:'@nepochatius',           r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:28, name:'Victor Y',                handle:'@elfin13',               r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
@@ -1140,7 +1140,7 @@ const LAST_RACE = {
         { name:'Alex Bash',              handle:'@bashalex0100',          q1:15, q2:19, r1pos:23, r1fl:false, r2pos:19, r2fl:false, pts:0  },
         { name:'Leonid Kondratev',       handle:'@sxuxs',                 q1:20, q2:22, r1pos:21, r1fl:false, r2pos:23, r2fl:false, pts:0  },
         { name:'Илья Н.',               handle:'@Ilikru',                 q1:26, q2:26, r1pos:25, r1fl:false, r2pos:24, r2fl:false, pts:0  },
-        { name:'Yaroslav Derevyagin',    handle:'@yaroslav_adv',          q1:24, q2:25, r1pos:26, r1fl:false, r2pos:25, r2fl:false, pts:0  },
+        { name:'Yarik',    handle:'@yaroslav_adv',          q1:24, q2:25, r1pos:26, r1fl:false, r2pos:25, r2fl:false, pts:0  },
         { name:'Kamilla Ashrafedinova',  handle:'@kamilla_ashrafedinova', q1:25, q2:24, r1pos:24, r1fl:false, r2pos:27, r2fl:false, pts:0  },
         { name:'Maksym Nepochatykh',     handle:'@nepochatius',           q1:27, q2:27, r1pos:27, r1fl:false, r2pos:26, r2fl:false, pts:0  },
         { name:'Victor Y',               handle:'@elfin13',               q1:28, q2:28, r1pos:28, r1fl:false, r2pos:28, r2fl:false, pts:0  },
@@ -2334,10 +2334,10 @@ function handlePhotoChange(input) {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(e) {
-    // Сжимаем до 800px и quality 0.7 чтобы не перегружать запрос
+    // Сжимаем до 256px / q0.7 — это аватарка, и чтобы base64 влез в ячейку Google Sheets (лимит 50k символов)
     const img = new Image();
     img.onload = function() {
-      const MAX = 800;
+      const MAX = 256;
       let w = img.width, h = img.height;
       if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
       else        { if (h > MAX) { w = w * MAX / h; h = MAX; } }
@@ -2412,7 +2412,7 @@ async function finishReg(name, handle, beginner, briefing, photoBase64, telegram
 
   // Отправляем в Google Sheets + фото в Drive
   try {
-    const payload = { name, handle, beginner, briefing, telegram_id: telegramId || null, source: 'portal' };
+    const payload = { name, handle, beginner, briefing, telegram_id: telegramId || null, hide_handle: hideHandle || false, source: 'portal' };
     if (photoBase64) payload.photoBase64 = photoBase64;
     console.log('Отправляем payload, фото:', photoBase64 ? 'есть (' + Math.round(photoBase64.length/1024) + 'KB)' : 'нет');
     // Используем no-cors чтобы избежать проблем с редиректом,
@@ -2520,7 +2520,8 @@ function loadRegs() {
       handle: r.handle,
       beginner: r.beginner,
       briefing: r.briefing,
-      photoUrl: r.photoUrl || null   // ← теперь берём с Drive
+      hideHandle: r.hideHandle || false,
+      photoUrl: r.photoUrl || null   // ← base64 из листа (data:image/jpeg;base64,...)
     }));
     const left = MAX - regs.length;
     const el = document.getElementById('spots-left');
