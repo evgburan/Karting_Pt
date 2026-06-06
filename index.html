@@ -1363,7 +1363,7 @@ function renderLastRace() {
 
   // ── 1. Фото с подиума ──
   const podSrc = LAST_RACE.photo ? RACE_PHOTOS[LAST_RACE.photo] : null;
-  html += `<div style="width:100%;border-radius:12px;overflow:hidden;margin-bottom:10px;aspect-ratio:4/3;background:var(--surface2);">`;
+  html += `<div style="width:100%;border-radius:12px;overflow:hidden;margin-bottom:10px;aspect-ratio:1400/504;background:var(--surface2);">`;
   html += podSrc
     ? `<img src="${podSrc}" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">`
     : _podiumPlaceholder();
