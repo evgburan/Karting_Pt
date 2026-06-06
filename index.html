@@ -286,6 +286,30 @@
   .full-res-table tr.p3 td { background: linear-gradient(90deg, rgba(160,103,74,0.10) 0%, transparent 60%); }
   .full-res-table .fl-badge { display: inline-block; background: var(--accent-red); color: #fff; font-size: 9px; font-weight: 900; letter-spacing: 0.5px; border-radius: 3px; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
   .group-header-row td { background: var(--surface2); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); padding: 6px 8px; text-align: left !important; font-family: 'Barlow Condensed', sans-serif; }
+
+  /* ── HIDDEN PAGES: VOTE + FEEDBACK ── */
+  .hp-back { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; padding: 0; }
+  .hp-intro { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
+
+  .vote-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .vote-row:last-child { border-bottom: none; }
+  .vote-name { flex: 1; min-width: 0; }
+  .vote-name .vn { font-size: 14px; font-weight: 600; line-height: 1.15; }
+  .vote-name .vh { font-size: 11px; color: var(--muted); }
+  .vote-pills { display: flex; gap: 6px; flex-shrink: 0; }
+  .vpill { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 17px; cursor: pointer; transition: all 0.12s; line-height: 1; }
+  .vpill.clean.sel { background: rgba(30,140,58,0.15); border-color: var(--green); transform: scale(1.05); }
+  .vpill.quest.sel { background: rgba(184,134,11,0.18); border-color: var(--yellow); transform: scale(1.05); }
+  .vpill:not(.sel) { opacity: 0.55; }
+
+  /* stars */
+  .star-row { display: flex; gap: 6px; justify-content: center; margin: 6px 0 4px; }
+  .star { font-size: 40px; cursor: pointer; line-height: 1; color: var(--muted2); transition: transform 0.1s; }
+  .star.on { color: var(--gold); }
+  .star:active { transform: scale(1.15); }
+  .star-label { text-align: center; font-size: 12px; color: var(--muted); height: 16px; margin-bottom: 14px; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+  .form-textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; width: 100%; min-height: 90px; resize: vertical; transition: border-color 0.15s; }
+  .form-textarea:focus { border-color: var(--text); }
 </style>
 
 </head>
@@ -477,6 +501,59 @@
     <div class="page-title">Гонщики</div>
   </div>
   <div id="drivers-list"></div>
+</div>
+
+<!-- HIDDEN: VOTE (#vote) -->
+<div class="page" id="page-vote">
+  <div class="page-header">
+    <button class="hp-back" onclick="goHome()">← <span id="vote-back">Катаемся Чатом</span></button>
+    <div class="page-eyebrow" id="vote-eyebrow" style="margin-top:8px;">Almeirím · Голосование</div>
+    <div class="page-title" id="vote-title">Чистота борьбы</div>
+  </div>
+  <div style="padding:0 14px;">
+    <div class="hp-intro" id="vote-intro"></div>
+    <div style="margin-bottom:14px;">
+      <label class="form-lbl" id="vote-tg-lbl">Твой Telegram</label>
+      <input class="form-input" id="vote-tg" type="text" placeholder="@username" oninput="renderVoteList()">
+    </div>
+    <div class="card" style="padding:6px 14px;">
+      <div id="vote-list"></div>
+    </div>
+    <button class="btn-reg" style="margin-top:16px;" id="vote-submit" onclick="submitVote()">Отправить голос →</button>
+    <div id="vote-after" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- HIDDEN: FEEDBACK (#feedback) -->
+<div class="page" id="page-feedback">
+  <div class="page-header">
+    <button class="hp-back" onclick="goHome()">← <span id="fb-back">Катаемся Чатом</span></button>
+    <div class="page-eyebrow" id="fb-eyebrow" style="margin-top:8px;">Almeirím · Отзыв</div>
+    <div class="page-title" id="fb-title">Как тебе гонка?</div>
+  </div>
+  <div style="padding:0 14px;">
+    <div class="hp-intro" id="fb-intro"></div>
+    <div id="fb-form">
+      <div class="star-row" id="fb-stars">
+        <span class="star" data-v="1" onclick="setStars(1)">★</span>
+        <span class="star" data-v="2" onclick="setStars(2)">★</span>
+        <span class="star" data-v="3" onclick="setStars(3)">★</span>
+        <span class="star" data-v="4" onclick="setStars(4)">★</span>
+        <span class="star" data-v="5" onclick="setStars(5)">★</span>
+      </div>
+      <div class="star-label" id="fb-star-label"></div>
+      <div style="margin-bottom:14px;">
+        <label class="form-lbl" id="fb-liked-lbl">Что понравилось? Что сохранять?</label>
+        <textarea class="form-textarea" id="fb-liked"></textarea>
+      </div>
+      <div style="margin-bottom:4px;">
+        <label class="form-lbl" id="fb-improve-lbl">Что не понравилось? Что улучшить?</label>
+        <textarea class="form-textarea" id="fb-improve"></textarea>
+      </div>
+      <button class="btn-reg" style="margin-top:16px;" id="fb-submit" onclick="submitFeedback()">Отправить отзыв →</button>
+    </div>
+    <div id="fb-after" style="display:none;"></div>
+  </div>
 </div>
 
 <!-- PROFILE MODAL -->
@@ -794,6 +871,89 @@ const I18N = {
   }
 };
 
+// ── i18n для скрытых страниц (голосование + отзыв) ──
+Object.assign(I18N.ru, {
+  vote_back: 'Катаемся Чатом',
+  vote_eyebrow: 'Almeirím · Голосование',
+  vote_title: 'Чистота борьбы',
+  vote_intro: 'Оцени, с кем тебе было чисто бороться на трассе, а к кому есть вопросы по вождению. 🟢 — чисто поборолись, 🟡 — есть вопросы. Можно оценить не всех — только тех, с кем реально пересекался. Голос анонимный, ник нужен только чтобы не голосовать дважды.',
+  vote_tg_lbl: 'Твой Telegram (чтобы не голосовать дважды)',
+  vote_submit: 'Отправить голос →',
+  vote_clean: 'Чисто поборолись!',
+  vote_quest: 'Есть вопросы к вождению!',
+  vote_need_tg: 'Впиши свой Telegram-ник',
+  vote_need_pick: 'Отметь хотя бы одного гонщика',
+  vote_loading: 'Загружаем список гонщиков…',
+  vote_empty: 'Список участников ещё не загрузился. Обнови страницу через минуту.',
+  vote_done_title: 'Голос принят!',
+  vote_done_sub: 'Спасибо. Результаты объявим после подсчёта.',
+  fb_back: 'Катаемся Чатом',
+  fb_eyebrow: 'Almeirím · Отзыв',
+  fb_title: 'Как тебе гонка?',
+  fb_intro: 'Анонимный отзыв о мероприятии. Помоги сделать следующие гонки лучше — пара минут.',
+  fb_liked_lbl: 'Что понравилось? Что сохранять?',
+  fb_improve_lbl: 'Что не понравилось? Что можно улучшить?',
+  fb_submit: 'Отправить отзыв →',
+  fb_need_stars: 'Поставь оценку звёздами',
+  fb_done_title: 'Спасибо за отзыв!',
+  fb_done_sub: 'Мы всё прочитаем и учтём.',
+  fb_stars_lbl: ['', 'Плохо', 'Так себе', 'Нормально', 'Хорошо', 'Отлично!'],
+});
+Object.assign(I18N.pt, {
+  vote_back: 'Kataemsya Chatom',
+  vote_eyebrow: 'Almeirím · Votação',
+  vote_title: 'Limpeza na pista',
+  vote_intro: 'Avalia com quem foi limpo competir e com quem há dúvidas na condução. 🟢 — corrida limpa, 🟡 — há dúvidas. Não precisas avaliar todos — só aqueles com quem realmente lutaste. O voto é anónimo, o nick serve apenas para não votares duas vezes.',
+  vote_tg_lbl: 'O teu Telegram (para não votar duas vezes)',
+  vote_submit: 'Enviar voto →',
+  vote_clean: 'Corrida limpa!',
+  vote_quest: 'Dúvidas na condução!',
+  vote_need_tg: 'Indica o teu nick de Telegram',
+  vote_need_pick: 'Marca pelo menos um piloto',
+  vote_loading: 'A carregar a lista de pilotos…',
+  vote_empty: 'A lista de participantes ainda não carregou. Atualiza a página dentro de um minuto.',
+  vote_done_title: 'Voto registado!',
+  vote_done_sub: 'Obrigado. Os resultados serão anunciados após a contagem.',
+  fb_back: 'Kataemsya Chatom',
+  fb_eyebrow: 'Almeirím · Feedback',
+  fb_title: 'Que tal a corrida?',
+  fb_intro: 'Feedback anónimo sobre o evento. Ajuda-nos a melhorar as próximas corridas — leva dois minutos.',
+  fb_liked_lbl: 'O que gostaste? O que manter?',
+  fb_improve_lbl: 'O que não gostaste? O que melhorar?',
+  fb_submit: 'Enviar feedback →',
+  fb_need_stars: 'Dá uma classificação em estrelas',
+  fb_done_title: 'Obrigado pelo feedback!',
+  fb_done_sub: 'Vamos ler tudo com atenção.',
+  fb_stars_lbl: ['', 'Mau', 'Razoável', 'Normal', 'Bom', 'Excelente!'],
+});
+Object.assign(I18N.en, {
+  vote_back: 'Kataemsya Chatom',
+  vote_eyebrow: 'Almeirím · Voting',
+  vote_title: 'Clean racing',
+  vote_intro: 'Rate who you raced cleanly against and who you have questions about. 🟢 — clean racing, 🟡 — questions. You don\'t have to rate everyone — only those you actually battled. The vote is anonymous; your handle is only used to prevent double voting.',
+  vote_tg_lbl: 'Your Telegram (to prevent double voting)',
+  vote_submit: 'Submit vote →',
+  vote_clean: 'Clean racing!',
+  vote_quest: 'Questions about driving!',
+  vote_need_tg: 'Enter your Telegram handle',
+  vote_need_pick: 'Mark at least one driver',
+  vote_loading: 'Loading the driver list…',
+  vote_empty: 'The participant list hasn\'t loaded yet. Refresh the page in a minute.',
+  vote_done_title: 'Vote recorded!',
+  vote_done_sub: 'Thanks. Results will be announced after counting.',
+  fb_back: 'Kataemsya Chatom',
+  fb_eyebrow: 'Almeirím · Feedback',
+  fb_title: 'How was the race?',
+  fb_intro: 'Anonymous feedback about the event. Help us make the next races better — takes two minutes.',
+  fb_liked_lbl: 'What did you like? What to keep?',
+  fb_improve_lbl: 'What didn\'t you like? What to improve?',
+  fb_submit: 'Submit feedback →',
+  fb_need_stars: 'Give a star rating',
+  fb_done_title: 'Thanks for the feedback!',
+  fb_done_sub: 'We\'ll read everything carefully.',
+  fb_stars_lbl: ['', 'Poor', 'Meh', 'Okay', 'Good', 'Excellent!'],
+});
+
 let _lang = 'ru';
 function t(k) { return I18N[_lang][k] || I18N['ru'][k] || k; }
 
@@ -897,6 +1057,8 @@ function setLang(lang) {
   renderLastRace();
   const nomEl2 = document.getElementById('nominations-block');
   if (nomEl2) nomEl2.innerHTML = renderNominations();
+  if (typeof renderVoteList === 'function') renderVoteList();
+  if (typeof applyFeedbackLang === 'function') applyFeedbackLang();
 }
 
 // DATA
@@ -931,7 +1093,7 @@ const BEGINNERS = {
     'ssecsd',              // Evgenii Egoshin
     'sxuxs',               // Leonid Kondratev
     'ilikru',              // Илья Н.
-    'yaroslav_adv',        // Yarik
+    'yaroslav_adv',        // Yaroslav Derevyagin
     'kamilla_ashrafedinova', // Kamilla
     'nepochatius',         // Maksym Nepochatykh
     'elfin13',             // Victor Y
@@ -1058,7 +1220,7 @@ const RACES = [
           { pos:22, name:'Alex Bash',               handle:'@bashalex0100',          r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:23, name:'Leonid Kondratev',        handle:'@sxuxs',                 r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:24, name:'Илья Н.',                 handle:'@Ilikru',                r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
-          { pos:25, name:'Yarik',     handle:'@yaroslav_adv',          r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
+          { pos:25, name:'Yaroslav Derevyagin',     handle:'@yaroslav_adv',          r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:26, name:'Kamilla Ashrafedinova',   handle:'@kamilla_ashrafedinova', r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:27, name:'Maksym Nepochatykh',      handle:'@nepochatius',           r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
           { pos:28, name:'Victor Y',                handle:'@elfin13',               r1:0,  r1fl:false, r2:0,  r2fl:false, total:0  },
@@ -1140,7 +1302,7 @@ const LAST_RACE = {
         { name:'Alex Bash',              handle:'@bashalex0100',          q1:15, q2:19, r1pos:23, r1fl:false, r2pos:19, r2fl:false, pts:0  },
         { name:'Leonid Kondratev',       handle:'@sxuxs',                 q1:20, q2:22, r1pos:21, r1fl:false, r2pos:23, r2fl:false, pts:0  },
         { name:'Илья Н.',               handle:'@Ilikru',                 q1:26, q2:26, r1pos:25, r1fl:false, r2pos:24, r2fl:false, pts:0  },
-        { name:'Yarik',    handle:'@yaroslav_adv',          q1:24, q2:25, r1pos:26, r1fl:false, r2pos:25, r2fl:false, pts:0  },
+        { name:'Yaroslav Derevyagin',    handle:'@yaroslav_adv',          q1:24, q2:25, r1pos:26, r1fl:false, r2pos:25, r2fl:false, pts:0  },
         { name:'Kamilla Ashrafedinova',  handle:'@kamilla_ashrafedinova', q1:25, q2:24, r1pos:24, r1fl:false, r2pos:27, r2fl:false, pts:0  },
         { name:'Maksym Nepochatykh',     handle:'@nepochatius',           q1:27, q2:27, r1pos:27, r1fl:false, r2pos:26, r2fl:false, pts:0  },
         { name:'Victor Y',               handle:'@elfin13',               q1:28, q2:28, r1pos:28, r1fl:false, r2pos:28, r2fl:false, pts:0  },
@@ -2334,10 +2496,10 @@ function handlePhotoChange(input) {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(e) {
-    // Сжимаем до 256px / q0.7 — это аватарка, и чтобы base64 влез в ячейку Google Sheets (лимит 50k символов)
+    // Сжимаем до 800px и quality 0.7 чтобы не перегружать запрос
     const img = new Image();
     img.onload = function() {
-      const MAX = 256;
+      const MAX = 800;
       let w = img.width, h = img.height;
       if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
       else        { if (h > MAX) { w = w * MAX / h; h = MAX; } }
@@ -2412,7 +2574,7 @@ async function finishReg(name, handle, beginner, briefing, photoBase64, telegram
 
   // Отправляем в Google Sheets + фото в Drive
   try {
-    const payload = { name, handle, beginner, briefing, telegram_id: telegramId || null, hide_handle: hideHandle || false, source: 'portal' };
+    const payload = { name, handle, beginner, briefing, telegram_id: telegramId || null, source: 'portal' };
     if (photoBase64) payload.photoBase64 = photoBase64;
     console.log('Отправляем payload, фото:', photoBase64 ? 'есть (' + Math.round(photoBase64.length/1024) + 'KB)' : 'нет');
     // Используем no-cors чтобы избежать проблем с редиректом,
@@ -2520,8 +2682,7 @@ function loadRegs() {
       handle: r.handle,
       beginner: r.beginner,
       briefing: r.briefing,
-      hideHandle: r.hideHandle || false,
-      photoUrl: r.photoUrl || null   // ← base64 из листа (data:image/jpeg;base64,...)
+      photoUrl: r.photoUrl || null   // ← теперь берём с Drive
     }));
     const left = MAX - regs.length;
     const el = document.getElementById('spots-left');
@@ -2548,6 +2709,7 @@ function loadRegs() {
     // Обновляем аватарки в standings/drivers если уже отрисованы
     renderStandings();
     renderDrivers();
+    if (typeof renderVoteList === 'function') renderVoteList();
     document.body.removeChild(script);
     delete window[cbName];
   };
@@ -2556,6 +2718,173 @@ function loadRegs() {
   document.body.appendChild(script);
 }
 if (SHEETS_URL) loadRegs();
+
+// ════════════════════════════════════════════════════════════
+//  СКРЫТЫЕ СТРАНИЦЫ: ГОЛОСОВАНИЕ + ОТЗЫВ
+// ════════════════════════════════════════════════════════════
+
+// ⬇ URL деплоя нового Apps Script «Almeirim Голосование» (вставить после деплоя)
+const FEEDBACK_URL = 'https://script.google.com/macros/s/AKfycby0h5JpCeJIisWXWBkmagiJ8kA-HIDtjjAWRykpb3RELpHPz2R3kKhy1sIz92ax5lM/exec';
+
+// — отправка fire-and-forget в Apps Script —
+function postToSheet(url, payload) {
+  if (!url || url.startsWith('PASTE_')) { console.warn('FEEDBACK_URL не задан'); return Promise.resolve(); }
+  return fetch(url, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).catch(err => console.warn('Sheet post failed:', err));
+}
+
+// ── Маршрутизация по hash ──
+function goHome() {
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  routeHash();
+}
+
+function routeHash() {
+  const h = (location.hash || '').replace('#', '').toLowerCase();
+  const nav = document.querySelector('.bottom-nav');
+  if (h === 'vote' || h === 'feedback') {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + h).classList.add('active');
+    if (nav) nav.style.display = 'none';
+    window.scrollTo(0, 0);
+    if (h === 'vote') {
+      const vtg = document.getElementById('vote-tg');
+      if (vtg && !vtg.value && getTgHandle()) vtg.value = getTgHandle();
+      renderVoteList();
+    }
+    if (h === 'feedback') applyFeedbackLang();
+  } else {
+    if (nav) nav.style.display = 'flex';
+    const hidden = document.getElementById('page-vote').classList.contains('active') ||
+                   document.getElementById('page-feedback').classList.contains('active');
+    if (hidden) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-main').classList.add('active');
+      document.querySelectorAll('.bnav-item').forEach((b, i) => b.classList.toggle('active', i === 0));
+    }
+  }
+}
+window.addEventListener('hashchange', routeHash);
+
+// ── ГОЛОСОВАНИЕ ──
+let _voteChoices = {};  // { handleKeyOrName: 'clean' | 'quest' }
+
+function voteKey(r) { return (r.handle ? r.handle.replace('@','').toLowerCase() : 'name:' + r.name.toLowerCase()); }
+
+function renderVoteList() {
+  const box = document.getElementById('vote-list');
+  if (!box) return;
+  // тексты страницы
+  const setTxt = (id, key, html) => { const el = document.getElementById(id); if (el) { if (html) el.innerHTML = t(key); else el.textContent = t(key); } };
+  setTxt('vote-back', 'vote_back'); setTxt('vote-eyebrow', 'vote_eyebrow'); setTxt('vote-title', 'vote_title');
+  setTxt('vote-intro', 'vote_intro', true); setTxt('vote-tg-lbl', 'vote_tg_lbl');
+  const subBtn = document.getElementById('vote-submit'); if (subBtn) subBtn.textContent = t('vote_submit');
+
+  if (!regs.length) {
+    box.innerHTML = `<div style="padding:24px 0;text-align:center;color:var(--muted);font-size:13px;">${t('vote_empty')}</div>`;
+    return;
+  }
+  const myHandle = (document.getElementById('vote-tg')?.value || '').replace('@','').trim().toLowerCase();
+  const list = regs.filter(r => !(myHandle && r.handle && r.handle.replace('@','').toLowerCase() === myHandle));
+
+  box.innerHTML = list.map(r => {
+    const k = voteKey(r);
+    const sel = _voteChoices[k];
+    const handleTxt = visHandle(r.handle, r.hideHandle);
+    return `
+      <div class="vote-row">
+        ${avatarDiv(getPhoto(r.handle, r.name), r.name[0], 36)}
+        <div class="vote-name">
+          <div class="vn">${r.name}</div>
+          ${handleTxt ? `<div class="vh">${handleTxt}</div>` : ''}
+        </div>
+        <div class="vote-pills">
+          <div class="vpill clean ${sel==='clean'?'sel':''}" title="${t('vote_clean')}" onclick="setVoteChoice('${k}','clean')">🟢</div>
+          <div class="vpill quest ${sel==='quest'?'sel':''}" title="${t('vote_quest')}" onclick="setVoteChoice('${k}','quest')">🟡</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function setVoteChoice(key, val) {
+  if (_voteChoices[key] === val) delete _voteChoices[key]; // повторный тап снимает
+  else _voteChoices[key] = val;
+  renderVoteList();
+}
+
+function submitVote() {
+  let voter = (document.getElementById('vote-tg').value || '').trim();
+  if (!voter) { alert(t('vote_need_tg')); document.getElementById('vote-tg').focus(); return; }
+  if (!voter.startsWith('@')) voter = '@' + voter;
+  const picks = Object.keys(_voteChoices);
+  if (!picks.length) { alert(t('vote_need_pick')); return; }
+
+  const votes = picks.map(k => {
+    const r = regs.find(x => voteKey(x) === k);
+    return { name: r ? r.name : k, handle: r ? (r.handle || '') : '', verdict: _voteChoices[k] };
+  });
+
+  postToSheet(FEEDBACK_URL, { action: 'vote', voter, votes });
+
+  document.getElementById('vote-submit').style.display = 'none';
+  document.getElementById('vote-list').style.display = 'none';
+  document.getElementById('vote-tg').closest('div').style.display = 'none';
+  document.querySelector('#page-vote .hp-intro').style.display = 'none';
+  const after = document.getElementById('vote-after');
+  after.style.display = 'block';
+  after.innerHTML = `
+    <div class="success-box">
+      <div class="success-icon">✅</div>
+      <div class="success-title">${t('vote_done_title')}</div>
+      <div class="success-sub">${t('vote_done_sub')}</div>
+    </div>`;
+}
+
+// ── ОТЗЫВ ──
+let _fbStars = 0;
+
+function applyFeedbackLang() {
+  const setTxt = (id, key, html) => { const el = document.getElementById(id); if (el) { if (html) el.innerHTML = t(key); else el.textContent = t(key); } };
+  setTxt('fb-back', 'fb_back'); setTxt('fb-eyebrow', 'fb_eyebrow'); setTxt('fb-title', 'fb_title');
+  setTxt('fb-intro', 'fb_intro', true); setTxt('fb-liked-lbl', 'fb_liked_lbl'); setTxt('fb-improve-lbl', 'fb_improve_lbl');
+  const sb = document.getElementById('fb-submit'); if (sb) sb.textContent = t('fb_submit');
+  setStars(_fbStars);
+}
+
+function setStars(n) {
+  _fbStars = n;
+  document.querySelectorAll('#fb-stars .star').forEach(s => {
+    s.classList.toggle('on', Number(s.dataset.v) <= n);
+  });
+  const lbl = document.getElementById('fb-star-label');
+  if (lbl) { const arr = t('fb_stars_lbl'); lbl.textContent = (n && arr) ? arr[n] : ''; }
+}
+
+function submitFeedback() {
+  if (!_fbStars) { alert(t('fb_need_stars')); return; }
+  const liked = document.getElementById('fb-liked').value.trim();
+  const improve = document.getElementById('fb-improve').value.trim();
+
+  postToSheet(FEEDBACK_URL, { action: 'feedback', stars: _fbStars, liked, improve });
+
+  document.getElementById('fb-form').style.display = 'none';
+  document.querySelector('#page-feedback .hp-intro').style.display = 'none';
+  const after = document.getElementById('fb-after');
+  after.style.display = 'block';
+  after.innerHTML = `
+    <div class="success-box">
+      <div class="success-icon">🙏</div>
+      <div class="success-title">${t('fb_done_title')}</div>
+      <div class="success-sub">${t('fb_done_sub')}</div>
+    </div>`;
+}
+
+// первичная маршрутизация (если открыли по прямой ссылке #vote / #feedback)
+routeHash();
 
 </script>
 </body>
