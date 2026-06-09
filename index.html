@@ -36,7 +36,7 @@
     border-bottom: 1px solid var(--border);
     padding: 0 16px; display: flex; align-items: center; justify-content: space-between; height: 50px;
   }
-  .logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; color: var(--text); text-transform: uppercase; line-height: 1.1; }
+  .logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; color: var(--text); text-transform: uppercase; line-height: 1.1; cursor: pointer; }
   .logo em { font-style: normal; color: var(--accent-red); }
   .nav-meta { font-size: 11px; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
   .lang-switcher { display: flex; gap: 2px; }
@@ -2329,6 +2329,26 @@ function openH2H(key1) {
   document.getElementById('h2h-modal').classList.add('open');
 }
 
+// Строка сравнения Safety Rating для H2H (общий бейдж по всем гонкам)
+function h2hSafetyRow(d1, d2) {
+  const sf1 = getSafety(d1.handle, d1.name);
+  const sf2 = getSafety(d2.handle, d2.name);
+  const counts = sf => {
+    const p = [];
+    if (sf.pos > 0) p.push(`<span style="color:var(--green);font-weight:700;">${sf.pos}🟢</span>`);
+    if (sf.neg > 0) p.push(`<span style="color:var(--yellow);font-weight:700;">${sf.neg}🟡</span>`);
+    return p.length ? p.join(' ') : `<span style="color:var(--muted);">—</span>`;
+  };
+  const dot = sf => `<span class="safety-dot s${sf.rating}" style="width:9px;height:9px;margin:0;"></span>`;
+  return `<div>
+    <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;text-align:center;">Safety Rating</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;font-size:13px;">
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:6px;">${dot(sf1)} ${counts(sf1)}</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">${counts(sf2)} ${dot(sf2)}</div>
+    </div>
+  </div>`;
+}
+
 function loadH2H(key1, key2) {
   const d1 = STANDINGS.find(x => x.key === key1);
   const d2 = STANDINGS.find(x => x.key === key2);
@@ -2411,6 +2431,7 @@ function loadH2H(key1, key2) {
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Avg очков</div>
         </div>
       </div>
+      ${h2hSafetyRow(d1, d2)}
     </div>
 
     <div style="background:var(--surface2);padding:8px 16px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:grid;grid-template-columns:1fr auto 1fr;">
@@ -2534,6 +2555,7 @@ function updateH2HPage() {
       ${bar(d1.totalPts, d2.totalPts, 'Очков в зачёте')}
       ${bar(avg1, avg2, `Avg в общих гонках`)}
       ${bar(fl1, fl2, '⚡ Быстрых кругов')}
+      ${h2hSafetyRow(d1, d2)}
     </div>
 
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
@@ -2915,6 +2937,25 @@ function postToSheet(url, payload) {
 function goHome() {
   if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   routeHash();
+}
+
+// Клик по логотипу «Катаемся Чатом» → на главную (закрыть модалки/скрытые страницы, первый таб)
+function _logoTap() {
+  ['profile-modal', 'reg-modal', 'h2h-modal'].forEach(id => {
+    const m = document.getElementById(id);
+    if (m) m.classList.remove('open');
+  });
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-main').classList.add('active');
+  const nav = document.querySelector('.bottom-nav');
+  if (nav) nav.style.display = 'flex';
+  document.querySelectorAll('.bnav-item').forEach((b, i) => b.classList.toggle('active', i === 0));
+  document.querySelectorAll('.inner-tab').forEach((tb, i) => tb.classList.toggle('active', i === 0));
+  document.querySelectorAll('.inner-panel').forEach(p => p.classList.remove('active'));
+  const tn = document.getElementById('tab-next');
+  if (tn) tn.classList.add('active');
+  window.scrollTo(0, 0);
 }
 
 function routeHash() {
