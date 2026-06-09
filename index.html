@@ -1078,6 +1078,28 @@ const RACE_PHOTOS = {
   'almeirim_podium': 'photos/almeirim-podium.jpg',
 };
 
+// Логотипы картодромов (квадратные плитки в photos/)
+const VENUE_LOGOS = {
+  kiro:     'photos/venue-kiro.png',
+  campera:  'photos/venue-campera.png',
+  kip:      'photos/venue-kip.png',
+  almeirim: 'photos/venue-almeirim.png',
+};
+function venueLogoFor(text) {
+  const s = text || '';
+  if (/KIRO/i.test(s))          return VENUE_LOGOS.kiro;
+  if (/Campera/i.test(s))       return VENUE_LOGOS.campera;
+  if (/KIP|Palmela/i.test(s))   return VENUE_LOGOS.kip;
+  if (/Almeir/i.test(s))        return VENUE_LOGOS.almeirim;
+  return null;
+}
+function venueLogoTile(text, size) {
+  const src = venueLogoFor(text);
+  if (!src) return '';
+  const sz = size || 40;
+  return `<img src="${src}" onerror="this.style.display='none'" alt="" style="width:${sz}px;height:${sz}px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;background:var(--surface2);">`;
+}
+
 // Начинающие: true = да
 // Начинающие per-event — гонка идёт в зачёт начинающих ТОЛЬКО если гонщик
 // отметился начинающим именно на этой гонке
@@ -1299,7 +1321,7 @@ function SAFETY_LABEL(r){ return I18N[_lang||'ru'].safety[r]||I18N['ru'].safety[
 const ALMEIRIM_SAFETY = {
   voters: 6,
   drivers: [
-    { name: 'Igor Arkhangelskii',   handle: '@Igor A',            pos: 5, neg: 0 },
+    { name: 'Igor Arkhangelskii',   handle: '@Igor A',            pos: 4, neg: 0 },
     { name: 'Igor Rybakou',         handle: '@just_igor_q',       pos: 4, neg: 0 },
     { name: 'Evgeny Buran',         handle: '@evgenybu',          pos: 3, neg: 0 },
     { name: 'Dimas Calcai',         handle: '@dimasccd',          pos: 2, neg: 0 },
@@ -1312,7 +1334,7 @@ const ALMEIRIM_SAFETY = {
     { name: 'Oleg Andrusiv',        handle: '@zemlyanen',         pos: 1, neg: 0 },
     { name: 'Miguel Bento',         handle: '',                   pos: 1, neg: 0 },
     { name: 'Anton Kent',           handle: '',                   pos: 1, neg: 0 },
-    { name: 'Renat Ashrafedinov',   handle: '@Renatashrafedinov', pos: 4, neg: 1 },
+    { name: 'Renat Ashrafedinov',   handle: '@Renatashrafedinov', pos: 3, neg: 1 },
     { name: 'Demetrius Clemente',   handle: '@Klim_Dmytro',       pos: 2, neg: 2 },
     { name: 'Aleksandr Ilyushin',   handle: '@IlyushinAS',        pos: 1, neg: 1 },
     { name: 'evgenii lisnianskii',  handle: '@leeseeq',           pos: 1, neg: 1 },
@@ -1360,20 +1382,21 @@ const RACE_SAFETY = { 'kip-may': KIP_SAFETY, 'almeirim-jun': ALMEIRIM_SAFETY };
   });
 })();
 
-// Деление на группы по одному набору голосов (общий источник для всех экранов).
-//   clean — 🟢 без вопросов (neg == 0)
-//   quest — 🟡 есть вопросы (neg > 0)
+// Деление на группы по балансу голосов (тот же критерий, что и бейдж в профиле).
+//   quest — 🟡 есть 🟡 И плюсы их НЕ перекрывают (neg >= pos)
+//   clean — все остальные (🟢 без вопросов или плюсы перевешивают)
 function safetyGroupsFor(ds) {
   const a = ds.drivers;
+  const isQuest = d => d.neg > 0 && d.neg >= d.pos;
   return {
-    clean: a.filter(d => d.neg === 0).sort((x, y) => y.pos - x.pos || x.name.localeCompare(y.name)),
-    quest: a.filter(d => d.neg > 0).sort((x, y) => y.neg - x.neg || y.pos - x.pos),
+    clean: a.filter(d => !isQuest(d)).sort((x, y) => y.pos - x.pos || x.name.localeCompare(y.name)),
+    quest: a.filter(isQuest).sort((x, y) => y.neg - x.neg || y.pos - x.pos),
   };
 }
-// Лидеры по чистоте (для номинации 🤝): 🟢 и 3+ голоса.
-function cleanLeaders(ds) { return safetyGroupsFor(ds).clean.filter(d => d.pos >= 3); }
-// «Обратить внимание» (⚠️): есть 🟡 И плюсы НЕ перевешивают минусы (neg >= pos).
-function attentionList(ds) { return safetyGroupsFor(ds).quest.filter(d => d.neg >= d.pos); }
+// Лидеры по чистоте (для номинации 🤝): 🟢 без вопросов и 3+ голоса.
+function cleanLeaders(ds) { return safetyGroupsFor(ds).clean.filter(d => d.neg === 0 && d.pos >= 3); }
+// «Обратить внимание» (⚠️) — ровно группа quest (минусы не перекрыты).
+function attentionList(ds) { return safetyGroupsFor(ds).quest; }
 
 function safetyGroups() {
   return safetyGroupsFor(ALMEIRIM_SAFETY);
@@ -1387,27 +1410,36 @@ function renderSafetyResults() {
   document.getElementById('safe-intro').textContent = t('safe_intro');
   document.getElementById('safe-back').textContent = t('safe_back');
 
-  const d = ALMEIRIM_SAFETY;
-  const totalVotes = d.drivers.reduce((s, x) => s + x.pos + x.neg, 0);
-  const stat = (val, lbl) => `<div class="card" style="flex:1;text-align:center;padding:11px 6px;margin:0;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;line-height:1;">${val}</div>
-      <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:4px;">${lbl}</div>
-    </div>`;
-  document.getElementById('safe-stats').innerHTML =
-    stat(d.voters, t('safe_stat_voters')) +
-    stat(d.drivers.length, t('safe_stat_drivers')) +
-    stat(totalVotes, t('safe_stat_votes'));
+  // Анонимное голосование — счётчик проголосовавших не показываем.
+  const statsEl = document.getElementById('safe-stats');
+  statsEl.style.display = 'none';
+  statsEl.innerHTML = '';
 
-  const clean = safetyGroups().clean;
-  const quest = safetyGroups().quest;
+  const { clean, quest } = safetyGroups();
 
-  const row = x => {
-    const s = x.neg > 0 ? 'y' : 'g';
+  // Фото с подиума
+  const podSrc = RACE_PHOTOS['almeirim_podium'] || null;
+  let html = `<div style="width:100%;border-radius:12px;overflow:hidden;margin:0 0 14px;aspect-ratio:1400/504;background:var(--surface2);">${
+    podSrc ? `<img src="${podSrc}" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">` : _podiumPlaceholder()
+  }</div>`;
+
+  // Номинации-хайлайты (из тех же итогов)
+  const multiNomCard = (icon, title, list) => {
+    if (!list.length) return '';
+    const avs = list.map(x => `<div style="display:flex;align-items:center;gap:6px;">${avatarDiv(getPhoto(x.handle, x.name), x.name[0], 28)}<div class="nom-driver">${x.name.split(' ')[0]} ${x.name.split(' ')[1]?.[0]||''}.</div></div>`).join('<div style="color:var(--muted2);font-size:11px;">·</div>');
+    return `<div class="nom-card" style="position:relative;"><div class="nom-icon">${icon}</div><div class="nom-title">${title}</div><div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div></div>`;
+  };
+  const noms = multiNomCard('🤝', t('safe_clean_lbl'), cleanLeaders(ALMEIRIM_SAFETY))
+             + multiNomCard('⚠️', t('safe_quest_lbl'), attentionList(ALMEIRIM_SAFETY));
+  if (noms) html += `<div class="nom-cards" style="margin-bottom:16px;">${noms}</div>`;
+
+  // Полный список с аватарками
+  const row = (x, s) => {
     const vh = visHandle(x.handle, false);
     const counts = `${x.pos > 0 ? `<span style="color:var(--green);font-weight:700;">${x.pos} 🟢</span>` : ''}${x.neg > 0 ? `<span style="color:var(--yellow);font-weight:700;margin-left:8px;">${x.neg} 🟡</span>` : ''}`;
     const key = norm(x.handle) || norm(x.name);
-    return `<div class="driver-card" onclick="openProfile('${key}')">
-        <span class="safety-dot s${s}" style="width:10px;height:10px;margin:0;"></span>
+    return `<div class="driver-card" style="margin:0 0 8px;" onclick="openProfile('${key}')">
+        ${avatarDiv(getPhoto(x.handle, x.name), x.name[0], 36)}
         <div style="flex:1;min-width:0;">
           <div style="font-weight:600;font-size:14px;">${x.name}</div>
           ${vh ? `<div style="font-size:11px;color:var(--muted);">${vh}</div>` : ''}
@@ -1416,9 +1448,8 @@ function renderSafetyResults() {
       </div>`;
   };
 
-  let html = '';
-  if (clean.length) html += `<div class="section-lbl" style="margin:6px 14px 8px;">🟢 ${t('safe_clean_lbl')}</div>` + clean.map(row).join('');
-  if (quest.length) html += `<div class="section-lbl" style="margin:18px 14px 8px;">🟡 ${t('safe_quest_lbl')}</div>` + quest.map(row).join('');
+  if (clean.length) html += `<div class="section-lbl" style="margin:6px 0 8px;">🟢 ${t('safe_clean_lbl')}</div>` + clean.map(x => row(x, 'g')).join('');
+  if (quest.length) html += `<div class="section-lbl" style="margin:18px 0 8px;">🟡 ${t('safe_quest_lbl')}</div>` + quest.map(x => row(x, 'y')).join('');
   document.getElementById('safe-list').innerHTML = html;
 }
 
@@ -1543,7 +1574,7 @@ function renderLastRace() {
     ? `<img src="${podSrc}" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">`
     : _podiumPlaceholder();
   html += `</div>`;
-  html += `<div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:12px;">${LAST_RACE.title}</div>`;
+  html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">${venueLogoTile((LAST_RACE.location||'') + ' ' + (LAST_RACE.title||''), 44)}<div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;">${LAST_RACE.title}</div></div>`;
 
   // ── 2. Ссылки: отзыв + итоги Safety Rating (вторичные, не отвлекают) ──
   html += `<div style="display:flex;gap:8px;margin-bottom:16px;">
@@ -2095,7 +2126,7 @@ function renderResults(idx) {
   let html = photoSrc
     ? `<div style="width:100%;aspect-ratio:4/3;max-height:220px;overflow:hidden;border-radius:10px;margin-bottom:10px;"><img src="${photoSrc}" onerror="this.closest('div').style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="race photo"></div>`
     : '';
-  html += `<div class="res-sub">${v.date} · ${v.groupLabel || v.location}</div>`;
+  html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">${venueLogoTile((v.chipLabel||'') + ' ' + (v.location||''), 40)}<div class="res-sub" style="margin:0;">${v.date} · ${v.groupLabel || v.location}</div></div>`;
   v.results.forEach(r => {
     const pc = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
     const fl = r.fl ? ` <span style="font-size:9px;color:var(--accent-red);">⚡FL</span>` : '';
