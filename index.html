@@ -1035,6 +1035,7 @@ const BEGINNERS = {
   'campera-apr': new Set([
     'vankastor', 'uzlos', 'mike1844', 'kivy13', 'borisovdm', 'sqmme', 'victorianiki',
     'edititov', 'gramuserrt', 'wijuwiju', 'fikuspikus333', 'olegka060400', 'oleg_svirskiy',
+    'ilikru',              // Ilia Nikolaev
   ]),
   kip: new Set([
     'spillere',            // Daniel Andrade
@@ -1054,11 +1055,12 @@ const BEGINNERS = {
   almeirim: new Set([
     'ilyushinas',          // Aleksandr Ilyushin
     'karen_makaren',       // Karen M
-    'anton kent',          // Anton Kent (без handle)
+    'antonakentiev',       // Anton Kent (канонический ключ — был 'anton kent')
     'yaroslav_adv',        // Yarik
     'sxuxs',               // Leonid Kondratev
     'zemlyanen',           // Oleg Andrusiv
     'leeseeq',             // evgenii lisnianskii
+    'ilikru',              // Ilia Nikolaev
   ]),
 };
 
@@ -1493,7 +1495,45 @@ function _podiumPlaceholder() {
 //   6–8  → лучшие 5
 //   9+   → лучшие 6
 
-function norm(h) { return (h||'').toLowerCase().replace('@',''); }
+function norm(h) { return (h||'').toLowerCase().replace('@','').trim(); }
+
+// ── Канонизация ключей гонщиков (авто) ───────────────────────────
+// Проблема: ключ = handle, а если handle пустой — имя. Один и тот же
+// гонщик, записанный в одной гонке с @handle, а в другой без него,
+// раздваивался в зачёте.
+//
+// Решение: собираем карту «имя → handle» по ВСЕМ гонкам. Если гонщик
+// хоть раз указан с handle, любая его запись без handle (с тем же
+// именем) автоматически склеивается в один ключ. Руками ничего
+// поддерживать не нужно — просто добавляй гонку как обычно.
+const NAME2HANDLE = (() => {
+  const m = {};
+  RACES.forEach(race => race.groups.forEach(g => g.results.forEach(r => {
+    const h = norm(r.handle), n = norm(r.name);
+    if (h && n && !m[n]) m[n] = h;   // первое непустое — побеждает
+  })));
+  return m;
+})();
+
+// Ручные исключения — нужны ТОЛЬКО для редких случаев, когда гонщик
+// ни разу не указал handle, а имя в разных гонках написано по-разному.
+// В обычном потоке остаётся пустым.
+const ALIASES = {};
+
+function canonKey(k) {
+  k = (k || '').toLowerCase().replace('@', '').trim();
+  if (NAME2HANDLE[k]) k = NAME2HANDLE[k];   // имя без handle → его же handle
+  return ALIASES[k] || k;
+}
+function keyOf(handle, name) {
+  return canonKey(norm(handle) || norm(name));
+}
+
+// Прогоняем ключи «начинающих» через ту же канонизацию, чтобы запись
+// без handle тоже совпадала с зачётным ключом гонщика.
+Object.keys(BEGINNERS).forEach(ev => {
+  BEGINNERS[ev] = new Set([...BEGINNERS[ev]].map(canonKey));
+});
 
 function isBegForEvent(key, eventId) {
   return BEGINNERS[eventId] ? BEGINNERS[eventId].has(key) : false;
@@ -1538,65 +1578,100 @@ function fixKipBase(v) {
   if (v === 15) return 16;
   return fixBase(v);
 }
+// fixModernBase: для гонок, уже занесённых по НОВОЙ шкале (P6=10, P7=9…).
+// Сдвиг +1 не нужен — применяем только пол в 3 очка за участие.
+function fixModernBase(v) {
+  return v >= 3 ? v : 3;
+}
+
+// Финишная позиция В КОНКРЕТНОЙ ГОНКЕ (Г1 или Г2), а не общее место на этапе.
+// Внутри одной гонки очки строго убывают по финишу, поэтому ранжирование
+// участников этой гонки по базовым очкам = порядок финиша. Ничьи (хвост с 0)
+// разводятся по общему месту на этапе — это приблизительно, но детерминированно.
+function raceFinishPos(results, field) {
+  const players = results
+    .filter(r => r[field] !== null && r[field] !== undefined)
+    .slice()
+    .sort((a, b) => b[field] - a[field] || (a.pos || 999) - (b.pos || 999));
+  const m = new Map();
+  players.forEach((r, i) => m.set(r, i + 1));
+  return m;
+}
 
 function buildStandings() {
   const map = {};
 
   // KIRO: одна гонка
-  RACES[0].groups[0].results.forEach(r => {
-    const key = norm(r.handle) || norm(r.name);
-    if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
-    const kiroPts = fixBase(r.r1) + (r.r1fl ? 1 : 0);
-    map[key].races.push({ race: 'KIRO 28.03', date: translateShortDate('28 мар'), pts: kiroPts, pos: r.pos, beg: isBegForEvent(key, 'kiro') });
-  });
+  {
+    const res = RACES[0].groups[0].results;
+    const p1 = raceFinishPos(res, 'r1');
+    res.forEach(r => {
+      const key = keyOf(r.handle, r.name);
+      if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
+      const kiroPts = fixBase(r.r1) + (r.r1fl ? 1 : 0);
+      map[key].races.push({ race: 'KIRO 28.03', date: translateShortDate('28 мар'), pts: kiroPts, pos: p1.get(r), beg: isBegForEvent(key, 'kiro') });
+    });
+  }
 
-  // Campera 12.04: R1 и R2 как отдельные этапы
+  // Campera 12.04: R1 и R2 как отдельные этапы (позиция — внутри своей группы и гонки)
   RACES[1].groups.forEach(group => {
     const grp = group.label;
+    const p1 = raceFinishPos(group.results, 'r1');
+    const p2 = raceFinishPos(group.results, 'r2');
     group.results.forEach(r => {
-      const key = norm(r.handle) || norm(r.name);
+      const key = keyOf(r.handle, r.name);
       if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
       const beg = isBegForEvent(key, 'campera-apr');
       if (r.r1 !== null && r.r1 !== undefined) {
         const pts1 = fixBase(r.r1) + (r.r1fl ? 1 : 0);
-        map[key].races.push({ race: `Campera ${grp} · ${{ ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru']}`, date: translateShortDate('12 апр'), pts: pts1, pos: r.pos, beg });
+        map[key].races.push({ race: `Campera ${grp} · ${{ ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru']}`, date: translateShortDate('12 апр'), pts: pts1, pos: p1.get(r), beg });
       }
       if (r.r2 !== null && r.r2 !== undefined) {
         const pts2 = fixBase(r.r2) + (r.r2fl ? 1 : 0);
-        map[key].races.push({ race: `Campera ${grp} · ${{ ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru']}`, date: translateShortDate('12 апр'), pts: pts2, pos: r.pos, beg });
+        map[key].races.push({ race: `Campera ${grp} · ${{ ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru']}`, date: translateShortDate('12 апр'), pts: pts2, pos: p2.get(r), beg });
       }
     });
   });
 
   // KIP 23.05: R1 и R2 как отдельные этапы
-  RACES[2].groups[0].results.forEach(r => {
-    const key = norm(r.handle) || norm(r.name);
-    if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
-    const beg = isBegForEvent(key, 'kip');
-    if (r.r1 !== null && r.r1 !== undefined) {
-      const pts1 = fixKipBase(r.r1) + (r.r1fl ? 1 : 0);
-      map[key].races.push({ race: `KIP 23.05 · ${{ ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru']}`, date: translateShortDate('23 мая'), pts: pts1, pos: r.pos, beg });
-    }
-    if (r.r2 !== null && r.r2 !== undefined) {
-      const pts2 = fixKipBase(r.r2) + (r.r2fl ? 1 : 0);
-      map[key].races.push({ race: `KIP 23.05 · ${{ ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru']}`, date: translateShortDate('23 мая'), pts: pts2, pos: r.pos, beg });
-    }
-  });
+  {
+    const res = RACES[2].groups[0].results;
+    const p1 = raceFinishPos(res, 'r1');
+    const p2 = raceFinishPos(res, 'r2');
+    res.forEach(r => {
+      const key = keyOf(r.handle, r.name);
+      if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
+      const beg = isBegForEvent(key, 'kip');
+      if (r.r1 !== null && r.r1 !== undefined) {
+        const pts1 = fixKipBase(r.r1) + (r.r1fl ? 1 : 0);
+        map[key].races.push({ race: `KIP 23.05 · ${{ ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru']}`, date: translateShortDate('23 мая'), pts: pts1, pos: p1.get(r), beg });
+      }
+      if (r.r2 !== null && r.r2 !== undefined) {
+        const pts2 = fixKipBase(r.r2) + (r.r2fl ? 1 : 0);
+        map[key].races.push({ race: `KIP 23.05 · ${{ ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru']}`, date: translateShortDate('23 мая'), pts: pts2, pos: p2.get(r), beg });
+      }
+    });
+  }
 
   // Almeirim 06.06: R1 и R2 как отдельные этапы
-  RACES[3].groups[0].results.forEach(r => {
-    const key = norm(r.handle) || norm(r.name);
-    if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
-    const beg = isBegForEvent(key, 'almeirim');
-    if (r.r1 !== null && r.r1 !== undefined) {
-      const pts1 = fixBase(r.r1) + (r.r1fl ? 1 : 0);
-      map[key].races.push({ race: `Almeirim 06.06 · ${{ ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru']}`, date: translateShortDate('6 июн'), pts: pts1, pos: r.pos, beg });
-    }
-    if (r.r2 !== null && r.r2 !== undefined) {
-      const pts2 = fixBase(r.r2) + (r.r2fl ? 1 : 0);
-      map[key].races.push({ race: `Almeirim 06.06 · ${{ ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru']}`, date: translateShortDate('6 июн'), pts: pts2, pos: r.pos, beg });
-    }
-  });
+  {
+    const res = RACES[3].groups[0].results;
+    const p1 = raceFinishPos(res, 'r1');
+    const p2 = raceFinishPos(res, 'r2');
+    res.forEach(r => {
+      const key = keyOf(r.handle, r.name);
+      if (!map[key]) map[key] = { name: r.name, handle: r.handle||'', hideHandle: r.hideHandle||false, races: [] };
+      const beg = isBegForEvent(key, 'almeirim');
+      if (r.r1 !== null && r.r1 !== undefined) {
+        const pts1 = fixModernBase(r.r1) + (r.r1fl ? 1 : 0);
+        map[key].races.push({ race: `Almeirim 06.06 · ${{ ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru']}`, date: translateShortDate('6 июн'), pts: pts1, pos: p1.get(r), beg });
+      }
+      if (r.r2 !== null && r.r2 !== undefined) {
+        const pts2 = fixModernBase(r.r2) + (r.r2fl ? 1 : 0);
+        map[key].races.push({ race: `Almeirim 06.06 · ${{ ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru']}`, date: translateShortDate('6 июн'), pts: pts2, pos: p2.get(r), beg });
+      }
+    });
+  }
 
   return Object.entries(map).map(([key, d]) => {
     const n = d.races.length;
@@ -1954,7 +2029,7 @@ function renderResults(idx) {
     const fl = r.fl ? ` <span style="font-size:9px;color:var(--accent-red);">⚡FL</span>` : '';
     const photo = getPhoto(r.handle, r.name);
     const av = avatarDiv(photo, r.name[0], 32);
-    html += `<div class="result-row ${pc}" onclick="openProfile('${norm(r.handle)||norm(r.name)}')">
+    html += `<div class="result-row ${pc}" onclick="openProfile('${keyOf(r.handle, r.name)}')">
       <div class="res-pos">${r.pos}</div>
       <div style="display:flex;align-items:center;gap:8px;">
         ${av}
@@ -2036,7 +2111,7 @@ function countFastestLaps(key) {
   RACES.forEach(race => {
     race.groups.forEach(group => {
       group.results.forEach(r => {
-        const k = norm(r.handle) || norm(r.name);
+        const k = keyOf(r.handle, r.name);
         if (k === key) {
           if (r.r1fl) count++;
           if (r.r2fl) count++;
