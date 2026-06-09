@@ -349,6 +349,7 @@
   <!-- ── ПРОШЕДШИЕ ── -->
   <div class="inner-panel" id="tab-results">
     <div class="race-selector" id="race-chips"></div>
+    <div id="race-photo"></div>
     <div id="race-nominations"></div>
     <div class="results-table">
       <div class="res-table-header">
@@ -1939,7 +1940,7 @@ function renderRaceNominations(raceId) {
     return `<div class="nom-card" style="position:relative;">
       <div class="nom-icon">${icon}</div>
       <div class="nom-title">${title}</div>
-      <div style="display:flex;align-items:center;gap:7px;margin-top:2px;">${av}<div class="nom-driver">${driver ? driver.name.split(' ')[0] : ''}</div></div>
+      <div style="display:flex;align-items:center;gap:7px;margin-top:2px;">${av}<div class="nom-driver">${driver ? (driver.name.split(' ')[0] + (driver.name.split(' ')[1] ? ' ' + driver.name.split(' ')[1][0] + '.' : '')) : ''}</div></div>
       ${desc ? `<div class="nom-desc">${desc}</div>` : ''}
     </div>`;
   };
@@ -2123,10 +2124,14 @@ function renderResults(idx) {
   }
 
   const photoSrc = v.photo ? RACE_PHOTOS[v.photo] : null;
-  let html = photoSrc
+  let photoHtml = photoSrc
     ? `<div style="width:100%;aspect-ratio:4/3;max-height:220px;overflow:hidden;border-radius:10px;margin-bottom:10px;"><img src="${photoSrc}" onerror="this.closest('div').style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="race photo"></div>`
     : '';
-  html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">${venueLogoTile((v.chipLabel||'') + ' ' + (v.location||''), 40)}<div class="res-sub" style="margin:0;">${v.date} · ${v.groupLabel || v.location}</div></div>`;
+  photoHtml += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">${venueLogoTile((v.chipLabel||'') + ' ' + (v.location||''), 40)}<div class="res-sub" style="margin:0;">${v.date} · ${v.groupLabel || v.location}</div></div>`;
+  const photoEl = document.getElementById('race-photo');
+  if (photoEl) photoEl.innerHTML = photoHtml;
+
+  let html = '';
   v.results.forEach(r => {
     const pc = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
     const fl = r.fl ? ` <span style="font-size:9px;color:var(--accent-red);">⚡FL</span>` : '';
