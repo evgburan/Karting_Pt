@@ -281,7 +281,12 @@ function renderContent(measure) {
   ctx.textBaseline = 'alphabetic';
   ctx.textAlign = 'left';
 
-  const put = (text, x, yy, color) => { if (!measure) { ctx.fillStyle = color; ctx.fillText(text, x, yy); } };
+  const put = (text, x, yy, color) => {
+    if (measure) return;
+    ctx.shadowColor = 'rgba(0,0,0,0.65)'; ctx.shadowBlur = 10;
+    ctx.fillStyle = color; ctx.fillText(text, x, yy);
+    ctx.shadowBlur = 0;
+  };
 
   // Быстрейший круг
   const fl = v('fl');
@@ -374,14 +379,22 @@ function draw() {
   if (img) drawCover(img, W, H);
   else { ctx.fillStyle = '#1a1a1a'; ctx.fillRect(0, 0, W, H); }
 
-  // Проход 1: меряем контент → затемнение ровно под него, фото выше остаётся чистым
+  // Проход 1: меряем контент. Затемнение двухслойное и умеренное:
+  // мягкий низ по всей ширине + диагональ слева, где сидит текст.
+  // Люди в правой части кадра остаются видимыми.
   const contentTop = renderContent(true);
   const gTop = Math.max(0, contentTop - 150);
-  const g = ctx.createLinearGradient(0, gTop, 0, H);
-  g.addColorStop(0, 'rgba(0,0,0,0)');
-  g.addColorStop(0.22, 'rgba(0,0,0,0.62)');
-  g.addColorStop(1, 'rgba(0,0,0,0.92)');
-  ctx.fillStyle = g;
+  const gV = ctx.createLinearGradient(0, gTop, 0, H);
+  gV.addColorStop(0, 'rgba(0,0,0,0)');
+  gV.addColorStop(0.3, 'rgba(0,0,0,0.3)');
+  gV.addColorStop(1, 'rgba(0,0,0,0.55)');
+  ctx.fillStyle = gV;
+  ctx.fillRect(0, gTop, W, H - gTop);
+  const gH = ctx.createLinearGradient(0, 0, W * 0.85, 0);
+  gH.addColorStop(0, 'rgba(0,0,0,0.5)');
+  gH.addColorStop(0.6, 'rgba(0,0,0,0.22)');
+  gH.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = gH;
   ctx.fillRect(0, gTop, W, H - gTop);
 
   // Проход 2: рисуем контент
