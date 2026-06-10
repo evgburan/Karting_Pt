@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карточка для канала · Катаемся Чатом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f4f4f0; --surface:#fff; --border:#e0e0d8;
+    --accent-red:#d93025; --text:#1a1a1a; --muted:#888;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif; padding:20px 14px 60px; }
+  .wrap { max-width:520px; margin:0 auto; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px; }
+  h1 em { font-style:normal; color:var(--accent-red); }
+  .sub { font-size:12px; color:var(--muted); margin-bottom:16px; }
+  .card-ui { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:14px; }
+  label { display:block; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:10px 0 4px; }
+  label:first-child { margin-top:0; }
+  input[type=text] { width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 11px; font-size:14px; font-family:'Barlow',sans-serif; background:var(--bg); }
+  .row { display:flex; gap:8px; }
+  .row > div { flex:1; }
+  .photo-btn { display:block; width:100%; border:1px dashed var(--border); border-radius:8px; padding:14px; text-align:center; font-size:13px; color:var(--muted); cursor:pointer; background:var(--bg); }
+  .fmt { display:flex; gap:6px; margin-top:4px; }
+  .fmt button { flex:1; border:1px solid var(--border); background:var(--bg); border-radius:8px; padding:8px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; cursor:pointer; color:var(--muted); }
+  .fmt button.active { background:var(--text); color:#fff; border-color:var(--text); }
+  .dl { display:block; width:100%; background:var(--accent-red); color:#fff; border:none; border-radius:10px; padding:14px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; margin-top:14px; }
+  canvas { width:100%; height:auto; border-radius:12px; border:1px solid var(--border); display:block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Карточка <em>для канала</em></h1>
+  <div class="sub">Фото + фирменная плашка → PNG для поста в Telegram</div>
+
+  <div class="card-ui">
+    <label>Фото (подиум / трасса)</label>
+    <input type="file" id="photo" accept="image/*" style="display:none" onchange="onPhoto(this)">
+    <div class="photo-btn" id="photo-btn" onclick="document.getElementById('photo').click()">📷 Выбрать фото</div>
+
+    <label>Заголовок</label>
+    <input type="text" id="title" value="РЕЗУЛЬТАТЫ" oninput="draw()">
+
+    <label>Дата · трасса</label>
+    <input type="text" id="eyebrow" value="6 Июн · Kartódromo de Almeirím" oninput="draw()">
+
+    <label>Подиум (пусто — не показывать)</label>
+    <input type="text" id="p1" placeholder="🥇 Имя" style="margin-bottom:6px" oninput="draw()">
+    <input type="text" id="p2" placeholder="🥈 Имя" style="margin-bottom:6px" oninput="draw()">
+    <input type="text" id="p3" placeholder="🥉 Имя" oninput="draw()">
+
+    <label>Быстрейший круг (опционально)</label>
+    <input type="text" id="fl" placeholder="Имя · 56.339" oninput="draw()">
+
+    <label>Формат</label>
+    <div class="fmt">
+      <button id="fmt45" class="active" onclick="setFmt(1080,1350,this)">4:5 · Лента</button>
+      <button id="fmt11" onclick="setFmt(1080,1080,this)">1:1 · Квадрат</button>
+    </div>
+  </div>
+
+  <canvas id="c" width="1080" height="1350"></canvas>
+  <button class="dl" onclick="download()">⬇ Скачать PNG</button>
+</div>
+
+<script>
+const RED = '#d93025';
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+let img = null;
+
+function setFmt(w, h, btn) {
+  cv.width = w; cv.height = h;
+  document.querySelectorAll('.fmt button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  draw();
+}
+
+function onPhoto(input) {
+  const f = input.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    img = new Image();
+    img.onload = () => { document.getElementById('photo-btn').textContent = '✓ ' + f.name; draw(); };
+    img.src = e.target.result;
+  };
+  r.readAsDataURL(f);
+}
+
+// cover-fit фото на весь холст
+function drawCover(image, W, H) {
+  const ir = image.width / image.height, cr = W / H;
+  let dw, dh;
+  if (ir > cr) { dh = H; dw = H * ir; } else { dw = W; dh = W / ir; }
+  ctx.drawImage(image, (W - dw) / 2, (H - dh) / 2, dw, dh);
+}
+
+function v(id) { return document.getElementById(id).value.trim(); }
+
+function draw() {
+  const W = cv.width, H = cv.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Фон: фото или тёмная заглушка
+  if (img) drawCover(img, W, H);
+  else { ctx.fillStyle = '#1a1a1a'; ctx.fillRect(0, 0, W, H); }
+
+  // Градиент снизу — читаемость текста на любом фото
+  const g = ctx.createLinearGradient(0, H * 0.45, 0, H);
+  g.addColorStop(0, 'rgba(0,0,0,0)');
+  g.addColorStop(1, 'rgba(0,0,0,0.86)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+
+  const PAD = 64;
+  let y = H - PAD;
+
+  ctx.textBaseline = 'alphabetic';
+
+  // Быстрейший круг
+  const fl = v('fl');
+  if (fl) {
+    ctx.font = '500 34px Barlow';
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.fillText('⚡ ' + fl, PAD, y);
+    y -= 58;
+  }
+
+  // Подиум — снизу вверх: 3, 2, 1
+  const podium = [['🥉', v('p3')], ['🥈', v('p2')], ['🥇', v('p1')]];
+  podium.forEach(([medal, name], i) => {
+    if (!name) return;
+    const big = i === 2; // 🥇
+    ctx.font = (big ? '900 64px' : '700 52px') + " 'Barlow Condensed'";
+    ctx.fillStyle = '#fff';
+    ctx.fillText(medal + '  ' + name.replace(/^🥇|^🥈|^🥉/, '').trim().toUpperCase(), PAD, y);
+    y -= big ? 86 : 70;
+  });
+  y -= 14;
+
+  // Заголовок
+  const title = v('title') || 'РЕЗУЛЬТАТЫ';
+  ctx.font = "900 108px 'Barlow Condensed'";
+  ctx.fillStyle = '#fff';
+  ctx.fillText(title.toUpperCase(), PAD, y);
+  const titleW = ctx.measureText(title.toUpperCase()).width;
+
+  // Красная плашка над заголовком: дата · трасса
+  const eyebrow = v('eyebrow');
+  if (eyebrow) {
+    const ey = y - 122;
+    ctx.font = "700 38px 'Barlow Condensed'";
+    const tw = ctx.measureText(eyebrow.toUpperCase()).width;
+    ctx.fillStyle = RED;
+    ctx.fillRect(PAD, ey - 46, tw + 44, 64);
+    ctx.fillStyle = '#fff';
+    ctx.fillText(eyebrow.toUpperCase(), PAD + 22, ey);
+  }
+
+  // Красная линия-акцент под заголовком
+  ctx.fillStyle = RED;
+  ctx.fillRect(PAD, y + 18, Math.min(titleW, W - PAD * 2), 10);
+
+  // Брендинг: верхний левый угол
+  ctx.font = "900 44px 'Barlow Condensed'";
+  ctx.fillStyle = '#fff';
+  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 14;
+  ctx.fillText('КАТАЕМСЯ', PAD, PAD + 38);
+  ctx.fillStyle = RED;
+  ctx.fillText('ЧАТОМ', PAD + ctx.measureText('КАТАЕМСЯ ').width, PAD + 38);
+  ctx.shadowBlur = 0;
+
+  // racechat.pt: верхний правый
+  ctx.font = "700 34px 'Barlow Condensed'";
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  ctx.textAlign = 'right';
+  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 14;
+  ctx.fillText('RACECHAT.PT', W - PAD, PAD + 36);
+  ctx.shadowBlur = 0;
+  ctx.textAlign = 'left';
+}
+
+function download() {
+  cv.toBlob(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'racechat-card.png';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }, 'image/png');
+}
+
+// Шрифты должны загрузиться до первой отрисовки канваса
+document.fonts.load("900 108px 'Barlow Condensed'")
+  .then(() => document.fonts.load("700 38px 'Barlow Condensed'"))
+  .then(() => document.fonts.load("500 34px Barlow"))
+  .then(draw);
+draw();
+</script>
+</body>
+</html>
