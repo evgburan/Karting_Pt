@@ -42,7 +42,7 @@
     border-bottom: 1px solid var(--border);
     padding: 0 16px; display: flex; align-items: center; justify-content: space-between; height: 50px;
   }
-  .logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; color: var(--text); text-transform: uppercase; line-height: 1.1; }
+  .logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; color: var(--text); text-transform: uppercase; line-height: 1.1; cursor: pointer; }
   .logo em { font-style: normal; color: var(--accent-red); }
   .nav-meta { font-size: 11px; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
   .lang-switcher { display: flex; gap: 2px; }
@@ -355,6 +355,7 @@
   <!-- ── ПРОШЕДШИЕ ── -->
   <div class="inner-panel" id="tab-results">
     <div class="race-selector" id="race-chips"></div>
+    <div id="race-photo"></div>
     <div id="race-nominations"></div>
     <div class="results-table">
       <div class="res-table-header">
@@ -490,6 +491,20 @@
       <button class="btn-reg" style="margin-top:16px;" id="fb-submit" onclick="submitFeedback()">Отправить отзыв →</button>
     </div>
     <div id="fb-after" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- HIDDEN: SAFETY RESULTS (#safety) -->
+<div class="page" id="page-safety">
+  <div class="page-header">
+    <button class="hp-back" onclick="goHome()">← <span id="safe-back">Катаемся Чатом</span></button>
+    <div class="page-eyebrow" id="safe-eyebrow" style="margin-top:8px;">Almeirím · Safety Rating</div>
+    <div class="page-title" id="safe-title">Итоги голосования</div>
+  </div>
+  <div style="padding:0 14px;">
+    <div class="hp-intro" id="safe-intro"></div>
+    <div id="safe-stats" style="display:flex;gap:8px;margin-bottom:16px;"></div>
+    <div id="safe-list"></div>
   </div>
 </div>
 
@@ -932,6 +947,43 @@ Object.assign(I18N.en, {
   results_soon: 'Results will be published soon.',
 });
 
+Object.assign(I18N.ru, {
+  safe_back: 'Катаемся Чатом',
+  safe_eyebrow: 'Almeirím · Safety Rating',
+  safe_title: 'Итоги голосования',
+  safe_intro: 'Как гонщики оценили друг друга по чистоте борьбы на трассе. 🟢 — поборолись чисто, 🟡 — есть вопросы по вождению. Голосование анонимное.',
+  safe_cta: 'Итоги Safety Rating',
+  safe_clean_lbl: 'Едут чисто',
+  safe_quest_lbl: 'Есть вопросы',
+  safe_stat_voters: 'проголосовало',
+  safe_stat_drivers: 'оценено',
+  safe_stat_votes: 'голосов',
+});
+Object.assign(I18N.pt, {
+  safe_back: 'Kataemsya Chatom',
+  safe_eyebrow: 'Almeirím · Safety Rating',
+  safe_title: 'Resultados da votação',
+  safe_intro: 'Como os pilotos se avaliaram quanto à limpeza da disputa em pista. 🟢 — corrida limpa, 🟡 — dúvidas na condução. A votação é anónima.',
+  safe_cta: 'Resultados Safety Rating',
+  safe_clean_lbl: 'Pilotagem limpa',
+  safe_quest_lbl: 'Com dúvidas',
+  safe_stat_voters: 'votaram',
+  safe_stat_drivers: 'avaliados',
+  safe_stat_votes: 'votos',
+});
+Object.assign(I18N.en, {
+  safe_back: 'Kataemsya Chatom',
+  safe_eyebrow: 'Almeirím · Safety Rating',
+  safe_title: 'Voting results',
+  safe_intro: 'How drivers rated each other on clean racing. 🟢 — clean battle, 🟡 — questions about driving. The vote is anonymous.',
+  safe_cta: 'Safety Rating results',
+  safe_clean_lbl: 'Clean drivers',
+  safe_quest_lbl: 'Questions raised',
+  safe_stat_voters: 'voted',
+  safe_stat_drivers: 'rated',
+  safe_stat_votes: 'votes',
+});
+
 function t(k) { return I18N[_lang][k] || I18N['ru'][k] || k; }
 
 function setLang(lang) {
@@ -1036,6 +1088,9 @@ function setLang(lang) {
   if (nomEl2) nomEl2.innerHTML = renderNominations();
   if (typeof renderVoteList === 'function') renderVoteList();
   if (typeof applyFeedbackLang === 'function') applyFeedbackLang();
+  if (typeof renderSafetyResults === 'function' &&
+      document.getElementById('page-safety') &&
+      document.getElementById('page-safety').classList.contains('active')) renderSafetyResults();
 }
 
 // DATA
@@ -1050,6 +1105,28 @@ const RACE_PHOTOS = {
   'almeirim_podium': 'photos/almeirim-podium.jpg',
 };
 
+// Логотипы картодромов (квадратные плитки в photos/)
+const VENUE_LOGOS = {
+  kiro:     'photos/venue-kiro.png',
+  campera:  'photos/venue-campera.png',
+  kip:      'photos/venue-kip.png',
+  almeirim: 'photos/venue-almeirim.png',
+};
+function venueLogoFor(text) {
+  const s = text || '';
+  if (/KIRO/i.test(s))          return VENUE_LOGOS.kiro;
+  if (/Campera/i.test(s))       return VENUE_LOGOS.campera;
+  if (/KIP|Palmela/i.test(s))   return VENUE_LOGOS.kip;
+  if (/Almeir/i.test(s))        return VENUE_LOGOS.almeirim;
+  return null;
+}
+function venueLogoTile(text, size) {
+  const src = venueLogoFor(text);
+  if (!src) return '';
+  const sz = size || 40;
+  return `<img src="${src}" onerror="this.style.display='none'" alt="" style="width:${sz}px;height:${sz}px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;background:var(--surface2);">`;
+}
+
 // Начинающие: true = да
 // Начинающие per-event — гонка идёт в зачёт начинающих ТОЛЬКО если гонщик
 // отметился начинающим именно на этой гонке
@@ -1061,6 +1138,7 @@ const BEGINNERS = {
   'campera-apr': new Set([
     'vankastor', 'uzlos', 'mike1844', 'kivy13', 'borisovdm', 'sqmme', 'victorianiki',
     'edititov', 'gramuserrt', 'wijuwiju', 'fikuspikus333', 'olegka060400', 'oleg_svirskiy',
+    'ilikru',              // Ilia Nikolaev — начинающий во всех гонках
   ]),
   kip: new Set([
     'spillere',            // Daniel Andrade
@@ -1078,6 +1156,7 @@ const BEGINNERS = {
     'riskingh',            // Maksim Grishkin
   ]),
   almeirim: new Set([
+    'ilikru',              // Ilia — начинающий во всех гонках
     'ilyushinas',          // Aleksandr Ilyushin
     'karen_makaren',       // Karen M
     'anton kent',          // Anton Kent (без handle)
@@ -1251,36 +1330,157 @@ const RACES = [
 
 // Safety votes — KIP Palmela 23 мая 2026
 // ключ: handle без @ в нижнем регистре
-const SAFETY_VOTES = {
-  'dimasccd':              { pos: 2, neg: 0 },
-  'igor a':                { pos: 3, neg: 0 },
-  'renatashrafedinov':     { pos: 1, neg: 0 },
-  'evgenybu':              { pos: 2, neg: 0 },
-  'conkylot':              { pos: 1, neg: 2 },
-  'fire_wheels':           { pos: 1, neg: 1 },
-  'moresabbath':           { pos: 1, neg: 0 },
-  'peterprins':            { pos: 3, neg: 0 },
-  'just_igor_q':           { pos: 2, neg: 0 },
-  'ilyushinas':            { pos: 1, neg: 0 },
-  'iva_capital':           { pos: 1, neg: 0 },
-  'karen_makaren':         { pos: 1, neg: 0 },
-  'apexpc721':             { pos: 1, neg: 0 },
-  'sxuxs':                 { pos: 1, neg: 0 },
-  'kamilla_ashrafedinova': { pos: 1, neg: 1 },
-};
-// Гонщики без handle — по имени
-const SAFETY_BY_NAME = {
-  'ben piche': { pos: 1, neg: 0 },
-};
+// Бейджи Safety Rating в профилях. Единый источник — ALMEIRIM_SAFETY (ниже).
+// Заполняется автоматически, держать цифры в одном месте.
+const SAFETY_VOTES = {};   // по handle (без @, в нижнем регистре)
+const SAFETY_BY_NAME = {}; // гонщики без handle — по имени
 
 function getSafety(handle, name) {
   const h = (handle||'').replace('@','').toLowerCase().trim();
   const n = (name||'').toLowerCase().trim();
   const v = (h && SAFETY_VOTES[h]) || (n && SAFETY_BY_NAME[n]) || { pos: 0, neg: 0 };
-  const rating = v.neg > 0 ? 'y' : 'g';
+  // Жёлтый только если есть 🟡 И плюсы их НЕ перекрывают (neg >= pos). Иначе зелёный.
+  const rating = (v.neg > 0 && v.neg >= v.pos) ? 'y' : 'g';
   return { rating, pos: v.pos, neg: v.neg };
 }
 function SAFETY_LABEL(r){ return I18N[_lang||'ru'].safety[r]||I18N['ru'].safety[r]; }
+
+// ── Итоги Safety Rating — Almeirím 06.06.2026 ──────────────────
+// pos = 🟢 «чисто», neg = 🟡 «вопросы». voters — всего проголосовало.
+const ALMEIRIM_SAFETY = {
+  voters: 6,
+  drivers: [
+    { name: 'Igor Arkhangelskii',   handle: '@Igor A',            pos: 4, neg: 0 },
+    { name: 'Igor Rybakou',         handle: '@just_igor_q',       pos: 4, neg: 0 },
+    { name: 'Evgeny Buran',         handle: '@evgenybu',          pos: 3, neg: 0 },
+    { name: 'Dimas Calcai',         handle: '@dimasccd',          pos: 2, neg: 0 },
+    { name: 'Sasha Yelkhovenka',    handle: '@fire_wheels',       pos: 1, neg: 0 },
+    { name: 'Vladislav Shkutte',    handle: '@Moresabbath',       pos: 1, neg: 0 },
+    { name: 'Karen M',              handle: '@karen_makaren',     pos: 1, neg: 0 },
+    { name: 'Yarik',                handle: '@yaroslav_adv',      pos: 1, neg: 0 },
+    { name: 'Leonid Kondratev',     handle: '@sxuxs',             pos: 1, neg: 0 },
+    { name: 'Ilia',                 handle: '@ilikru',            pos: 1, neg: 0 },
+    { name: 'Oleg Andrusiv',        handle: '@zemlyanen',         pos: 1, neg: 0 },
+    { name: 'Miguel Bento',         handle: '',                   pos: 1, neg: 0 },
+    { name: 'Anton Kent',           handle: '',                   pos: 1, neg: 0 },
+    { name: 'Renat Ashrafedinov',   handle: '@Renatashrafedinov', pos: 3, neg: 1 },
+    { name: 'Demetrius Clemente',   handle: '@Klim_Dmytro',       pos: 2, neg: 2 },
+    { name: 'Aleksandr Ilyushin',   handle: '@IlyushinAS',        pos: 1, neg: 1 },
+    { name: 'evgenii lisnianskii',  handle: '@leeseeq',           pos: 1, neg: 1 },
+  ],
+};
+
+// ── Итоги Safety Rating — KIP Palmela 23.05.2026 (только ненулевые) ──
+const KIP_SAFETY = {
+  voters: null,
+  drivers: [
+    { name: 'Igor Arkhangelskii',   handle: '@Igor A',                pos: 3, neg: 0 },
+    { name: 'Peter Prins',          handle: '@peterprins',            pos: 3, neg: 0 },
+    { name: 'Dimas Calcai',         handle: '@dimasccd',              pos: 2, neg: 0 },
+    { name: 'Evgeny Buran',         handle: '@evgenybu',              pos: 2, neg: 0 },
+    { name: 'Igor Rybakou',         handle: '@just_igor_q',           pos: 2, neg: 0 },
+    { name: 'Ben Piche',            handle: '',                       pos: 1, neg: 0 },
+    { name: 'Renat Ashrafedinov',   handle: '@Renatashrafedinov',     pos: 1, neg: 0 },
+    { name: 'Vladislav Shkutte',    handle: '@moresabbath',           pos: 1, neg: 0 },
+    { name: 'Aleksandr Iliushin',   handle: '@IlyushinAS',            pos: 1, neg: 0 },
+    { name: 'Viktor Ivanov',        handle: '@iva_capital',           pos: 1, neg: 0 },
+    { name: 'Karen M',              handle: '@karen_makaren',         pos: 1, neg: 0 },
+    { name: 'Platon Chekurov',      handle: '@APEXPC721',             pos: 1, neg: 0 },
+    { name: 'Leonid Kondratev',     handle: '@sxuxs',                 pos: 1, neg: 0 },
+    { name: 'Denys Belimenko',      handle: '@conkylot',              pos: 1, neg: 2 },
+    { name: 'Sasha Yelkhovenka',    handle: '@fire_wheels',           pos: 1, neg: 1 },
+    { name: 'Kamilla Ashrafedinova',handle: '@kamilla_ashrafedinova', pos: 1, neg: 1 },
+  ],
+};
+
+// Сводка по гонкам для номинаций «прошедших»
+const RACE_SAFETY = { 'kip-may': KIP_SAFETY, 'almeirim-jun': ALMEIRIM_SAFETY };
+
+// Бейджи в профилях = СУММА всех гонок (KIP + Almeirím), а не только последней.
+(function aggregateSafety() {
+  const agg = {};
+  [KIP_SAFETY, ALMEIRIM_SAFETY].forEach(ds => ds.drivers.forEach(x => {
+    const h = (x.handle||'').replace('@','').toLowerCase().trim();
+    const key = h || ('@name:' + (x.name||'').toLowerCase().trim());
+    if (!agg[key]) agg[key] = { pos: 0, neg: 0, handle: h };
+    agg[key].pos += x.pos; agg[key].neg += x.neg;
+  }));
+  Object.entries(agg).forEach(([key, v]) => {
+    if (v.handle) SAFETY_VOTES[v.handle] = { pos: v.pos, neg: v.neg };
+    else SAFETY_BY_NAME[key.slice('@name:'.length)] = { pos: v.pos, neg: v.neg };
+  });
+})();
+
+// Деление на группы по балансу голосов (тот же критерий, что и бейдж в профиле).
+//   quest — 🟡 есть 🟡 И плюсы их НЕ перекрывают (neg >= pos)
+//   clean — все остальные (🟢 без вопросов или плюсы перевешивают)
+function safetyGroupsFor(ds) {
+  const a = ds.drivers;
+  const isQuest = d => d.neg > 0 && d.neg >= d.pos;
+  return {
+    clean: a.filter(d => !isQuest(d)).sort((x, y) => y.pos - x.pos || x.name.localeCompare(y.name)),
+    quest: a.filter(isQuest).sort((x, y) => y.neg - x.neg || y.pos - x.pos),
+  };
+}
+// Лидеры по чистоте (для номинации 🤝): 🟢 без вопросов и 3+ голоса.
+function cleanLeaders(ds) { return safetyGroupsFor(ds).clean.filter(d => d.neg === 0 && d.pos >= 3); }
+// «Обратить внимание» (⚠️) — ровно группа quest (минусы не перекрыты).
+function attentionList(ds) { return safetyGroupsFor(ds).quest; }
+
+function safetyGroups() {
+  return safetyGroupsFor(ALMEIRIM_SAFETY);
+}
+
+function renderSafetyResults() {
+  const page = document.getElementById('page-safety');
+  if (!page) return;
+  document.getElementById('safe-eyebrow').textContent = t('safe_eyebrow');
+  document.getElementById('safe-title').textContent = t('safe_title');
+  document.getElementById('safe-intro').textContent = t('safe_intro');
+  document.getElementById('safe-back').textContent = t('safe_back');
+
+  // Анонимное голосование — счётчик проголосовавших не показываем.
+  const statsEl = document.getElementById('safe-stats');
+  statsEl.style.display = 'none';
+  statsEl.innerHTML = '';
+
+  const { clean, quest } = safetyGroups();
+
+  // Фото с подиума
+  const podSrc = RACE_PHOTOS['almeirim_podium'] || null;
+  let html = `<div style="width:100%;border-radius:12px;overflow:hidden;margin:0 0 14px;aspect-ratio:1400/504;background:var(--surface2);">${
+    podSrc ? `<img src="${podSrc}" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">` : _podiumPlaceholder()
+  }</div>`;
+
+  // Номинации-хайлайты (из тех же итогов)
+  const multiNomCard = (icon, title, list) => {
+    if (!list.length) return '';
+    const avs = list.map(x => `<div style="display:flex;align-items:center;gap:6px;">${avatarDiv(getPhoto(x.handle, x.name), x.name[0], 28)}<div class="nom-driver">${x.name.split(' ')[0]} ${x.name.split(' ')[1]?.[0]||''}.</div></div>`).join('<div style="color:var(--muted2);font-size:11px;">·</div>');
+    return `<div class="nom-card" style="position:relative;"><div class="nom-icon">${icon}</div><div class="nom-title">${title}</div><div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div></div>`;
+  };
+  const noms = multiNomCard('🤝', t('safe_clean_lbl'), cleanLeaders(ALMEIRIM_SAFETY))
+             + multiNomCard('⚠️', t('safe_quest_lbl'), attentionList(ALMEIRIM_SAFETY));
+  if (noms) html += `<div class="nom-cards" style="margin-bottom:16px;">${noms}</div>`;
+
+  // Полный список с аватарками
+  const row = (x, s) => {
+    const vh = visHandle(x.handle, false);
+    const counts = `${x.pos > 0 ? `<span style="color:var(--green);font-weight:700;">${x.pos} 🟢</span>` : ''}${x.neg > 0 ? `<span style="color:var(--yellow);font-weight:700;margin-left:8px;">${x.neg} 🟡</span>` : ''}`;
+    const key = driverKey(x.handle, x.name);
+    return `<div class="driver-card" style="margin:0 0 8px;" onclick="openProfile('${key}')">
+        ${avatarDiv(getPhoto(x.handle, x.name), x.name[0], 36)}
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:14px;">${x.name}</div>
+          ${vh ? `<div style="font-size:11px;color:var(--muted);">${vh}</div>` : ''}
+        </div>
+        <div style="font-size:13px;white-space:nowrap;">${counts}</div>
+      </div>`;
+  };
+
+  if (clean.length) html += `<div class="section-lbl" style="margin:6px 0 8px;">🟢 ${t('safe_clean_lbl')}</div>` + clean.map(x => row(x, 'g')).join('');
+  if (quest.length) html += `<div class="section-lbl" style="margin:18px 0 8px;">🟡 ${t('safe_quest_lbl')}</div>` + quest.map(x => row(x, 'y')).join('');
+  document.getElementById('safe-list').innerHTML = html;
+}
 
 // KIP DETAIL — KIP Palmela · 23 мая 2026 (детальные данные для номинаций в «Прошедших»)
 // qualifying = позиция в квалификации (для номинации «Прорыв»)
@@ -1288,12 +1488,6 @@ function SAFETY_LABEL(r){ return I18N[_lang||'ru'].safety[r]||I18N['ru'].safety[
 const KIP_DETAIL = {
   title: 'KIP Palmela · 23 мая 2026',
   location: 'Kartódromo Internacional de Palmela',
-  flTimes: { r1: '1:04.007', r2: '1:04.209' },
-  // Итоги голосования сообщества (#vote) — данные, а не хардкод в рендере
-  nominations: {
-    clean: { names: ['Igor Arkhangelskii', 'Peter Prins'], votesEach: 3 },
-    dirty: { name: 'Denys Belimenko', votes: 2 },
-  },
   groups: [
     {
       label: null,
@@ -1371,11 +1565,13 @@ const LAST_RACE = {
   ]
 };
 
-// Реестр детальных данных этапов (квалификации/финиши) для номинаций
-// в «Прошедших». Ключ = id этапа в RACES.
-const RACE_DETAILS = {
-  'kip-may': KIP_DETAIL,
-  'almeirim-jun': LAST_RACE,
+// Номинации «Чистая борьба» / «Есть вопросы» — из итогов Safety Rating (Almeirím).
+// Общий источник (safetyGroupsFor), так что списки совпадают с другими экранами:
+//   clean — 🟢 лидеры (3+ голоса);
+//   dirty — ⚠️ те, у кого есть 🟡 и плюсы НЕ перевешивают минусы (neg >= pos).
+LAST_RACE.nominations = {
+  clean: cleanLeaders(ALMEIRIM_SAFETY).map(d => d.name),
+  dirty: attentionList(ALMEIRIM_SAFETY).map(d => d.name),
 };
 
 function renderLastRace() {
@@ -1390,7 +1586,7 @@ function renderLastRace() {
     charge:   { ru:'Мощный прорыв',   en:'Big charge',   pt:'Grande remontada' },
     phoenix:  { ru:'Феникс',          en:'Phoenix',      pt:'Fénix' },
     clean:    { ru:'Чистая борьба',   en:'Clean racing', pt:'Pilotagem limpa' },
-    dirty:    { ru:'Жёстко ездит!',   en:'Rough driver', pt:'Pilotagem dura' },
+    dirty:    { ru:'Есть вопросы',   en:'Questions raised', pt:'Com dúvidas' },
     pending:  { ru:'Идёт подсчёт…',   en:'Counting…',    pt:'A contar…' },
     awards:   { ru:'🏅 Номинации',    en:'🏅 Awards',    pt:'🏅 Destaques' },
     q:        { ru:'Квал.',           en:'Q',            pt:'Q' },
@@ -1407,12 +1603,12 @@ function renderLastRace() {
     ? `<img src="${podSrc}" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">`
     : _podiumPlaceholder();
   html += `</div>`;
-  html += `<div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:12px;">${LAST_RACE.title}</div>`;
+  html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">${venueLogoTile((LAST_RACE.location||'') + ' ' + (LAST_RACE.title||''), 44)}<div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;">${LAST_RACE.title}</div></div>`;
 
-  // ── 2. Ссылки: голосование + отзыв (вторичные, не отвлекают) ──
+  // ── 2. Ссылки: отзыв + итоги Safety Rating (вторичные, не отвлекают) ──
   html += `<div style="display:flex;gap:8px;margin-bottom:16px;">
-    <a href="#vote" class="cta-btn">🤝 ${t('cta_vote')}</a>
     <a href="#feedback" class="cta-btn">⭐ ${t('cta_feedback')}</a>
+    <a href="#safety" class="cta-btn">📋 ${t('safe_cta')}</a>
   </div>`;
 
   // ── 3. Номинации ──
@@ -1461,21 +1657,15 @@ function renderLastRace() {
     }
   }
 
-  // Чистая борьба / Жёстко ездит — из голосования (#vote). Пока нет — тизер.
+  // Чистая борьба / Есть вопросы — из итогов Safety Rating. Нет данных — тизер.
   const findByName = nm => allRes.find(r => r.name === nm) || { name: nm, handle: '' };
+  const multiNom = (icon, title, names) => {
+    const avs = names.map(findByName).map(d => `<div style="display:flex;align-items:center;gap:6px;">${avatarDiv(getPhoto(d.handle,d.name), d.name[0], 28)}<div class="nom-driver">${d.name.split(' ')[0]} ${d.name.split(' ')[1]?.[0]||''}.</div></div>`).join('<div style="color:var(--muted2);font-size:11px;">·</div>');
+    return `<div class="nom-card" style="position:relative;"><div class="nom-icon">${icon}</div><div class="nom-title">${title}</div><div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div></div>`;
+  };
   const nm = LAST_RACE.nominations;
-  if (nm && nm.clean && nm.clean.length) {
-    const ds = nm.clean.map(findByName);
-    const avs = ds.map(d => `<div style="display:flex;align-items:center;gap:6px;">${avatarDiv(getPhoto(d.handle,d.name), d.name[0], 28)}<div class="nom-driver">${d.name.split(' ')[0]} ${d.name.split(' ')[1]?.[0]||''}.</div></div>`).join('<div style="color:var(--muted2);font-size:11px;">·</div>');
-    noms += `<div class="nom-card" style="position:relative;"><div class="nom-icon">🤝</div><div class="nom-title">${nt('clean')}</div><div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div></div>`;
-  } else {
-    noms += teaser('🤝', nt('clean'));
-  }
-  if (nm && nm.dirty && nm.dirty.length) {
-    noms += card('💥', nt('dirty'), findByName(nm.dirty[0]), '');
-  } else {
-    noms += teaser('💥', nt('dirty'));
-  }
+  noms += (nm && nm.clean && nm.clean.length) ? multiNom('🤝', nt('clean'), nm.clean) : teaser('🤝', nt('clean'));
+  noms += (nm && nm.dirty && nm.dirty.length) ? multiNom('⚠️', nt('dirty'), nm.dirty) : teaser('⚠️', nt('dirty'));
 
   html += `<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${nt('awards')}</div>`;
   html += `<div class="nom-cards" style="margin-bottom:14px;">${noms}</div>`;
@@ -1534,6 +1724,21 @@ function _podiumPlaceholder() {
 
 function norm(h) { return (h||'').toLowerCase().replace('@',''); }
 
+// ── Авто-склейка гонщиков без хэндла ──────────────────────────
+// Если гонщик в одной гонке записан с @ником, а в другой — без,
+// запись без ника подтягивается к тому же ключу по имени.
+// Карта строится по всем гонкам — руками поддерживать не нужно.
+const NAME2HANDLE = {};
+function buildName2Handle() {
+  RACES.forEach(race => race.groups.forEach(g => g.results.forEach(r => {
+    if (r.handle && r.name) NAME2HANDLE[norm(r.name)] = norm(r.handle);
+  })));
+}
+// Единый ключ гонщика для зачёта/профилей — ВЕЗДЕ через эту функцию
+function driverKey(handle, name) {
+  return norm(handle) || NAME2HANDLE[norm(name)] || norm(name);
+}
+
 function isBegForEvent(key, eventId) {
   return BEGINNERS[eventId] ? BEGINNERS[eventId].has(key) : false;
 }
@@ -1565,63 +1770,94 @@ function visHandle(handle, hideFlag) {
 
 // ── Шкалы очков ───────────────────────────────────────────────
 // Актуальная шкала: 1=25, 2=20, 3=16, 4=13, 5=11, 6=10, 7=9, 8=8,
-// 9=7, 10=6, 11=5, 12=4, 13+=3(мин). Данные этапов вводятся «как с
-// трассы», fixBase ремапит их в актуальную шкалу.
+// 9=7, 10=6, 11=5, 12=4, 13+=3(мин).
+// fixBase: ремаппинг данных, введённых в СТАРОЙ шкале (KIRO, Campera)
 function fixBase(v) {
   if (v >= 11) return v;   // места 1-5: без изменений
   if (v >= 3)  return v + 1; // места 6-12: +1
   return 3;                // места 13+: минимум 3
 }
-// fixKipBase: дополнительно исправляет неверно введённые 2-е (18→20) и 3-е (15→16) места
+// fixKipBase: KIP — дополнительно исправляет неверно введённые 2-е (18→20) и 3-е (15→16) места
 function fixKipBase(v) {
   if (v === 18) return 20;
   if (v === 15) return 16;
   return fixBase(v);
 }
+// fixModernBase: гонка занесена УЖЕ в новой шкале (Almeirím и далее) —
+// только пол в 3 очка, БЕЗ сдвига +1 (иначе очки завышаются)
+function fixModernBase(v) {
+  return v >= 3 ? v : 3;
+}
 
 // ── ЕДИНЫЙ КОНФИГ ЭТАПОВ ──────────────────────────────────────
-// Новый этап в зачёте = блок в RACES + ОДНА строка здесь. Всё
-// остальное (зачёт, «Прошедшие», ростер голосования) генерится само.
-//   raceId  — id в RACES
-//   begId   — ключ в BEGINNERS (per-event зачёт начинающих)
-//   label   — название этапа в истории гонок/профиле
-//   shortDate — дата для истории (русские месяцы, локализуются автоматически)
-//   ptsFix  — remap очков для ЭТОГО этапа (единый для зачёта И «Прошедших»)
+// Новый этап = блок в RACES + ОДНА строка здесь. Зачёт, «Прошедшие»
+// и ростер голосования генерятся сами.
+//   raceId    — id в RACES
+//   begId     — ключ в BEGINNERS (per-event зачёт начинающих)
+//   label     — название этапа в истории гонок/профиле
+//   shortDate — дата для истории (русские месяцы, локализуются сами)
+//   ptsFix    — шкала очков этапа (ЕДИНАЯ для зачёта и «Прошедших»):
+//               данные в новой шкале → fixModernBase
 const STANDINGS_EVENTS = [
   { raceId:'kiro',         begId:'kiro',         label:'KIRO 28.03',     shortDate:'28 мар', ptsFix: fixBase },
   { raceId:'campera-apr',  begId:'campera-apr',  label:'Campera',        shortDate:'12 апр', ptsFix: fixBase },
   { raceId:'kip-may',      begId:'kip',          label:'KIP 23.05',      shortDate:'23 мая', ptsFix: fixKipBase },
-  { raceId:'almeirim-jun', begId:'almeirim',     label:'Almeirim 06.06', shortDate:'6 июн',  ptsFix: fixBase },
+  { raceId:'almeirim-jun', begId:'almeirim',     label:'Almeirim 06.06', shortDate:'6 июн',  ptsFix: fixModernBase },
 ];
 
 function ptsFixFor(raceId) {
   const ev = STANDINGS_EVENTS.find(e => e.raceId === raceId);
-  return ev ? ev.ptsFix : fixBase;
+  return ev ? ev.ptsFix : fixModernBase;
 }
 
 function buildStandings() {
   const map = {};
-  const rl = n => ({ ru: `Гонка ${n}`, pt: `Corrida ${n}`, en: `Race ${n}` }[_lang || 'ru']);
+  const rl = nm => ({ ru: `Гонка ${nm}`, pt: `Corrida ${nm}`, en: `Race ${nm}` }[_lang || 'ru']);
+
+  // entry-хелпер: создать гонщика в карте при первом упоминании
+  const ensure = r => {
+    const key = driverKey(r.handle, r.name);
+    if (!map[key]) map[key] = { name: r.name, handle: r.handle || '', hideHandle: r.hideHandle || false, races: [] };
+    if (!map[key].handle && r.handle) map[key].handle = r.handle; // склейка: ник из любой гонки
+    return key;
+  };
+  // позиция начинающего: флаг по merged-ключу ИЛИ по имени (сеты могут хранить имя)
+  const isBeg = (key, r, begId) => isBegForEvent(key, begId) || isBegForEvent(norm(r.name), begId);
 
   STANDINGS_EVENTS.forEach(ev => {
-    const race = RACES.find(r => r.id === ev.raceId);
+    const race = RACES.find(rc => rc.id === ev.raceId);
     if (!race) return;
     race.groups.forEach(group => {
       const grpSfx = group.label ? ` ${group.label}` : '';
       const hasR2 = group.results.some(r => r.r2 !== null && r.r2 !== undefined);
-      group.results.forEach(r => {
-        const key = norm(r.handle) || norm(r.name);
-        if (!map[key]) map[key] = { name: r.name, handle: r.handle || '', hideHandle: r.hideHandle || false, races: [] };
-        const beg = isBegForEvent(key, ev.begId);
-        if (!hasR2) {
-          // Однозаездный этап (KIRO)
-          map[key].races.push({ race: ev.label, date: translateShortDate(ev.shortDate), pts: ev.ptsFix(r.r1) + (r.r1fl ? 1 : 0), pos: r.pos, beg });
-        } else {
-          if (r.r1 !== null && r.r1 !== undefined)
-            map[key].races.push({ race: `${ev.label}${grpSfx} · ${rl(1)}`, date: translateShortDate(ev.shortDate), pts: ev.ptsFix(r.r1) + (r.r1fl ? 1 : 0), pos: r.pos, beg });
-          if (r.r2 !== null && r.r2 !== undefined)
-            map[key].races.push({ race: `${ev.label}${grpSfx} · ${rl(2)}`, date: translateShortDate(ev.shortDate), pts: ev.ptsFix(r.r2) + (r.r2fl ? 1 : 0), pos: r.pos, beg });
-        }
+
+      // Собираем заезды этой группы: [{raceNo, rows:[{r, pts}]}]
+      const legs = [];
+      if (!hasR2) {
+        legs.push({ no: 0, rows: group.results.map(r => ({ r, pts: ev.ptsFix(r.r1) + (r.r1fl ? 1 : 0) })) });
+      } else {
+        legs.push({ no: 1, rows: group.results.filter(r => r.r1 !== null && r.r1 !== undefined).map(r => ({ r, pts: ev.ptsFix(r.r1) + (r.r1fl ? 1 : 0) })) });
+        legs.push({ no: 2, rows: group.results.filter(r => r.r2 !== null && r.r2 !== undefined).map(r => ({ r, pts: ev.ptsFix(r.r2) + (r.r2fl ? 1 : 0) })) });
+      }
+
+      legs.forEach(leg => {
+        if (!leg.rows.length) return;
+        // Позиция В ЭТОЙ гонке: ранжирование по очкам заезда;
+        // хвост без очков разводится по общему месту на этапе (приблизительно)
+        const ranked = [...leg.rows].sort((a, b) => b.pts - a.pts || a.r.pos - b.r.pos);
+        ranked.forEach((row, i) => { row.finishPos = i + 1; });
+
+        const raceLabel = leg.no === 0 ? ev.label : `${ev.label}${grpSfx} · ${rl(leg.no)}`;
+        leg.rows.forEach(row => {
+          const key = ensure(row.r);
+          map[key].races.push({
+            race: raceLabel,
+            date: translateShortDate(ev.shortDate),
+            pts: row.pts,
+            pos: row.finishPos,
+            beg: isBeg(key, row.r, ev.begId),
+          });
+        });
       });
     });
   });
@@ -1658,6 +1894,7 @@ function buildStandings() {
 }
 
 initPrivacy();
+buildName2Handle();
 let STANDINGS = buildStandings();
 
 
@@ -1727,116 +1964,83 @@ function avatarDiv(photoUrls, letter, size) {
   return `<span style="position:relative;display:inline-flex;flex-shrink:0;"><img src="${esc(photoUrls[0])}" data-srcs="${srcsJson}" data-idx="0" onerror="_tryNextPhoto(this)" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;aspect-ratio:1;flex-shrink:0;">${initials}</span>`;
 }
 
-// RACE NOMINATIONS — номинации этапа в «Прошедших».
-// Generic: считаются из detail-данных этапа (RACE_DETAILS), без хардкода
-// имён/времён в рендере. Новый этап с номинациями = блок detail-данных.
+// RACE NOMINATIONS — показываются в «Прошедших» для гонок с данными (KIP, Almeirím)
 function renderRaceNominations(raceId) {
-  const detail = RACE_DETAILS[raceId];
-  if (!detail) return '';
+  if (!raceId) return '';
+  const CFG = {
+    'kip-may':      { detail: KIP_DETAIL, safety: KIP_SAFETY,      flTimes: { r1: '1:04.007', r2: '1:04.209' } },
+    'almeirim-jun': { detail: LAST_RACE,  safety: ALMEIRIM_SAFETY, flTimes: LAST_RACE.flTimes || {} },
+  };
+  const cfg = CFG[raceId];
+  if (!cfg) return '';
 
-  const allResults = detail.groups.flatMap(g => g.results);
+  const allResults = cfg.detail.groups.flatMap(g => g.results);
   if (!allResults.length) return '';
 
-  // 1. Fastest laps
   const flR1 = allResults.filter(r => r.r1fl);
   const flR2 = allResults.filter(r => r.r2fl);
+  const flWinner = flR1[0] || flR2[0];
 
-  // 2. Biggest quali→race gain (charge)
-  let maxGain = -Infinity, chargeWinner = null;
+  let maxGain = -Infinity, chargeWinner = null, chargeIsR1 = true;
   allResults.forEach(r => {
-    const gain1 = (r.q1 || 99) - r.r1pos;
-    const gain2 = (r.q2 || 99) - r.r2pos;
-    const best = Math.max(gain1, gain2);
-    if (best > maxGain) { maxGain = best; chargeWinner = r; }
+    const g1 = (r.q1 || 99) - r.r1pos, g2 = (r.q2 || 99) - r.r2pos;
+    const best = Math.max(g1, g2);
+    if (best > maxGain) { maxGain = best; chargeWinner = r; chargeIsR1 = g1 >= g2; }
   });
 
-  // 3. Biggest R1→R2 improvement (phoenix)
   let maxRebound = -Infinity, phoenixWinner = null;
-  allResults.forEach(r => {
-    const d = r.r1pos - r.r2pos;
-    if (d > maxRebound) { maxRebound = d; phoenixWinner = r; }
-  });
+  allResults.forEach(r => { const d = r.r1pos - r.r2pos; if (d > maxRebound) { maxRebound = d; phoenixWinner = r; } });
 
   const nomT = {
-    fl:      { ru:'Быстрейший круг', en:'Fastest lap',    pt:'Volta mais rápida' },
-    charge:  { ru:'Мощный прорыв',   en:'Big charge',     pt:'Grande remontada' },
-    phoenix: { ru:'Феникс',          en:'Phoenix',        pt:'Fénix' },
-    clean:   { ru:'Чистая борьба',   en:'Clean racing',   pt:'Pilotagem limpa' },
-    dirty:   { ru:'Жёстко ездит!',   en:'Rough driver',   pt:'Pilotagem dura' },
-    pending: { ru:'Идёт подсчёт…',   en:'Counting…',      pt:'A contar…' },
+    fl:      { ru:'Быстрейший круг', en:'Fastest lap',      pt:'Volta mais rápida' },
+    charge:  { ru:'Мощный прорыв',   en:'Big charge',       pt:'Grande remontada' },
+    phoenix: { ru:'Феникс',          en:'Phoenix',          pt:'Fénix' },
+    clean:   { ru:'Чистая борьба',   en:'Clean racing',     pt:'Pilotagem limpa' },
+    dirty:   { ru:'Есть вопросы',    en:'Questions raised', pt:'Com dúvidas' },
   };
   const nt = k => nomT[k][_lang] || nomT[k]['ru'];
+  const byName = nm => allResults.find(r => r.name === nm) || { name: nm, handle: '' };
+  const rLbl = isR1 => (isR1 ? { ru:'Г1', pt:'C1', en:'R1' } : { ru:'Г2', pt:'C2', en:'R2' })[_lang||'ru'];
 
-  function nomCard(icon, title, driver, desc, pending) {
-    if (pending) return `
-      <div class="nom-card nom-pending">
-        <div class="nom-icon">${icon}</div>
-        <div class="nom-title">${title}</div>
-        <div class="nom-driver" style="color:var(--muted)">${nt('pending')}</div>
-      </div>`;
-    const ph = driver ? getPhoto(driver.handle, driver.name) : null;
-    const av = driver ? avatarDiv(ph, driver.name[0], 28) : '';
-    return `
-      <div class="nom-card" style="position:relative;">
-        <div class="nom-icon">${icon}</div>
-        <div class="nom-title">${title}</div>
-        <div style="display:flex;align-items:center;gap:7px;margin-top:2px;">
-          ${av}
-          <div class="nom-driver">${driver ? driver.name.split(' ')[0] : ''}</div>
-        </div>
-        <div class="nom-desc">${desc}</div>
-      </div>`;
-  }
-
-  const rlbl = n => ({ ru:['Г1','Г2'], pt:['C1','C2'], en:['R1','R2'] }[_lang||'ru'][n-1]);
-
-  const flWinner = flR1[0] || flR2[0];
-  const flTime = flWinner ? (flWinner.r1fl ? detail.flTimes?.r1 : detail.flTimes?.r2) : null;
-  const flDesc = flWinner ? `${flTime ? flTime + ' · ' : ''}${rlbl(flWinner.r1fl ? 1 : 2)}` : '';
-
-  const chargeIsR1 = chargeWinner && ((chargeWinner.q1||99) - chargeWinner.r1pos) >= ((chargeWinner.q2||99) - chargeWinner.r2pos);
-  const chargeDesc = chargeWinner ? `Q${chargeIsR1 ? chargeWinner.q1 : chargeWinner.q2} → P${chargeIsR1 ? chargeWinner.r1pos : chargeWinner.r2pos} (+${maxGain})` : '';
-
-  const phoenixDesc = phoenixWinner ? { ru:`+${maxRebound} поз. Г1→Г2`, en:`+${maxRebound} places R1→R2`, pt:`+${maxRebound} lugares C1→C2` }[_lang||'ru'] : '';
-
-  // Номинации сообщества — из detail.nominations (данные голосования #vote)
-  const noms = detail.nominations || {};
-  const cleanCard = (() => {
-    const c = noms.clean;
-    if (!c || !c.names || !c.names.length) return '';
-    const drivers = c.names.map(nm => allResults.find(r => r.name === nm)).filter(Boolean);
-    if (!drivers.length) return '';
-    const sn = d => `${d.name.split(' ')[0]} ${d.name.split(' ')[1]?.[0]||''}.`;
-    const inner = drivers.map(d =>
-      `<div style="display:flex;align-items:center;gap:6px;">${avatarDiv(getPhoto(d.handle,d.name), d.name[0], 28)}<div class="nom-driver">${sn(d)}</div></div>`
-    ).join('<div style="color:var(--muted2);font-size:11px;">·</div>');
-    const desc = { ru:`+${c.votesEach} голоса у каждого`, pt:`+${c.votesEach} votos cada`, en:`+${c.votesEach} votes each` }[_lang||'ru'];
+  const card = (icon, title, driver, desc) => {
+    const av = driver ? avatarDiv(getPhoto(driver.handle, driver.name), driver.name[0], 28) : '';
     return `<div class="nom-card" style="position:relative;">
-      <div class="nom-icon">🤝</div>
-      <div class="nom-title">${nt('clean')}</div>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">${inner}</div>
-      <div class="nom-desc">${desc}</div>
+      <div class="nom-icon">${icon}</div>
+      <div class="nom-title">${title}</div>
+      <div style="display:flex;align-items:center;gap:7px;margin-top:2px;">${av}<div class="nom-driver">${driver ? (driver.name.split(' ')[0] + (driver.name.split(' ')[1] ? ' ' + driver.name.split(' ')[1][0] + '.' : '')) : ''}</div></div>
+      ${desc ? `<div class="nom-desc">${desc}</div>` : ''}
     </div>`;
-  })();
-  const dirtyCard = (() => {
-    const d = noms.dirty;
-    if (!d || !d.name) return '';
-    const dw = allResults.find(r => r.name === d.name);
-    if (!dw) return '';
-    const desc = { ru:`−${d.votes} голоса сообщества`, pt:`−${d.votes} votos da comunidade`, en:`−${d.votes} community votes` }[_lang||'ru'];
-    return nomCard('💥', nt('dirty'), dw, desc, false);
-  })();
+  };
+  const multiCard = (icon, title, list) => {
+    if (!list.length) return '';
+    const avs = list.map(d => {
+      const drv = byName(d.name);
+      return `<div style="display:flex;align-items:center;gap:6px;">${avatarDiv(getPhoto(drv.handle, drv.name), drv.name[0], 28)}<div class="nom-driver">${drv.name.split(' ')[0]} ${drv.name.split(' ')[1]?.[0]||''}.</div></div>`;
+    }).join('<div style="color:var(--muted2);font-size:11px;">·</div>');
+    return `<div class="nom-card" style="position:relative;"><div class="nom-icon">${icon}</div><div class="nom-title">${title}</div><div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div></div>`;
+  };
+
+  let cards = '';
+  if (flWinner) {
+    const isR1 = !!flR1.length;
+    const tm = isR1 ? cfg.flTimes.r1 : cfg.flTimes.r2;
+    cards += card('⚡', nt('fl'), flWinner, tm ? `${tm} · ${rLbl(isR1)}` : rLbl(isR1));
+  }
+  if (chargeWinner && maxGain > 0) {
+    const qq = chargeIsR1 ? chargeWinner.q1 : chargeWinner.q2;
+    const ff = chargeIsR1 ? chargeWinner.r1pos : chargeWinner.r2pos;
+    cards += card('🚀', nt('charge'), chargeWinner, `Q${qq} → P${ff} (+${maxGain})`);
+  }
+  if (phoenixWinner && maxRebound > 0) {
+    cards += card('🔥', nt('phoenix'), phoenixWinner, { ru:`+${maxRebound} поз. Г1→Г2`, en:`+${maxRebound} places R1→R2`, pt:`+${maxRebound} lugares C1→C2` }[_lang||'ru']);
+  }
+  cards += multiCard('🤝', nt('clean'), cleanLeaders(cfg.safety));
+  cards += multiCard('⚠️', nt('dirty'), attentionList(cfg.safety));
 
   return `
     <div style="padding:14px 14px 0;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">🏅 ${{ ru:'Номинации', en:'Awards', pt:'Destaques' }[_lang]}</div>
-      <div class="nom-cards" style="margin-bottom:14px;">
-        ${flWinner ? nomCard('⚡', nt('fl'), flWinner, flDesc, false) : ''}
-        ${chargeWinner && maxGain > 0 ? nomCard('🚀', nt('charge'), chargeWinner, chargeDesc, false) : ''}
-        ${phoenixWinner && maxRebound > 0 ? nomCard('🔥', nt('phoenix'), phoenixWinner, phoenixDesc, false) : ''}
-        ${cleanCard}
-        ${dirtyCard}
-      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">🏅 ${{ ru:'Номинации', en:'Awards', pt:'Destaques' }[_lang||'ru']}</div>
+      <div class="nom-cards" style="margin-bottom:14px;">${cards}</div>
     </div>`;
 }
 
@@ -1991,16 +2195,20 @@ function renderResults(idx) {
   if (nomEl) nomEl.innerHTML = renderRaceNominations(v.raceId);
 
   const photoSrc = v.photo ? RACE_PHOTOS[v.photo] : null;
-  let html = photoSrc
+  let photoHtml = photoSrc
     ? `<div style="width:100%;aspect-ratio:4/3;max-height:220px;overflow:hidden;border-radius:10px;margin-bottom:10px;"><img src="${photoSrc}" onerror="this.closest('div').style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="race photo"></div>`
     : '';
-  html += `<div class="res-sub">${v.date} · ${v.groupLabel || v.location}</div>`;
+  photoHtml += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">${venueLogoTile((v.chipLabel||'') + ' ' + (v.location||''), 40)}<div class="res-sub" style="margin:0;">${v.date} · ${v.groupLabel || v.location}</div></div>`;
+  const photoEl = document.getElementById('race-photo');
+  if (photoEl) photoEl.innerHTML = photoHtml;
+
+  let html = '';
   v.results.forEach(r => {
     const pc = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
     const fl = r.fl ? ` <span style="font-size:9px;color:var(--accent-red);">⚡FL</span>` : '';
     const photo = getPhoto(r.handle, r.name);
     const av = avatarDiv(photo, r.name[0], 32);
-    html += `<div class="result-row ${pc}" onclick="openProfile('${norm(r.handle)||norm(r.name)}')">
+    html += `<div class="result-row ${pc}" onclick="openProfile('${driverKey(r.handle, r.name)}')">
       <div class="res-pos">${r.pos}</div>
       <div style="display:flex;align-items:center;gap:8px;">
         ${av}
@@ -2197,6 +2405,26 @@ function openH2H(key1) {
   document.getElementById('h2h-modal').classList.add('open');
 }
 
+// Строка сравнения Safety Rating для H2H (общий бейдж по всем гонкам)
+function h2hSafetyRow(d1, d2) {
+  const sf1 = getSafety(d1.handle, d1.name);
+  const sf2 = getSafety(d2.handle, d2.name);
+  const counts = sf => {
+    const p = [];
+    if (sf.pos > 0) p.push(`<span style="color:var(--green);font-weight:700;">${sf.pos}🟢</span>`);
+    if (sf.neg > 0) p.push(`<span style="color:var(--yellow);font-weight:700;">${sf.neg}🟡</span>`);
+    return p.length ? p.join(' ') : `<span style="color:var(--muted);">—</span>`;
+  };
+  const dot = sf => `<span class="safety-dot s${sf.rating}" style="width:9px;height:9px;margin:0;"></span>`;
+  return `<div>
+    <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;text-align:center;">Safety Rating</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;font-size:13px;">
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:6px;">${dot(sf1)} ${counts(sf1)}</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">${counts(sf2)} ${dot(sf2)}</div>
+    </div>
+  </div>`;
+}
+
 function loadH2H(key1, key2) {
   const d1 = STANDINGS.find(x => x.key === key1);
   const d2 = STANDINGS.find(x => x.key === key2);
@@ -2279,6 +2507,7 @@ function loadH2H(key1, key2) {
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Avg очков</div>
         </div>
       </div>
+      ${h2hSafetyRow(d1, d2)}
     </div>
 
     <div style="background:var(--surface2);padding:8px 16px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:grid;grid-template-columns:1fr auto 1fr;">
@@ -2402,6 +2631,7 @@ function updateH2HPage() {
       ${bar(d1.totalPts, d2.totalPts, 'Очков в зачёте')}
       ${bar(avg1, avg2, `Avg в общих гонках`)}
       ${bar(fl1, fl2, '⚡ Быстрых кругов')}
+      ${h2hSafetyRow(d1, d2)}
     </div>
 
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
@@ -2819,10 +3049,29 @@ function goHome() {
   routeHash();
 }
 
+// Клик по логотипу «Катаемся Чатом» → на главную (закрыть модалки/скрытые страницы, первый таб)
+function _logoTap() {
+  ['profile-modal', 'reg-modal', 'h2h-modal'].forEach(id => {
+    const m = document.getElementById(id);
+    if (m) m.classList.remove('open');
+  });
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-main').classList.add('active');
+  const nav = document.querySelector('.bottom-nav');
+  if (nav) nav.style.display = 'flex';
+  document.querySelectorAll('.bnav-item').forEach((b, i) => b.classList.toggle('active', i === 0));
+  document.querySelectorAll('.inner-tab').forEach((tb, i) => tb.classList.toggle('active', i === 0));
+  document.querySelectorAll('.inner-panel').forEach(p => p.classList.remove('active'));
+  const tn = document.getElementById('tab-next');
+  if (tn) tn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
 function routeHash() {
   const h = (location.hash || '').replace('#', '').toLowerCase();
   const nav = document.querySelector('.bottom-nav');
-  if (h === 'vote' || h === 'feedback') {
+  if (h === 'vote' || h === 'feedback' || h === 'safety') {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + h).classList.add('active');
     if (nav) nav.style.display = 'none';
@@ -2833,10 +3082,12 @@ function routeHash() {
       renderVoteList();
     }
     if (h === 'feedback') applyFeedbackLang();
+    if (h === 'safety') renderSafetyResults();
   } else {
     if (nav) nav.style.display = 'flex';
     const hidden = document.getElementById('page-vote').classList.contains('active') ||
-                   document.getElementById('page-feedback').classList.contains('active');
+                   document.getElementById('page-feedback').classList.contains('active') ||
+                   document.getElementById('page-safety').classList.contains('active');
     if (hidden) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-main').classList.add('active');
