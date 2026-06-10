@@ -71,6 +71,13 @@
     <input type="text" id="fl" placeholder="Имя · 56.339" oninput="draw()">
     <div class="hint">Имя подставляется из данных, время кругa допиши руками, если знаешь.</div>
 
+    <label>Фокус фото (где лица)</label>
+    <div class="fmt" id="focus-btns">
+      <button onclick="setFocus(0,this)" class="active">Верх</button>
+      <button onclick="setFocus(0.5,this)">Центр</button>
+      <button onclick="setFocus(1,this)">Низ</button>
+    </div>
+
     <label>Формат</label>
     <div class="fmt">
       <button id="fmt45" class="active" onclick="setFmt(1080,1350,this)">4:5 · Лента</button>
@@ -87,6 +94,14 @@ const RED = '#d93025';
 const cv = document.getElementById('c');
 const ctx = cv.getContext('2d');
 let img = null;
+let photoFocus = 0; // 0 = верх кадра, 0.5 = центр, 1 = низ
+
+function setFocus(f, btn) {
+  photoFocus = f;
+  document.querySelectorAll('#focus-btns button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  draw();
+}
 
 // ════ ДАННЫЕ ИЗ index.html ════════════════════════════════════
 // Источник истины один: card.html лежит рядом с index.html и
@@ -209,7 +224,10 @@ function drawCover(image, W, H) {
   const ir = image.width / image.height, cr = W / H;
   let dw, dh;
   if (ir > cr) { dh = H; dw = H * ir; } else { dw = W; dh = W / ir; }
-  ctx.drawImage(image, (W - dw) / 2, (H - dh) / 2, dw, dh);
+  // Вертикальный сдвиг по фокусу: лица уводим в чистую от текста зону
+  const x = (W - dw) / 2;
+  const y = ir > cr ? 0 : -(dh - H) * photoFocus;
+  ctx.drawImage(image, x, y, dw, dh);
 }
 
 function v(id) { return document.getElementById(id).value.trim(); }
@@ -224,6 +242,131 @@ function fitText(text, font, maxW) {
   }
 }
 
+// Рисованная медаль: кружок с номером — чёткая на любом фоне (эмодзи в canvas ненадёжны)
+const MEDAL = { 1: '#FFC53D', 2: '#C9D1D9', 3: '#D98E5A' };
+function medalDot(x, yC, r, n) {
+  ctx.beginPath();
+  ctx.arc(x + r, yC, r, 0, Math.PI * 2);
+  ctx.fillStyle = MEDAL[n];
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+  ctx.stroke();
+  ctx.font = `900 ${Math.round(r * 1.15)}px 'Barlow Condensed'`;
+  ctx.fillStyle = '#1a1a1a';
+  const prev = ctx.textAlign; ctx.textAlign = 'center';
+  const prevB = ctx.textBaseline; ctx.textBaseline = 'middle';
+  ctx.fillText(String(n), x + r, yC + 2);
+  ctx.textAlign = prev; ctx.textBaseline = prevB;
+}
+
+// Двухпроходная отрисовка: measure=true только считает верхнюю границу
+// контента, чтобы затемнение легло ровно под текст и не хоронило фото.
+//
+// Сетка выравнивания:
+//   PAD     — единое поле со всех сторон (лево/право/низ = 64)
+//   TEXT_X  — единая левая колонка ВСЕХ имён (подиум и начинающие)
+//   медали  — единая ось по центру X = PAD + R_POD
+//   ритм    — фикс. межстрочные из LH, секции разделены LH.sect
+function renderContent(measure) {
+  const W = cv.width, H = cv.height;
+  const PAD = 64, MAXW = W - PAD * 2;
+  const R_POD = 26, R_BEG = 18;          // радиусы медалей
+  const AXIS = PAD + R_POD;              // общая ось центров медалей
+  const TEXT_X = PAD + R_POD * 2 + 22;   // колонка имён
+  const NAME_W = W - PAD - TEXT_X;       // ширина под имя
+  const LH = { fl: 56, beg: 52, begLabel: 46, pod: 72, podBig: 88, sect: 26 };
+
+  let y = H - PAD;
+  ctx.textBaseline = 'alphabetic';
+  ctx.textAlign = 'left';
+
+  const put = (text, x, yy, color) => { if (!measure) { ctx.fillStyle = color; ctx.fillText(text, x, yy); } };
+
+  // Быстрейший круг
+  const fl = v('fl');
+  if (fl) {
+    fitText('⚡ ' + fl, '500 32px Barlow', MAXW);
+    put('⚡ ' + fl, PAD, y, 'rgba(255,255,255,0.88)');
+    y -= LH.fl + LH.sect;
+  }
+
+  // Подиум начинающих — медали на общей оси, имена в общей колонке
+  const begs = [v('b1'), v('b2'), v('b3')].filter(Boolean);
+  if (begs.length) {
+    [...begs].reverse().forEach((name, i) => {
+      const nn = begs.length - i;
+      const line = name.replace(/^\d+\.\s*/, '').toUpperCase();
+      fitText(line, "700 38px 'Barlow Condensed'", NAME_W);
+      if (!measure) medalDot(AXIS - R_BEG, y - 13, R_BEG, nn);
+      put(line, TEXT_X, y, 'rgba(255,255,255,0.94)');
+      y -= LH.beg;
+    });
+    if (!measure) {
+      ctx.font = "700 27px 'Barlow Condensed'";
+      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      ctx.fillText('НАЧИНАЮЩИЕ', PAD, y);
+    }
+    y -= LH.begLabel + LH.sect;
+  }
+
+  // Подиум — снизу вверх: 3, 2, 1; та же ось медалей, та же колонка имён
+  const podium = [[3, v('p3')], [2, v('p2')], [1, v('p1')]];
+  podium.forEach(([nn, name]) => {
+    if (!name) return;
+    const big = nn === 1;
+    const font = (big ? '900 62px' : '700 50px') + " 'Barlow Condensed'";
+    const line = name.replace(/^🥇|^🥈|^🥉/, '').trim().toUpperCase();
+    fitText(line, font, NAME_W);
+    if (!measure) medalDot(AXIS - R_POD, y - (big ? 21 : 17), R_POD, nn);
+    put(line, TEXT_X, y, '#fff');
+    y -= big ? LH.podBig : LH.pod;
+  });
+  y -= LH.sect;
+
+  // Заголовок
+  const title = (v('title') || 'РЕЗУЛЬТАТЫ').toUpperCase();
+  fitText(title, "900 104px 'Barlow Condensed'", MAXW);
+  put(title, PAD, y, '#fff');
+  const titleW = ctx.measureText(title).width;
+  if (!measure) {
+    ctx.fillStyle = RED;
+    ctx.fillRect(PAD, y + 18, Math.min(titleW, MAXW), 10);
+  }
+
+  // Плашки над заголовком: [красная: дата · трасса][тёмная: пилоты]
+  const eyebrow = v('eyebrow').toUpperCase();
+  const count = v('count').toUpperCase();
+  const ey = y - 124;
+  if (eyebrow || count) {
+    let x = PAD;
+    if (eyebrow) {
+      fitText(eyebrow, "700 36px 'Barlow Condensed'", MAXW * 0.72);
+      const tw = ctx.measureText(eyebrow).width;
+      if (!measure) {
+        ctx.fillStyle = RED;
+        ctx.fillRect(x, ey - 44, tw + 44, 62);
+        ctx.fillStyle = '#fff';
+        ctx.fillText(eyebrow, x + 22, ey);
+      }
+      x += tw + 44 + 12;
+    }
+    if (count) {
+      ctx.font = "700 36px 'Barlow Condensed'";
+      const cw = ctx.measureText(count).width;
+      if (!measure) {
+        ctx.fillStyle = 'rgba(0,0,0,0.78)';
+        ctx.fillRect(x, ey - 44, cw + 40, 62);
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.fillText(count, x + 20, ey);
+      }
+    }
+    y = ey - 44;
+  }
+
+  return y; // верхняя граница контента
+}
+
 function draw() {
   const W = cv.width, H = cv.height;
   ctx.clearRect(0, 0, W, H);
@@ -231,90 +374,21 @@ function draw() {
   if (img) drawCover(img, W, H);
   else { ctx.fillStyle = '#1a1a1a'; ctx.fillRect(0, 0, W, H); }
 
-  const g = ctx.createLinearGradient(0, H * 0.38, 0, H);
+  // Проход 1: меряем контент → затемнение ровно под него, фото выше остаётся чистым
+  const contentTop = renderContent(true);
+  const gTop = Math.max(0, contentTop - 150);
+  const g = ctx.createLinearGradient(0, gTop, 0, H);
   g.addColorStop(0, 'rgba(0,0,0,0)');
-  g.addColorStop(1, 'rgba(0,0,0,0.88)');
+  g.addColorStop(0.22, 'rgba(0,0,0,0.62)');
+  g.addColorStop(1, 'rgba(0,0,0,0.92)');
   ctx.fillStyle = g;
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(0, gTop, W, H - gTop);
 
-  const PAD = 64, MAXW = W - PAD * 2;
-  let y = H - PAD;
-  ctx.textBaseline = 'alphabetic';
-  ctx.textAlign = 'left';
-
-  // Быстрейший круг
-  const fl = v('fl');
-  if (fl) {
-    fitText('⚡ ' + fl, '500 32px Barlow', MAXW);
-    ctx.fillStyle = 'rgba(255,255,255,0.85)';
-    ctx.fillText('⚡ ' + fl, PAD, y);
-    y -= 54;
-  }
-
-  // Подиум начинающих — компактный блок
-  const begs = [v('b1'), v('b2'), v('b3')].filter(Boolean);
-  if (begs.length) {
-    begs.reverse().forEach((name, i) => {
-      const n = begs.length - i; // 3,2,1 снизу вверх
-      const line = `${n}. ${name.replace(/^\d+\.\s*/, '').toUpperCase()}`;
-      fitText(line, "700 38px 'Barlow Condensed'", MAXW);
-      ctx.fillStyle = 'rgba(255,255,255,0.92)';
-      ctx.fillText(line, PAD, y);
-      y -= 48;
-    });
-    ctx.font = "700 26px 'Barlow Condensed'";
-    ctx.fillStyle = RED;
-    ctx.fillText('🏆 НАЧИНАЮЩИЕ', PAD, y);
-    y -= 52;
-  }
-
-  // Подиум — снизу вверх: 3, 2, 1
-  const podium = [['🥉', v('p3')], ['🥈', v('p2')], ['🥇', v('p1')]];
-  podium.forEach(([medal, name], i) => {
-    if (!name) return;
-    const big = i === 2; // 🥇
-    const font = (big ? '900 62px' : '700 50px') + " 'Barlow Condensed'";
-    const line = medal + '  ' + name.replace(/^🥇|^🥈|^🥉/, '').trim().toUpperCase();
-    fitText(line, font, MAXW);
-    ctx.fillStyle = '#fff';
-    ctx.fillText(line, PAD, y);
-    y -= big ? 84 : 66;
-  });
-  y -= 8;
-
-  // Участников — мелкой строкой над подиумом
-  const count = v('count');
-  if (count) {
-    ctx.font = "700 32px 'Barlow Condensed'";
-    ctx.fillStyle = 'rgba(255,255,255,0.75)';
-    ctx.fillText(count.toUpperCase(), PAD, y);
-    y -= 50;
-  }
-
-  // Заголовок
-  const title = v('title') || 'РЕЗУЛЬТАТЫ';
-  fitText(title.toUpperCase(), "900 104px 'Barlow Condensed'", MAXW);
-  ctx.fillStyle = '#fff';
-  ctx.fillText(title.toUpperCase(), PAD, y);
-  const titleW = ctx.measureText(title.toUpperCase()).width;
-
-  // Красная плашка: дата · трасса
-  const eyebrow = v('eyebrow');
-  if (eyebrow) {
-    const ey = y - 118;
-    fitText(eyebrow.toUpperCase(), "700 36px 'Barlow Condensed'", MAXW - 44);
-    const tw = ctx.measureText(eyebrow.toUpperCase()).width;
-    ctx.fillStyle = RED;
-    ctx.fillRect(PAD, ey - 44, tw + 44, 62);
-    ctx.fillStyle = '#fff';
-    ctx.fillText(eyebrow.toUpperCase(), PAD + 22, ey);
-  }
-
-  // Красная линия-акцент под заголовком
-  ctx.fillStyle = RED;
-  ctx.fillRect(PAD, y + 16, Math.min(titleW, MAXW), 10);
+  // Проход 2: рисуем контент
+  renderContent(false);
 
   // Брендинг: верх
+  const PAD = 64;
   ctx.font = "900 44px 'Barlow Condensed'";
   ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 14;
   ctx.fillStyle = '#fff';
