@@ -20,23 +20,30 @@
   .card-ui { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:14px; }
   label { display:block; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:10px 0 4px; }
   label:first-child { margin-top:0; }
-  input[type=text] { width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 11px; font-size:14px; font-family:'Barlow',sans-serif; background:var(--bg); }
-  .row { display:flex; gap:8px; }
-  .row > div { flex:1; }
+  input[type=text], select { width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 11px; font-size:14px; font-family:'Barlow',sans-serif; background:var(--bg); }
   .photo-btn { display:block; width:100%; border:1px dashed var(--border); border-radius:8px; padding:14px; text-align:center; font-size:13px; color:var(--muted); cursor:pointer; background:var(--bg); }
   .fmt { display:flex; gap:6px; margin-top:4px; }
   .fmt button { flex:1; border:1px solid var(--border); background:var(--bg); border-radius:8px; padding:8px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; cursor:pointer; color:var(--muted); }
   .fmt button.active { background:var(--text); color:#fff; border-color:var(--text); }
   .dl { display:block; width:100%; background:var(--accent-red); color:#fff; border:none; border-radius:10px; padding:14px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; margin-top:14px; }
   canvas { width:100%; height:auto; border-radius:12px; border:1px solid var(--border); display:block; }
+  .status { font-size:12px; padding:8px 12px; border-radius:8px; margin-bottom:10px; line-height:1.4; }
+  .status.ok { background:#e8f5e9; border:1px solid #c8e6c9; color:#2d5a30; }
+  .status.err { background:#fdecea; border:1px solid #f1b7bd; color:#9c2b2b; }
+  .hint { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Карточка <em>для канала</em></h1>
-  <div class="sub">Фото + фирменная плашка → PNG для поста в Telegram</div>
+  <div class="sub">Данные подтягиваются из index.html — выбери этап, поправь что нужно, скачай PNG</div>
+
+  <div id="status" class="status" style="display:none"></div>
 
   <div class="card-ui">
+    <label>Этап (автозаполнение)</label>
+    <select id="race-select" onchange="fillFromRace()"><option>Загружаю данные…</option></select>
+
     <label>Фото (подиум / трасса)</label>
     <input type="file" id="photo" accept="image/*" style="display:none" onchange="onPhoto(this)">
     <div class="photo-btn" id="photo-btn" onclick="document.getElementById('photo').click()">📷 Выбрать фото</div>
@@ -45,15 +52,24 @@
     <input type="text" id="title" value="РЕЗУЛЬТАТЫ" oninput="draw()">
 
     <label>Дата · трасса</label>
-    <input type="text" id="eyebrow" value="6 Июн · Kartódromo de Almeirím" oninput="draw()">
+    <input type="text" id="eyebrow" oninput="draw()">
 
-    <label>Подиум (пусто — не показывать)</label>
+    <label>Участников</label>
+    <input type="text" id="count" placeholder="17 пилотов" oninput="draw()">
+
+    <label>Подиум</label>
     <input type="text" id="p1" placeholder="🥇 Имя" style="margin-bottom:6px" oninput="draw()">
     <input type="text" id="p2" placeholder="🥈 Имя" style="margin-bottom:6px" oninput="draw()">
     <input type="text" id="p3" placeholder="🥉 Имя" oninput="draw()">
 
-    <label>Быстрейший круг (опционально)</label>
+    <label>Подиум начинающих (пусто — не показывать)</label>
+    <input type="text" id="b1" placeholder="1. Имя" style="margin-bottom:6px" oninput="draw()">
+    <input type="text" id="b2" placeholder="2. Имя" style="margin-bottom:6px" oninput="draw()">
+    <input type="text" id="b3" placeholder="3. Имя" oninput="draw()">
+
+    <label>Быстрейший круг</label>
     <input type="text" id="fl" placeholder="Имя · 56.339" oninput="draw()">
+    <div class="hint">Имя подставляется из данных, время кругa допиши руками, если знаешь.</div>
 
     <label>Формат</label>
     <div class="fmt">
@@ -72,6 +88,104 @@ const cv = document.getElementById('c');
 const ctx = cv.getContext('2d');
 let img = null;
 
+// ════ ДАННЫЕ ИЗ index.html ════════════════════════════════════
+// Источник истины один: card.html лежит рядом с index.html и
+// вытаскивает из него RACES / BEGINNERS / шкалы / STANDINGS_EVENTS.
+let RACES = [], BEGINNERS = {}, EVENTS = [], NAME2HANDLE = {};
+const norm = h => (h || '').toLowerCase().replace('@','');
+const driverKey = (h, n) => norm(h) || NAME2HANDLE[norm(n)] || norm(n);
+
+function status(msg, ok) {
+  const el = document.getElementById('status');
+  el.style.display = 'block';
+  el.className = 'status ' + (ok ? 'ok' : 'err');
+  el.textContent = msg;
+}
+
+async function loadPortalData() {
+  try {
+    const res = await fetch('index.html', { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    parsePortal(await res.text());
+    status('✓ Данные подтянуты из index.html', true);
+  } catch (err) {
+    status('Не удалось прочитать index.html (' + err.message + '). Заполни поля руками — карточка работает и так.', false);
+    document.getElementById('race-select').innerHTML = '<option>— данные недоступны —</option>';
+    draw();
+  }
+}
+
+function parsePortal(html) {
+  const grab = re => { const m = html.match(re); if (!m) throw new Error('parse: ' + re); return m[0]; };
+  const code =
+    grab(/const RACES = \[[\s\S]*?\n\];/) +
+    grab(/const BEGINNERS = \{[\s\S]*?\n\};/) +
+    grab(/function fixBase\(v\) \{[\s\S]*?\n\}/) +
+    grab(/function fixKipBase\(v\) \{[\s\S]*?\n\}/) +
+    grab(/function fixModernBase\(v\) \{[\s\S]*?\n\}/) +
+    grab(/const STANDINGS_EVENTS = \[[\s\S]*?\n\];/) +
+    '\nreturn { RACES, BEGINNERS, STANDINGS_EVENTS };';
+  const data = new Function(code)();
+  RACES = data.RACES; BEGINNERS = data.BEGINNERS; EVENTS = data.STANDINGS_EVENTS;
+  NAME2HANDLE = {};
+  RACES.forEach(rc => rc.groups.forEach(g => g.results.forEach(r => {
+    if (r.handle && r.name) NAME2HANDLE[norm(r.name)] = norm(r.handle);
+  })));
+
+  // Селектор этапов — последний по умолчанию
+  const sel = document.getElementById('race-select');
+  sel.innerHTML = RACES.map((r, i) =>
+    `<option value="${i}" ${i === RACES.length - 1 ? 'selected' : ''}>${r.chipLabel} — ${r.location}</option>`
+  ).join('');
+  fillFromRace();
+}
+
+function setVal(id, v) { document.getElementById(id).value = v || ''; }
+
+function fillFromRace() {
+  const race = RACES[+document.getElementById('race-select').value];
+  if (!race) return;
+  const ev = EVENTS.find(e => e.raceId === race.id);
+  const allRes = race.groups.flatMap(g => g.results);
+
+  // Дата · трасса (из chipLabel: «6 Июня · Almeirim» → дата, локация — полная)
+  const datePart = (race.chipLabel || '').split('·')[0].trim();
+  setVal('eyebrow', `${datePart} · ${race.location}`);
+
+  // Участники (уникальные гонщики)
+  const uniq = new Set(allRes.map(r => driverKey(r.handle, r.name)));
+  setVal('count', plural(uniq.size));
+
+  // Подиум общий — pos 1..3 этапа
+  const byPos = p => allRes.find(r => r.pos === p);
+  setVal('p1', byPos(1)?.name); setVal('p2', byPos(2)?.name); setVal('p3', byPos(3)?.name);
+
+  // Подиум начинающих — по begId этапа, топ-3 по общему месту
+  const begSet = ev && BEGINNERS[ev.begId];
+  const begs = begSet
+    ? allRes.filter(r => begSet.has(driverKey(r.handle, r.name)) || begSet.has(norm(r.name)))
+            .sort((a, b) => a.pos - b.pos).slice(0, 3)
+    : [];
+  setVal('b1', begs[0]?.name); setVal('b2', begs[1]?.name); setVal('b3', begs[2]?.name);
+
+  // Быстрейший круг — имя из флагов r1fl/r2fl (время — руками)
+  const flR1 = allRes.find(r => r.r1fl), flR2 = allRes.find(r => r.r2fl);
+  const flParts = [];
+  if (flR1) flParts.push(flR1.name + ' · Г1');
+  if (flR2 && (!flR1 || flR2.name !== flR1.name)) flParts.push(flR2.name + ' · Г2');
+  setVal('fl', flParts.join('  /  '));
+
+  draw();
+}
+
+function plural(n) {
+  const m10 = n % 10, m100 = n % 100;
+  const w = (m10 === 1 && m100 !== 11) ? 'пилот'
+          : (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) ? 'пилота' : 'пилотов';
+  return `${n} ${w}`;
+}
+
+// ════ РИСОВАНИЕ ═══════════════════════════════════════════════
 function setFmt(w, h, btn) {
   cv.width = w; cv.height = h;
   document.querySelectorAll('.fmt button').forEach(b => b.classList.remove('active'));
@@ -91,7 +205,6 @@ function onPhoto(input) {
   r.readAsDataURL(f);
 }
 
-// cover-fit фото на весь холст
 function drawCover(image, W, H) {
   const ir = image.width / image.height, cr = W / H;
   let dw, dh;
@@ -101,33 +214,58 @@ function drawCover(image, W, H) {
 
 function v(id) { return document.getElementById(id).value.trim(); }
 
+// Текст с ужатием до maxW (длинные имена не вылезают за край)
+function fitText(text, font, maxW) {
+  let size = parseInt(font.match(/(\d+)px/)[1]);
+  ctx.font = font;
+  while (ctx.measureText(text).width > maxW && size > 24) {
+    size -= 2;
+    ctx.font = font.replace(/\d+px/, size + 'px');
+  }
+}
+
 function draw() {
   const W = cv.width, H = cv.height;
   ctx.clearRect(0, 0, W, H);
 
-  // Фон: фото или тёмная заглушка
   if (img) drawCover(img, W, H);
   else { ctx.fillStyle = '#1a1a1a'; ctx.fillRect(0, 0, W, H); }
 
-  // Градиент снизу — читаемость текста на любом фото
-  const g = ctx.createLinearGradient(0, H * 0.45, 0, H);
+  const g = ctx.createLinearGradient(0, H * 0.38, 0, H);
   g.addColorStop(0, 'rgba(0,0,0,0)');
-  g.addColorStop(1, 'rgba(0,0,0,0.86)');
+  g.addColorStop(1, 'rgba(0,0,0,0.88)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
 
-  const PAD = 64;
+  const PAD = 64, MAXW = W - PAD * 2;
   let y = H - PAD;
-
   ctx.textBaseline = 'alphabetic';
+  ctx.textAlign = 'left';
 
   // Быстрейший круг
   const fl = v('fl');
   if (fl) {
-    ctx.font = '500 34px Barlow';
+    fitText('⚡ ' + fl, '500 32px Barlow', MAXW);
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
     ctx.fillText('⚡ ' + fl, PAD, y);
-    y -= 58;
+    y -= 54;
+  }
+
+  // Подиум начинающих — компактный блок
+  const begs = [v('b1'), v('b2'), v('b3')].filter(Boolean);
+  if (begs.length) {
+    begs.reverse().forEach((name, i) => {
+      const n = begs.length - i; // 3,2,1 снизу вверх
+      const line = `${n}. ${name.replace(/^\d+\.\s*/, '').toUpperCase()}`;
+      fitText(line, "700 38px 'Barlow Condensed'", MAXW);
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      ctx.fillText(line, PAD, y);
+      y -= 48;
+    });
+    ctx.font = "700 26px 'Barlow Condensed'";
+    ctx.fillStyle = RED;
+    ctx.fillText('🏆 НАЧИНАЮЩИЕ', PAD, y);
+    y -= 52;
   }
 
   // Подиум — снизу вверх: 3, 2, 1
@@ -135,50 +273,57 @@ function draw() {
   podium.forEach(([medal, name], i) => {
     if (!name) return;
     const big = i === 2; // 🥇
-    ctx.font = (big ? '900 64px' : '700 52px') + " 'Barlow Condensed'";
+    const font = (big ? '900 62px' : '700 50px') + " 'Barlow Condensed'";
+    const line = medal + '  ' + name.replace(/^🥇|^🥈|^🥉/, '').trim().toUpperCase();
+    fitText(line, font, MAXW);
     ctx.fillStyle = '#fff';
-    ctx.fillText(medal + '  ' + name.replace(/^🥇|^🥈|^🥉/, '').trim().toUpperCase(), PAD, y);
-    y -= big ? 86 : 70;
+    ctx.fillText(line, PAD, y);
+    y -= big ? 84 : 66;
   });
-  y -= 14;
+  y -= 8;
+
+  // Участников — мелкой строкой над подиумом
+  const count = v('count');
+  if (count) {
+    ctx.font = "700 32px 'Barlow Condensed'";
+    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.fillText(count.toUpperCase(), PAD, y);
+    y -= 50;
+  }
 
   // Заголовок
   const title = v('title') || 'РЕЗУЛЬТАТЫ';
-  ctx.font = "900 108px 'Barlow Condensed'";
+  fitText(title.toUpperCase(), "900 104px 'Barlow Condensed'", MAXW);
   ctx.fillStyle = '#fff';
   ctx.fillText(title.toUpperCase(), PAD, y);
   const titleW = ctx.measureText(title.toUpperCase()).width;
 
-  // Красная плашка над заголовком: дата · трасса
+  // Красная плашка: дата · трасса
   const eyebrow = v('eyebrow');
   if (eyebrow) {
-    const ey = y - 122;
-    ctx.font = "700 38px 'Barlow Condensed'";
+    const ey = y - 118;
+    fitText(eyebrow.toUpperCase(), "700 36px 'Barlow Condensed'", MAXW - 44);
     const tw = ctx.measureText(eyebrow.toUpperCase()).width;
     ctx.fillStyle = RED;
-    ctx.fillRect(PAD, ey - 46, tw + 44, 64);
+    ctx.fillRect(PAD, ey - 44, tw + 44, 62);
     ctx.fillStyle = '#fff';
     ctx.fillText(eyebrow.toUpperCase(), PAD + 22, ey);
   }
 
   // Красная линия-акцент под заголовком
   ctx.fillStyle = RED;
-  ctx.fillRect(PAD, y + 18, Math.min(titleW, W - PAD * 2), 10);
+  ctx.fillRect(PAD, y + 16, Math.min(titleW, MAXW), 10);
 
-  // Брендинг: верхний левый угол
+  // Брендинг: верх
   ctx.font = "900 44px 'Barlow Condensed'";
-  ctx.fillStyle = '#fff';
   ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 14;
+  ctx.fillStyle = '#fff';
   ctx.fillText('КАТАЕМСЯ', PAD, PAD + 38);
   ctx.fillStyle = RED;
   ctx.fillText('ЧАТОМ', PAD + ctx.measureText('КАТАЕМСЯ ').width, PAD + 38);
-  ctx.shadowBlur = 0;
-
-  // racechat.pt: верхний правый
   ctx.font = "700 34px 'Barlow Condensed'";
   ctx.fillStyle = 'rgba(255,255,255,0.92)';
   ctx.textAlign = 'right';
-  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 14;
   ctx.fillText('RACECHAT.PT', W - PAD, PAD + 36);
   ctx.shadowBlur = 0;
   ctx.textAlign = 'left';
@@ -194,11 +339,12 @@ function download() {
   }, 'image/png');
 }
 
-// Шрифты должны загрузиться до первой отрисовки канваса
-document.fonts.load("900 108px 'Barlow Condensed'")
-  .then(() => document.fonts.load("700 38px 'Barlow Condensed'"))
-  .then(() => document.fonts.load("500 34px Barlow"))
-  .then(draw);
+// Шрифты → данные → отрисовка
+Promise.all([
+  document.fonts.load("900 104px 'Barlow Condensed'"),
+  document.fonts.load("700 36px 'Barlow Condensed'"),
+  document.fonts.load("500 32px Barlow"),
+]).then(() => { draw(); loadPortalData(); });
 draw();
 </script>
 </body>
