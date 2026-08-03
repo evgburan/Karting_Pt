@@ -342,14 +342,80 @@
 <div class="page active" id="page-main">
 
   <div class="inner-tabs">
-    <button class="inner-tab active" onclick="switchTab('next',this)" id="tab-btn-next">Последняя</button>
+    <button class="inner-tab active" onclick="switchTab('next',this)" id="tab-btn-next">Следующая</button>
     <button class="inner-tab" onclick="switchTab('results',this)">Прошедшие</button>
     <button class="inner-tab" onclick="switchTab('standings',this)">Зачёт</button>
   </div>
 
-  <!-- ── ПОСЛЕДНЯЯ ── -->
+  <!-- ── СЛЕДУЮЩАЯ (Мега Спринты · Batalha) ── -->
   <div class="inner-panel active" id="tab-next">
-    <div id="last-race-wrap"></div>
+
+    <div class="venue-block">
+      <div class="photo-slider" id="photo-slider">
+        <div class="photo-slide active-slide"><img src="photos/batalha-1.webp" alt="Batalha" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
+        <div class="photo-slide"><img src="photos/batalha-2.jpg" alt="Batalha" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
+        <div class="photo-slide"><img src="photos/batalha-3.jpg" alt="Batalha" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
+      </div>
+      <div class="venue-overlay">
+        <div class="venue-name-block">
+          <div class="venue-label" id="venue-label-next">Следующая гонка · 19 сентября 2026</div>
+          <div class="venue-name">Kartódromo da<br>Batalha</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+          <a href="https://www.google.com/maps/search/?api=1&query=39.645305,-8.829859" target="_blank" class="venue-link">
+            <svg viewBox="0 0 24 24" width="11" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>На карте</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 0 14px;">
+
+      <div class="event-card">
+        <div class="event-eyebrow" id="next-eyebrow">🔥 Мега Спринты</div>
+        <p class="event-desc" id="next-desc1">📅 Встречаемся <strong>19 сентября в 12:00</strong>. Целый чемпионат в формате одного дня — <strong>12 стартов у каждого!</strong></p>
+        <p class="event-desc" id="next-desc-venue">📍 Euroindy — Kartódromo da Batalha. Полтора часа от Лиссабона, два от Порту. Карты 270cc, кафе на месте.</p>
+        <p class="event-desc" id="next-desc2">🏎️ Квалификация 15 минут — длинная, чтобы вкатиться, карты можно менять. Потом делимся на 2 группы по 10 (чётные / нечётные), и каждая едет 10 заездов по 4 круга: старты, обгоны, отыгрыши, потери позиций — всё за что мы любим спринты. Каждый на каждом — решает чисто пилотаж.</p>
+        <p class="event-desc" id="next-desc3">🏆 По очкам делимся на Финал A и Финал B и мощно едем финалы за <strong>двойные очки</strong>. Всё идёт в зачёт.</p>
+        <p class="event-desc" id="next-desc4">🍾 Ивент длинный: болтаем, планируем будущие выезды, рьяно болеем за соседнюю группу и погружаемся в автоспорт с ушами. Всё как надо.</p>
+        <p class="event-desc" id="next-desc5">💶 Прайс — <strong>€145</strong>.</p>
+
+        <div class="spots-bar">
+          <div class="spots-row">
+            <span class="spots-lbl" id="next-spots-lbl">Свободных мест</span>
+            <span class="spots-val"><span id="spots-left">20</span> / 20</span>
+          </div>
+          <div class="prog-track"><div class="prog-fill" id="spots-fill" style="width:0%"></div></div>
+        </div>
+
+        <button class="btn-reg" onclick="openReg()" id="next-btn-reg">Зарегистрироваться →</button>
+
+        <div class="countdown" id="countdown">
+          <div class="cd-block"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl" id="cd-d-lbl">Дней</div></div>
+          <div class="cd-block"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl" id="cd-h-lbl">Часов</div></div>
+          <div class="cd-block"><div class="cd-num" id="cd-m">--</div><div class="cd-lbl" id="cd-m-lbl">Мин</div></div>
+          <div class="cd-block"><div class="cd-num" id="cd-s">--</div><div class="cd-lbl" id="cd-s-lbl">Сек</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" id="next-sched-title">Формат дня</div>
+        <div class="sched-row"><div class="sched-time">15′</div><div class="sched-txt" id="next-s1">Квалификация — длинная, карты можно менять</div></div>
+        <div class="sched-row"><div class="sched-time">÷2</div><div class="sched-txt" id="next-s2">2 группы по 10 — чётные и нечётные</div></div>
+        <div class="sched-row"><div class="sched-time">×10</div><div class="sched-txt" id="next-s3">🏁 10 спринтов на группу по 4 круга — каждый на каждом</div></div>
+        <div class="sched-row"><div class="sched-time">×2</div><div class="sched-txt" id="next-s4">🏆 Финалы A / B за двойные очки → шампанское</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" id="reg-list-title">Уже едут (0 / 20)</div>
+        <div id="reg-list-body">
+          <div style="text-align:center;padding:14px 0;color:var(--muted);font-size:13px;" id="nobody-yet-msg">Пока никого — будь первым!</div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
   <!-- ── ПРОШЕДШИЕ ── -->
@@ -585,20 +651,20 @@ function esc(s) {
 const I18N = {
   ru: {
     title: 'Катаемся Чатом',
-    next_race: 'Следующая гонка · 6 июня 2026',
-    about_race: '⚡ О гонке',
-    desc1: '📅 Встречаемся <strong>6 июня</strong> в <strong>14:30</strong> и стартуем в <strong>15:00</strong>.',
-    desc_venue: '🆕 Совершенно новый современный картодром — открылся меньше двух месяцев назад! Свежий асфальт, свежие карты, ухоженная территория, есть кафе. Хорошая возможность познакомиться с трассой одними из первых.',
-    desc2: '🏎️ Формат такой: квалификация 5 минут, затем гонка 10 минут. После меняемся картами и повторяем — ещё 5+10 мин!',
-    desc3: '🏆 За каждую гонку начисляются очки — по итогам будет два подиума: <strong>общий зачёт</strong> и <strong>зачёт начинающих</strong>.',
-    desc4: '🛞 Едем на картах <strong>TonyKart 270сс</strong> (9 л.с.) — чуть слабее прошлых, зато стабильная управляемость и проще начать для всех.',
-    desc5: '💶 Стоимость участия — <strong>€70</strong>.',
+    next_race: 'Следующая гонка · 19 сентября 2026',
+    about_race: '🔥 Мега Спринты',
+    desc1: '📅 Встречаемся <strong>19 сентября в 12:00</strong>. Целый чемпионат в формате одного дня — <strong>12 стартов у каждого!</strong>',
+    desc_venue: '📍 Euroindy — Kartódromo da Batalha. Полтора часа от Лиссабона, два от Порту. Карты 270cc, кафе на месте.',
+    desc2: '🏎️ Квалификация 15 минут — длинная, чтобы вкатиться, карты можно менять. Потом делимся на 2 группы по 10 (чётные / нечётные), и каждая едет 10 заездов по 4 круга: старты, обгоны, отыгрыши, потери позиций — всё за что мы любим спринты. Каждый на каждом — решает чисто пилотаж.',
+    desc3: '🏆 По очкам делимся на Финал A и Финал B и мощно едем финалы за <strong>двойные очки</strong>. Всё идёт в зачёт.',
+    desc4: '🍾 Ивент длинный: болтаем, планируем будущие выезды, рьяно болеем за соседнюю группу и погружаемся в автоспорт с ушами. Всё как надо.',
+    desc5: '💶 Прайс — <strong>€145</strong>.',
     spots_lbl: 'Свободных мест',
     btn_reg: 'Зарегистрироваться →',
-    beginner_note: '🟢 <strong>Начинающим:</strong> можно участвовать в отдельном зачёте — просто отметь галочку при регистрации.',
+    beginner_note: '🟢 <strong>Начинающим:</strong> отметь галочку при регистрации — попадёшь в отдельный зачёт новичков.',
     cd_d: 'Дней', cd_h: 'Часов', cd_m: 'Мин', cd_s: 'Сек',
-    schedule: 'Расписание',
-    s1: 'Сбор и регистрация', s2: 'Брифинг', s3: '🏁 Старт заездов', s4: '🏆 Подиум и результаты',
+    schedule: 'Формат дня',
+    s1: 'Квалификация — длинная, карты можно менять', s2: '2 группы по 10 — чётные и нечётные', s3: '🏁 10 спринтов на группу по 4 круга — каждый на каждом', s4: '🏆 Финалы A / B за двойные очки → шампанское',
     already_racing: 'Уже едут',
     nobody_yet: 'Пока никого — будь первым!',
     tab_upcoming: 'Гонка', tab_results: 'Прошедшие', tab_standings: 'Зачёт',
@@ -633,8 +699,8 @@ const I18N = {
     nav_race: 'Гонка', nav_1v1: '1v1', nav_drivers: 'Гонщики',
     race_today: 'Гонка сегодня! 🏁',
     on_map: 'На карте',
-    reg_title: 'Регистрация · Almeirím',
-    reg_sub: 'июнь 2026 · Almeirím',
+    reg_title: 'Регистрация · Batalha',
+    reg_sub: 'Мега Спринты · 19 сентября',
     reg_spots: 'мест',
     form_name: 'Имя *', form_name_ph: 'Имя и фамилия для гонки',
     form_tg: 'Telegram', form_tg_ph: 'Ник в Telegram (с @ или без)',
@@ -648,8 +714,8 @@ const I18N = {
     reg_full: 'Мест больше нет 😕 Следи за анонсами — возможно, откроем дополнительные заезды.',
     reg_dup: 'Похоже, ты уже зарегистрирован. Если это не так — напиши организатору.',
     reg_err: 'Не получилось отправить регистрацию. Проверь интернет и попробуй ещё раз.',
-    success_title: 'Ты в гонке!', success_date: 'Ждём тебя в Almeirím',
-    pay_title: '💶 Оплата · €70',
+    success_title: 'Ты в гонке!', success_date: 'Ждём тебя в Batalha · 19 сентября',
+    pay_title: '💶 Оплата · €145',
     stat_pts: 'Очков', stat_races: 'Гонок', stat_avg: 'Среднее', stat_best: 'Лучший', stat_fl: 'Быстр. круг', stat_pos: 'Место в зачёте',
     h2h_btn: '⚔️ Head to Head — сравнить с другим гонщиком',
     hist_lbl: 'История гонок', pts_sfx: 'оч.',
@@ -671,20 +737,20 @@ const I18N = {
   },
   pt: {
     title: 'Kart Chat',
-    next_race: 'Próxima corrida · 6 jun 2026',
-    about_race: '⚡ Sobre a corrida',
-    desc1: '📅 Encontramo-nos a <strong>6 de junho</strong> às <strong>14:30</strong> e partimos às <strong>15:00</strong>.',
-    desc_venue: '🆕 Kartódromo completamente novo — abriu há menos de dois meses! Asfalto fresco, pistas largas, tudo novinho em folha.',
-    desc2: '🏎️ Formato: qualificação de 5 minutos, depois corrida de 10 minutos. Depois trocamos de karts e repetimos — mais 5+10 min!',
-    desc3: '🏆 Cada corrida dá pontos — haverá dois pódios: <strong>classificação geral</strong> e <strong>classificação de iniciantes</strong>.',
-    desc4: '🛞 Pilotamos karts <strong>TonyKart 270cc</strong> (9 cv) — um pouco mais lentos que os anteriores, mas com melhor maneabilidade e condições iguais para todos.',
-    desc5: '💶 Taxa de participação — <strong>€70</strong>.',
+    next_race: 'Próxima corrida · 19 set 2026',
+    about_race: '🔥 Mega Sprints',
+    desc1: '📅 Encontramo-nos a <strong>19 de setembro às 12:00</strong>. Um campeonato inteiro num só dia — <strong>12 partidas para cada um!</strong>',
+    desc_venue: '📍 Euroindy — Kartódromo da Batalha. Hora e meia de Lisboa, duas do Porto. Karts 270cc, café no local.',
+    desc2: '🏎️ Qualificação de 15 minutos — longa, para entrar no ritmo, e podes trocar de kart. Depois dividimo-nos em 2 grupos de 10 (pares / ímpares), e cada grupo faz 10 corridas de 4 voltas: partidas, ultrapassagens, recuperações — tudo o que adoramos nos sprints. Todos contra todos — decide a pilotagem.',
+    desc3: '🏆 Pelos pontos dividimo-nos em Final A e Final B e corremos as finais a valer <strong>pontos a dobrar</strong>. Tudo conta.',
+    desc4: '🍾 É um dia longo: conversamos, planeamos próximas saídas, torcemos pelo grupo ao lado e mergulhamos no automobilismo.',
+    desc5: '💶 Preço — <strong>€145</strong>.',
     spots_lbl: 'Lugares disponíveis',
     btn_reg: 'Inscrever-me →',
-    beginner_note: '🟢 <strong>Iniciantes:</strong> podes entrar na classificação separada de iniciantes — basta marcar a caixa ao registares-te.',
+    beginner_note: '🟢 <strong>Iniciantes:</strong> marca a caixa ao registares-te — entras na classificação separada de iniciantes.',
     cd_d: 'Dias', cd_h: 'Horas', cd_m: 'Min', cd_s: 'Seg',
-    schedule: 'Horário',
-    s1: 'Concentração e registo', s2: 'Briefing', s3: '🏁 Início das corridas', s4: '🏆 Pódio e resultados',
+    schedule: 'Formato do dia',
+    s1: 'Qualificação — longa, podes trocar de kart', s2: '2 grupos de 10 — pares e ímpares', s3: '🏁 10 corridas por grupo, 4 voltas — todos contra todos', s4: '🏆 Finais A / B a valer o dobro → champanhe',
     already_racing: 'Já inscritos',
     nobody_yet: 'Ainda ninguém — sê o primeiro!',
     tab_upcoming: 'Corrida', tab_results: 'Anteriores', tab_standings: 'Classificação',
@@ -719,8 +785,8 @@ const I18N = {
     nav_race: 'Corrida', nav_1v1: '1v1', nav_drivers: 'Pilotos',
     race_today: 'Corrida hoje! 🏁',
     on_map: 'No mapa',
-    reg_title: 'Inscrição · Almeirím',
-    reg_sub: 'junho 2026 · Almeirím',
+    reg_title: 'Inscrição · Batalha',
+    reg_sub: 'Mega Sprints · 19 set',
     reg_spots: 'lugares disponíveis',
     form_name: 'Nome *', form_name_ph: 'Nome e apelido para a corrida',
     form_tg: 'Telegram', form_tg_ph: 'Username do Telegram (com @ ou sem)',
@@ -734,8 +800,8 @@ const I18N = {
     reg_full: 'Já não há lugares 😕 Fica atento aos anúncios — podemos abrir mais sessões.',
     reg_dup: 'Parece que já estás inscrito. Se não for o caso, contacta o organizador.',
     reg_err: 'Não foi possível enviar a inscrição. Verifica a ligação e tenta novamente.',
-    success_title: 'Estás na corrida!', success_date: 'Esperamos-te em Almeirím',
-    pay_title: '💶 Pagamento · €70',
+    success_title: 'Estás na corrida!', success_date: 'Esperamos-te na Batalha · 19 set',
+    pay_title: '💶 Pagamento · €145',
     stat_pts: 'Pontos', stat_races: 'Corridas', stat_avg: 'Média', stat_best: 'Melhor', stat_fl: 'V. rápida', stat_pos: 'Posição geral',
     h2h_btn: '⚔️ Head to Head — comparar com outro piloto',
     hist_lbl: 'Histórico de corridas', pts_sfx: 'pts',
@@ -757,20 +823,20 @@ const I18N = {
   },
   en: {
     title: 'Kart Chat',
-    next_race: 'Next race · Jun 6, 2026',
-    about_race: '⚡ About the race',
-    desc1: '📅 Meet on <strong>June 6</strong> at <strong>14:30</strong>, race starts at <strong>15:00</strong>.',
-    desc_venue: '🆕 Brand new kartodrome — opened less than two months ago! Fresh tarmac, wide layouts, everything spanking new.',
-    desc2: '🏎️ Format: 5-minute qualifying, then a 10-minute race. Then we swap karts and repeat — another 5+10 min!',
-    desc3: '🏆 Points are awarded for each race — two podiums: <strong>overall standings</strong> and <strong>beginners standings</strong>.',
-    desc4: '🛞 We race <strong>TonyKart 270cc</strong> karts (9 hp) — slightly slower than previous races, but great handling and equal conditions for everyone.',
-    desc5: '💶 Entry fee — <strong>€70</strong>.',
+    next_race: 'Next race · Sep 19, 2026',
+    about_race: '🔥 Mega Sprints',
+    desc1: '📅 Meet on <strong>September 19 at 12:00</strong>. A whole championship in a single day — <strong>12 starts each!</strong>',
+    desc_venue: '📍 Euroindy — Kartódromo da Batalha. 1.5 hours from Lisbon, 2 from Porto. 270cc karts, café on site.',
+    desc2: '🏎️ 15-minute qualifying — long, to get in the groove, and you can swap karts. Then we split into 2 groups of 10 (even / odd), and each group runs 10 races of 4 laps: starts, overtakes, comebacks — everything we love about sprints. Everyone races everyone — pure driving decides it.',
+    desc3: '🏆 Points split us into Final A and Final B, and we run the finals for <strong>double points</strong>. It all counts.',
+    desc4: "🍾 It's a long event: we chat, plan future trips, cheer for the other group and go all-in on motorsport.",
+    desc5: '💶 Price — <strong>€145</strong>.',
     spots_lbl: 'Spots available',
     btn_reg: 'Register →',
-    beginner_note: '🟢 <strong>Beginners:</strong> you can enter the separate beginners standings — just tick the box when you register.',
+    beginner_note: "🟢 <strong>Beginners:</strong> tick the box when you register — you'll join the separate beginners standings.",
     cd_d: 'Days', cd_h: 'Hours', cd_m: 'Min', cd_s: 'Sec',
-    schedule: 'Schedule',
-    s1: 'Arrival & registration', s2: 'Briefing', s3: '🏁 Race start', s4: '🏆 Podium & results',
+    schedule: 'Day format',
+    s1: 'Qualifying — long, karts can be swapped', s2: '2 groups of 10 — even and odd', s3: '🏁 10 races per group, 4 laps — everyone races everyone', s4: '🏆 Finals A / B for double points → champagne',
     already_racing: 'Already in',
     nobody_yet: 'Nobody yet — be the first!',
     tab_upcoming: 'Race', tab_results: 'Past', tab_standings: 'Standings',
@@ -805,8 +871,8 @@ const I18N = {
     nav_race: 'Race', nav_1v1: '1v1', nav_drivers: 'Drivers',
     race_today: 'Race day! 🏁',
     on_map: 'On map',
-    reg_title: 'Registration · Almeirím',
-    reg_sub: 'June 2026 · Almeirím',
+    reg_title: 'Registration · Batalha',
+    reg_sub: 'Mega Sprints · Sep 19',
     reg_spots: 'spots left',
     form_name: 'Name *', form_name_ph: 'Full name for the race',
     form_tg: 'Telegram', form_tg_ph: 'Telegram username (with @ or without)',
@@ -820,8 +886,8 @@ const I18N = {
     reg_full: 'No spots left 😕 Watch the announcements — we may open extra sessions.',
     reg_dup: 'Looks like you are already registered. If not, contact the organizer.',
     reg_err: 'Could not submit your registration. Check your connection and try again.',
-    success_title: 'You\'re in!', success_date: 'See you in Almeirím',
-    pay_title: '💶 Payment · €70',
+    success_title: 'You\'re in!', success_date: 'See you in Batalha · Sep 19',
+    pay_title: '💶 Payment · €145',
     stat_pts: 'Points', stat_races: 'Races', stat_avg: 'Average', stat_best: 'Best', stat_fl: 'Fast lap', stat_pos: 'Standing',
     h2h_btn: '⚔️ Head to Head — compare with another driver',
     hist_lbl: 'Race history', pts_sfx: 'pts',
@@ -1024,13 +1090,13 @@ function setLang(lang) {
   const ns4=document.getElementById('next-s4'); if(ns4) ns4.textContent=t('s4');
   // tab labels
   const tabBtnNext = document.getElementById('tab-btn-next');
-  if(tabBtnNext) tabBtnNext.textContent = { ru:'Последняя', pt:'Última', en:'Latest' }[lang];
+  if(tabBtnNext) tabBtnNext.textContent = { ru:'Следующая', pt:'Próxima', en:'Next' }[lang];
   // reg list title
   const rlt2 = document.getElementById('reg-list-title');
-  if (rlt2) rlt2.textContent = `${t('already_racing')} (${regs.length} / 36)`;
+  if (rlt2) rlt2.textContent = `${t('already_racing')} (${regs.length} / ${MAX})`;
   // inner tabs
   const tabs = document.querySelectorAll('.inner-tab');
-  if (tabs[0]) tabs[0].textContent = { ru:'Последняя', pt:'Última', en:'Latest' }[_lang||'ru'];
+  if (tabs[0]) tabs[0].textContent = { ru:'Следующая', pt:'Próxima', en:'Next' }[_lang||'ru'];
   if (tabs[1]) tabs[1].textContent = t('tab_results');
   if (tabs[2]) tabs[2].textContent = t('tab_standings');
   // standings pts card
@@ -2711,8 +2777,11 @@ function closeProfileModal(e) {
 
 // REGISTRATION
 
-const MAX = 20;
+const MAX = 20;   // 2 группы × 10
 const regs = [];
+
+// ⬇ TODO МЕГА СПРИНТЫ: новая Stripe-ссылка на оплату (€145). Пустая = кнопка оплаты скрыта.
+const STRIPE_PAY_URL = '';
 
 function openReg() {
   const tgName   = '';  // имя не подтягиваем — пусть вписывают сами
@@ -2731,22 +2800,6 @@ function openReg() {
       <div>
         <label class="form-lbl">${t('form_tg')}</label>
         <input class="form-input" id="rh" placeholder="${t('form_tg_ph')}" type="text" value="${esc(tgHandle)}">
-      </div>
-      <label class="check-label">
-        <input type="checkbox" id="rb" class="check-input">
-        <span class="check-box"></span>
-        <span class="check-txt">${t('check_beg')}</span>
-      </label>
-      <div>
-        <label class="form-lbl">${t('photo_lbl')}</label>
-        <div class="photo-upload-area" id="photo-drop" onclick="document.getElementById('rphoto').click()">
-          <div id="photo-drop-inner">
-            <div class="photo-upload-icon">📷</div>
-            <div class="photo-upload-lbl">${t('photo_btn')}</div>
-          </div>
-          <input type="file" id="rphoto" accept="image/*" style="display:none" onchange="handlePhotoChange(this)">
-        </div>
-        <div style="font-size:11px;color:var(--muted2);margin-top:5px;line-height:1.4;">${t('privacy_note')}</div>
       </div>
       <label class="check-label" style="margin-top:0;">
         <input type="checkbox" id="rph" class="check-input">
@@ -2797,10 +2850,10 @@ function closeRegModal(e) {
 function submitReg() {
   const name = document.getElementById('rn').value.trim();
   let handle = document.getElementById('rh').value.trim();
-  const beginner = document.getElementById('rb').checked;
+  const beginner = document.getElementById('rb')?.checked || false;
   if (!name) { document.getElementById('rn').focus(); return; }
   if (handle && !handle.startsWith('@')) handle = '@' + handle;
-  const photoBase64 = _photoDataUrl || null;
+  if (!SHEETS_URL) { showRegError('Регистрация скоро откроется — подключаем бэкенд ✌️'); return; }
   const telegramId  = getTgId();
   const hideHandle  = document.getElementById('rph')?.checked || false;
 
@@ -2823,25 +2876,16 @@ function submitReg() {
     if (Array.isArray(resp.regs)) applyRegs(resp.regs);
     if (hideHandle && handle) HIDDEN_HANDLES.add(handle.replace('@','').toLowerCase());
     showRegSuccess(name, beginner);
-    // Фото — отдельным POST после подтверждённой регистрации.
-    // Не блокирует флоу: основной канал фото — папка photos/ на GitHub.
-    if (photoBase64) {
-      fetch(SHEETS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'photo', name, handle, telegram_id: telegramId || null, photoBase64 })
-      }).catch(err => console.warn('Photo upload failed:', err));
-    }
-    _photoDataUrl = null;
+    // Фото аватарок — из папки photos/ репозитория GitHub (по нику/имени). Загрузка в форме не нужна.
   }).catch(err => {
     console.warn('Registration failed:', err);
     showRegError(t('reg_err'));
   });
 }
 
-// ⬇ Вставь сюда URL нового деплоя из «Almeirim Reg» → Extensions → Apps Script → Deploy
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz8fYlLxNGZL3taup9rhzzNyU2z9m_wVN1iTSzy8uecfe6lcYtU5oSAVuVkh5cwlL4K8g/exec';
+// Мега Спринты · Batalha — деплой Apps Script (регистрации в Google Sheet).
+// При правке скрипта: Manage Deployments → New version.
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz6xA0Df4YZrTKlMwMd7Ops6JffLIXwkJ9XIvlJNf2lPlqwDz8DwIY_CHKA1Z8n9P7r6Q/exec';
 
 // JSONP-запись регистрации: обходит CORS-ограничения Apps Script
 // и, в отличие от no-cors POST, возвращает реальный ответ сервера.
@@ -2928,10 +2972,12 @@ function showRegSuccess(name, beginner) {
       <div class="success-title">${t('success_title')}</div>
       <div class="success-sub">${esc(name)}<br>${t('success_date')}${extras?'<br><span style="font-size:12px;margin-top:6px;display:block;">'+extras+'</span>':''}</div>
       <div style="margin-top:16px;">
-        <a href="https://buy.stripe.com/fZu5kEdbnaP11309fCeZ200" target="_blank" rel="noopener" style="display:block;background:var(--accent-red);color:#fff;text-align:center;padding:14px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-decoration:none;text-transform:uppercase;">
+        ${STRIPE_PAY_URL ? `
+        <a href="${STRIPE_PAY_URL}" target="_blank" rel="noopener" style="display:block;background:var(--accent-red);color:#fff;text-align:center;padding:14px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-decoration:none;text-transform:uppercase;">
           💳 ${t('pay_title')} →
         </a>
         <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--muted);">Карта · MBway · Apple Pay · Google Pay</div>
+        ` : `<div style="text-align:center;font-size:12px;color:var(--muted);line-height:1.5;">Ссылку на оплату пришлём в чат ✌️</div>`}
       </div>
       <button class="btn-cancel" style="margin-top:16px;" onclick="closeRegModal()">${t('btn_close')}</button>
     </div>
@@ -2965,7 +3011,7 @@ function showPage(name, btn) {
 // COUNTDOWN
 
 // ⬇ Дата/время старта следующей гонки — ЕДИНСТВЕННОЕ место для правки countdown
-const NEXT_RACE_START = '2026-06-06T15:00:00+01:00';
+const NEXT_RACE_START = '2026-09-19T12:00:00+01:00';  // Мега Спринты · Batalha
 
 function tick() {
   const target = new Date(NEXT_RACE_START);
