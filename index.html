@@ -2830,25 +2830,33 @@ let _photoDataUrl = null;
 function handlePhotoChange(input) {
   const file = input.files[0];
   if (!file) return;
+  const inner = document.getElementById('photo-drop-inner');
+  const showThumb = () => { if (inner) inner.innerHTML = `<img src="${_photoDataUrl}" class="photo-preview" alt="фото"><div class="photo-upload-lbl" style="color:var(--green);">${t('photo_done')}</div>`; const d = document.getElementById('photo-drop'); if (d) d.classList.add('has-photo'); };
+  const showOk = () => { if (inner) inner.innerHTML = `<div class="photo-upload-lbl" style="color:var(--green);">✓ ${t('photo_done')}</div>`; const d = document.getElementById('photo-drop'); if (d) d.classList.add('has-photo'); };
   const reader = new FileReader();
+  reader.onerror = function() { _photoDataUrl = null; if (inner) inner.innerHTML = '<div class="photo-upload-lbl" style="color:#E10600;">Не удалось прочитать файл</div>'; };
   reader.onload = function(e) {
-    // Сжимаем аватар: 256px, quality 0.7 (грузим в репо photos/, лимита ячейки нет)
+    const raw = e.target.result; // сырой файл в data URI — шлём как есть, если не сожмётся
     const img = new Image();
+    // Браузер декодировал (JPEG/PNG/...) → жмём до 256px, отдаём лёгкий JPEG
     img.onload = function() {
-      const MAX = 256;
-      let w = img.width, h = img.height;
-      if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
-      else        { if (h > MAX) { w = w * MAX / h; h = MAX; } }
-      const canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      _photoDataUrl = canvas.toDataURL('image/jpeg', 0.7);
-      const inner = document.getElementById('photo-drop-inner');
-      if (inner) inner.innerHTML = `<img src="${_photoDataUrl}" class="photo-preview" alt="фото"><div class="photo-upload-lbl" style="color:var(--green);">${t('photo_done')}</div>`;
-      const drop = document.getElementById('photo-drop');
-      if (drop) drop.classList.add('has-photo');
+      try {
+        const MAX = 256;
+        let w = img.width, h = img.height;
+        if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
+        else        { if (h > MAX) { w = w * MAX / h; h = MAX; } }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        _photoDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        showThumb();
+      } catch (err) {
+        _photoDataUrl = raw; showOk();  // не смогли сжать — шлём как есть
+      }
     };
-    img.src = e.target.result;
+    // Браузер не тянет формат (HEIC на десктопе и т.п.) → шлём сырой файл, не отказываем
+    img.onerror = function() { _photoDataUrl = raw; showOk(); };
+    img.src = raw;
   };
   reader.readAsDataURL(file);
 }
@@ -2892,9 +2900,12 @@ function submitReg() {
     // Apps Script заливает его файлом в photos/{ключ}.jpg репозитория через GitHub API.
     // GitHub Pages публикует ~минуту: сразу видны инициалы, фото подтянется после обновления.
     if (photoBase64) {
+      const sc = document.getElementById('reg-content');
+      if (sc) { const n = document.createElement('div'); n.style.cssText = 'text-align:center;font-size:12px;color:var(--muted);margin-top:10px;'; n.textContent = '📷 Фото загружается, появится через ~минуту'; sc.appendChild(n); }
       fetch(SHEETS_URL, {
         method: 'POST',
         mode: 'no-cors',
+        keepalive: true,
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: 'photo', name, handle, telegram_id: telegramId || '', photoBase64 })
       }).catch(err => console.warn('Photo upload failed:', err));
