@@ -362,7 +362,7 @@
           <div class="venue-name">Kartódromo da<br>Batalha</div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-          <a href="https://www.google.com/maps/search/?api=1&query=39.645305,-8.829859" target="_blank" class="venue-link">
+          <a href="https://maps.app.goo.gl/mVQVvGL1XmPF1Jhq6" target="_blank" class="venue-link">
             <svg viewBox="0 0 24 24" width="11" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             <span>На карте</span>
           </a>
@@ -2801,6 +2801,17 @@ function openReg() {
         <label class="form-lbl">${t('form_tg')}</label>
         <input class="form-input" id="rh" placeholder="${t('form_tg_ph')}" type="text" value="${esc(tgHandle)}">
       </div>
+      <div>
+        <label class="form-lbl">${t('photo_lbl')}</label>
+        <div class="photo-upload-area" id="photo-drop" onclick="document.getElementById('rphoto').click()">
+          <div id="photo-drop-inner">
+            <div class="photo-upload-icon">📷</div>
+            <div class="photo-upload-lbl">${t('photo_btn')}</div>
+          </div>
+          <input type="file" id="rphoto" accept="image/*" style="display:none" onchange="handlePhotoChange(this)">
+        </div>
+        <div style="font-size:11px;color:var(--muted2);margin-top:5px;line-height:1.4;">${t('privacy_note')}</div>
+      </div>
       <label class="check-label" style="margin-top:0;">
         <input type="checkbox" id="rph" class="check-input">
         <span class="check-box"></span>
@@ -2821,10 +2832,10 @@ function handlePhotoChange(input) {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(e) {
-    // Сжимаем до 800px и quality 0.7 чтобы не перегружать запрос
+    // Сжимаем аватар: 256px, quality 0.7 (грузим в репо photos/, лимита ячейки нет)
     const img = new Image();
     img.onload = function() {
-      const MAX = 800;
+      const MAX = 256;
       let w = img.width, h = img.height;
       if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
       else        { if (h > MAX) { w = w * MAX / h; h = MAX; } }
@@ -2854,6 +2865,7 @@ function submitReg() {
   if (!name) { document.getElementById('rn').focus(); return; }
   if (handle && !handle.startsWith('@')) handle = '@' + handle;
   if (!SHEETS_URL) { showRegError('Регистрация скоро откроется — подключаем бэкенд ✌️'); return; }
+  const photoBase64 = _photoDataUrl || null;
   const telegramId  = getTgId();
   const hideHandle  = document.getElementById('rph')?.checked || false;
 
@@ -2876,7 +2888,18 @@ function submitReg() {
     if (Array.isArray(resp.regs)) applyRegs(resp.regs);
     if (hideHandle && handle) HIDDEN_HANDLES.add(handle.replace('@','').toLowerCase());
     showRegSuccess(name, beginner);
-    // Фото аватарок — из папки photos/ репозитория GitHub (по нику/имени). Загрузка в форме не нужна.
+    // Фото профиля — отдельным POST после подтверждённой регистрации.
+    // Apps Script заливает его файлом в photos/{ключ}.jpg репозитория через GitHub API.
+    // GitHub Pages публикует ~минуту: сразу видны инициалы, фото подтянется после обновления.
+    if (photoBase64) {
+      fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'photo', name, handle, telegram_id: telegramId || '', photoBase64 })
+      }).catch(err => console.warn('Photo upload failed:', err));
+    }
+    _photoDataUrl = null;
   }).catch(err => {
     console.warn('Registration failed:', err);
     showRegError(t('reg_err'));
