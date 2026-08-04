@@ -2784,7 +2784,7 @@ const regs = [];
 const STRIPE_PAY_URL = '';
 
 function openReg() {
-  const tgName   = '';  // имя не подтягиваем — пусть вписывают сами
+  const tgName   = getTgName();   // имя из Telegram, если открыто как Mini App
   const tgHandle = getTgHandle();
   const isTg     = !!TG_USER;
 
@@ -2902,13 +2902,19 @@ function submitReg() {
     if (photoBase64) {
       const sc = document.getElementById('reg-content');
       if (sc) { const n = document.createElement('div'); n.style.cssText = 'text-align:center;font-size:12px;color:var(--muted);margin-top:10px;'; n.textContent = '📷 Фото загружается, появится через ~минуту'; sc.appendChild(n); }
-      fetch(SHEETS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        keepalive: true,
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'photo', name, handle, telegram_id: telegramId || '', photoBase64 })
-      }).catch(err => console.warn('Photo upload failed:', err));
+      const body = JSON.stringify({ action: 'photo', name, handle, telegram_id: telegramId || '', photoBase64 });
+      let sent = false;
+      try {
+        if (navigator.sendBeacon) {
+          sent = navigator.sendBeacon(SHEETS_URL, new Blob([body], { type: 'text/plain;charset=UTF-8' }));
+        }
+      } catch (e) { sent = false; }
+      if (!sent) {
+        fetch(SHEETS_URL, {
+          method: 'POST', mode: 'no-cors', keepalive: true,
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: body
+        }).catch(err => console.warn('Photo upload failed:', err));
+      }
     }
     _photoDataUrl = null;
   }).catch(err => {
