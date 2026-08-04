@@ -353,8 +353,8 @@
     <div class="venue-block">
       <div class="photo-slider" id="photo-slider">
         <div class="photo-slide active-slide"><img src="photos/batalha-1.webp" alt="Batalha" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
-        <div class="photo-slide"><img src="photos/batalha-2.jpg" alt="Batalha" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
-        <div class="photo-slide"><img src="photos/batalha-3.jpg" alt="Batalha" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
+        <div class="photo-slide"><img src="photos/batalha-2.jpg" alt="Batalha" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
+        <div class="photo-slide"><img src="photos/batalha-3.jpg" alt="Batalha" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
       </div>
       <div class="venue-overlay">
         <div class="venue-name-block">
@@ -1190,7 +1190,7 @@ function venueLogoTile(text, size) {
   const src = venueLogoFor(text);
   if (!src) return '';
   const sz = size || 40;
-  return `<img src="${src}" onerror="this.style.display='none'" alt="" style="width:${sz}px;height:${sz}px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;background:var(--surface2);">`;
+  return `<img src="${src}" loading="lazy" decoding="async" onerror="this.style.display='none'" alt="" style="width:${sz}px;height:${sz}px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;background:var(--surface2);">`;
 }
 
 // Начинающие: true = да
@@ -1516,7 +1516,7 @@ function renderSafetyResults() {
   // Фото с подиума
   const podSrc = RACE_PHOTOS['almeirim_podium'] || null;
   let html = `<div style="width:100%;border-radius:12px;overflow:hidden;margin:0 0 14px;aspect-ratio:1400/504;background:var(--surface2);">${
-    podSrc ? `<img src="${podSrc}" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">` : _podiumPlaceholder()
+    podSrc ? `<img src="${podSrc}" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">` : _podiumPlaceholder()
   }</div>`;
 
   // Номинации-хайлайты (из тех же итогов)
@@ -1667,7 +1667,7 @@ function renderLastRace() {
   const podSrc = LAST_RACE.photo ? RACE_PHOTOS[LAST_RACE.photo] : null;
   html += `<div style="width:100%;border-radius:12px;overflow:hidden;margin-bottom:10px;aspect-ratio:1400/504;background:var(--surface2);">`;
   html += podSrc
-    ? `<img src="${podSrc}" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">`
+    ? `<img src="${podSrc}" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">`
     : _podiumPlaceholder();
   html += `</div>`;
   html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">${venueLogoTile((LAST_RACE.location||'') + ' ' + (LAST_RACE.title||''), 44)}<div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;">${LAST_RACE.title}</div></div>`;
@@ -1998,16 +1998,41 @@ function _tryNextPhoto(img) {
   }
 }
 
+// Манифест реально существующих фото (чтобы не долбить 404 по несуществующим аватаркам)
+let PHOTO_SET = null;
+try { const _c = sessionStorage.getItem('photoSet'); if (_c) PHOTO_SET = new Set(JSON.parse(_c)); } catch(e) {}
+
+function photoExists(key) {
+  return PHOTO_SET ? PHOTO_SET.has(key + '.jpg') : true; // манифест не загружен — не знаем, пробуем как раньше
+}
+
+async function loadPhotoManifest() {
+  try {
+    const r = await fetch('https://api.github.com/repos/evgburan/Karting_Pt/contents/photos?ref=main', { headers: { Accept: 'application/vnd.github+json' } });
+    if (!r.ok) return;
+    const list = await r.json();
+    if (!Array.isArray(list)) return;
+    PHOTO_SET = new Set(list.filter(f => f && f.name).map(f => f.name.toLowerCase()));
+    try { sessionStorage.setItem('photoSet', JSON.stringify([...PHOTO_SET])); } catch(e) {}
+    // Перерисуем — аватарки подтянутся без 404
+    try { renderStandings(); } catch(e) {}
+    try { renderResults(typeof _currentRaceIdx !== 'undefined' ? (_currentRaceIdx || 0) : 0); } catch(e) {}
+    try { renderRegList(); } catch(e) {}
+  } catch(e) {}
+}
+loadPhotoManifest();
+
 function getPhoto(handle, name) {
   const h = (handle||'').replace('@','').toLowerCase().trim();
   const n = (name||'').toLowerCase().trim();
+  const nk = n.replace(/\s+/g, '-');
 
-  // Собираем цепочку URL для fallback
+  // Собираем цепочку URL для fallback — только те, что реально есть в репо
   const urls = [];
-  if (h) urls.push(`photos/${h}.jpg`);
-  if (n) urls.push(`photos/${n.replace(/\s+/g, '-')}.jpg`);
+  if (h && photoExists(h)) urls.push(`photos/${h}.jpg`);
+  if (nk && photoExists(nk)) urls.push(`photos/${nk}.jpg`);
 
-  // Drive URL из регистрации (если есть)
+  // Загруженное при регистрации фото (если сервер вернул путь/ссылку)
   const reg = regs.find(r => {
     if (!r.photoUrl) return false;
     const rh = (r.handle||'').replace('@','').toLowerCase();
@@ -2028,7 +2053,7 @@ function avatarDiv(photoUrls, letter, size) {
   }
   // esc() и для src, и для JSON-цепочки — photoUrl приходит с сервера
   const srcsJson = esc(JSON.stringify(photoUrls));
-  return `<span style="position:relative;display:inline-flex;flex-shrink:0;"><img src="${esc(photoUrls[0])}" data-srcs="${srcsJson}" data-idx="0" onerror="_tryNextPhoto(this)" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;aspect-ratio:1;flex-shrink:0;">${initials}</span>`;
+  return `<span style="position:relative;display:inline-flex;flex-shrink:0;"><img src="${esc(photoUrls[0])}" data-srcs="${srcsJson}" data-idx="0" loading="lazy" decoding="async" onerror="_tryNextPhoto(this)" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;aspect-ratio:1;flex-shrink:0;">${initials}</span>`;
 }
 
 // RACE NOMINATIONS — показываются в «Прошедших» для гонок с данными (KIP, Almeirím)
@@ -2781,7 +2806,35 @@ const MAX = 20;   // 2 группы × 10
 const regs = [];
 
 // ⬇ TODO МЕГА СПРИНТЫ: новая Stripe-ссылка на оплату (€145). Пустая = кнопка оплаты скрыта.
-const STRIPE_PAY_URL = '';
+// Реквизиты оплаты (€145). Revolut — вставь Revtag (@name) или ссылку revolut.me/...
+const PAY = {
+  amount: '€145',
+  revolut: 'renat1xmv',              // Revtag → https://revolut.me/renat1xmv
+  iban: 'LT843250088480951926',
+  ibanName: 'Renat Ashrafedinov'
+};
+
+function copyText(el, text) {
+  const mark = () => { const s = el.querySelector('[data-copy-lbl]'); if (s) { const o = s.textContent; s.textContent = 'скопировано ✓'; setTimeout(() => { s.textContent = o; }, 1500); } };
+  try { navigator.clipboard.writeText(text).then(mark, () => {}); }
+  catch (e) { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); mark(); } catch (e2) {} document.body.removeChild(ta); }
+}
+
+function paymentHtml() {
+  const rev = (PAY.revolut || '').trim();
+  const revTag = rev.replace(/^@/, '');
+  const revHref = revTag ? (/^https?:/i.test(revTag) ? revTag : 'https://revolut.me/' + revTag) : '';
+  return `
+    <div style="margin-top:16px;text-align:left;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;margin-bottom:10px;text-align:center;">💶 Оплата участия · ${PAY.amount}</div>
+      ${revHref ? `<a href="${esc(revHref)}" target="_blank" rel="noopener" style="display:block;background:#0666EB;color:#fff;text-align:center;padding:12px;border-radius:10px;font-weight:700;text-decoration:none;margin-bottom:12px;">Revolut · ${esc(rev.startsWith('@') ? rev : '@' + revTag)}</a>` : ''}
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">IBAN · ${esc(PAY.ibanName)}</div>
+      <div onclick="copyText(this,'${esc(PAY.iban)}')" style="cursor:pointer;font-family:monospace;font-size:13px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <span>${esc(PAY.iban)}</span><span data-copy-lbl style="font-size:11px;color:var(--accent-red);white-space:nowrap;">копировать</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px;">В назначении платежа укажи своё имя 🙌</div>
+    </div>`;
+}
 
 function openReg() {
   const tgName   = getTgName();   // имя из Telegram, если открыто как Mini App
@@ -3011,14 +3064,7 @@ function showRegSuccess(name, beginner) {
       <div class="success-icon">🏁</div>
       <div class="success-title">${t('success_title')}</div>
       <div class="success-sub">${esc(name)}<br>${t('success_date')}${extras?'<br><span style="font-size:12px;margin-top:6px;display:block;">'+extras+'</span>':''}</div>
-      <div style="margin-top:16px;">
-        ${STRIPE_PAY_URL ? `
-        <a href="${STRIPE_PAY_URL}" target="_blank" rel="noopener" style="display:block;background:var(--accent-red);color:#fff;text-align:center;padding:14px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-decoration:none;text-transform:uppercase;">
-          💳 ${t('pay_title')} →
-        </a>
-        <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--muted);">Карта · MBway · Apple Pay · Google Pay</div>
-        ` : `<div style="text-align:center;font-size:12px;color:var(--muted);line-height:1.5;">Ссылку на оплату пришлём в чат ✌️</div>`}
-      </div>
+      ${paymentHtml()}
       <button class="btn-cancel" style="margin-top:16px;" onclick="closeRegModal()">${t('btn_close')}</button>
     </div>
   `;
