@@ -267,6 +267,14 @@
   .venue-map { width: 100%; height: 200px; border: none; display: block; }
 
   /* LAST RACE NOMINATIONS */
+  .mega-acc { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0 14px; margin-bottom: 12px; }
+  .mega-acc > summary { list-style: none; cursor: pointer; padding: 14px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; }
+  .mega-acc > summary::-webkit-details-marker { display: none; }
+  .mega-acc > summary::after { content: '▾'; color: var(--muted); font-size: 13px; }
+  .mega-acc[open] > summary::after { content: '▴'; }
+  .mega-acc-hint { font-family: 'Barlow', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted2); margin-left: auto; margin-right: 6px; }
+  .mega-acc > *:last-child { margin-bottom: 14px; }
   .nom-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
   .nom-card {
     border-radius: 10px; padding: 12px 10px;
@@ -342,80 +350,15 @@
 <div class="page active" id="page-main">
 
   <div class="inner-tabs">
-    <button class="inner-tab active" onclick="switchTab('next',this)" id="tab-btn-next">Следующая</button>
+    <button class="inner-tab active" onclick="switchTab('next',this)" id="tab-btn-next">Итоги</button>
     <button class="inner-tab" onclick="switchTab('results',this)">Прошедшие</button>
     <button class="inner-tab" onclick="switchTab('standings',this)">Зачёт</button>
   </div>
 
-  <!-- ── СЛЕДУЮЩАЯ (Мега Спринты · Batalha) ── -->
+  <!-- ── ИТОГИ (Мега Спринты · Batalha 19.09) ── -->
+  <!-- Контент рисует renderMega() из данных MEGA (внизу файла). -->
   <div class="inner-panel active" id="tab-next">
-
-    <div class="venue-block">
-      <div class="photo-slider" id="photo-slider">
-        <div class="photo-slide active-slide"><img src="photos/batalha-1.webp" alt="Batalha" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
-        <div class="photo-slide"><img src="photos/batalha-2.jpg" alt="Batalha" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
-        <div class="photo-slide"><img src="photos/batalha-3.jpg" alt="Batalha" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentNode.style.background='#15151E'"></div>
-      </div>
-      <div class="venue-overlay">
-        <div class="venue-name-block">
-          <div class="venue-label" id="venue-label-next">Следующая гонка · 19 сентября 2026</div>
-          <div class="venue-name">Kartódromo da<br>Batalha</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-          <a href="https://maps.app.goo.gl/mVQVvGL1XmPF1Jhq6" target="_blank" class="venue-link">
-            <svg viewBox="0 0 24 24" width="11" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>На карте</span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div style="padding: 0 14px;">
-
-      <div class="event-card">
-        <div class="event-eyebrow" id="next-eyebrow">🔥 Мега Спринты</div>
-        <p class="event-desc" id="next-desc1">📅 Встречаемся <strong>19 сентября в 12:00</strong>. Целый чемпионат в формате одного дня — <strong>12 стартов у каждого!</strong></p>
-        <p class="event-desc" id="next-desc-venue">📍 Euroindy — Kartódromo da Batalha. Полтора часа от Лиссабона, два от Порту. Карты 390cc, кафе на месте.</p>
-        <p class="event-desc" id="next-desc2">🏎️ Квалификация 15 минут — длинная, чтобы вкатиться, карты можно менять. Потом делимся на 2 группы по 10 (чётные / нечётные), и каждая едет 10 заездов по 4 круга: старты, обгоны, отыгрыши, потери позиций — всё за что мы любим спринты. Каждый на каждом — решает чисто пилотаж.</p>
-        <p class="event-desc" id="next-desc3">🏆 По очкам делимся на Финал A и Финал B и мощно едем финалы за <strong>двойные очки</strong>. Всё идёт в зачёт.</p>
-        <p class="event-desc" id="next-desc4">🍾 Ивент длинный: болтаем, планируем будущие выезды, рьяно болеем за соседнюю группу и погружаемся в автоспорт с ушами. Всё как надо.</p>
-        <p class="event-desc" id="next-desc5">💶 Прайс — <strong>€145</strong>.</p>
-
-        <div class="spots-bar">
-          <div class="spots-row">
-            <span class="spots-lbl" id="next-spots-lbl">Свободных мест</span>
-            <span class="spots-val"><span id="spots-left">20</span> / 20</span>
-          </div>
-          <div class="prog-track"><div class="prog-fill" id="spots-fill" style="width:0%"></div></div>
-        </div>
-
-        <button class="btn-reg" onclick="openReg()" id="next-btn-reg">Зарегистрироваться →</button>
-
-        <div class="countdown" id="countdown">
-          <div class="cd-block"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl" id="cd-d-lbl">Дней</div></div>
-          <div class="cd-block"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl" id="cd-h-lbl">Часов</div></div>
-          <div class="cd-block"><div class="cd-num" id="cd-m">--</div><div class="cd-lbl" id="cd-m-lbl">Мин</div></div>
-          <div class="cd-block"><div class="cd-num" id="cd-s">--</div><div class="cd-lbl" id="cd-s-lbl">Сек</div></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title" id="next-sched-title">Формат дня</div>
-        <div class="sched-row"><div class="sched-time">15′</div><div class="sched-txt" id="next-s1">Квалификация — длинная, карты можно менять</div></div>
-        <div class="sched-row"><div class="sched-time">÷2</div><div class="sched-txt" id="next-s2">2 группы по 10 — чётные и нечётные</div></div>
-        <div class="sched-row"><div class="sched-time">×10</div><div class="sched-txt" id="next-s3">🏁 10 спринтов на группу по 4 круга — каждый на каждом</div></div>
-        <div class="sched-row"><div class="sched-time">×2</div><div class="sched-txt" id="next-s4">🏆 Финалы A / B за двойные очки → шампанское</div></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title" id="reg-list-title">Уже едут (0 / 20)</div>
-        <div id="reg-list-body">
-          <div style="text-align:center;padding:14px 0;color:var(--muted);font-size:13px;" id="nobody-yet-msg">Пока никого — будь первым!</div>
-        </div>
-      </div>
-
-    </div>
-
+    <div id="mega-wrap"></div>
   </div>
 
   <!-- ── ПРОШЕДШИЕ ── -->
@@ -1090,13 +1033,13 @@ function setLang(lang) {
   const ns4=document.getElementById('next-s4'); if(ns4) ns4.textContent=t('s4');
   // tab labels
   const tabBtnNext = document.getElementById('tab-btn-next');
-  if(tabBtnNext) tabBtnNext.textContent = { ru:'Следующая', pt:'Próxima', en:'Next' }[lang];
+  if(tabBtnNext) tabBtnNext.textContent = { ru:'Итоги', pt:'Resultados', en:'Results' }[lang];
   // reg list title
   const rlt2 = document.getElementById('reg-list-title');
   if (rlt2) rlt2.textContent = `${t('already_racing')} (${regs.length} / ${MAX})`;
   // inner tabs
   const tabs = document.querySelectorAll('.inner-tab');
-  if (tabs[0]) tabs[0].textContent = { ru:'Следующая', pt:'Próxima', en:'Next' }[_lang||'ru'];
+  if (tabs[0]) tabs[0].textContent = { ru:'Итоги', pt:'Resultados', en:'Results' }[_lang||'ru'];
   if (tabs[1]) tabs[1].textContent = t('tab_results');
   if (tabs[2]) tabs[2].textContent = t('tab_standings');
   // standings pts card
@@ -1150,6 +1093,7 @@ function setLang(lang) {
   renderDrivers();
   renderResults(_currentRaceIdx || 0);
   renderLastRace();
+  if (typeof renderMega === 'function') renderMega();
   const nomEl2 = document.getElementById('nominations-block');
   if (nomEl2) nomEl2.innerHTML = renderNominations();
   if (typeof renderVoteList === 'function') renderVoteList();
@@ -1223,6 +1167,8 @@ const BEGINNERS = {
     'elfin13',             // Victor Y
     'riskingh',            // Maksim Grishkin
   ]),
+  // ⬇ Batalha: впиши хэндлы тех, кто ехал в зачёте начинающих (пока пусто)
+  batalha: new Set([]),
   almeirim: new Set([
     'ilikru',              // Ilia — начинающий во всех гонках
     'ilyushinas',          // Aleksandr Ilyushin
@@ -1365,7 +1311,7 @@ const RACES = [
   },
   {
     id: 'almeirim-jun',
-    chipLabel: '6 Июня · Almeirim',
+    chipLabel: '6 Июн · Almeirim',
     date: '6 июня 2026',
     location: 'Kartódromo de Almeirím',
     photo: 'almeirim_podium',
@@ -1390,6 +1336,39 @@ const RACES = [
           { pos:15, name:'Ilia', handle:'@ilikru', r1:3, r2:0, total:7 },
           { pos:16, name:'Oleg Andrusiv', handle:'@zemlyanen', r1:1, r2:1, total:6 },
           { pos:17, name:'evgenii lisnianskii', handle:'@leeseeq', r1:0, r2:0, total:6 },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'batalha-sep',
+    chipLabel: '19 Сен · Batalha',
+    date: '19 сентября 2026',
+    location: 'Kartódromo da Batalha',
+    photo: 'batalha_podium',
+    // Мега Спринты: 18 отборочных заездов + Финал A/B. В чемпионат этап идёт
+    // ОДНОЙ гонкой — r1 = очки по итоговой классификации дня (25/20/16/…).
+    groups: [
+      {
+        label: null,
+        results: [
+          { pos:1, name:'Andrei Musinov', handle:'@AndreyM43', r1:25, r1fl:true, r2:null, total:25 },  // 88 очк. этапа
+          { pos:2, name:'Sasha Yelkhovenka', handle:'@fire_wheels', r1:20, r2:null, total:20 },  // 82 очк. этапа
+          { pos:3, name:'Dimas Calcai', handle:'@dimasccd', r1:16, r2:null, total:16 },  // 82 очк. этапа
+          { pos:4, name:'Renat Ashrafedinov', handle:'@renatashrafedinov', r1:13, r2:null, total:13 },  // 74 очк. этапа
+          { pos:5, name:'Ilia Danilov', handle:'@Chscyb', r1:11, r2:null, total:11 },  // 74 очк. этапа
+          { pos:6, name:'Viktor Iakovets', handle:'@Level_Portugal', r1:10, r2:null, total:10 },  // 74 очк. этапа
+          { pos:7, name:'Nikita Bogach', handle:'@nibogach', r1:9, r2:null, total:9 },  // 72 очк. этапа
+          { pos:8, name:'Timofei Iliushin', handle:'@taxaaa', r1:8, r2:null, total:8 },  // 61 очк. этапа
+          { pos:9, name:'Peter Prins', handle:'@peterprins', r1:7, r2:null, total:7 },  // 70 очк. этапа
+          { pos:10, name:'Ivan Kharlampov', handle:'@van4esco', r1:6, r2:null, total:6 },  // 68 очк. этапа
+          { pos:11, name:'Vladislav Shkutte', handle:'@Moresabbath', r1:5, r2:null, total:5 },  // 68 очк. этапа
+          { pos:12, name:'Karen M', handle:'@karen_makaren', r1:4, r2:null, total:4 },  // 62 очк. этапа
+          { pos:13, name:'Stanislav Panfilov', handle:'@P_Stanis', r1:3, r2:null, total:3 },  // 56 очк. этапа
+          { pos:14, name:'Alex Bash', handle:'@bashalex0100', r1:3, r2:null, total:3 },  // 56 очк. этапа
+          { pos:15, name:'Aleksandr Ilyushin', handle:'@IlyushinAS', r1:3, r2:null, total:3 },  // 55 очк. этапа
+          { pos:16, name:'Leonid Kondratev', handle:'@sxuxs', r1:3, r2:null, total:3 },  // 29 очк. этапа
+          { pos:17, name:'Miguel Bento', handle:'', r1:3, r2:null, total:3 },  // 13 очк. этапа
         ]
       }
     ]
@@ -1871,6 +1850,7 @@ const STANDINGS_EVENTS = [
   { raceId:'campera-apr',  begId:'campera-apr',  label:'Campera',        shortDate:'12 апр', ptsFix: fixBase },
   { raceId:'kip-may',      begId:'kip',          label:'KIP 23.05',      shortDate:'23 мая', ptsFix: fixKipBase },
   { raceId:'almeirim-jun', begId:'almeirim',     label:'Almeirim 06.06', shortDate:'6 июн',  ptsFix: fixModernBase },
+  { raceId:'batalha-sep',  begId:'batalha',      label:'Batalha 19.09',  shortDate:'19 сен', ptsFix: fixModernBase },
 ];
 
 function ptsFixFor(raceId) {
@@ -2064,6 +2044,10 @@ function renderRaceNominations(raceId) {
     'kip-may':      { detail: KIP_DETAIL, safety: KIP_SAFETY,      flTimes: { r1: '1:04.007', r2: '1:04.209' } },
     'almeirim-jun': { detail: LAST_RACE,  safety: ALMEIRIM_SAFETY, flTimes: LAST_RACE.flTimes || {} },
   };
+  // Мега Спринты — свои номинации (формат без Г1/Г2)
+  if (raceId === 'batalha-sep') {
+    return `<div class="nom-cards" style="margin-bottom:14px;">${megaNomCards()}</div>`;
+  }
   const cfg = CFG[raceId];
   if (!cfg) return '';
 
@@ -3294,7 +3278,8 @@ function voteRoster() {
       const k = norm(r.handle) || norm(r.name);
       if (!seen.has(k)) { seen.add(k); out.push({ name: r.name, handle: r.handle || '', hideHandle: r.hideHandle || false }); }
     }));
-    if (out.length) return out;
+    // hideHandle берём из регистраций: скрытые ники не должны светиться в списке
+    if (out.length) return out.map(voteEnrich);
   }
   const fixed = VOTE_ROSTERS[VOTE_RACE_ID];
   if (fixed && fixed.length) return fixed.map(voteEnrich);
@@ -3411,6 +3396,1582 @@ function submitFeedback() {
       <div class="success-sub">${t('fb_done_sub')}</div>
     </div>`;
 }
+
+const MEGA = {
+ "date": "19 сентября 2026",
+ "venue": "Euroindy · Kartódromo da Batalha",
+ "photo": "photos/batalha-podium.jpg",
+ "photo2": "photos/batalha-group.jpg",
+ "drivers": {
+  "yelk": {
+   "name": "Sasha Yelkhovenka",
+   "handle": "@fire_wheels"
+  },
+  "calc": {
+   "name": "Dimas Calcai",
+   "handle": "@dimasccd"
+  },
+  "ashr": {
+   "name": "Renat Ashrafedinov",
+   "handle": "@renatashrafedinov"
+  },
+  "prin": {
+   "name": "Peter Prins",
+   "handle": "@peterprins"
+  },
+  "kare": {
+   "name": "Karen M",
+   "handle": "@karen_makaren"
+  },
+  "bash": {
+   "name": "Alex Bash",
+   "handle": "@bashalex0100"
+  },
+  "kond": {
+   "name": "Leonid Kondratev",
+   "handle": "@sxuxs"
+  },
+  "iako": {
+   "name": "Viktor Iakovets",
+   "handle": "@Level_Portugal"
+  },
+  "bent": {
+   "name": "Miguel Bento",
+   "handle": ""
+  },
+  "musi": {
+   "name": "Andrei Musinov",
+   "handle": "@AndreyM43"
+  },
+  "khar": {
+   "name": "Ivan Kharlampov",
+   "handle": "@van4esco"
+  },
+  "boga": {
+   "name": "Nikita Bogach",
+   "handle": "@nibogach"
+  },
+  "dani": {
+   "name": "Ilia Danilov",
+   "handle": "@Chscyb"
+  },
+  "tili": {
+   "name": "Timofei Iliushin",
+   "handle": "@taxaaa"
+  },
+  "aili": {
+   "name": "Aleksandr Ilyushin",
+   "handle": "@IlyushinAS"
+  },
+  "shku": {
+   "name": "Vladislav Shkutte",
+   "handle": "@Moresabbath"
+  },
+  "panf": {
+   "name": "Stanislav Panfilov",
+   "handle": "@P_Stanis"
+  }
+ },
+ "qualy": [
+  [
+   "yelk",
+   "48.677"
+  ],
+  [
+   "dani",
+   "48.966"
+  ],
+  [
+   "calc",
+   "49.019"
+  ],
+  [
+   "musi",
+   "49.092"
+  ],
+  [
+   "ashr",
+   "49.331"
+  ],
+  [
+   "tili",
+   "49.544"
+  ],
+  [
+   "bent",
+   "49.588"
+  ],
+  [
+   "panf",
+   "49.669"
+  ],
+  [
+   "prin",
+   "49.688"
+  ],
+  [
+   "khar",
+   "49.729"
+  ],
+  [
+   "iako",
+   "49.796"
+  ],
+  [
+   "aili",
+   "49.820"
+  ],
+  [
+   "bash",
+   "49.868"
+  ],
+  [
+   "boga",
+   "49.876"
+  ],
+  [
+   "kond",
+   "50.009"
+  ],
+  [
+   "shku",
+   "50.040"
+  ],
+  [
+   "kare",
+   "50.281"
+  ]
+ ],
+ "heats": {
+  "A": [
+   {
+    "no": 1,
+    "time": "14:02",
+    "laps": 5,
+    "rows": [
+     [
+      "calc",
+      "4:07.535",
+      "48.602",
+      ""
+     ],
+     [
+      "ashr",
+      "4:14.138",
+      "49.526",
+      ""
+     ],
+     [
+      "prin",
+      "4:14.587",
+      "49.648",
+      ""
+     ],
+     [
+      "bent",
+      "4:14.881",
+      "49.476",
+      ""
+     ],
+     [
+      "iako",
+      "4:15.526",
+      "49.612",
+      ""
+     ],
+     [
+      "yelk",
+      "4:13.550",
+      "49.946",
+      "+5s"
+     ],
+     [
+      "bash",
+      "4:19.543",
+      "50.199",
+      ""
+     ],
+     [
+      "kare",
+      "4:19.929",
+      "50.190",
+      ""
+     ],
+     [
+      "kond",
+      "4:24.542",
+      "50.791",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 2,
+    "time": "14:11",
+    "laps": 4,
+    "rows": [
+     [
+      "yelk",
+      "3:19.118",
+      "48.788",
+      ""
+     ],
+     [
+      "calc",
+      "3:21.175",
+      "49.111",
+      ""
+     ],
+     [
+      "prin",
+      "3:22.988",
+      "49.418",
+      ""
+     ],
+     [
+      "ashr",
+      "3:23.155",
+      "49.561",
+      ""
+     ],
+     [
+      "bent",
+      "3:23.266",
+      "49.000",
+      ""
+     ],
+     [
+      "iako",
+      "3:23.676",
+      "49.680",
+      ""
+     ],
+     [
+      "kare",
+      "3:28.117",
+      "50.615",
+      ""
+     ],
+     [
+      "kond",
+      "3:29.165",
+      "50.833",
+      ""
+     ],
+     [
+      "bash",
+      "3:33.477",
+      "51.196",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 3,
+    "time": "14:18",
+    "laps": 4,
+    "rows": [
+     [
+      "calc",
+      "3:19.943",
+      "49.132",
+      ""
+     ],
+     [
+      "ashr",
+      "3:22.767",
+      "49.451",
+      ""
+     ],
+     [
+      "bash",
+      "3:24.225",
+      "49.814",
+      ""
+     ],
+     [
+      "kare",
+      "3:25.838",
+      "50.001",
+      ""
+     ],
+     [
+      "iako",
+      "3:26.087",
+      "50.248",
+      ""
+     ],
+     [
+      "prin",
+      "3:26.580",
+      "50.064",
+      ""
+     ],
+     [
+      "yelk",
+      "3:22.386",
+      "49.459",
+      "+5s"
+     ],
+     [
+      "kond",
+      "3:28.409",
+      "50.693",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 4,
+    "time": "14:25",
+    "laps": 4,
+    "rows": [
+     [
+      "yelk",
+      "3:21.348",
+      "49.142",
+      ""
+     ],
+     [
+      "calc",
+      "3:23.385",
+      "49.025",
+      ""
+     ],
+     [
+      "iako",
+      "3:25.079",
+      "49.625",
+      ""
+     ],
+     [
+      "kare",
+      "3:26.425",
+      "50.062",
+      ""
+     ],
+     [
+      "ashr",
+      "3:27.445",
+      "49.986",
+      ""
+     ],
+     [
+      "bash",
+      "3:27.703",
+      "50.372",
+      ""
+     ],
+     [
+      "prin",
+      "3:30.122",
+      "50.953",
+      ""
+     ],
+     [
+      "kond",
+      "3:33.480",
+      "51.033",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 5,
+    "time": "14:38",
+    "laps": 4,
+    "rows": [
+     [
+      "yelk",
+      "3:22.057",
+      "49.110",
+      ""
+     ],
+     [
+      "iako",
+      "3:24.455",
+      "50.134",
+      ""
+     ],
+     [
+      "ashr",
+      "3:25.561",
+      "49.446",
+      ""
+     ],
+     [
+      "prin",
+      "3:26.051",
+      "49.575",
+      ""
+     ],
+     [
+      "kare",
+      "3:26.797",
+      "49.587",
+      ""
+     ],
+     [
+      "calc",
+      "3:27.134",
+      "49.261",
+      ""
+     ],
+     [
+      "bash",
+      "3:27.150",
+      "49.723",
+      ""
+     ],
+     [
+      "kond",
+      "3:29.556",
+      "50.322",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 6,
+    "time": "15:28",
+    "laps": 4,
+    "rows": [
+     [
+      "iako",
+      "3:21.595",
+      "49.241",
+      ""
+     ],
+     [
+      "kare",
+      "3:23.519",
+      "49.606",
+      ""
+     ],
+     [
+      "yelk",
+      "3:24.228",
+      "49.279",
+      ""
+     ],
+     [
+      "prin",
+      "3:25.258",
+      "50.464",
+      ""
+     ],
+     [
+      "bash",
+      "3:27.262",
+      "50.260",
+      ""
+     ],
+     [
+      "calc",
+      "3:28.680",
+      "49.311",
+      ""
+     ],
+     [
+      "ashr",
+      "3:30.037",
+      "50.685",
+      ""
+     ],
+     [
+      "kond",
+      "3:36.231",
+      "51.659",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 7,
+    "time": "15:36",
+    "laps": 4,
+    "rows": [
+     [
+      "iako",
+      "3:23.077",
+      "49.549",
+      ""
+     ],
+     [
+      "prin",
+      "3:23.398",
+      "49.982",
+      ""
+     ],
+     [
+      "kare",
+      "3:23.998",
+      "49.988",
+      ""
+     ],
+     [
+      "bash",
+      "3:24.187",
+      "50.143",
+      ""
+     ],
+     [
+      "yelk",
+      "3:25.123",
+      "49.831",
+      ""
+     ],
+     [
+      "calc",
+      "3:25.593",
+      "49.829",
+      ""
+     ],
+     [
+      "ashr",
+      "3:25.964",
+      "49.727",
+      ""
+     ],
+     [
+      "kond",
+      "3:28.072",
+      "50.273",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 8,
+    "time": "15:44",
+    "laps": 4,
+    "rows": [
+     [
+      "bash",
+      "3:23.712",
+      "49.695",
+      ""
+     ],
+     [
+      "calc",
+      "3:23.922",
+      "49.340",
+      ""
+     ],
+     [
+      "iako",
+      "3:24.412",
+      "49.388",
+      ""
+     ],
+     [
+      "ashr",
+      "3:25.271",
+      "50.029",
+      ""
+     ],
+     [
+      "yelk",
+      "3:26.869",
+      "50.087",
+      ""
+     ],
+     [
+      "kare",
+      "3:27.582",
+      "50.258",
+      ""
+     ],
+     [
+      "kond",
+      "3:27.982",
+      "50.532",
+      ""
+     ],
+     [
+      "prin",
+      "3:28.452",
+      "49.629",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 9,
+    "time": "15:52",
+    "laps": 4,
+    "rows": [
+     [
+      "calc",
+      "3:21.140",
+      "49.473",
+      ""
+     ],
+     [
+      "yelk",
+      "3:21.555",
+      "48.964",
+      ""
+     ],
+     [
+      "iako",
+      "3:24.182",
+      "49.836",
+      ""
+     ],
+     [
+      "prin",
+      "3:24.894",
+      "49.495",
+      ""
+     ],
+     [
+      "bash",
+      "3:25.609",
+      "50.010",
+      ""
+     ],
+     [
+      "kare",
+      "3:26.067",
+      "49.993",
+      ""
+     ],
+     [
+      "ashr",
+      "3:24.655",
+      "50.086",
+      "+5s"
+     ],
+     [
+      "kond",
+      "3:35.505",
+      "52.182",
+      ""
+     ]
+    ]
+   }
+  ],
+  "B": [
+   {
+    "no": 1,
+    "time": "14:47",
+    "laps": 4,
+    "rows": [
+     [
+      "musi",
+      "3:20.358",
+      "48.992",
+      ""
+     ],
+     [
+      "khar",
+      "3:23.469",
+      "49.884",
+      ""
+     ],
+     [
+      "boga",
+      "3:24.736",
+      "49.795",
+      ""
+     ],
+     [
+      "aili",
+      "3:27.402",
+      "50.029",
+      ""
+     ],
+     [
+      "tili",
+      "3:28.043",
+      "50.222",
+      ""
+     ],
+     [
+      "dani",
+      "3:28.337",
+      "50.244",
+      ""
+     ],
+     [
+      "panf",
+      "3:28.855",
+      "50.415",
+      ""
+     ],
+     [
+      "shku",
+      "3:29.524",
+      "50.557",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 2,
+    "time": "14:55",
+    "laps": 4,
+    "rows": [
+     [
+      "musi",
+      "3:22.713",
+      "49.264",
+      ""
+     ],
+     [
+      "dani",
+      "3:24.272",
+      "49.252",
+      ""
+     ],
+     [
+      "tili",
+      "3:26.718",
+      "49.894",
+      ""
+     ],
+     [
+      "khar",
+      "3:27.091",
+      "49.976",
+      ""
+     ],
+     [
+      "boga",
+      "3:28.697",
+      "50.463",
+      ""
+     ],
+     [
+      "panf",
+      "3:29.219",
+      "50.040",
+      ""
+     ],
+     [
+      "shku",
+      "3:29.798",
+      "50.263",
+      ""
+     ],
+     [
+      "aili",
+      "3:30.504",
+      "50.777",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 3,
+    "time": "15:02",
+    "laps": 4,
+    "rows": [
+     [
+      "dani",
+      "3:25.173",
+      "49.744",
+      ""
+     ],
+     [
+      "tili",
+      "3:25.896",
+      "49.890",
+      ""
+     ],
+     [
+      "musi",
+      "3:27.389",
+      "49.794",
+      ""
+     ],
+     [
+      "shku",
+      "3:29.624",
+      "50.260",
+      ""
+     ],
+     [
+      "khar",
+      "3:29.941",
+      "51.051",
+      ""
+     ],
+     [
+      "aili",
+      "3:31.011",
+      "51.025",
+      ""
+     ],
+     [
+      "panf",
+      "3:31.156",
+      "50.515",
+      ""
+     ],
+     [
+      "boga",
+      "3:33.997",
+      "50.393",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 4,
+    "time": "15:09",
+    "laps": 4,
+    "rows": [
+     [
+      "aili",
+      "3:22.481",
+      "49.523",
+      ""
+     ],
+     [
+      "dani",
+      "3:23.271",
+      "49.692",
+      ""
+     ],
+     [
+      "boga",
+      "3:25.866",
+      "49.873",
+      ""
+     ],
+     [
+      "musi",
+      "3:25.937",
+      "49.530",
+      ""
+     ],
+     [
+      "shku",
+      "3:26.563",
+      "50.314",
+      ""
+     ],
+     [
+      "tili",
+      "3:27.202",
+      "50.097",
+      ""
+     ],
+     [
+      "panf",
+      "3:28.356",
+      "50.723",
+      ""
+     ],
+     [
+      "khar",
+      "3:29.533",
+      "50.816",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 5,
+    "time": "15:17",
+    "laps": 4,
+    "rows": [
+     [
+      "boga",
+      "3:19.735",
+      "49.152",
+      ""
+     ],
+     [
+      "musi",
+      "3:23.007",
+      "49.408",
+      ""
+     ],
+     [
+      "dani",
+      "3:23.467",
+      "49.688",
+      ""
+     ],
+     [
+      "shku",
+      "3:23.783",
+      "49.845",
+      ""
+     ],
+     [
+      "aili",
+      "3:26.114",
+      "50.442",
+      ""
+     ],
+     [
+      "tili",
+      "3:26.322",
+      "49.822",
+      ""
+     ],
+     [
+      "panf",
+      "3:26.942",
+      "50.626",
+      ""
+     ],
+     [
+      "khar",
+      "3:27.453",
+      "50.257",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 6,
+    "time": "16:02",
+    "laps": 4,
+    "rows": [
+     [
+      "khar",
+      "3:20.918",
+      "49.255",
+      ""
+     ],
+     [
+      "shku",
+      "3:21.726",
+      "49.481",
+      ""
+     ],
+     [
+      "dani",
+      "3:23.709",
+      "49.507",
+      ""
+     ],
+     [
+      "musi",
+      "3:24.969",
+      "49.970",
+      ""
+     ],
+     [
+      "aili",
+      "3:26.232",
+      "49.902",
+      ""
+     ],
+     [
+      "boga",
+      "3:29.586",
+      "50.627",
+      ""
+     ],
+     [
+      "panf",
+      "3:30.919",
+      "51.396",
+      ""
+     ],
+     [
+      "tili",
+      "3:31.159",
+      "51.014",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 7,
+    "time": "16:30",
+    "laps": 4,
+    "rows": [
+     [
+      "panf",
+      "3:20.644",
+      "49.118",
+      ""
+     ],
+     [
+      "boga",
+      "3:25.689",
+      "49.872",
+      ""
+     ],
+     [
+      "tili",
+      "3:27.528",
+      "50.278",
+      ""
+     ],
+     [
+      "dani",
+      "3:29.147",
+      "50.832",
+      ""
+     ],
+     [
+      "musi",
+      "3:29.226",
+      "50.310",
+      ""
+     ],
+     [
+      "shku",
+      "3:29.396",
+      "49.610",
+      ""
+     ],
+     [
+      "aili",
+      "3:29.814",
+      "50.474",
+      ""
+     ],
+     [
+      "khar",
+      "3:31.740",
+      "49.404",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 8,
+    "time": "16:38",
+    "laps": 4,
+    "rows": [
+     [
+      "musi",
+      "3:18.272",
+      "48.552",
+      ""
+     ],
+     [
+      "boga",
+      "3:22.306",
+      "49.371",
+      ""
+     ],
+     [
+      "panf",
+      "3:23.272",
+      "49.811",
+      ""
+     ],
+     [
+      "khar",
+      "3:26.076",
+      "49.902",
+      ""
+     ],
+     [
+      "shku",
+      "3:26.620",
+      "50.210",
+      ""
+     ],
+     [
+      "tili",
+      "3:26.910",
+      "50.640",
+      ""
+     ],
+     [
+      "dani",
+      "3:27.675",
+      "50.711",
+      ""
+     ],
+     [
+      "aili",
+      "3:27.947",
+      "50.453",
+      ""
+     ]
+    ]
+   },
+   {
+    "no": 9,
+    "time": "16:49",
+    "laps": 4,
+    "rows": [
+     [
+      "tili",
+      "3:19.434",
+      "49.178",
+      ""
+     ],
+     [
+      "musi",
+      "3:20.165",
+      "48.808",
+      ""
+     ],
+     [
+      "boga",
+      "3:22.204",
+      "49.482",
+      ""
+     ],
+     [
+      "shku",
+      "3:22.542",
+      "49.800",
+      ""
+     ],
+     [
+      "dani",
+      "3:23.211",
+      "49.548",
+      ""
+     ],
+     [
+      "aili",
+      "3:23.467",
+      "49.555",
+      ""
+     ],
+     [
+      "khar",
+      "3:24.248",
+      "49.846",
+      ""
+     ],
+     [
+      "panf",
+      "3:25.926",
+      "50.085",
+      ""
+     ]
+    ]
+   }
+  ]
+ },
+ "finals": {
+  "A": {
+   "time": "17:49",
+   "laps": 8,
+   "photo": "photos/batalha-final-a.jpg",
+   "rows": [
+    [
+     "ashr",
+     "6:34.378",
+     "48.540"
+    ],
+    [
+     "yelk",
+     "6:36.154",
+     "48.585"
+    ],
+    [
+     "musi",
+     "6:39.024",
+     "48.279"
+    ],
+    [
+     "calc",
+     "6:39.549",
+     "48.818"
+    ],
+    [
+     "dani",
+     "6:42.278",
+     "49.224"
+    ],
+    [
+     "boga",
+     "6:43.342",
+     "48.934"
+    ],
+    [
+     "iako",
+     "6:46.147",
+     "49.637"
+    ],
+    [
+     "tili",
+     "6:46.942",
+     "49.680"
+    ]
+   ]
+  },
+  "B": {
+   "time": "17:36",
+   "laps": 8,
+   "photo": "photos/batalha-final-b.jpg",
+   "rows": [
+    [
+     "khar",
+     "6:35.467",
+     ""
+    ],
+    [
+     "shku",
+     "6:35.708",
+     ""
+    ],
+    [
+     "prin",
+     "6:42.003",
+     ""
+    ],
+    [
+     "panf",
+     "6:43.038",
+     ""
+    ],
+    [
+     "kare",
+     "6:45.087",
+     ""
+    ],
+    [
+     "aili",
+     "6:45.704",
+     ""
+    ],
+    [
+     "bash",
+     "6:46.283",
+     ""
+    ],
+    [
+     "kond",
+     "6:49.648",
+     ""
+    ]
+   ]
+  }
+ },
+ "cls": [
+  {
+   "d": "musi",
+   "heat": 76,
+   "fin": 12,
+   "total": 88,
+   "grp": "A"
+  },
+  {
+   "d": "yelk",
+   "heat": 68,
+   "fin": 14,
+   "total": 82,
+   "grp": "A"
+  },
+  {
+   "d": "calc",
+   "heat": 72,
+   "fin": 10,
+   "total": 82,
+   "grp": "A"
+  },
+  {
+   "d": "ashr",
+   "heat": 58,
+   "fin": 16,
+   "total": 74,
+   "grp": "A"
+  },
+  {
+   "d": "dani",
+   "heat": 66,
+   "fin": 8,
+   "total": 74,
+   "grp": "A"
+  },
+  {
+   "d": "iako",
+   "heat": 70,
+   "fin": 4,
+   "total": 74,
+   "grp": "A"
+  },
+  {
+   "d": "boga",
+   "heat": 66,
+   "fin": 6,
+   "total": 72,
+   "grp": "A"
+  },
+  {
+   "d": "tili",
+   "heat": 59,
+   "fin": 2,
+   "total": 61,
+   "grp": "A"
+  },
+  {
+   "d": "prin",
+   "heat": 58,
+   "fin": 12,
+   "total": 70,
+   "grp": "B"
+  },
+  {
+   "d": "khar",
+   "heat": 52,
+   "fin": 16,
+   "total": 68,
+   "grp": "B"
+  },
+  {
+   "d": "shku",
+   "heat": 54,
+   "fin": 14,
+   "total": 68,
+   "grp": "B"
+  },
+  {
+   "d": "kare",
+   "heat": 54,
+   "fin": 8,
+   "total": 62,
+   "grp": "B"
+  },
+  {
+   "d": "panf",
+   "heat": 46,
+   "fin": 10,
+   "total": 56,
+   "grp": "B"
+  },
+  {
+   "d": "bash",
+   "heat": 52,
+   "fin": 4,
+   "total": 56,
+   "grp": "B"
+  },
+  {
+   "d": "aili",
+   "heat": 49,
+   "fin": 6,
+   "total": 55,
+   "grp": "B"
+  },
+  {
+   "d": "kond",
+   "heat": 27,
+   "fin": 2,
+   "total": 29,
+   "grp": "B"
+  },
+  {
+   "d": "bent",
+   "heat": 13,
+   "fin": 0,
+   "total": 13,
+   "grp": "-"
+  }
+ ]
+};
+
+// ════════════════════════════════════════════════════════════
+//  МЕГА СПРИНТЫ · Batalha 19.09.2026 — итоги на главной
+//  Данные выше (MEGA). Чтобы сменить гонку на главной — заменить MEGA
+//  и вызвать renderMega() (вызов внизу файла + в setLang).
+// ════════════════════════════════════════════════════════════
+const MEGA_L = {
+  eyebrow:  { ru:'Итоги гонки',            pt:'Resultados',              en:'Race results' },
+  title:    { ru:'Мега Спринты',           pt:'Mega Sprints',            en:'Mega Sprints' },
+  pilots:   { ru:'пилотов',                pt:'pilotos',                 en:'drivers' },
+  sprints:  { ru:'спринтов',               pt:'sprints',                 en:'sprints' },
+  finals:   { ru:'финала',                 pt:'finais',                  en:'finals' },
+  awards:   { ru:'🏅 Номинации',           pt:'🏅 Destaques',            en:'🏅 Awards' },
+  fl:       { ru:'Быстрейший круг дня',    pt:'Volta mais rápida',       en:'Fastest lap of the day' },
+  king:     { ru:'Король спринтов',        pt:'Rei dos sprints',         en:'King of the sprints' },
+  kingd:    { ru:'по 3 победы в заездах',  pt:'3 vitórias cada',         en:'3 heat wins each' },
+  charge:   { ru:'Прорыв дня',             pt:'Remontada do dia',        en:'Charge of the day' },
+  photof:   { ru:'Фотофиниш',              pt:'Foto-finish',             en:'Photo finish' },
+  clean:    { ru:'Чистая борьба',          pt:'Pilotagem limpa',         en:'Clean racing' },
+  dirty:    { ru:'Есть вопросы',           pt:'Com dúvidas',             en:'Questions raised' },
+  pending:  { ru:'Голосование идёт',       pt:'Votação a decorrer',      en:'Voting open' },
+  resTitle: { ru:'Итог дня',               pt:'Classificação do dia',    en:'Final classification' },
+  resNote:  { ru:'Очки заездов + финал за двойные очки. Финалисты A — места 1–8, финалисты B — 9–16.',
+              pt:'Pontos das mangas + final a dobrar. Finalistas A: 1–8, finalistas B: 9–16.',
+              en:'Heat points + double-points final. Final A drivers take 1–8, Final B 9–16.' },
+  colDrv:   { ru:'Гонщик',                 pt:'Piloto',                  en:'Driver' },
+  colHeat:  { ru:'Заезды',                 pt:'Mangas',                  en:'Heats' },
+  colFin:   { ru:'Финал',                  pt:'Final',                   en:'Final' },
+  colTot:   { ru:'Итого',                  pt:'Total',                   en:'Total' },
+  colTime:  { ru:'Время',                  pt:'Tempo',                   en:'Time' },
+  colBest:  { ru:'Лучший круг',            pt:'Melhor volta',            en:'Best lap' },
+  finalA:   { ru:'Финал A',                pt:'Final A',                 en:'Final A' },
+  finalB:   { ru:'Финал B',                pt:'Final B',                 en:'Final B' },
+  qualy:    { ru:'Квалификация',           pt:'Qualificação',            en:'Qualifying' },
+  qualyNote:{ ru:'15 минут, свободная смена картов — по ней разбили на группы.',
+              pt:'15 minutos, troca livre de karts — definiu os grupos.',
+              en:'15 minutes, free kart swaps — it set the groups.' },
+  heatsA:   { ru:'Группа A · 9 заездов',   pt:'Grupo A · 9 mangas',      en:'Group A · 9 heats' },
+  heatsB:   { ru:'Группа B · 9 заездов',   pt:'Grupo B · 9 mangas',      en:'Group B · 9 heats' },
+  heat:     { ru:'Заезд',                  pt:'Manga',                   en:'Heat' },
+  laps:     { ru:'кр.',                    pt:'voltas',                  en:'laps' },
+  tap:      { ru:'нажми, чтобы раскрыть',  pt:'toca para abrir',         en:'tap to open' },
+  dblPts:   { ru:'двойные очки',           pt:'pontos a dobrar',         en:'double points' },
+};
+function mt(k) { const o = MEGA_L[k] || {}; return o[_lang || 'ru'] || o.ru || ''; }
+
+function megaDrv(key) { return MEGA.drivers[key] || { name: key, handle: '' }; }
+function megaShort(nm) { const p = (nm || '').trim().split(/\s+/); return p.length > 1 ? `${p[0]} ${p[1][0]}.` : (p[0] || ''); }
+function megaAvatar(key, size) { const d = megaDrv(key); return avatarDiv(getPhoto(d.handle, d.name), (d.name || '?')[0], size || 28); }
+
+// Номинации этапа — общие для главной и «Прошедших»
+function megaNomCards() {
+  const card = (icon, title, key, desc) => `<div class="nom-card" style="position:relative;">
+      <div class="nom-icon">${icon}</div>
+      <div class="nom-title">${esc(title)}</div>
+      <div style="display:flex;align-items:center;gap:7px;margin-top:2px;">${megaAvatar(key, 28)}<div class="nom-driver">${esc(megaShort(megaDrv(key).name))}</div></div>
+      ${desc ? `<div class="nom-desc">${esc(desc)}</div>` : ''}
+    </div>`;
+  const multi = (icon, title, keys, desc) => {
+    const avs = keys.map(k => `<div style="display:flex;align-items:center;gap:6px;">${megaAvatar(k, 28)}<div class="nom-driver">${esc(megaShort(megaDrv(k).name))}</div></div>`)
+      .join('<div style="color:var(--muted2);font-size:11px;">·</div>');
+    return `<div class="nom-card" style="position:relative;"><div class="nom-icon">${icon}</div><div class="nom-title">${esc(title)}</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div>
+      ${desc ? `<div class="nom-desc">${esc(desc)}</div>` : ''}</div>`;
+  };
+  const teaser = (icon, title) => `<div class="nom-card nom-pending"><div class="nom-icon">${icon}</div><div class="nom-title">${esc(title)}</div>
+      <div class="nom-driver" style="color:var(--muted)">${mt('pending')}</div></div>`;
+
+  let out = '';
+  out += card('⚡', mt('fl'), 'musi', '48.279 · ' + mt('finalA'));
+  out += multi('🥇', mt('king'), ['calc', 'yelk', 'musi'], mt('kingd'));
+  out += card('🚀', mt('charge'), 'boga', { ru:'квала 14 → 7 место (+7)', pt:'quali 14 → 7.º (+7)', en:'quali 14 → P7 (+7)' }[_lang||'ru']);
+  out += multi('🔥', mt('photof'), ['khar', 'shku'], { ru:'Финал B — 0.241 с', pt:'Final B — 0.241 s', en:'Final B — 0.241 s' }[_lang||'ru']);
+  out += teaser('🤝', mt('clean'));
+  out += teaser('⚠️', mt('dirty'));
+  return out;
+}
+
+// Колонка времени одна: лучший круг. Если лучших кругов в протоколе нет
+// (Финал B — обрезаны), показываем общее время заезда.
+function megaRaceTable(rows) {
+  const hasBest = rows.some(r => r[2]);
+  const col = hasBest ? mt('colBest') : mt('colTime');
+  let h = `<table class="full-res-table"><thead><tr><th style="width:28px;">#</th><th>${mt('colDrv')}</th><th>${col}</th></tr></thead><tbody>`;
+  rows.forEach((r, i) => {
+    const d = megaDrv(r[0]);
+    const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
+    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+    const note = r[3] ? ` <span class="fl-badge">+5s</span>` : '';
+    h += `<tr class="${pc}"><td>${medal}</td>
+      <td><div style="font-size:13px;font-weight:600;line-height:1.2;">${esc(d.name)}${note}</div></td>
+      <td style="font-size:13px;">${esc((hasBest ? r[2] : r[1]) || '–')}</td></tr>`;
+  });
+  return h + '</tbody></table>';
+}
+
+function megaHeatsBlock(letter) {
+  const list = MEGA.heats[letter] || [];
+  let inner = '';
+  list.forEach(h => {
+    inner += `<div style="padding:10px 0 2px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">
+        ${mt('heat')} ${h.no} · ${esc(h.time)} · ${h.laps} ${mt('laps')}</div>
+      ${megaRaceTable(h.rows)}
+    </div>`;
+  });
+  return `<details class="mega-acc"><summary><span>${letter === 'A' ? mt('heatsA') : mt('heatsB')}</span><span class="mega-acc-hint">${mt('tap')}</span></summary>${inner}</details>`;
+}
+
+function renderMega() {
+  const wrap = document.getElementById('mega-wrap');
+  if (!wrap) return;
+  let h = '';
+
+  // ── шапка: фото подиума ──
+  h += `<div style="width:100%;aspect-ratio:1400/941;overflow:hidden;background:var(--surface2);">
+    <img src="${MEGA.photo}" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Mega Sprints podium">
+  </div>`;
+
+  h += `<div style="padding:14px 14px 0;">`;
+  h += `<div class="page-eyebrow">${mt('eyebrow')} · ${esc(translateFullDate(MEGA.date))}</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${mt('title')}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(MEGA.venue)}</div>`;
+
+  const chip = txt => `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">${txt}</span>`;
+  h += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+    ${chip('17 ' + mt('pilots'))}${chip('18 ' + mt('sprints'))}${chip('2 ' + mt('finals'))}${chip('⚡ 48.279')}</div>`;
+
+  // ── CTA: голосование + отзыв ──
+  h += `<div style="display:flex;gap:8px;margin-bottom:16px;">
+    <a href="#vote" class="cta-btn">🟢 Safety Rating</a>
+    <a href="#feedback" class="cta-btn">⭐ ${t('cta_feedback')}</a>
+  </div>`;
+
+  // ── номинации ──
+  h += `<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${mt('awards')}</div>`;
+  h += `<div class="nom-cards">${megaNomCards()}</div>`;
+
+  // ── итог дня ──
+  h += `<div class="card" style="padding:0;overflow:hidden;">
+    <div style="padding:14px 14px 8px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">🏆 ${mt('resTitle')}</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">${mt('resNote')}</div>
+    </div>
+    <table class="full-res-table"><thead><tr>
+      <th style="width:28px;">#</th><th>${mt('colDrv')}</th><th>${mt('colHeat')}</th><th>${mt('colFin')}</th><th>${mt('colTot')}</th>
+    </tr></thead><tbody>`;
+  let prevGrp = null;
+  const grpLbl = g => g === 'A' ? mt('finalA') : g === 'B' ? mt('finalB')
+    : { ru:'Без финала', pt:'Sem final', en:'No final' }[_lang||'ru'];
+  MEGA.cls.forEach((row, i) => {
+    const d = megaDrv(row.d);
+    if (row.grp !== prevGrp) h += `<tr class="group-header-row"><td colspan="5">${grpLbl(row.grp)}</td></tr>`;
+    prevGrp = row.grp;
+    const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
+    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+    h += `<tr class="${pc}"><td>${medal}</td>
+      <td><div style="display:flex;align-items:center;gap:8px;">${megaAvatar(row.d, 28)}
+        <div><div style="font-size:13px;font-weight:600;line-height:1.2;">${esc(d.name)}</div>
+        ${visHandle(d.handle, false) ? `<div style="font-size:10px;color:var(--muted);">${esc(visHandle(d.handle, false))}</div>` : ''}</div></div></td>
+      <td style="color:var(--muted);font-size:13px;">${row.heat}</td>
+      <td style="color:var(--muted);font-size:13px;">${row.fin || '–'}</td>
+      <td style="color:var(--accent-red);">${row.total}</td></tr>`;
+  });
+  h += `</tbody></table></div>`;
+
+  // ── финалы ──
+  [['A', MEGA.finals.A, mt('finalA')], ['B', MEGA.finals.B, mt('finalB')]].forEach(([k, f, lbl]) => {
+    h += `<div class="card" style="padding:0;overflow:hidden;">
+      ${f.photo ? `<div style="width:100%;aspect-ratio:3/2;overflow:hidden;background:var(--surface2);"><img src="${f.photo}" loading="lazy" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;" alt="${lbl}"></div>` : ''}
+      <div style="padding:12px 14px 6px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">🏁 ${lbl}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">${esc(f.time)} · ${f.laps} ${mt('laps')} · ${mt('dblPts')}</div>
+      </div>
+      ${megaRaceTable(f.rows)}
+    </div>`;
+  });
+
+  // ── квалификация ──
+  h += `<details class="mega-acc"><summary><span>${mt('qualy')}</span><span class="mega-acc-hint">${mt('tap')}</span></summary>
+    <div style="font-size:11px;color:var(--muted);line-height:1.5;padding:8px 0 4px;">${mt('qualyNote')}</div>
+    <table class="full-res-table"><thead><tr><th style="width:28px;">#</th><th>${mt('colDrv')}</th><th>${mt('colBest')}</th></tr></thead><tbody>`;
+  MEGA.qualy.forEach((q, i) => {
+    const d = megaDrv(q[0]);
+    const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
+    h += `<tr class="${pc}"><td>${i + 1}</td><td><div style="font-size:13px;font-weight:600;">${esc(d.name)}</div></td>
+      <td style="font-size:13px;">${esc(q[1])}</td></tr>`;
+  });
+  h += `</tbody></table></details>`;
+
+  // ── отборочные заезды ──
+  h += megaHeatsBlock('A');
+  h += megaHeatsBlock('B');
+
+  // ── общее фото ──
+  h += `<div style="width:100%;aspect-ratio:1400/882;overflow:hidden;border-radius:12px;margin:4px 0 16px;background:var(--surface2);">
+    <img src="${MEGA.photo2}" loading="lazy" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Batalha">
+  </div>`;
+
+  h += `</div>`;
+  wrap.innerHTML = h;
+}
+
+renderMega();
 
 // первичная маршрутизация (если открыли по прямой ссылке #vote / #feedback)
 routeHash();
