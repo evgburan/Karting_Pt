@@ -511,7 +511,7 @@
 <div class="page" id="page-vote">
   <div class="page-header">
     <button class="hp-back" onclick="goHome()">← <span id="vote-back">Катаемся Чатом</span></button>
-    <div class="page-eyebrow" id="vote-eyebrow" style="margin-top:8px;">Almeirím · Голосование</div>
+    <div class="page-eyebrow" id="vote-eyebrow" style="margin-top:8px;">Batalha · Голосование</div>
     <div class="page-title" id="vote-title">Чистота борьбы</div>
   </div>
   <div style="padding:0 14px;">
@@ -532,7 +532,7 @@
 <div class="page" id="page-feedback">
   <div class="page-header">
     <button class="hp-back" onclick="goHome()">← <span id="fb-back">Катаемся Чатом</span></button>
-    <div class="page-eyebrow" id="fb-eyebrow" style="margin-top:8px;">Almeirím · Отзыв</div>
+    <div class="page-eyebrow" id="fb-eyebrow" style="margin-top:8px;">Batalha · Отзыв</div>
     <div class="page-title" id="fb-title">Как тебе гонка?</div>
   </div>
   <div style="padding:0 14px;">
@@ -912,7 +912,7 @@ const I18N = {
 // ── i18n для скрытых страниц (голосование + отзыв) ──
 Object.assign(I18N.ru, {
   vote_back: 'Катаемся Чатом',
-  vote_eyebrow: 'Almeirím · Safety Rating',
+  vote_eyebrow: 'Batalha · Safety Rating',
   vote_title: 'Safety Rating',
   vote_intro: 'Оцени, с кем тебе было чисто бороться на трассе, а к кому есть вопросы по вождению. 🟢 — чисто поборолись, 🟡 — есть вопросы. Можно оценить не всех — только тех, с кем реально пересекался. Голос анонимный, ник нужен только чтобы не голосовать дважды.',
   vote_tg_lbl: 'Твой Telegram (чтобы не голосовать дважды)',
@@ -926,7 +926,7 @@ Object.assign(I18N.ru, {
   vote_done_title: 'Голос принят!',
   vote_done_sub: 'Спасибо. Результаты объявим после подсчёта.',
   fb_back: 'Катаемся Чатом',
-  fb_eyebrow: 'Almeirím · Отзыв',
+  fb_eyebrow: 'Batalha · Отзыв',
   fb_title: 'Как тебе гонка?',
   fb_intro: 'Анонимный отзыв о мероприятии. Помоги сделать следующие гонки лучше — пара минут.',
   fb_liked_lbl: 'Что понравилось? Что сохранять?',
@@ -939,7 +939,7 @@ Object.assign(I18N.ru, {
 });
 Object.assign(I18N.pt, {
   vote_back: 'Kataemsya Chatom',
-  vote_eyebrow: 'Almeirím · Safety Rating',
+  vote_eyebrow: 'Batalha · Safety Rating',
   vote_title: 'Safety Rating',
   vote_intro: 'Avalia com quem foi limpo competir e com quem há dúvidas na condução. 🟢 — corrida limpa, 🟡 — há dúvidas. Não precisas avaliar todos — só aqueles com quem realmente lutaste. O voto é anónimo, o nick serve apenas para não votares duas vezes.',
   vote_tg_lbl: 'O teu Telegram (para não votar duas vezes)',
@@ -953,7 +953,7 @@ Object.assign(I18N.pt, {
   vote_done_title: 'Voto registado!',
   vote_done_sub: 'Obrigado. Os resultados serão anunciados após a contagem.',
   fb_back: 'Kataemsya Chatom',
-  fb_eyebrow: 'Almeirím · Feedback',
+  fb_eyebrow: 'Batalha · Feedback',
   fb_title: 'Que tal a corrida?',
   fb_intro: 'Feedback anónimo sobre o evento. Ajuda-nos a melhorar as próximas corridas — leva dois minutos.',
   fb_liked_lbl: 'O que gostaste? O que manter?',
@@ -966,7 +966,7 @@ Object.assign(I18N.pt, {
 });
 Object.assign(I18N.en, {
   vote_back: 'Kataemsya Chatom',
-  vote_eyebrow: 'Almeirím · Safety Rating',
+  vote_eyebrow: 'Batalha · Safety Rating',
   vote_title: 'Safety Rating',
   vote_intro: 'Rate who you raced cleanly against and who you have questions about. 🟢 — clean racing, 🟡 — questions. You don\'t have to rate everyone — only those you actually battled. The vote is anonymous; your handle is only used to prevent double voting.',
   vote_tg_lbl: 'Your Telegram (to prevent double voting)',
@@ -980,7 +980,7 @@ Object.assign(I18N.en, {
   vote_done_title: 'Vote recorded!',
   vote_done_sub: 'Thanks. Results will be announced after counting.',
   fb_back: 'Kataemsya Chatom',
-  fb_eyebrow: 'Almeirím · Feedback',
+  fb_eyebrow: 'Batalha · Feedback',
   fb_title: 'How was the race?',
   fb_intro: 'Anonymous feedback about the event. Help us make the next races better — takes two minutes.',
   fb_liked_lbl: 'What did you like? What to keep?',
@@ -1169,6 +1169,7 @@ const RACE_PHOTOS = {
   'kiro': 'photos/campera-race.jpg',
   'campera': 'photos/campera.jpg',
   'almeirim_podium': 'photos/almeirim-podium.jpg',
+  'batalha_podium': 'photos/batalha-podium.jpg',
 };
 
 // Логотипы картодромов (квадратные плитки в photos/)
@@ -3235,9 +3236,56 @@ let _voteChoices = {};  // { handleKeyOrName: 'clean' | 'quest' }
 
 function voteKey(r) { return (r.handle ? r.handle.replace('@','').toLowerCase() : 'name:' + r.name.toLowerCase()); }
 
-// Ростер голосования Safety Rating — участники этапа из RACES.
-// Сменить этап голосования = поменять одну строку.
-const VOTE_RACE_ID = 'almeirim-jun';
+// Ростер голосования Safety Rating.
+// Сменить этап = поменять VOTE_RACE_ID. Источники по приоритету:
+//   1) результаты этапа в RACES (когда протокол уже залит);
+//   2) фиксированный список участников VOTE_ROSTERS (сразу после гонки);
+//   3) регистрации (fallback).
+const VOTE_RACE_ID = 'batalha-sep';
+
+// Мега Спринты · Kartódromo da Batalha, 19 сентября 2026.
+// Пустой handle = подтянется из регистраций по имени (вместе с аватаркой и hideHandle).
+const VOTE_ROSTERS = {
+  'batalha-sep': [
+    { name: 'Renat Ashrafedinov', handle: '@renatashrafedinov' },
+    { name: 'Alexander Ilyushin',  handle: '@IlyushinAS' },
+    { name: 'Vladislav Shkutte',   handle: '@Moresabbath' },
+    { name: 'Leonid Kondratev',    handle: '@sxuxs' },
+    { name: 'Alex Bash',           handle: '@bashalex0100' },
+    { name: 'Dimas Calcai',        handle: '@DimasCCD' },
+    { name: 'Sasha Yelkhovenka',   handle: '@fire_wheels' },
+    { name: 'Stanislav Panfilov',  handle: '@P_Stanis' },
+    { name: 'Karen Mkrtchian',     handle: '@karen_makaren' },
+    { name: 'Andrei Musinov',      handle: '@AndreyM43' },
+    { name: 'Ivan Kharlampov',     handle: '@van4esco' },
+    { name: 'Miguel Bento',        handle: '' },
+    { name: 'Viktor Iakovets',     handle: '@Level_Portugal' },
+    { name: 'Timofei Iliushin',    handle: '@taxaaa' },
+    { name: 'Nikita Bogach',       handle: '@nibogach' },
+    { name: 'Peter Prins',         handle: '@peterprins' },
+    { name: 'Ilia Danilov',        handle: '@Chscyb' },
+  ],
+};
+
+function normName(s) { return (s || '').toLowerCase().replace(/[^a-zа-яё]+/gi, ' ').trim(); }
+
+// Дотягиваем handle / hideHandle из регистраций: по хэндлу, по полному имени,
+// иначе по фамилии — но только если совпадение единственное.
+function voteEnrich(p) {
+  if (p.handle) {
+    const byH = regs.find(r => r.handle && norm(r.handle) === norm(p.handle));
+    return { name: p.name, handle: p.handle, hideHandle: byH ? !!byH.hideHandle : false };
+  }
+  const pn = normName(p.name);
+  const last = pn.split(' ').pop();
+  let r = regs.find(x => normName(x.name) === pn);
+  if (!r && last.length > 3) {
+    const cands = regs.filter(x => normName(x.name).split(' ').includes(last));
+    if (cands.length === 1) r = cands[0];
+  }
+  return { name: p.name, handle: r ? (r.handle || '') : '', hideHandle: r ? !!r.hideHandle : false };
+}
+
 function voteRoster() {
   const race = RACES.find(r => r.id === VOTE_RACE_ID);
   if (race) {
@@ -3248,6 +3296,8 @@ function voteRoster() {
     }));
     if (out.length) return out;
   }
+  const fixed = VOTE_ROSTERS[VOTE_RACE_ID];
+  if (fixed && fixed.length) return fixed.map(voteEnrich);
   return regs;
 }
 
@@ -3307,7 +3357,7 @@ function submitVote() {
     return { name: r ? r.name : k, handle: r ? (r.handle || '') : '', verdict: _voteChoices[k] };
   });
 
-  postToSheet(FEEDBACK_URL, { action: 'vote', voter, votes });
+  postToSheet(FEEDBACK_URL, { action: 'vote', race: VOTE_RACE_ID, voter, votes });
 
   document.getElementById('vote-submit').style.display = 'none';
   document.getElementById('vote-list').style.display = 'none';
@@ -3348,7 +3398,7 @@ function submitFeedback() {
   const liked = document.getElementById('fb-liked').value.trim();
   const improve = document.getElementById('fb-improve').value.trim();
 
-  postToSheet(FEEDBACK_URL, { action: 'feedback', stars: _fbStars, liked, improve });
+  postToSheet(FEEDBACK_URL, { action: 'feedback', race: VOTE_RACE_ID, stars: _fbStars, liked, improve });
 
   document.getElementById('fb-form').style.display = 'none';
   document.querySelector('#page-feedback .hp-intro').style.display = 'none';
