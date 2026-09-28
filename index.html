@@ -507,7 +507,7 @@
 <div class="page" id="page-safety">
   <div class="page-header">
     <button class="hp-back" onclick="goHome()">← <span id="safe-back">Катаемся Чатом</span></button>
-    <div class="page-eyebrow" id="safe-eyebrow" style="margin-top:8px;">Almeirím · Safety Rating</div>
+    <div class="page-eyebrow" id="safe-eyebrow" style="margin-top:8px;">Batalha · Safety Rating</div>
     <div class="page-title" id="safe-title">Итоги голосования</div>
   </div>
   <div style="padding:0 14px;">
@@ -958,39 +958,30 @@ Object.assign(I18N.en, {
 
 Object.assign(I18N.ru, {
   safe_back: 'Катаемся Чатом',
-  safe_eyebrow: 'Almeirím · Safety Rating',
+  safe_eyebrow: 'Batalha · Safety Rating',
   safe_title: 'Итоги голосования',
   safe_intro: 'Как гонщики оценили друг друга по чистоте борьбы на трассе. 🟢 — поборолись чисто, 🟡 — есть вопросы по вождению. Голосование анонимное.',
   safe_cta: 'Итоги Safety Rating',
   safe_clean_lbl: 'Едут чисто',
   safe_quest_lbl: 'Есть вопросы',
-  safe_stat_voters: 'проголосовало',
-  safe_stat_drivers: 'оценено',
-  safe_stat_votes: 'голосов',
 });
 Object.assign(I18N.pt, {
   safe_back: 'Kataemsya Chatom',
-  safe_eyebrow: 'Almeirím · Safety Rating',
+  safe_eyebrow: 'Batalha · Safety Rating',
   safe_title: 'Resultados da votação',
   safe_intro: 'Como os pilotos se avaliaram quanto à limpeza da disputa em pista. 🟢 — corrida limpa, 🟡 — dúvidas na condução. A votação é anónima.',
   safe_cta: 'Resultados Safety Rating',
   safe_clean_lbl: 'Pilotagem limpa',
   safe_quest_lbl: 'Com dúvidas',
-  safe_stat_voters: 'votaram',
-  safe_stat_drivers: 'avaliados',
-  safe_stat_votes: 'votos',
 });
 Object.assign(I18N.en, {
   safe_back: 'Kataemsya Chatom',
-  safe_eyebrow: 'Almeirím · Safety Rating',
+  safe_eyebrow: 'Batalha · Safety Rating',
   safe_title: 'Voting results',
   safe_intro: 'How drivers rated each other on clean racing. 🟢 — clean battle, 🟡 — questions about driving. The vote is anonymous.',
   safe_cta: 'Safety Rating results',
   safe_clean_lbl: 'Clean drivers',
   safe_quest_lbl: 'Questions raised',
-  safe_stat_voters: 'voted',
-  safe_stat_drivers: 'rated',
-  safe_stat_votes: 'votes',
 });
 
 function t(k) { return I18N[_lang][k] || I18N['ru'][k] || k; }
@@ -1393,9 +1384,8 @@ function getSafety(handle, name) {
 function SAFETY_LABEL(r){ return I18N[_lang||'ru'].safety[r]||I18N['ru'].safety[r]; }
 
 // ── Итоги Safety Rating — Almeirím 06.06.2026 ──────────────────
-// pos = 🟢 «чисто», neg = 🟡 «вопросы». voters — всего проголосовало.
+// pos = 🟢 «чисто», neg = 🟡 «вопросы».
 const ALMEIRIM_SAFETY = {
-  voters: 6,
   drivers: [
     { name: 'Igor Arkhangelskii',   handle: '@Igor A',            pos: 4, neg: 0 },
     { name: 'Igor Rybakou',         handle: '@just_igor_q',       pos: 4, neg: 0 },
@@ -1419,7 +1409,6 @@ const ALMEIRIM_SAFETY = {
 
 // ── Итоги Safety Rating — KIP Palmela 23.05.2026 (только ненулевые) ──
 const KIP_SAFETY = {
-  voters: null,
   drivers: [
     { name: 'Igor Arkhangelskii',   handle: '@Igor A',                pos: 3, neg: 0 },
     { name: 'Peter Prins',          handle: '@peterprins',            pos: 3, neg: 0 },
@@ -1440,13 +1429,39 @@ const KIP_SAFETY = {
   ],
 };
 
-// Сводка по гонкам для номинаций «прошедших»
-const RACE_SAFETY = { 'kip-may': KIP_SAFETY, 'almeirim-jun': ALMEIRIM_SAFETY };
+// ── Итоги Safety Rating — Batalha · Мега Спринты 19.09.2026 ──
+const BATALHA_SAFETY = {
+  drivers: [
+    { name: 'Ilia Danilov',         handle: '@Chscyb',            pos: 4, neg: 0 },
+    { name: 'Andrei Musinov',       handle: '@AndreyM43',         pos: 3, neg: 0 },
+    { name: 'Ivan Kharlampov',      handle: '@van4esco',          pos: 3, neg: 0 },
+    { name: 'Dimas Calcai',         handle: '@dimasccd',          pos: 2, neg: 0 },
+    { name: 'Vladislav Shkutte',    handle: '@Moresabbath',       pos: 2, neg: 0 },
+    { name: 'Aleksandr Ilyushin',   handle: '@IlyushinAS',        pos: 1, neg: 0 },
+    { name: 'Alex Bash',            handle: '@bashalex0100',      pos: 1, neg: 0 },
+    { name: 'Karen M',              handle: '@karen_makaren',     pos: 1, neg: 0 },
+    { name: 'Leonid Kondratev',     handle: '@sxuxs',             pos: 1, neg: 0 },
+    { name: 'Miguel Bento',         handle: '',                   pos: 1, neg: 0 },
+    { name: 'Nikita Bogach',        handle: '@nibogach',          pos: 1, neg: 0 },
+    { name: 'Peter Prins',          handle: '@peterprins',        pos: 1, neg: 0 },
+    { name: 'Stanislav Panfilov',   handle: '@P_Stanis',          pos: 1, neg: 0 },
+    { name: 'Timofei Iliushin',     handle: '@taxaaa',            pos: 1, neg: 0 },
+    { name: 'Viktor Iakovets',      handle: '@Level_Portugal',    pos: 1, neg: 0 },
+    { name: 'Sasha Yelkhovenka',    handle: '@fire_wheels',       pos: 1, neg: 1 },
+    { name: 'Renat Ashrafedinov',   handle: '@renatashrafedinov', pos: 0, neg: 1 },
+  ],
+};
 
-// Бейджи в профилях = СУММА всех гонок (KIP + Almeirím), а не только последней.
+// Какая гонка показывается на странице #safety (последнее закрытое голосование)
+const SAFETY_PAGE = { ds: BATALHA_SAFETY, photo: 'batalha_podium', ratio: '1400/882' };
+
+// Сводка по гонкам для номинаций «прошедших»
+const RACE_SAFETY = { 'kip-may': KIP_SAFETY, 'almeirim-jun': ALMEIRIM_SAFETY, 'batalha-sep': BATALHA_SAFETY };
+
+// Бейджи в профилях = СУММА всех гонок (KIP + Almeirím + Batalha), а не только последней.
 (function aggregateSafety() {
   const agg = {};
-  [KIP_SAFETY, ALMEIRIM_SAFETY].forEach(ds => ds.drivers.forEach(x => {
+  [KIP_SAFETY, ALMEIRIM_SAFETY, BATALHA_SAFETY].forEach(ds => ds.drivers.forEach(x => {
     const h = (x.handle||'').replace('@','').toLowerCase().trim();
     const key = h || ('@name:' + (x.name||'').toLowerCase().trim());
     if (!agg[key]) agg[key] = { pos: 0, neg: 0, handle: h };
@@ -1475,7 +1490,7 @@ function cleanLeaders(ds) { return safetyGroupsFor(ds).clean.filter(d => d.neg =
 function attentionList(ds) { return safetyGroupsFor(ds).quest; }
 
 function safetyGroups() {
-  return safetyGroupsFor(ALMEIRIM_SAFETY);
+  return safetyGroupsFor(SAFETY_PAGE.ds);
 }
 
 function renderSafetyResults() {
@@ -1494,8 +1509,8 @@ function renderSafetyResults() {
   const { clean, quest } = safetyGroups();
 
   // Фото с подиума
-  const podSrc = RACE_PHOTOS['almeirim_podium'] || null;
-  let html = `<div style="width:100%;border-radius:12px;overflow:hidden;margin:0 0 14px;aspect-ratio:1400/504;background:var(--surface2);">${
+  const podSrc = RACE_PHOTOS[SAFETY_PAGE.photo] || null;
+  let html = `<div style="width:100%;border-radius:12px;overflow:hidden;margin:0 0 14px;aspect-ratio:${SAFETY_PAGE.ratio};background:var(--surface2);">${
     podSrc ? `<img src="${podSrc}" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">` : _podiumPlaceholder()
   }</div>`;
 
@@ -1505,8 +1520,8 @@ function renderSafetyResults() {
     const avs = list.map(x => `<div style="display:flex;align-items:center;gap:6px;">${avatarDiv(getPhoto(x.handle, x.name), x.name[0], 28)}<div class="nom-driver">${x.name.split(' ')[0]} ${x.name.split(' ')[1]?.[0]||''}.</div></div>`).join('<div style="color:var(--muted2);font-size:11px;">·</div>');
     return `<div class="nom-card" style="position:relative;"><div class="nom-icon">${icon}</div><div class="nom-title">${title}</div><div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div></div>`;
   };
-  const noms = multiNomCard('🤝', t('safe_clean_lbl'), cleanLeaders(ALMEIRIM_SAFETY))
-             + multiNomCard('⚠️', t('safe_quest_lbl'), attentionList(ALMEIRIM_SAFETY));
+  const noms = multiNomCard('🤝', t('safe_clean_lbl'), cleanLeaders(SAFETY_PAGE.ds))
+             + multiNomCard('⚠️', t('safe_quest_lbl'), attentionList(SAFETY_PAGE.ds));
   if (noms) html += `<div class="nom-cards" style="margin-bottom:16px;">${noms}</div>`;
 
   // Полный список с аватарками
@@ -4833,16 +4848,19 @@ function megaNomCards() {
       <div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div>
       ${desc ? `<div class="nom-desc">${esc(desc)}</div>` : ''}</div>`;
   };
-  const teaser = (icon, title) => `<div class="nom-card nom-pending"><div class="nom-icon">${icon}</div><div class="nom-title">${esc(title)}</div>
-      <div class="nom-driver" style="color:var(--muted)">${mt('pending')}</div></div>`;
+  // 🤝 / ⚠️ — из BATALHA_SAFETY (те же правила, что на #safety и в профилях)
+  const keyOf = x => Object.keys(MEGA.drivers).find(k =>
+    (x.handle && norm(MEGA.drivers[k].handle) === norm(x.handle)) || MEGA.drivers[k].name === x.name);
+  const keys = list => list.map(keyOf).filter(Boolean);
 
   let out = '';
   out += card('⚡', mt('fl'), 'musi', '48.279 · ' + mt('finalA'));
   out += multi('🥇', mt('king'), ['calc', 'yelk', 'musi'], mt('kingd'));
   out += card('🚀', mt('charge'), 'boga', { ru:'квала 14 → 7 место (+7)', pt:'quali 14 → 7.º (+7)', en:'quali 14 → P7 (+7)' }[_lang||'ru']);
   out += multi('🔥', mt('photof'), ['khar', 'shku'], { ru:'Финал B — 0.241 с', pt:'Final B — 0.241 s', en:'Final B — 0.241 s' }[_lang||'ru']);
-  out += teaser('🤝', mt('clean'));
-  out += teaser('⚠️', mt('dirty'));
+  const cl = keys(cleanLeaders(BATALHA_SAFETY)), at = keys(attentionList(BATALHA_SAFETY));
+  if (cl.length) out += multi('🤝', mt('clean'), cl);
+  if (at.length) out += multi('⚠️', mt('dirty'), at);
   return out;
 }
 
@@ -4898,7 +4916,7 @@ function renderMega() {
 
   // ── CTA: голосование + отзыв ──
   h += `<div style="display:flex;gap:8px;margin-bottom:16px;">
-    <a href="#vote" class="cta-btn">🟢 Safety Rating</a>
+    <a href="#safety" class="cta-btn">📋 ${t('safe_cta')}</a>
     <a href="#feedback" class="cta-btn">⭐ ${t('cta_feedback')}</a>
   </div>`;
 
