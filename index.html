@@ -669,7 +669,7 @@ const I18N = {
     cd_d: 'Дней', cd_h: 'Часов', cd_m: 'Мин', cd_s: 'Сек',
     schedule: 'Формат дня',
     already_racing: 'Уже едут',
-    nobody_yet: 'Пока никого — будь первым!',
+    nobody_yet: 'Пока никого — будь первым!', regs_loading: 'Загружаем список…',
     tab_upcoming: 'Гонка', tab_results: 'Прошедшие', tab_standings: 'Зачёт',
     pts_title: 'Начисление очков',
     pts1: `🏁 <strong>За каждую гонку:</strong> 1-е — 25 очков, 2-е — 20, 3-е — 16, 4-е — 13, 5-е — 11, затем убывает. С 13-го места — минимум 3 очка. Быстрейший круг — бонус +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
@@ -741,7 +741,7 @@ const I18N = {
     cd_d: 'Dias', cd_h: 'Horas', cd_m: 'Min', cd_s: 'Seg',
     schedule: 'Formato do dia',
     already_racing: 'Já inscritos',
-    nobody_yet: 'Ainda ninguém — sê o primeiro!',
+    nobody_yet: 'Ainda ninguém — sê o primeiro!', regs_loading: 'A carregar a lista…',
     tab_upcoming: 'Corrida', tab_results: 'Anteriores', tab_standings: 'Campeonato',
     pts_title: 'Sistema de pontos',
     pts1: `🏁 <strong>Por corrida</strong> — 1.º — 25 pts, 2.º — 20, 3.º — 16, 4.º — 13, 5.º — 11, 6.º — 10... Do 13.º — mínimo 3 pts. Volta mais rápida — bónus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
@@ -813,7 +813,7 @@ const I18N = {
     cd_d: 'Days', cd_h: 'Hours', cd_m: 'Min', cd_s: 'Sec',
     schedule: 'Day format',
     already_racing: 'Already in',
-    nobody_yet: 'Nobody yet — be the first!',
+    nobody_yet: 'Nobody yet — be the first!', regs_loading: 'Loading the list…',
     tab_upcoming: 'Race', tab_results: 'Past', tab_standings: 'Standings',
     pts_title: 'Points system',
     pts1: `🏁 <strong>Per race</strong> — 1st — 25 pts, 2nd — 20, 3rd — 16, 4th — 13, 5th — 11, 6th — 10... 13th+ — minimum 3 pts. Fastest lap — bonus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
@@ -3028,6 +3028,17 @@ const TG_ICON = '<svg viewBox="0 0 24 24" width="14" fill="currentColor"><path d
 
 // Регистрации: по ивентам + прошлые (только ради «скрыть @ник» и фото с регистрации)
 const REGS = {};
+// Последний полученный список — в памяти браузера: показываем сразу, пока Apps Script отвечает (1–3 с)
+const REGS_FRESH = {};   // eventId → true, когда пришёл ответ сервера
+(function restoreRegsCache() {
+  try {
+    const c = JSON.parse(localStorage.getItem('regsCache') || '{}');
+    Object.keys(c).forEach(id => { if (Array.isArray(c[id])) { REGS[id] = c[id]; rememberHidden(c[id]); } });
+  } catch (e) {}
+})();
+function saveRegsCache() {
+  try { localStorage.setItem('regsCache', JSON.stringify(REGS)); } catch (e) {}
+}
 const LEGACY_REGS = [];
 const LEGACY_REG_URLS = [
   'https://script.google.com/macros/s/AKfycbz6xA0Df4YZrTKlMwMd7Ops6JffLIXwkJ9XIvlJNf2lPlqwDz8DwIY_CHKA1Z8n9P7r6Q/exec', // Мега Спринты · Batalha 19.09
@@ -3234,9 +3245,9 @@ function renderRaceTab() {
     const head = isEnd
       ? `${t('already_racing')} (${evPilots(ev)}${cap ? ' / ' + cap : ''})`
       : `${t('already_racing')} (${rl.length}${cap ? ' / ' + cap : ''})`;
-    h += `<div class="card"><div class="card-title">${head}</div>`;
+    h += `<div class="card"><div class="card-title">${!rl.length && !REGS_FRESH[ev.id] ? t('already_racing') : head}</div>`;
     if (!rl.length) {
-      h += `<div style="text-align:center;padding:14px 0;color:var(--muted);font-size:13px;">${t('nobody_yet')}</div>`;
+      h += `<div style="text-align:center;padding:14px 0;color:var(--muted);font-size:13px;">${REGS_FRESH[ev.id] ? t('nobody_yet') : t('regs_loading')}</div>`;
     } else if (isEnd) {
       const grp = (mode, title, rowFn) => {
         const g = rl.filter(r => r.mode === mode);
@@ -3550,6 +3561,8 @@ function rememberHidden(list) {
 // Единая точка обновления регистраций ивента (и loadRegs, и ответ на регистрацию)
 function applyRegs(evId, serverRegs) {
   REGS[evId] = serverRegs.map(normReg);
+  REGS_FRESH[evId] = true;
+  saveRegsCache();
   rememberHidden(REGS[evId]);
   renderRaceTab();
 }
