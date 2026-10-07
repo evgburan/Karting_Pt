@@ -1028,8 +1028,6 @@ Object.assign(I18N.ru, {
   copy_lbl: 'копировать', copied_lbl: 'скопировано ✓',
   beg_short: 'новичок',
   photo_uploading: '📷 Фото загружается, появится через ~минуту',
-  karts_lbl: 'Свободных картов', karts_left: (n) => `свободно картов: ${n}`,
-  karts_n: (n, cap) => `картов: ${n} / ${cap}`, pilots_n: (n) => `пилотов: ${n}`,
   how_join: 'Как вписаться', per_person: 'с участника',
   mode_pick: 'Формат участия *', mode_need: 'Выбери формат участия',
   form_mate: 'Напарник *', form_mate_ph: 'Имя и фамилия напарника', form_mate_tg: 'Telegram напарника',
@@ -1055,8 +1053,6 @@ Object.assign(I18N.pt, {
   copy_lbl: 'copiar', copied_lbl: 'copiado ✓',
   beg_short: 'iniciante',
   photo_uploading: '📷 A foto está a carregar — aparece dentro de ~1 minuto',
-  karts_lbl: 'Karts disponíveis', karts_left: (n) => `${n} karts livres`,
-  karts_n: (n, cap) => `karts: ${n} / ${cap}`, pilots_n: (n) => `${n} pilotos`,
   how_join: 'Como participar', per_person: 'por piloto',
   mode_pick: 'Formato *', mode_need: 'Escolhe o formato de participação',
   form_mate: 'Colega de equipa *', form_mate_ph: 'Nome e apelido do colega', form_mate_tg: 'Telegram do colega',
@@ -1082,8 +1078,6 @@ Object.assign(I18N.en, {
   copy_lbl: 'copy', copied_lbl: 'copied ✓',
   beg_short: 'beginner',
   photo_uploading: '📷 Photo is uploading — it will show up in ~1 minute',
-  karts_lbl: 'Karts available', karts_left: (n) => `${n} karts left`,
-  karts_n: (n, cap) => `karts: ${n} / ${cap}`, pilots_n: (n) => `${n} drivers`,
   how_join: 'How to enter', per_person: 'per driver',
   mode_pick: 'Entry type *', mode_need: 'Choose an entry type',
   form_mate: 'Teammate *', form_mate_ph: 'Teammate full name', form_mate_tg: 'Teammate Telegram',
@@ -2906,7 +2900,7 @@ const EVENTS = [
       { src: 'photos/campera.jpg', pos: 'center 70%' },
     ],
     price: 55,
-    max: 36,            // лимит пилотов (в Apps Script — maxDrivers, держать одинаковыми)
+    max: 24,            // лимит пилотов (в Apps Script — maxDrivers, держать одинаковыми)
     beginners: true,    // галочка «зачёт начинающих» в форме
     sheetsUrl: REG_API,
     format: [{ k: 'q', min: 5 }, { k: 'r', min: 10 }, { k: 'q', min: 5 }, { k: 'r', min: 10 }],
@@ -2958,7 +2952,7 @@ const EVENTS = [
       { src: 'photos/podium.png', pos: 'center 57%' },
     ],
     trackMap: 'photos/kip-track.png',
-    maxKarts: 15,       // лимит картов: команда = 1, Iron Man = 1, жеребьёвка = 1 на двоих (в Apps Script — так же)
+    maxPilots: 36,      // лимит пилотов: команда = 2, жеребьёвка и Iron Man = 1 (в Apps Script — maxPilots)
     beginners: false,
     // € с участника; people — сколько пилотов вписывает одна регистрация
     modes: { team: { price: 75, people: 2 }, draft: { price: 75, people: 1 }, ironman: { price: 130, people: 1 } },
@@ -3037,11 +3031,9 @@ const LEGACY_REG_URLS = [
 function allRegs() { return Object.values(REGS).reduce((a, l) => a.concat(l), []).concat(LEGACY_REGS); }
 function evRegs(ev) { return REGS[ev.id] || []; }
 function modeCount(ev, mode) { return evRegs(ev).filter(r => r.mode === mode).length; }
-// Карты эндуранса: команда = 1, Iron Man = 1, двое из жеребьёвки = 1 (так же считает Apps Script)
-function evKarts(ev) { return modeCount(ev, 'team') + modeCount(ev, 'ironman') + Math.ceil(modeCount(ev, 'draft') / 2); }
 function evPilots(ev) { return evRegs(ev).reduce((n, r) => n + (r.mode === 'team' ? 2 : 1), 0); }
-function evCap(ev) { return ev.kind === 'endurance' ? ev.maxKarts : ev.max; }
-function evUsed(ev) { return ev.kind === 'endurance' ? evKarts(ev) : evRegs(ev).length; }
+function evCap(ev) { return ev.kind === 'endurance' ? ev.maxPilots : ev.max; }
+function evUsed(ev) { return ev.kind === 'endurance' ? evPilots(ev) : evRegs(ev).length; }
 function evPriceLabel(ev) {
   if (ev.price) return '€' + ev.price;
   if (ev.modes) return '€' + Math.min.apply(null, MODE_ORDER.filter(m => ev.modes[m]).map(m => ev.modes[m].price)) + '+';
@@ -3094,8 +3086,7 @@ function evState(ev) {
   if (ev.status !== 'open') return 'soon';
   if (!ev.sheetsUrl) return 'regsoon';
   const cap = evCap(ev);
-  // у эндуранса нечётный пилот жеребьёвки ещё ждёт пару — для него место есть
-  if (cap && evUsed(ev) >= cap && !(ev.kind === 'endurance' && modeCount(ev, 'draft') % 2 === 1)) return 'full';
+  if (cap && evUsed(ev) >= cap) return 'full';
   return 'open';
 }
 function selectEvent(id) {
@@ -3206,7 +3197,7 @@ function renderRaceTab() {
   if (ev.status === 'open' && cap) {
     const used = evUsed(ev), left = Math.max(0, cap - used);
     h += `<div class="spots-bar" style="margin-top:14px;">
-      <div class="spots-row"><span class="spots-lbl">${isEnd ? t('karts_lbl') : t('spots_lbl')}</span><span class="spots-val"><span class="n">${left}</span> / ${cap}</span></div>
+      <div class="spots-row"><span class="spots-lbl">${t('spots_lbl')}</span><span class="spots-val"><span class="n">${left}</span> / ${cap}</span></div>
       <div class="prog-track"><div class="prog-fill" style="width:${Math.min(100, used / cap * 100)}%"></div></div>
     </div>`;
   }
@@ -3237,7 +3228,7 @@ function renderRaceTab() {
   // 5 · Уже едут
   if (ev.status === 'open' && ev.sheetsUrl) {
     const head = isEnd
-      ? `${t('already_racing')} · ${t('pilots_n')(evPilots(ev))} · ${t('karts_n')(evKarts(ev), cap)}`
+      ? `${t('already_racing')} (${evPilots(ev)}${cap ? ' / ' + cap : ''})`
       : `${t('already_racing')} (${rl.length}${cap ? ' / ' + cap : ''})`;
     h += `<div class="card"><div class="card-title">${head}</div>`;
     if (!rl.length) {
@@ -3300,7 +3291,7 @@ function openReg(evId) {
   const w = evWhen(ev), tx = evText(ev);
   const cap = evCap(ev);
   const left = cap ? Math.max(0, cap - evUsed(ev)) : null;
-  const leftTxt = left === null ? '' : ' · ' + (ev.kind === 'endurance' ? t('karts_left')(left) : t('reg_left')(left));
+  const leftTxt = left === null ? '' : ' · ' + t('reg_left')(left);
   const pr = evPriceLabel(ev);
   const tgName   = getTgName();   // имя из Telegram, если открыто как Mini App
   const tgHandle = getTgHandle();

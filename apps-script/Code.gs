@@ -28,14 +28,14 @@ var EVENTS = {
     sheetId: '1mPkZ0Z3A_wfYig4qhG7PMeKQX6AWR9SRLlbe6t3E-yM',
     kind: 'sprint',
     open: true,
-    maxDrivers: 36           // лимит пилотов
+    maxDrivers: 24           // лимит пилотов
   },
   'endurance-nov': {
     title: 'Эндуранс KIP 01.11',
     sheetId: '1Rpo827tpqXseK5GvJvH4I0x5Awl3zukg8Akvbmc95fo',
     kind: 'endurance',
     open: true,
-    maxKarts: 15,            // лимит картов на старте: команда = 1, Iron Man = 1, жеребьёвка = 1 на двоих
+    maxPilots: 36,           // лимит пилотов: команда = 2, жеребьёвка и Iron Man = 1
     price: { team: 75, draft: 75, ironman: 130 }   // € с участника
   }
 };
@@ -156,9 +156,9 @@ function register(p) {
 
     // Места
     if (ev.kind === 'sprint' && ev.maxDrivers && rows.length >= ev.maxDrivers) return { ok: false, reason: 'full' };
-    if (ev.kind === 'endurance' && ev.maxKarts) {
-      var need = mode === 'draft' ? (countMode(rows, 'draft') % 2 === 0 ? 1 : 0) : 1;
-      if (kartsUsed(rows) + need > ev.maxKarts) return { ok: false, reason: 'full' };
+    if (ev.kind === 'endurance' && ev.maxPilots) {
+      var need = mode === 'team' ? 2 : 1;
+      if (pilotsUsed(rows) + need > ev.maxPilots) return { ok: false, reason: 'full' };
     }
 
     var row = {
@@ -201,8 +201,8 @@ function countMode(rows, mode) {
   return n;
 }
 
-function kartsUsed(rows) {
-  return countMode(rows, 'team') + countMode(rows, 'ironman') + Math.ceil(countMode(rows, 'draft') / 2);
+function pilotsUsed(rows) {
+  return countMode(rows, 'team') * 2 + countMode(rows, 'draft') + countMode(rows, 'ironman');
 }
 
 // ───────────────────────── Фото → GitHub ─────────────────────────
