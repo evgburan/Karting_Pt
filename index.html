@@ -72,10 +72,10 @@
     position: sticky; top: 50px; z-index: 90;
   }
   .inner-tab {
-    flex: 1; background: none; border: none; border-bottom: 2px solid transparent;
-    padding: 12px 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
-    font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
-    cursor: pointer; transition: all 0.15s;
+    flex: 1 1 auto; background: none; border: none; border-bottom: 2px solid transparent;
+    padding: 12px 2px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted);
+    cursor: pointer; transition: all 0.15s; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .inner-tab.active { color: var(--text); border-bottom-color: var(--text); }
 
@@ -266,6 +266,68 @@
   .photo-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .venue-map { width: 100%; height: 200px; border: none; display: block; }
 
+  /* ── БЛИЖАЙШИЕ ГОНКИ: кнопки ивентов + карточка ── */
+  .ev-picker { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(158px, 1fr); gap: 8px; overflow-x: auto; margin-bottom: 12px; scrollbar-width: none; }
+  .ev-picker::-webkit-scrollbar { display: none; }
+  .ev-btn { display: flex; align-items: center; gap: 8px; min-width: 0; text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 9px 9px; cursor: pointer; color: var(--text); font-family: 'Barlow', sans-serif; transition: background .15s, border-color .15s, color .15s; }
+  .ev-btn:active { transform: scale(0.98); }
+  .ev-btn.active { background: var(--text); border-color: var(--text); color: #fff; }
+  .ev-date { flex-shrink: 0; width: 42px; height: 50px; border-radius: 8px; background: var(--surface2); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ev-btn.active .ev-date { background: rgba(255,255,255,0.12); }
+  .ev-day { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 24px; line-height: 1; }
+  .ev-mon { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-top: 1px; }
+  .ev-btn.active .ev-mon { color: #ff8a80; }
+  .ev-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .ev-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 16px; letter-spacing: .5px; text-transform: uppercase; line-height: 1.05; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ev-meta { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ev-btn.active .ev-meta { color: rgba(255,255,255,0.65); }
+  .ev-status { display: flex; align-items: center; gap: 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; line-height: 1.15; }
+  .ev-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .ev-status.open { color: var(--green); }
+  .ev-status.soon, .ev-status.full { color: var(--muted); }
+  .ev-btn.active .ev-status.open { color: #7ddc95; }
+  .ev-btn.active .ev-status.soon, .ev-btn.active .ev-status.full { color: rgba(255,255,255,0.55); }
+
+  .ev-slider { height: auto; aspect-ratio: 16 / 9; max-height: 320px; cursor: pointer; }
+  .venue-block .venue-overlay { padding-top: 34px; background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 55%, transparent 100%); }
+  .venue-block .venue-name-block { text-shadow: 0 1px 3px rgba(0,0,0,0.6); min-width: 0; }
+  .slide-dots { position: absolute; top: 10px; right: 12px; display: flex; gap: 5px; z-index: 2; }
+  .slide-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.45); transition: background .2s; }
+  .slide-dot.on { background: #fff; }
+  .venue-logo { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255,255,255,0.5); background: #fff; flex-shrink: 0; }
+  .ev-teaser { position: relative; aspect-ratio: 16 / 9; max-height: 320px; width: 100%; overflow: hidden; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; background: repeating-linear-gradient(135deg, #1b1b1b 0 18px, #222 18px 36px); }
+  .ev-teaser-flag { position: absolute; top: 0; right: 0; width: 42%; height: 100%; opacity: .16; background: conic-gradient(#fff 25%, transparent 0 50%, #fff 0 75%, transparent 0) 0 0 / 28px 28px; -webkit-mask: linear-gradient(90deg, transparent, #000 75%); mask: linear-gradient(90deg, transparent, #000 75%); }
+  .ev-teaser-badge { position: absolute; top: 12px; left: 14px; background: var(--accent-red); color: #fff; border-radius: 4px; padding: 3px 7px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+  .ev-teaser-title { position: relative; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 46px; line-height: .95; letter-spacing: 1px; text-transform: uppercase; }
+  .ev-teaser-sub { position: relative; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.75); margin-top: 6px; }
+  .btn-reg:disabled { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); cursor: default; letter-spacing: 1px; }
+  .ev-chat-link { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; padding: 11px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .ev-modes-title { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin: 14px 0 8px; }
+  .ev-modes { display: flex; flex-direction: column; gap: 6px; }
+  .ev-mode { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+  .ev-mode-ico { font-size: 20px; line-height: 1; flex-shrink: 0; width: 24px; text-align: center; }
+  .ev-mode-body { flex: 1; min-width: 0; }
+  .ev-mode-t { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.15; }
+  .ev-mode-d { font-size: 12px; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+  .ev-mode-p { flex-shrink: 0; text-align: right; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 20px; line-height: 1; color: var(--accent-red); }
+  .ev-mode-p span { display: block; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+  .mode-pick { display: flex; flex-direction: column; gap: 6px; }
+  .mode-opt { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; font-family: 'Barlow', sans-serif; color: var(--text); transition: border-color .15s, background .15s; }
+  .mode-opt.sel { border-color: var(--text); background: #fff; box-shadow: inset 0 0 0 1px var(--text); }
+  .mode-opt-ico { font-size: 18px; width: 22px; text-align: center; flex-shrink: 0; }
+  .mode-opt-t { flex: 1; font-size: 14px; font-weight: 600; }
+  .mode-opt-p { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .mode-opt.sel .mode-opt-p { color: var(--accent-red); }
+  .team-avs { display: flex; flex-shrink: 0; }
+  .team-avs > * + * { margin-left: -10px; }
+  .team-avs img, .team-avs > div { box-shadow: 0 0 0 2px var(--surface); }
+  .reg-grp { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); padding: 12px 0 2px; border-bottom: 1px solid var(--border); }
+  .reg-grp:first-of-type { padding-top: 0; }
+  .ev-track { margin-top: 12px; }
+  .ev-track img { width: 100%; height: auto; display: block; }
+  .ev-track-cap { font-size: 11px; color: var(--muted); text-align: center; margin-top: 4px; }
+  .ev-beg-badge { font-size: 10px; font-weight: 700; color: var(--green); background: #f0f7f1; border: 1px solid #c8e6c9; border-radius: 4px; padding: 0 4px; margin-left: 6px; vertical-align: middle; }
+
   /* LAST RACE NOMINATIONS */
   .mega-acc { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0 14px; margin-bottom: 12px; }
   .mega-acc > summary { list-style: none; cursor: pointer; padding: 14px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -350,14 +412,21 @@
 <div class="page active" id="page-main">
 
   <div class="inner-tabs">
-    <button class="inner-tab active" onclick="switchTab('next',this)" id="tab-btn-next">Итоги</button>
-    <button class="inner-tab" onclick="switchTab('results',this)">Прошедшие</button>
-    <button class="inner-tab" onclick="switchTab('standings',this)">Зачёт</button>
+    <button class="inner-tab active" onclick="switchTab('race',this)" id="tab-btn-race">Ближайшие</button>
+    <button class="inner-tab" onclick="switchTab('mega',this)" id="tab-btn-mega">Итоги</button>
+    <button class="inner-tab" onclick="switchTab('results',this)" id="tab-btn-results">Прошедшие</button>
+    <button class="inner-tab" onclick="switchTab('standings',this)" id="tab-btn-standings">Зачёт</button>
+  </div>
+
+  <!-- ── БЛИЖАЙШИЕ: кнопки ивентов + регистрация ── -->
+  <!-- Контент рисует renderRaceTab() из EVENTS (раздел «БЛИЖАЙШИЕ ГОНКИ + РЕГИСТРАЦИЯ» в скрипте). -->
+  <div class="inner-panel active" id="tab-race">
+    <div id="race-wrap"></div>
   </div>
 
   <!-- ── ИТОГИ (Мега Спринты · Batalha 19.09) ── -->
   <!-- Контент рисует renderMega() из данных MEGA (внизу файла). -->
-  <div class="inner-panel active" id="tab-next">
+  <div class="inner-panel" id="tab-mega">
     <div id="mega-wrap"></div>
   </div>
 
@@ -377,14 +446,14 @@
   <!-- ── ЗАЧЁТ ── -->
   <div class="inner-panel" id="tab-standings">
     <div class="card" style="margin-bottom:12px;">
-      <div class="card-title">Начисление очков</div>
-      <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
+      <div class="card-title" id="pts-title">Начисление очков</div>
+      <p id="pts-p1" style="font-size:13px;line-height:1.6;margin-bottom:10px;">
         🏁 <strong>За каждую гонку:</strong> 1-е — 25 очков, 2-е — 20, 3-е — 16, 4-е — 13, 5-е — 11, 6-е — 10... с 13-го — минимум 3 очка. Быстрейший круг — бонус +1.
       </p>
-      <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
+      <p id="pts-p2" style="font-size:13px;line-height:1.6;margin-bottom:10px;">
         📊 <strong>Итоговый зачёт:</strong> Очки суммируются по всем гонкам сезона. На каждом событии Campera проводит по две гонки — каждая считается отдельно. Если ты пропустил гонку — просто получаешь 0 за неё.
       </p>
-      <p style="font-size:13px;line-height:1.6;margin-bottom:10px;">
+      <p id="pts-p3" style="font-size:13px;line-height:1.6;margin-bottom:10px;">
         🗑️ <strong>Худшие результаты не считаются</strong> — чем больше гонок ты проехал, тем больше плохих результатов можно отбросить:
       </p>
       <div id="drop-lines" style="background:var(--surface2);border-radius:8px;padding:10px 14px;font-size:12px;line-height:2;margin-bottom:10px;">
@@ -594,20 +663,11 @@ function esc(s) {
 const I18N = {
   ru: {
     title: 'Катаемся Чатом',
-    next_race: 'Следующая гонка · 19 сентября 2026',
-    about_race: '🔥 Мега Спринты',
-    desc1: '📅 Встречаемся <strong>19 сентября в 12:00</strong>. Целый чемпионат в формате одного дня — <strong>12 стартов у каждого (квалификация + 10 спринтов + Финал)!</strong>',
-    desc_venue: '📍 Euroindy — Kartódromo da Batalha. Полтора часа от Лиссабона, два от Порту. Карты 390cc, кафе на месте.',
-    desc2: '🏎️ Квалификация 15 минут — длинная, чтобы вкатиться, карты можно менять. Потом делимся на 2 группы по 10 (чётные / нечётные), и каждая едет 10 заездов по 4 круга: старты, обгоны, отыгрыши, потери позиций — всё за что мы любим спринты. Каждый на каждом — решает чисто пилотаж.',
-    desc3: '🏆 По очкам делимся на Финал A и Финал B и мощно едем финалы за <strong>двойные очки</strong>. Всё идёт в зачёт.',
-    desc4: '🍾 Ивент длинный: болтаем, планируем будущие выезды, рьяно болеем за соседнюю группу и погружаемся в автоспорт с ушами. Всё как надо.',
-    desc5: '💶 Прайс — <strong>€145</strong>.',
     spots_lbl: 'Свободных мест',
     btn_reg: 'Зарегистрироваться →',
     beginner_note: '🟢 <strong>Начинающим:</strong> отметь галочку при регистрации — попадёшь в отдельный зачёт новичков.',
     cd_d: 'Дней', cd_h: 'Часов', cd_m: 'Мин', cd_s: 'Сек',
     schedule: 'Формат дня',
-    s1: 'Квалификация — длинная, карты можно менять', s2: '2 группы по 10 — чётные и нечётные', s3: '🏁 10 спринтов на группу по 4 круга — каждый на каждом', s4: '🏆 Финалы A / B за двойные очки → шампанское',
     already_racing: 'Уже едут',
     nobody_yet: 'Пока никого — будь первым!',
     tab_upcoming: 'Гонка', tab_results: 'Прошедшие', tab_standings: 'Зачёт',
@@ -642,13 +702,9 @@ const I18N = {
     nav_race: 'Гонка', nav_1v1: '1v1', nav_drivers: 'Гонщики',
     race_today: 'Гонка сегодня! 🏁',
     on_map: 'На карте',
-    reg_title: 'Регистрация · Batalha',
-    reg_sub: 'Мега Спринты · 19 сентября',
-    reg_spots: 'мест',
     form_name: 'Имя *', form_name_ph: 'Имя и фамилия для гонки',
     form_tg: 'Telegram', form_tg_ph: 'Ник в Telegram (с @ или без)',
     check_beg: '🏆 Хочу участвовать в <strong>зачёте начинающих</strong>',
-    check_brief: '🟢 Хочу приехать к 15:00 на <strong>мини-разбор трассы</strong>',
     photo_lbl: 'Фото профиля', photo_btn: 'Добавь фото, если не добавлял ранее',
     photo_done: '✓ Фото загружено',
     privacy_note: 'Имя, ник и фото будут видны посетителям этой страницы.',
@@ -657,8 +713,7 @@ const I18N = {
     reg_full: 'Мест больше нет 😕 Следи за анонсами — возможно, откроем дополнительные заезды.',
     reg_dup: 'Похоже, ты уже зарегистрирован. Если это не так — напиши организатору.',
     reg_err: 'Не получилось отправить регистрацию. Проверь интернет и попробуй ещё раз.',
-    success_title: 'Ты в гонке!', success_date: 'Ждём тебя в Batalha · 19 сентября',
-    pay_title: '💶 Оплата · €145',
+    success_title: 'Ты в гонке!',
     stat_pts: 'Очков', stat_races: 'Гонок', stat_avg: 'Среднее', stat_best: 'Лучший', stat_fl: 'Быстр. круг', stat_pos: 'Место в зачёте',
     h2h_btn: '⚔️ Head to Head — сравнить с другим гонщиком',
     hist_lbl: 'История гонок', pts_sfx: 'оч.',
@@ -675,28 +730,19 @@ const I18N = {
     col_driver:'Гонщик', col_q1:'Кв1', col_r1:'Г1', col_q2:'Кв2', col_r2:'Г2', col_pts:'Очки',
     races_header: ['#','Гонщик','Очки'],
     safety: { g:'🟢 Чисто едет', y:'🟡 Осторожно', r:'🔴 Опасный' },
-    extra_beg: '🏆 Зачёт начинающих', extra_brief: '🟢 Разбор в 15:00',
+    extra_beg: '🏆 Зачёт начинающих',
     races_sfx: 'гон.',
   },
   pt: {
     title: 'Kart Chat',
-    next_race: 'Próxima corrida · 19 set 2026',
-    about_race: '🔥 Mega Sprints',
-    desc1: '📅 Encontramo-nos a <strong>19 de setembro às 12:00</strong>. Um campeonato inteiro num só dia — <strong>12 partidas para cada um!</strong>',
-    desc_venue: '📍 Euroindy — Kartódromo da Batalha. Hora e meia de Lisboa, duas do Porto. Karts 390cc, temos café no local.',
-    desc2: '🏎️ Qualificação de 15 minutos — longa, para entrar no ritmo, e podes trocar de kart. Depois dividimo-nos em 2 grupos de 10 (pares / ímpares), e cada grupo faz 10 corridas de 4 voltas: partidas, ultrapassagens, recuperações — tudo o que adoramos nos sprints. Todos contra todos — decide a pilotagem.',
-    desc3: '🏆 Pelos pontos dividimo-nos em Final A e Final B e corremos as finais a valer <strong>pontos a dobrar</strong>. Tudo conta.',
-    desc4: '🍾 É um dia longo: conversamos, planeamos próximas saídas, torcemos pelo grupo ao lado e mergulhamos no automobilismo.',
-    desc5: '💶 Preço — <strong>€145</strong>.',
     spots_lbl: 'Lugares disponíveis',
     btn_reg: 'Inscrever-me →',
     beginner_note: '🟢 <strong>Iniciantes:</strong> marca a caixa ao registares-te — entras na classificação separada de iniciantes.',
     cd_d: 'Dias', cd_h: 'Horas', cd_m: 'Min', cd_s: 'Seg',
     schedule: 'Formato do dia',
-    s1: 'Qualificação — longa, podes trocar de kart', s2: '2 grupos de 10 — pares e ímpares', s3: '🏁 10 corridas por grupo, 4 voltas — todos contra todos', s4: '🏆 Finais A / B a valer o dobro → champanhe',
     already_racing: 'Já inscritos',
     nobody_yet: 'Ainda ninguém — sê o primeiro!',
-    tab_upcoming: 'Corrida', tab_results: 'Anteriores', tab_standings: 'Classificação',
+    tab_upcoming: 'Corrida', tab_results: 'Anteriores', tab_standings: 'Campeonato',
     pts_title: 'Sistema de pontos',
     pts1: `🏁 <strong>Por corrida</strong> — 1.º — 25 pts, 2.º — 20, 3.º — 16, 4.º — 13, 5.º — 11, 6.º — 10... Do 13.º — mínimo 3 pts. Volta mais rápida — bónus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
 <tr style="background:var(--surface2)"><th style="padding:4px 8px;text-align:left;font-weight:700;">Posição</th><th style="padding:4px 8px;text-align:center;font-weight:700;">Pts</th></tr>
@@ -728,13 +774,9 @@ const I18N = {
     nav_race: 'Corrida', nav_1v1: '1v1', nav_drivers: 'Pilotos',
     race_today: 'Corrida hoje! 🏁',
     on_map: 'No mapa',
-    reg_title: 'Inscrição · Batalha',
-    reg_sub: 'Mega Sprints · 19 set',
-    reg_spots: 'lugares disponíveis',
     form_name: 'Nome *', form_name_ph: 'Nome e apelido para a corrida',
     form_tg: 'Telegram', form_tg_ph: 'Username do Telegram (com @ ou sem)',
     check_beg: '🏆 Quero participar na <strong>classificação de iniciantes</strong>',
-    check_brief: '🟢 Quero chegar às 15:00 para o <strong>mini-briefing do traçado</strong>',
     photo_lbl: 'Foto de perfil', photo_btn: 'Adiciona foto, se ainda não o fizeste',
     photo_done: '✓ Foto carregada',
     privacy_note: 'O nome, username e foto ficarão visíveis para os visitantes desta página.',
@@ -743,8 +785,7 @@ const I18N = {
     reg_full: 'Já não há lugares 😕 Fica atento aos anúncios — podemos abrir mais sessões.',
     reg_dup: 'Parece que já estás inscrito. Se não for o caso, contacta o organizador.',
     reg_err: 'Não foi possível enviar a inscrição. Verifica a ligação e tenta novamente.',
-    success_title: 'Estás na corrida!', success_date: 'Esperamos-te na Batalha · 19 set',
-    pay_title: '💶 Pagamento · €145',
+    success_title: 'Estás na corrida!',
     stat_pts: 'Pontos', stat_races: 'Corridas', stat_avg: 'Média', stat_best: 'Melhor', stat_fl: 'V. rápida', stat_pos: 'Posição geral',
     h2h_btn: '⚔️ Head to Head — comparar com outro piloto',
     hist_lbl: 'Histórico de corridas', pts_sfx: 'pts',
@@ -761,25 +802,16 @@ const I18N = {
     col_driver:'Piloto', col_q1:'Q1', col_r1:'C1', col_q2:'Q2', col_r2:'C2', col_pts:'Pts',
     races_header: ['#','Piloto','Pts'],
     safety: { g:'🟢 Pilotagem limpa', y:'🟡 Cuidado', r:'🔴 Perigoso' },
-    extra_beg: '🏆 Classificação iniciantes', extra_brief: '🟢 Briefing às 15:00',
+    extra_beg: '🏆 Classificação iniciantes',
     races_sfx: 'corr.',
   },
   en: {
     title: 'Kart Chat',
-    next_race: 'Next race · Sep 19, 2026',
-    about_race: '🔥 Mega Sprints',
-    desc1: '📅 Meet on <strong>September 19 at 12:00</strong>. A whole championship in a single day — <strong>12 starts for each pilot (Quali + 10 short sprints + Final!</strong>',
-    desc_venue: '📍 Euroindy — Kartódromo da Batalha. 1.5 hours from Lisbon, 2 from Porto. 390cc karts, café on site.',
-    desc2: '🏎️ 15-minute qualifying — long, to get in the groove, and you can swap karts. Then we split into 2 groups of 10 (even / odd), and each group runs 10 races of 4 laps: starts, overtakes, comebacks — everything we love about sprints. Everyone races everyone — pure driving decides it.',
-    desc3: '🏆 Points split us into Final A and Final B, and we run the finals for <strong>double points</strong>. It all counts.',
-    desc4: "🍾 It's a long event: we chat, plan future trips, cheer for the other group and go all-in on motorsport.",
-    desc5: '💶 Price — <strong>€145</strong>.',
     spots_lbl: 'Spots available',
     btn_reg: 'Register →',
     beginner_note: "🟢 <strong>Beginners:</strong> tick the box when you register — you'll join the separate beginners standings.",
     cd_d: 'Days', cd_h: 'Hours', cd_m: 'Min', cd_s: 'Sec',
     schedule: 'Day format',
-    s1: 'Qualifying — long, karts can be swapped', s2: '2 groups of 10 — even and odd', s3: '🏁 10 races per group, 4 laps — everyone races everyone', s4: '🏆 Finals A / B for double points → champagne',
     already_racing: 'Already in',
     nobody_yet: 'Nobody yet — be the first!',
     tab_upcoming: 'Race', tab_results: 'Past', tab_standings: 'Standings',
@@ -814,13 +846,9 @@ const I18N = {
     nav_race: 'Race', nav_1v1: '1v1', nav_drivers: 'Drivers',
     race_today: 'Race day! 🏁',
     on_map: 'On map',
-    reg_title: 'Registration · Batalha',
-    reg_sub: 'Mega Sprints · Sep 19',
-    reg_spots: 'spots left',
     form_name: 'Name *', form_name_ph: 'Full name for the race',
     form_tg: 'Telegram', form_tg_ph: 'Telegram username (with @ or without)',
     check_beg: '🏆 I want to enter the <strong>beginners standings</strong>',
-    check_brief: '🟢 I\'ll arrive at 15:00 for the <strong>track briefing</strong>',
     photo_lbl: 'Profile photo', photo_btn: 'Add a photo if you haven\'t yet',
     photo_done: '✓ Photo uploaded',
     privacy_note: 'Your name, handle and photo will be visible to visitors of this page.',
@@ -829,8 +857,7 @@ const I18N = {
     reg_full: 'No spots left 😕 Watch the announcements — we may open extra sessions.',
     reg_dup: 'Looks like you are already registered. If not, contact the organizer.',
     reg_err: 'Could not submit your registration. Check your connection and try again.',
-    success_title: 'You\'re in!', success_date: 'See you in Batalha · Sep 19',
-    pay_title: '💶 Payment · €145',
+    success_title: 'You\'re in!',
     stat_pts: 'Points', stat_races: 'Races', stat_avg: 'Average', stat_best: 'Best', stat_fl: 'Fast lap', stat_pos: 'Standing',
     h2h_btn: '⚔️ Head to Head — compare with another driver',
     hist_lbl: 'Race history', pts_sfx: 'pts',
@@ -847,7 +874,7 @@ const I18N = {
     col_driver:'Driver', col_q1:'Q1', col_r1:'R1', col_q2:'Q2', col_r2:'R2', col_pts:'Pts',
     races_header: ['#','Driver','Pts'],
     safety: { g:'🟢 Clean driver', y:'🟡 Caution', r:'🔴 Dangerous' },
-    extra_beg: '🏆 Beginners standings', extra_brief: '🟢 Briefing at 15:00',
+    extra_beg: '🏆 Beginners standings',
     races_sfx: 'races',
   }
 };
@@ -984,6 +1011,89 @@ Object.assign(I18N.en, {
   safe_quest_lbl: 'Questions raised',
 });
 
+// ── Ближайшие гонки + регистрация ──
+Object.assign(I18N.ru, {
+  tab_race: 'Ближайшие', tab_mega: 'Итоги',
+  ev_open: 'Запись открыта', ev_reg_soon: 'Запись скоро', ev_full: 'Мест нет', ev_soon: 'Скоро',
+  btn_reg_soon: 'Регистрация откроется совсем скоро', btn_full: 'Мест больше нет',
+  follow_chat: 'Следить за анонсом в чате',
+  upcoming_none: 'Новые гонки скоро — анонсы в чате.',
+  fmt_start: 'старт в', fmt_q: 'Квалификация', fmt_r: 'Гонка', fmt_min: 'мин',
+  reg_title: 'Регистрация',
+  reg_left: (n) => `свободно мест: ${n}`,
+  tg_prefill: '✓ Данные подтянулись из Telegram',
+  hide_handle: 'Скрыть мой @ник на портале',
+  success_date: (v, d) => `Ждём тебя в ${v} · ${d}`,
+  pay_title: '💶 Оплата участия', pay_note: 'В назначении платежа укажи своё имя 🙌',
+  copy_lbl: 'копировать', copied_lbl: 'скопировано ✓',
+  beg_short: 'новичок',
+  photo_uploading: '📷 Фото загружается, появится через ~минуту',
+  karts_lbl: 'Свободных картов', karts_left: (n) => `свободно картов: ${n}`,
+  karts_n: (n, cap) => `картов: ${n} / ${cap}`, pilots_n: (n) => `пилотов: ${n}`,
+  how_join: 'Как вписаться', per_person: 'с участника',
+  mode_pick: 'Формат участия *', mode_need: 'Выбери формат участия',
+  form_mate: 'Напарник *', form_mate_ph: 'Имя и фамилия напарника', form_mate_tg: 'Telegram напарника',
+  form_team: 'Название команды', form_team_ph: 'Необязательно',
+  reg_mate_dup: 'Напарник уже записан. Если это ошибка — напиши организатору.',
+  grp_teams: 'Команды', grp_draft: 'Жеребьёвка', grp_iron: 'Iron Man', team_n: (n) => `Команда ${n}`,
+  pay_for_two: (p) => `За себя и напарника: 2 × €${p}`,
+  track_map: 'Схема трассы', fmt_q_s: 'Кв', fmt_r_s: 'Гонка',
+});
+Object.assign(I18N.pt, {
+  tab_race: 'Próximas', tab_mega: 'Resultados',
+  ev_open: 'Inscrições abertas', ev_reg_soon: 'Inscrições em breve', ev_full: 'Esgotado', ev_soon: 'Em breve',
+  btn_reg_soon: 'As inscrições abrem muito em breve', btn_full: 'Já não há lugares',
+  follow_chat: 'Acompanhar o anúncio no chat',
+  upcoming_none: 'Novas corridas em breve — anúncios no chat.',
+  fmt_start: 'início às', fmt_q: 'Qualificação', fmt_r: 'Corrida', fmt_min: 'min',
+  reg_title: 'Inscrição',
+  reg_left: (n) => `${n} lugares livres`,
+  tg_prefill: '✓ Dados preenchidos a partir do Telegram',
+  hide_handle: 'Esconder o meu @username no portal',
+  success_date: (v, d) => `Esperamos por ti: ${v} · ${d}`,
+  pay_title: '💶 Pagamento da inscrição', pay_note: 'Na descrição da transferência indica o teu nome 🙌',
+  copy_lbl: 'copiar', copied_lbl: 'copiado ✓',
+  beg_short: 'iniciante',
+  photo_uploading: '📷 A foto está a carregar — aparece dentro de ~1 minuto',
+  karts_lbl: 'Karts disponíveis', karts_left: (n) => `${n} karts livres`,
+  karts_n: (n, cap) => `karts: ${n} / ${cap}`, pilots_n: (n) => `${n} pilotos`,
+  how_join: 'Como participar', per_person: 'por piloto',
+  mode_pick: 'Formato *', mode_need: 'Escolhe o formato de participação',
+  form_mate: 'Colega de equipa *', form_mate_ph: 'Nome e apelido do colega', form_mate_tg: 'Telegram do colega',
+  form_team: 'Nome da equipa', form_team_ph: 'Opcional',
+  reg_mate_dup: 'O teu colega já está inscrito. Se for um erro, contacta o organizador.',
+  grp_teams: 'Equipas', grp_draft: 'Sorteio', grp_iron: 'Iron Man', team_n: (n) => `Equipa ${n}`,
+  pay_for_two: (p) => `Por ti e pelo colega: 2 × €${p}`,
+  track_map: 'Traçado da pista', fmt_q_s: 'Q', fmt_r_s: 'Corrida',
+});
+Object.assign(I18N.en, {
+  tab_race: 'Upcoming', tab_mega: 'Results',
+  ev_open: 'Registration open', ev_reg_soon: 'Opens soon', ev_full: 'Full', ev_soon: 'Coming soon',
+  btn_reg_soon: 'Registration opens very soon', btn_full: 'No spots left',
+  follow_chat: 'Follow the announcement in chat',
+  upcoming_none: 'New races coming soon — announcements in chat.',
+  fmt_start: 'start', fmt_q: 'Qualifying', fmt_r: 'Race', fmt_min: 'min',
+  reg_title: 'Registration',
+  reg_left: (n) => `${n} spots left`,
+  tg_prefill: '✓ Filled in from Telegram',
+  hide_handle: 'Hide my @handle on the portal',
+  success_date: (v, d) => `See you at ${v} · ${d}`,
+  pay_title: '💶 Entry fee', pay_note: 'Put your name in the payment reference 🙌',
+  copy_lbl: 'copy', copied_lbl: 'copied ✓',
+  beg_short: 'beginner',
+  photo_uploading: '📷 Photo is uploading — it will show up in ~1 minute',
+  karts_lbl: 'Karts available', karts_left: (n) => `${n} karts left`,
+  karts_n: (n, cap) => `karts: ${n} / ${cap}`, pilots_n: (n) => `${n} drivers`,
+  how_join: 'How to enter', per_person: 'per driver',
+  mode_pick: 'Entry type *', mode_need: 'Choose an entry type',
+  form_mate: 'Teammate *', form_mate_ph: 'Teammate full name', form_mate_tg: 'Teammate Telegram',
+  form_team: 'Team name', form_team_ph: 'Optional',
+  reg_mate_dup: 'Your teammate is already registered. If that is a mistake, contact the organizer.',
+  grp_teams: 'Teams', grp_draft: 'Draft', grp_iron: 'Iron Man', team_n: (n) => `Team ${n}`,
+  pay_for_two: (p) => `For you and your teammate: 2 × €${p}`,
+  track_map: 'Track layout', fmt_q_s: 'Q', fmt_r_s: 'Race',
+});
+
 function t(k) { return I18N[_lang][k] || I18N['ru'][k] || k; }
 
 function setLang(lang) {
@@ -1000,50 +1110,14 @@ function setLang(lang) {
   const sq = (sel, html) => { const el = document.querySelector(sel); if (el) el.innerHTML = html; };
   const sqt = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
 
-  // countdown labels
-  st('cd-d-lbl', t('cd_d')); st('cd-h-lbl', t('cd_h')); st('cd-m-lbl', t('cd_m')); st('cd-s-lbl', t('cd_s'));
-  // venue
-  const venueLabel = document.getElementById('venue-label-next');
-  if (venueLabel) venueLabel.textContent = t('next_race');
-  sq('.venue-link span', t('on_map'));
-  // event card in tab-next
-  const nextEyebrow = document.getElementById('next-eyebrow'); if(nextEyebrow) nextEyebrow.textContent = t('about_race');
-  const nd1=document.getElementById('next-desc1'); if(nd1) nd1.innerHTML=t('desc1');
-  const ndv=document.getElementById('next-desc-venue'); if(ndv) ndv.innerHTML=t('desc_venue');
-  const nd2=document.getElementById('next-desc2'); if(nd2) nd2.innerHTML=t('desc2');
-  const nd3=document.getElementById('next-desc3'); if(nd3) nd3.innerHTML=t('desc3');
-  const nd4=document.getElementById('next-desc4'); if(nd4) nd4.innerHTML=t('desc4');
-  const nd5=document.getElementById('next-desc5'); if(nd5) nd5.innerHTML=t('desc5');
-  const nextSpotsLbl=document.getElementById('next-spots-lbl'); if(nextSpotsLbl) nextSpotsLbl.textContent=t('spots_lbl');
-  const nextBtnReg=document.getElementById('next-btn-reg'); if(nextBtnReg) nextBtnReg.textContent=t('btn_reg');
-  const nextBegNote=document.getElementById('next-beg-note'); if(nextBegNote) nextBegNote.innerHTML=t('beginner_note');
-  const nextSchedTitle=document.getElementById('next-sched-title'); if(nextSchedTitle) nextSchedTitle.textContent=t('schedule');
-  const ns1=document.getElementById('next-s1'); if(ns1) ns1.textContent=t('s1');
-  const ns2=document.getElementById('next-s2'); if(ns2) ns2.textContent=t('s2');
-  const ns3=document.getElementById('next-s3'); if(ns3) ns3.textContent=t('s3');
-  const ns4=document.getElementById('next-s4'); if(ns4) ns4.textContent=t('s4');
-  // tab labels
-  const tabBtnNext = document.getElementById('tab-btn-next');
-  if(tabBtnNext) tabBtnNext.textContent = { ru:'Итоги', pt:'Resultados', en:'Results' }[lang];
-  // reg list title
-  const rlt2 = document.getElementById('reg-list-title');
-  if (rlt2) rlt2.textContent = `${t('already_racing')} (${regs.length} / ${MAX})`;
   // inner tabs
-  const tabs = document.querySelectorAll('.inner-tab');
-  if (tabs[0]) tabs[0].textContent = { ru:'Итоги', pt:'Resultados', en:'Results' }[_lang||'ru'];
-  if (tabs[1]) tabs[1].textContent = t('tab_results');
-  if (tabs[2]) tabs[2].textContent = t('tab_standings');
+  st('tab-btn-race', t('tab_race'));
+  st('tab-btn-mega', t('tab_mega'));
+  st('tab-btn-results', t('tab_results'));
+  st('tab-btn-standings', t('tab_standings'));
   // standings pts card
-  const cardTitles = document.querySelectorAll('.card-title');
-  cardTitles.forEach(el => {
-    if (el.textContent.includes('Начисление') || el.textContent.includes('sistema') || el.textContent.includes('system')) {
-      el.textContent = t('pts_title');
-    }
-  });
-  const ps = document.querySelectorAll('.card p');
-  const ptKeys = ['pts1','pts2','pts3'];
-  let pi = 0;
-  ps.forEach(p => { if (pi < ptKeys.length && p.querySelector('strong')) { p.innerHTML = t(ptKeys[pi++]); } });
+  st('pts-title', t('pts_title'));
+  ['pts1', 'pts2', 'pts3'].forEach((k, i) => s('pts-p' + (i + 1), t(k)));
   // drop lines
   const dropEl = document.getElementById('drop-lines');
   if (dropEl) dropEl.innerHTML = t('drops_html');
@@ -1077,6 +1151,7 @@ function setLang(lang) {
   const sh = document.querySelectorAll('.st-header span');
   if (sh.length >= 5) { sh[0].textContent=t('standings_header')[0]; sh[1].textContent=t('standings_header')[1]; sh[2].textContent=t('standings_header')[2]; sh[4].textContent=t('standings_header')[4]; }
   // re-render dynamic content
+  renderRaceTab();
   RACE_VIEWS = buildRaceViews();
   STANDINGS = buildStandings();
   renderChips();
@@ -2013,7 +2088,7 @@ async function loadPhotoManifest() {
     // Перерисуем — аватарки подтянутся без 404
     try { renderStandings(); } catch(e) {}
     try { renderResults(typeof _currentRaceIdx !== 'undefined' ? (_currentRaceIdx || 0) : 0); } catch(e) {}
-    try { renderRegList(); } catch(e) {}
+    try { renderRaceTab(); } catch(e) {}
   } catch(e) {}
 }
 loadPhotoManifest();
@@ -2029,7 +2104,7 @@ function getPhoto(handle, name) {
   if (nk && photoExists(nk)) urls.push(`photos/${nk}.jpg`);
 
   // Загруженное при регистрации фото (если сервер вернул путь/ссылку)
-  const reg = regs.find(r => {
+  const reg = allRegs().find(r => {
     if (!r.photoUrl) return false;
     const rh = (r.handle||'').replace('@','').toLowerCase();
     const rn = (r.name||'').toLowerCase();
@@ -2800,52 +2875,470 @@ function closeProfileModal(e) {
     document.getElementById('profile-modal').classList.remove('open');
 }
 
-// REGISTRATION
+// ════════════════════════════════════════════════════════════
+//  БЛИЖАЙШИЕ ГОНКИ + РЕГИСТРАЦИЯ
+//  Новый ивент = ещё один блок в EVENTS. Кнопка на главной, карточка,
+//  слайдер, countdown, места, форма и оплата строятся из него сами.
+//    status 'open' — регистрация (через REG_API, ивент различается по id)
+//    status 'soon' — анонс без регистрации
+//    kind 'sprint' — лимит пилотов (max) · kind 'endurance' — лимит картов (maxKarts) и форматы участия (modes)
+//  Ивент сам уходит с главной через 6 ч после старта.
+//  Время старта — с поясом Лиссабона: до 25.10 летнее (+01:00), после — зимнее (+00:00).
+// ════════════════════════════════════════════════════════════
 
-const MAX = 20;   // 2 группы × 10
-const regs = [];
+// ⬇ URL веб-приложения Apps Script «Регистрации» (…/exec) — один на все ивенты.
+//   Пусто → кнопки показывают «Регистрация откроется совсем скоро».
+const REG_API = '';
 
-// ⬇ TODO МЕГА СПРИНТЫ: новая Stripe-ссылка на оплату (€145). Пустая = кнопка оплаты скрыта.
-// Реквизиты оплаты (€145). Revolut — вставь Revtag (@name) или ссылку revolut.me/...
+const EVENTS = [
+  {
+    id: 'campera-oct',
+    kind: 'sprint',
+    status: 'open',
+    start: '2026-10-18T15:00:00+01:00',
+    venue: 'Campera Karting',
+    logo: 'photos/venue-campera.png',
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Campera+Karting+Carregado',
+    slides: [
+      { src: 'photos/campera-start.jpg' },
+      { src: 'photos/campera-pack.jpg' },
+      { src: 'photos/campera-aerial.jpg' },
+      { src: 'photos/campera.jpg', pos: 'center 70%' },
+    ],
+    price: 55,
+    max: 36,            // лимит пилотов (в Apps Script — maxDrivers, держать одинаковыми)
+    beginners: true,    // галочка «зачёт начинающих» в форме
+    sheetsUrl: REG_API,
+    format: [{ k: 'q', min: 5 }, { k: 'r', min: 10 }, { k: 'q', min: 5 }, { k: 'r', min: 10 }],
+    text: {
+      ru: {
+        name: 'Campera',
+        eyebrow: '🏁 Гонка в Campera',
+        desc: [
+          '📅 <strong>18 октября, 15:00</strong> · Campera Karting, Carregado. Трасса 815 м, карты <strong>390cc</strong>.',
+          '🏎️ Формат: <strong>5 минут квалификации + 10 минут гонки</strong> — и ещё раз: вторая квала и вторая гонка. Каждая гонка идёт в зачёт чемпионата отдельно.',
+          '🟢 <strong>Опыт не нужен</strong> — у начинающих свой зачёт.',
+          '💶 Участие — <strong>€55</strong>.',
+        ],
+      },
+      pt: {
+        name: 'Campera',
+        eyebrow: '🏁 Corrida no Campera',
+        desc: [
+          '📅 <strong>18 de outubro, 15:00</strong> · Campera Karting, Carregado. Pista de 815 m, karts <strong>390cc</strong>.',
+          '🏎️ Formato: <strong>5 min de qualificação + 10 min de corrida</strong> — e repetimos: segunda qualificação e segunda corrida. Cada corrida conta separadamente para o campeonato.',
+          '🟢 <strong>Não é preciso experiência</strong> — os iniciantes têm classificação própria.',
+          '💶 Participação — <strong>€55</strong>.',
+        ],
+      },
+      en: {
+        name: 'Campera',
+        eyebrow: '🏁 Race at Campera',
+        desc: [
+          '📅 <strong>18 October, 15:00</strong> · Campera Karting, Carregado. 815 m track, <strong>390cc</strong> karts.',
+          '🏎️ Format: <strong>5 min qualifying + 10 min race</strong> — then again: second qualifying and second race. Each race counts separately toward the championship.',
+          '🟢 <strong>No experience needed</strong> — beginners have their own standings.',
+          '💶 Entry — <strong>€55</strong>.',
+        ],
+      },
+    },
+  },
+  {
+    id: 'endurance-nov',
+    kind: 'endurance',
+    status: 'open',
+    start: '2026-11-01T13:00:00+00:00',
+    venue: 'KIP Palmela',
+    logo: 'photos/venue-kip.png',
+    mapUrl: 'https://maps.app.goo.gl/YktVAY4uJcGpSDyz5',
+    slides: [
+      { src: 'photos/kip-sodi.jpg' },
+      { src: 'photos/kip-karts.jpg' },
+      { src: 'photos/kip-aerial.webp' },
+      { src: 'photos/podium.png', pos: 'center 57%' },
+    ],
+    trackMap: 'photos/kip-track.png',
+    maxKarts: 15,       // лимит картов: команда = 1, Iron Man = 1, жеребьёвка = 1 на двоих (в Apps Script — так же)
+    beginners: false,
+    // € с участника; people — сколько пилотов вписывает одна регистрация
+    modes: { team: { price: 75, people: 2 }, draft: { price: 75, people: 1 }, ironman: { price: 130, people: 1 } },
+    sheetsUrl: REG_API,
+    format: [{ k: 'q', min: 10 }, { k: 'r', min: 50 }],
+    text: {
+      ru: {
+        name: 'Эндуранс',
+        eyebrow: '🔋 Эндуранс · KIP Palmela',
+        desc: [
+          '📅 <strong>1 ноября, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Карты <strong>Sodi RT-10 390cc</strong>.',
+          '⏱️ <strong>10 минут квалификации + 50 минут гонки</strong>. Обязательно: <strong>1 пит-стоп</strong> (минимум 3 минуты в боксах) и <strong>1 джокер-круг</strong> — проезд по пит-лейну без смены карта.',
+          '🏆 <strong>Три зачёта:</strong> общий, пилоты из жеребьёвки и Iron Man.',
+        ],
+        modes: {
+          team:    { ico: '👥', t: 'Командой из двух', d: 'Вписываешь себя и напарника — едете вдвоём.' },
+          draft:   { ico: '🎲', t: 'Без команды — жеребьёвка', d: 'Пары собираем по квалификации: один пилот из первой половины таблицы, один из второй. Честно и весело.' },
+          ironman: { ico: '🦾', t: 'Iron Man', d: 'Один пилот на всю гонку.' },
+        },
+        rules: [
+          ['Пит', '1 обязательный пит-стоп — минимум 3 минуты в боксах'],
+          ['Джокер', '1 обязательный джокер-круг — проезд по пит-лейну без смены карта'],
+        ],
+      },
+      pt: {
+        name: 'Endurance',
+        eyebrow: '🔋 Endurance · KIP Palmela',
+        desc: [
+          '📅 <strong>1 de novembro, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Karts <strong>Sodi RT-10 390cc</strong>.',
+          '⏱️ <strong>10 min de qualificação + 50 min de corrida</strong>. Obrigatório: <strong>1 paragem nas boxes</strong> (mínimo 3 minutos) e <strong>1 volta joker</strong> — passagem pelo pit lane sem troca de kart.',
+          '🏆 <strong>Três classificações:</strong> geral, pilotos do sorteio e Iron Man.',
+        ],
+        modes: {
+          team:    { ico: '👥', t: 'Equipa de dois', d: 'Inscreves-te a ti e ao teu colega — correm os dois.' },
+          draft:   { ico: '🎲', t: 'Sem equipa — sorteio', d: 'Formamos pares pela qualificação: um piloto da primeira metade da tabela e um da segunda. Justo e divertido.' },
+          ironman: { ico: '🦾', t: 'Iron Man', d: 'Um piloto para a corrida inteira.' },
+        },
+        rules: [
+          ['Box', '1 paragem obrigatória nas boxes — mínimo 3 minutos'],
+          ['Joker', '1 volta joker obrigatória — passagem pelo pit lane sem troca de kart'],
+        ],
+      },
+      en: {
+        name: 'Endurance',
+        eyebrow: '🔋 Endurance · KIP Palmela',
+        desc: [
+          '📅 <strong>1 November, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. <strong>Sodi RT-10 390cc</strong> karts.',
+          '⏱️ <strong>10 min qualifying + 50 min race</strong>. Mandatory: <strong>1 pit stop</strong> (at least 3 minutes in the pits) and <strong>1 joker lap</strong> — a pit-lane drive-through without changing karts.',
+          '🏆 <strong>Three standings:</strong> overall, drafted drivers and Iron Man.',
+        ],
+        modes: {
+          team:    { ico: '👥', t: 'Team of two', d: 'Register yourself and your teammate — you race as a pair.' },
+          draft:   { ico: '🎲', t: 'No team — draft', d: 'Pairs are drawn from qualifying: one driver from the top half of the table, one from the bottom half. Fair and fun.' },
+          ironman: { ico: '🦾', t: 'Iron Man', d: 'One driver for the whole race.' },
+        },
+        rules: [
+          ['Pit', '1 mandatory pit stop — at least 3 minutes in the pits'],
+          ['Joker', '1 mandatory joker lap — a pit-lane drive-through without changing karts'],
+        ],
+      },
+    },
+  },
+];
+const MODE_ORDER = ['team', 'draft', 'ironman'];
+
+const CHAT_URL = 'https://t.me/+xF4eAlUWBddjMjgy';
+const PIN_ICON = '<svg viewBox="0 0 24 24" width="11" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+const TG_ICON = '<svg viewBox="0 0 24 24" width="14" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.247l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.95 14.382l-2.95-.924c-.64-.203-.652-.64.136-.953l11.527-4.445c.534-.194 1.001.13.899.187z"/></svg>';
+
+// Регистрации: по ивентам + прошлые (только ради «скрыть @ник» и фото с регистрации)
+const REGS = {};
+const LEGACY_REGS = [];
+const LEGACY_REG_URLS = [
+  'https://script.google.com/macros/s/AKfycbz6xA0Df4YZrTKlMwMd7Ops6JffLIXwkJ9XIvlJNf2lPlqwDz8DwIY_CHKA1Z8n9P7r6Q/exec', // Мега Спринты · Batalha 19.09
+];
+function allRegs() { return Object.values(REGS).reduce((a, l) => a.concat(l), []).concat(LEGACY_REGS); }
+function evRegs(ev) { return REGS[ev.id] || []; }
+function modeCount(ev, mode) { return evRegs(ev).filter(r => r.mode === mode).length; }
+// Карты эндуранса: команда = 1, Iron Man = 1, двое из жеребьёвки = 1 (так же считает Apps Script)
+function evKarts(ev) { return modeCount(ev, 'team') + modeCount(ev, 'ironman') + Math.ceil(modeCount(ev, 'draft') / 2); }
+function evPilots(ev) { return evRegs(ev).reduce((n, r) => n + (r.mode === 'team' ? 2 : 1), 0); }
+function evCap(ev) { return ev.kind === 'endurance' ? ev.maxKarts : ev.max; }
+function evUsed(ev) { return ev.kind === 'endurance' ? evKarts(ev) : evRegs(ev).length; }
+function evPriceLabel(ev) {
+  if (ev.price) return '€' + ev.price;
+  if (ev.modes) return '€' + Math.min.apply(null, MODE_ORDER.filter(m => ev.modes[m]).map(m => ev.modes[m].price)) + '+';
+  return '';
+}
+
+function evText(ev) { return (ev.text && (ev.text[_lang] || ev.text.ru)) || {}; }
+const MON3 = {
+  ru: ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'],
+  pt: ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'],
+  en: ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'],
+};
+const WD3 = {
+  ru: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+  pt: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+  en: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+};
+// День недели по календарю Лиссабона (0 = воскресенье)
+function lisbonWeekday(d) {
+  const p = {};
+  new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Lisbon', year: 'numeric', month: 'numeric', day: 'numeric' })
+    .formatToParts(d).forEach(x => { p[x.type] = +x.value; });
+  return new Date(Date.UTC(p.year, p.month - 1, p.day)).getUTCDay();
+}
+// Дата/время старта — всегда по Лиссабону, даже если сайт открыт из другого пояса
+function evWhen(ev) {
+  const d = new Date(ev.start);
+  const loc = { ru: 'ru-RU', pt: 'pt-PT', en: 'en-GB' }[_lang] || 'ru-RU';
+  const f = o => { try { return new Intl.DateTimeFormat(loc, Object.assign({ timeZone: 'Europe/Lisbon' }, o)).format(d); } catch (e) { return ''; } };
+  return {
+    day:  f({ day: 'numeric' }),
+    mon:  (MON3[_lang] || MON3.ru)[(parseInt(f({ month: 'numeric' }), 10) || 1) - 1],
+    date: f({ day: 'numeric', month: 'long' }),
+    wd:   (WD3[_lang] || WD3.ru)[lisbonWeekday(d)],
+    time: f({ hour: '2-digit', minute: '2-digit', hour12: false }),
+  };
+}
+function visibleEvents() {
+  const now = Date.now();
+  return EVENTS.filter(ev => new Date(ev.start).getTime() + 6 * 3600000 > now);
+}
+let _evId = null;
+let _slideIdx = 0;
+function curEvent() {
+  const list = visibleEvents();
+  return list.find(e => e.id === _evId) || list.find(e => e.status === 'open') || list[0] || null;
+}
+// open — можно записаться · regsoon — нет URL бэкенда · full — мест нет · soon — анонс
+function evState(ev) {
+  if (ev.status !== 'open') return 'soon';
+  if (!ev.sheetsUrl) return 'regsoon';
+  const cap = evCap(ev);
+  // у эндуранса нечётный пилот жеребьёвки ещё ждёт пару — для него место есть
+  if (cap && evUsed(ev) >= cap && !(ev.kind === 'endurance' && modeCount(ev, 'draft') % 2 === 1)) return 'full';
+  return 'open';
+}
+function selectEvent(id) {
+  if (_evId === id) return;
+  _evId = id;
+  _slideIdx = 0;
+  renderRaceTab();
+}
+
+// Строка участника для списков «Уже едут»
+function regRow(num, r, extraHtml) {
+  const vh = visHandle(r.handle, r.hideHandle);
+  return `<div class="reg-item">
+    <div class="reg-num">${num}</div>
+    ${avatarDiv(getPhoto(r.handle, r.name), (r.name || '?')[0], 32)}
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:14px;font-weight:500;">${esc(r.name)}${extraHtml || ''}</div>
+      ${vh ? `<div style="font-size:11px;color:var(--muted);">${esc(vh)}</div>` : ''}
+    </div>
+  </div>`;
+}
+// Команда эндуранса: аватары обоих, название, имена (ник напарника на сайте не светим)
+function teamRow(num, r) {
+  const mateKey = { handle: r.mateHandle || '', name: r.mate || '' };
+  return `<div class="reg-item">
+    <div class="reg-num">${num}</div>
+    <div class="team-avs">${avatarDiv(getPhoto(r.handle, r.name), (r.name || '?')[0], 32)}${avatarDiv(getPhoto(mateKey.handle, mateKey.name), (mateKey.name || '?')[0], 32)}</div>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:14px;font-weight:600;">${esc(r.team || t('team_n')(num))}</div>
+      <div style="font-size:12px;color:var(--muted);">${esc(r.name)} · ${esc(r.mate || '')}</div>
+    </div>
+  </div>`;
+}
+
+function renderRaceTab() {
+  const wrap = document.getElementById('race-wrap');
+  if (!wrap) return;
+  const list = visibleEvents();
+  if (!list.length) {
+    wrap.innerHTML = `<div class="card" style="text-align:center;padding:24px 16px;color:var(--muted);font-size:14px;line-height:1.5;">${t('upcoming_none')}
+      <a class="ev-chat-link" style="margin-top:14px;" href="${CHAT_URL}" target="_blank" rel="noopener">${TG_ICON} ${t('follow_chat')}</a></div>`;
+    return;
+  }
+  const ev = curEvent();
+  const tx = evText(ev), w = evWhen(ev), st = evState(ev), rl = evRegs(ev);
+  const isEnd = ev.kind === 'endurance';
+
+  // 1 · Кнопки ивентов
+  let h = '<div class="ev-picker">' + list.map(e => {
+    const ew = evWhen(e), es = evState(e);
+    const stTxt = { open: t('ev_open'), regsoon: t('ev_reg_soon'), full: t('ev_full'), soon: t('ev_soon') }[es];
+    const stCls = es === 'open' ? 'open' : es === 'full' ? 'full' : 'soon';
+    const pr = evPriceLabel(e);
+    return `<button class="ev-btn${e.id === ev.id ? ' active' : ''}" onclick="selectEvent('${e.id}')">
+      <div class="ev-date"><div class="ev-day">${esc(ew.day)}</div><div class="ev-mon">${esc(ew.mon)}</div></div>
+      <div class="ev-info">
+        <div class="ev-name">${esc(evText(e).name || '')}</div>
+        <div class="ev-meta">${esc(ew.wd)} · ${esc(ew.time)}${pr ? ' · ' + pr : ''}</div>
+        <div class="ev-status ${stCls}">${stTxt}</div>
+      </div>
+    </button>`;
+  }).join('') + '</div>';
+
+  // 2 · Фото трассы (слайдер) или тизер для анонса
+  const whenLine = `${esc(w.wd)}, ${esc(w.date)} · ${esc(w.time)}`;
+  if (ev.slides && ev.slides.length) {
+    const si = _slideIdx % ev.slides.length;
+    h += `<div class="venue-block">
+      <div class="photo-slider ev-slider" id="ev-slider" onclick="runSlider()">
+        ${ev.slides.map((s, i) => `<div class="photo-slide${i === si ? ' active-slide' : ''}"><img src="${esc(s.src)}" decoding="async" alt="${esc(ev.venue)}"${s.pos ? ` style="object-position:${esc(s.pos)}"` : ''}></div>`).join('')}
+        ${ev.slides.length > 1 ? `<div class="slide-dots">${ev.slides.map((s, i) => `<span class="slide-dot${i === si ? ' on' : ''}"></span>`).join('')}</div>` : ''}
+      </div>
+      <div class="venue-overlay">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+          ${ev.logo ? `<img class="venue-logo" src="${esc(ev.logo)}" alt="" onerror="this.style.display='none'">` : ''}
+          <div class="venue-name-block">
+            <div class="venue-label">${whenLine}</div>
+            <div class="venue-name">${esc(ev.venue)}</div>
+          </div>
+        </div>
+        ${ev.mapUrl ? `<a href="${esc(ev.mapUrl)}" target="_blank" rel="noopener" class="venue-link">${PIN_ICON}<span>${t('on_map')}</span></a>` : ''}
+      </div>
+    </div>`;
+  } else {
+    h += `<div class="venue-block"><div class="ev-teaser">
+      <div class="ev-teaser-flag"></div>
+      <div class="ev-teaser-badge">${t('ev_soon')}</div>
+      <div class="ev-teaser-title">${esc(tx.teaser || tx.name || '')}</div>
+      <div class="ev-teaser-sub">${whenLine}${ev.venue ? ' · ' + esc(ev.venue) : ''}</div>
+    </div></div>`;
+  }
+
+  // 3 · Карточка: описание, форматы участия, места, кнопка, countdown
+  h += `<div class="event-card">
+    <div class="event-eyebrow">${esc(tx.eyebrow || '')}</div>
+    ${(tx.desc || []).map(d => `<div class="event-desc">${d}</div>`).join('')}`;
+  if (ev.modes && tx.modes) {
+    h += `<div class="ev-modes-title">${t('how_join')}</div><div class="ev-modes">` + MODE_ORDER.filter(m => ev.modes[m] && tx.modes[m]).map(m => {
+      const md = tx.modes[m], pr = ev.modes[m];
+      return `<div class="ev-mode">
+        <div class="ev-mode-ico">${md.ico}</div>
+        <div class="ev-mode-body"><div class="ev-mode-t">${esc(md.t)}</div><div class="ev-mode-d">${esc(md.d)}</div></div>
+        <div class="ev-mode-p">€${pr.price}${pr.people > 1 ? `<span>${t('per_person')}</span>` : ''}</div>
+      </div>`;
+    }).join('') + '</div>';
+  }
+  const cap = evCap(ev);
+  if (ev.status === 'open' && cap) {
+    const used = evUsed(ev), left = Math.max(0, cap - used);
+    h += `<div class="spots-bar" style="margin-top:14px;">
+      <div class="spots-row"><span class="spots-lbl">${isEnd ? t('karts_lbl') : t('spots_lbl')}</span><span class="spots-val"><span class="n">${left}</span> / ${cap}</span></div>
+      <div class="prog-track"><div class="prog-fill" style="width:${Math.min(100, used / cap * 100)}%"></div></div>
+    </div>`;
+  }
+  if (st === 'open') h += `<button class="btn-reg" onclick="openReg('${ev.id}')">${t('btn_reg')}</button>`;
+  else h += `<button class="btn-reg" disabled style="margin-top:${cap ? 0 : 14}px;">${st === 'full' ? t('btn_full') : t('btn_reg_soon')}</button>`;
+  if (st !== 'open') h += `<a class="ev-chat-link" href="${CHAT_URL}" target="_blank" rel="noopener">${TG_ICON} ${t('follow_chat')}</a>`;
+  if (ev.status === 'open' && ev.beginners && st !== 'full') h += `<div class="beginner-note">${t('beginner_note')}</div>`;
+  h += `<div class="countdown" id="countdown" style="margin-top:14px;">${['d', 'h', 'm', 's'].map(k =>
+      `<div class="cd-block"><div class="cd-num" id="cd-${k}">--</div><div class="cd-lbl">${t('cd_' + k)}</div></div>`).join('')}</div>
+  </div>`;
+
+  // 4 · Формат дня + правила + схема трассы
+  if ((ev.format && ev.format.length) || ev.trackMap) {
+    const total = { q: 0, r: 0 }, n = { q: 0, r: 0 };
+    (ev.format || []).forEach(f => { total[f.k] = (total[f.k] || 0) + 1; });
+    h += `<div class="card"><div class="card-title">${t('schedule')} · ${t('fmt_start')} ${esc(w.time)}</div>` +
+      (ev.format || []).map(f => {
+        n[f.k] = (n[f.k] || 0) + 1;
+        const lbl = total[f.k] > 1 ? t('col_' + f.k + n[f.k]) : t('fmt_' + f.k + '_s');
+        return `<div class="sched-row"><div class="sched-time">${esc(lbl)}</div>
+          <div class="sched-txt">${f.k === 'q' ? t('fmt_q') : t('fmt_r')} · ${f.min} ${t('fmt_min')}</div></div>`;
+      }).join('') +
+      (tx.rules || []).map(r => `<div class="sched-row"><div class="sched-time">${esc(r[0])}</div><div class="sched-txt">${esc(r[1])}</div></div>`).join('') +
+      (ev.trackMap ? `<div class="ev-track"><img src="${esc(ev.trackMap)}" loading="lazy" decoding="async" alt="${t('track_map')}"><div class="ev-track-cap">${t('track_map')} · ${esc(ev.venue)}</div></div>` : '') +
+      '</div>';
+  }
+
+  // 5 · Уже едут
+  if (ev.status === 'open' && ev.sheetsUrl) {
+    const head = isEnd
+      ? `${t('already_racing')} · ${t('pilots_n')(evPilots(ev))} · ${t('karts_n')(evKarts(ev), cap)}`
+      : `${t('already_racing')} (${rl.length}${cap ? ' / ' + cap : ''})`;
+    h += `<div class="card"><div class="card-title">${head}</div>`;
+    if (!rl.length) {
+      h += `<div style="text-align:center;padding:14px 0;color:var(--muted);font-size:13px;">${t('nobody_yet')}</div>`;
+    } else if (isEnd) {
+      const grp = (mode, title, rowFn) => {
+        const g = rl.filter(r => r.mode === mode);
+        return g.length ? `<div class="reg-grp">${title} · ${g.length}</div>` + g.map((r, i) => rowFn(i + 1, r)).join('') : '';
+      };
+      h += grp('team', '👥 ' + t('grp_teams'), teamRow)
+         + grp('draft', '🎲 ' + t('grp_draft'), (i, r) => regRow(i, r))
+         + grp('ironman', '🦾 ' + t('grp_iron'), (i, r) => regRow(i, r));
+    } else {
+      h += rl.map((r, i) => regRow(i + 1, r, r.beginner ? `<span class="ev-beg-badge">${t('beg_short')}</span>` : '')).join('');
+    }
+    h += '</div>';
+  }
+
+  wrap.innerHTML = h;
+  tick();
+}
+
+// Реквизиты оплаты. Сумма — из ивента. Revolut — Revtag (@name) или ссылка revolut.me/...
 const PAY = {
-  amount: '€145',
   revolut: 'renat1xmv',              // Revtag → https://revolut.me/renat1xmv
   iban: 'LT843250088480951926',
   ibanName: 'Renat Ashrafedinov'
 };
 
 function copyText(el, text) {
-  const mark = () => { const s = el.querySelector('[data-copy-lbl]'); if (s) { const o = s.textContent; s.textContent = 'скопировано ✓'; setTimeout(() => { s.textContent = o; }, 1500); } };
+  const mark = () => { const s = el.querySelector('[data-copy-lbl]'); if (s) { const o = s.textContent; s.textContent = t('copied_lbl'); setTimeout(() => { s.textContent = o; }, 1500); } };
   try { navigator.clipboard.writeText(text).then(mark, () => {}); }
   catch (e) { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); mark(); } catch (e2) {} document.body.removeChild(ta); }
 }
 
-function paymentHtml() {
+function paymentHtml(amount, subtitle) {
   const rev = (PAY.revolut || '').trim();
   const revTag = rev.replace(/^@/, '');
   const revHref = revTag ? (/^https?:/i.test(revTag) ? revTag : 'https://revolut.me/' + revTag) : '';
   return `
     <div style="margin-top:16px;text-align:left;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;margin-bottom:10px;text-align:center;">💶 Оплата участия · ${PAY.amount}</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;margin-bottom:${subtitle ? 2 : 10}px;text-align:center;">${t('pay_title')} · €${esc(amount)}</div>
+      ${subtitle ? `<div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:10px;">${esc(subtitle)}</div>` : ''}
       ${revHref ? `<a href="${esc(revHref)}" target="_blank" rel="noopener" style="display:block;background:#0666EB;color:#fff;text-align:center;padding:12px;border-radius:10px;font-weight:700;text-decoration:none;margin-bottom:12px;">Revolut · ${esc(rev.startsWith('@') ? rev : '@' + revTag)}</a>` : ''}
       <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">IBAN · ${esc(PAY.ibanName)}</div>
       <div onclick="copyText(this,'${esc(PAY.iban)}')" style="cursor:pointer;font-family:monospace;font-size:13px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
-        <span>${esc(PAY.iban)}</span><span data-copy-lbl style="font-size:11px;color:var(--accent-red);white-space:nowrap;">копировать</span>
+        <span>${esc(PAY.iban)}</span><span data-copy-lbl style="font-size:11px;color:var(--accent-red);white-space:nowrap;">${t('copy_lbl')}</span>
       </div>
-      <div style="font-size:11px;color:var(--muted);margin-top:8px;">В назначении платежа укажи своё имя 🙌</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px;">${t('pay_note')}</div>
     </div>`;
 }
 
-function openReg() {
+let _regEv = null;
+let _regMode = '';
+function openReg(evId) {
+  const ev = EVENTS.find(e => e.id === evId);
+  if (!ev || evState(ev) !== 'open') return;
+  _regEv = ev;
+  _regMode = '';
+  const w = evWhen(ev), tx = evText(ev);
+  const cap = evCap(ev);
+  const left = cap ? Math.max(0, cap - evUsed(ev)) : null;
+  const leftTxt = left === null ? '' : ' · ' + (ev.kind === 'endurance' ? t('karts_left')(left) : t('reg_left')(left));
+  const pr = evPriceLabel(ev);
   const tgName   = getTgName();   // имя из Telegram, если открыто как Mini App
   const tgHandle = getTgHandle();
   const isTg     = !!TG_USER;
 
+  const modesHtml = ev.modes && tx.modes ? `
+      <div>
+        <label class="form-lbl">${t('mode_pick')}</label>
+        <div class="mode-pick">${MODE_ORDER.filter(m => ev.modes[m] && tx.modes[m]).map(m => `
+          <button type="button" class="mode-opt" data-mode="${m}" onclick="pickRegMode('${m}')">
+            <span class="mode-opt-ico">${tx.modes[m].ico}</span>
+            <span class="mode-opt-t">${esc(tx.modes[m].t)}</span>
+            <span class="mode-opt-p">€${ev.modes[m].price}${ev.modes[m].people > 1 ? ' ' + t('per_person') : ''}</span>
+          </button>`).join('')}
+        </div>
+      </div>` : '';
+  const teamHtml = ev.modes && ev.modes.team ? `
+      <div id="team-fields" style="display:none;flex-direction:column;gap:10px;">
+        <div>
+          <label class="form-lbl">${t('form_mate')}</label>
+          <input class="form-input" id="rmate" placeholder="${t('form_mate_ph')}" type="text">
+        </div>
+        <div>
+          <label class="form-lbl">${t('form_mate_tg')}</label>
+          <input class="form-input" id="rmateh" placeholder="${t('form_tg_ph')}" type="text">
+        </div>
+        <div>
+          <label class="form-lbl">${t('form_team')}</label>
+          <input class="form-input" id="rteam" placeholder="${t('form_team_ph')}" type="text" maxlength="40">
+        </div>
+      </div>` : '';
+
   document.getElementById('reg-content').innerHTML = `
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">${t('reg_title')}</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">${t('reg_sub')} · ${MAX - regs.length} ${t('reg_spots')}</div>
-    ${isTg ? `<div style="font-size:12px;background:#e8f5e9;border:1px solid #c8e6c9;border-radius:8px;padding:8px 12px;margin-bottom:12px;color:#2d5a30;">✓ Данные подтянулись из Telegram</div>` : ''}
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">${t('reg_title')} · ${esc(tx.name || '')}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">${esc(w.date)}, ${esc(w.time)}${leftTxt}${pr ? ' · ' + pr : ''}</div>
+    ${isTg ? `<div style="font-size:12px;background:#e8f5e9;border:1px solid #c8e6c9;border-radius:8px;padding:8px 12px;margin-bottom:12px;color:#2d5a30;">${t('tg_prefill')}</div>` : ''}
     <div class="reg-form">
+      ${modesHtml}
       <div>
         <label class="form-lbl">${t('form_name')}</label>
         <input class="form-input" id="rn" placeholder="${t('form_name_ph')}" type="text" value="${esc(tgName)}">
@@ -2854,6 +3347,7 @@ function openReg() {
         <label class="form-lbl">${t('form_tg')}</label>
         <input class="form-input" id="rh" placeholder="${t('form_tg_ph')}" type="text" value="${esc(tgHandle)}">
       </div>
+      ${teamHtml}
       <div>
         <label class="form-lbl">${t('photo_lbl')}</label>
         <div class="photo-upload-area" id="photo-drop" onclick="document.getElementById('rphoto').click()">
@@ -2865,10 +3359,15 @@ function openReg() {
         </div>
         <div style="font-size:11px;color:var(--muted2);margin-top:5px;line-height:1.4;">${t('privacy_note')}</div>
       </div>
+      ${ev.beginners ? `<label class="check-label">
+        <input type="checkbox" id="rb" class="check-input">
+        <span class="check-box"></span>
+        <span class="check-txt">${t('check_beg')}</span>
+      </label>` : ''}
       <label class="check-label" style="margin-top:0;">
         <input type="checkbox" id="rph" class="check-input">
         <span class="check-box"></span>
-        <span class="check-txt" style="font-size:12px;color:var(--muted);">Скрыть мой @ник на портале</span>
+        <span class="check-txt" style="font-size:12px;color:var(--muted);">${t('hide_handle')}</span>
       </label>
       <button class="btn-reg" onclick="submitReg()">${t('btn_confirm')}</button>
       <button class="btn-cancel" onclick="closeRegModal()">${t('btn_cancel')}</button>
@@ -2876,6 +3375,15 @@ function openReg() {
   `;
   _photoDataUrl = null;
   document.getElementById('reg-modal').classList.add('open');
+}
+
+function pickRegMode(m) {
+  _regMode = m;
+  document.querySelectorAll('#reg-content .mode-opt').forEach(b => b.classList.toggle('sel', b.dataset.mode === m));
+  const tf = document.getElementById('team-fields');
+  if (tf) tf.style.display = m === 'team' ? 'flex' : 'none';
+  const err = document.getElementById('reg-error');
+  if (err) err.remove();
 }
 
 let _photoDataUrl = null;
@@ -2920,12 +3428,24 @@ function closeRegModal(e) {
 }
 
 function submitReg() {
+  const ev = _regEv;
   const name = document.getElementById('rn').value.trim();
   let handle = document.getElementById('rh').value.trim();
   const beginner = document.getElementById('rb')?.checked || false;
   if (!name) { document.getElementById('rn').focus(); return; }
   if (handle && !handle.startsWith('@')) handle = '@' + handle;
-  if (!SHEETS_URL) { showRegError('Регистрация скоро откроется — подключаем бэкенд ✌️'); return; }
+  if (!ev || !ev.sheetsUrl) { showRegError(t('btn_reg_soon')); return; }
+  // Эндуранс: формат участия + напарник для команды
+  const mode = ev.modes ? _regMode : '';
+  if (ev.modes && !mode) { showRegError(t('mode_need')); return; }
+  let mate = '', mateHandle = '', team = '';
+  if (mode === 'team') {
+    mate = (document.getElementById('rmate')?.value || '').trim();
+    mateHandle = (document.getElementById('rmateh')?.value || '').trim();
+    team = (document.getElementById('rteam')?.value || '').trim();
+    if (!mate) { document.getElementById('rmate').focus(); return; }
+    if (mateHandle && !mateHandle.startsWith('@')) mateHandle = '@' + mateHandle;
+  }
   const photoBase64 = _photoDataUrl || null;
   const telegramId  = getTgId();
   const hideHandle  = document.getElementById('rph')?.checked || false;
@@ -2936,34 +3456,35 @@ function submitReg() {
   const oldErr = document.getElementById('reg-error');
   if (oldErr) oldErr.remove();
 
-  registerOnServer({
-    name, handle, beginner: beginner ? 1 : 0, briefing: 0,
+  registerOnServer(ev.sheetsUrl, {
+    event: ev.id, name, handle, beginner: beginner ? 1 : 0, briefing: 0,
     telegram_id: telegramId || '', hide: hideHandle ? 1 : 0,
+    mode, team, mate, mate_handle: mateHandle,
   }).then(resp => {
     if (!resp || resp.ok !== true) {
       const reason = resp && resp.reason;
-      showRegError(reason === 'full' ? t('reg_full') : reason === 'duplicate' ? t('reg_dup') : t('reg_err'));
+      showRegError({ full: t('reg_full'), duplicate: t('reg_dup'), mate_dup: t('reg_mate_dup') }[reason] || t('reg_err'));
       return;
     }
     // Сервер — источник истины: список и счётчик берём из ответа
-    if (Array.isArray(resp.regs)) applyRegs(resp.regs);
     if (hideHandle && handle) HIDDEN_HANDLES.add(handle.replace('@','').toLowerCase());
-    showRegSuccess(name, beginner);
+    if (Array.isArray(resp.regs)) applyRegs(ev.id, resp.regs);
+    showRegSuccess(ev, name, beginner, mode);
     // Фото профиля — отдельным POST после подтверждённой регистрации.
     // Apps Script заливает его файлом в photos/{ключ}.jpg репозитория через GitHub API.
     // GitHub Pages публикует ~минуту: сразу видны инициалы, фото подтянется после обновления.
     if (photoBase64) {
       const sc = document.getElementById('reg-content');
-      if (sc) { const n = document.createElement('div'); n.style.cssText = 'text-align:center;font-size:12px;color:var(--muted);margin-top:10px;'; n.textContent = '📷 Фото загружается, появится через ~минуту'; sc.appendChild(n); }
-      const body = JSON.stringify({ action: 'photo', name, handle, telegram_id: telegramId || '', photoBase64 });
+      if (sc) { const n = document.createElement('div'); n.style.cssText = 'text-align:center;font-size:12px;color:var(--muted);margin-top:10px;'; n.textContent = t('photo_uploading'); sc.appendChild(n); }
+      const body = JSON.stringify({ action: 'photo', event: ev.id, name, handle, telegram_id: telegramId || '', photoBase64 });
       let sent = false;
       try {
         if (navigator.sendBeacon) {
-          sent = navigator.sendBeacon(SHEETS_URL, new Blob([body], { type: 'text/plain;charset=UTF-8' }));
+          sent = navigator.sendBeacon(ev.sheetsUrl, new Blob([body], { type: 'text/plain;charset=UTF-8' }));
         }
       } catch (e) { sent = false; }
       if (!sent) {
-        fetch(SHEETS_URL, {
+        fetch(ev.sheetsUrl, {
           method: 'POST', mode: 'no-cors', keepalive: true,
           headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: body
         }).catch(err => console.warn('Photo upload failed:', err));
@@ -2976,13 +3497,9 @@ function submitReg() {
   });
 }
 
-// Мега Спринты · Batalha — деплой Apps Script (регистрации в Google Sheet).
-// При правке скрипта: Manage Deployments → New version.
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz6xA0Df4YZrTKlMwMd7Ops6JffLIXwkJ9XIvlJNf2lPlqwDz8DwIY_CHKA1Z8n9P7r6Q/exec';
-
 // JSONP-запись регистрации: обходит CORS-ограничения Apps Script
 // и, в отличие от no-cors POST, возвращает реальный ответ сервера.
-function registerOnServer(params) {
+function registerOnServer(url, params) {
   return new Promise((resolve, reject) => {
     const cbName = '_regCb' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
     const script = document.createElement('script');
@@ -2998,7 +3515,7 @@ function registerOnServer(params) {
     const q = Object.entries(params)
       .map(([k, v]) => k + '=' + encodeURIComponent(v == null ? '' : v))
       .join('&');
-    script.src = SHEETS_URL + '?action=register&callback=' + cbName + '&' + q;
+    script.src = url + '?action=register&callback=' + cbName + '&' + q;
     script.onerror = function() { if (!done) { cleanup(); reject(new Error('network')); } };
     document.body.appendChild(script);
   });
@@ -3017,54 +3534,43 @@ function showRegError(msg) {
   if (errEl) errEl.textContent = msg;
 }
 
-// Единая точка обновления regs из ответа сервера (используется и loadRegs, и регистрацией)
-function applyRegs(serverRegs) {
-  regs.length = 0;
-  serverRegs.forEach(r => {
-    regs.push({
-      name: r.name || '',
-      handle: r.handle || '',
-      beginner: !!r.beginner,
-      briefing: !!r.briefing,
-      photoUrl: r.photoUrl || null,
-      hideHandle: !!r.hideHandle,
-    });
-    if (r.hideHandle && r.handle) HIDDEN_HANDLES.add(String(r.handle).replace('@','').toLowerCase());
-  });
-  renderRegList();
+// Регистрация с сервера → единый вид + скрытые @ники в общий список
+function normReg(r) {
+  return {
+    name: r.name || '',
+    handle: r.handle || '',
+    beginner: !!r.beginner,
+    briefing: !!r.briefing,
+    photoUrl: r.photoUrl || null,
+    hideHandle: !!r.hideHandle,
+    mode: r.mode || '',
+    team: r.team || '',
+    mate: r.mate || '',
+    mateHandle: r.mateHandle || '',
+  };
+}
+function rememberHidden(list) {
+  list.forEach(r => { if (r.hideHandle && r.handle) HIDDEN_HANDLES.add(String(r.handle).replace('@','').toLowerCase()); });
+}
+// Единая точка обновления регистраций ивента (и loadRegs, и ответ на регистрацию)
+function applyRegs(evId, serverRegs) {
+  REGS[evId] = serverRegs.map(normReg);
+  rememberHidden(REGS[evId]);
+  renderRaceTab();
 }
 
-function renderRegList() {
-  const left = Math.max(0, MAX - regs.length);
-  const el = document.getElementById('spots-left');
-  const fill = document.getElementById('spots-fill');
-  const title = document.getElementById('reg-list-title');
-  const nymsg = document.getElementById('nobody-yet-msg');
-  if (el) el.textContent = left;
-  if (fill) fill.style.width = Math.min(100, regs.length / MAX * 100) + '%';
-  if (title) title.textContent = `${t("already_racing")} (${regs.length} / ${MAX})`;
-  if (nymsg) nymsg.style.display = regs.length ? 'none' : 'block';
-  const rlb = document.getElementById('reg-list-body');
-  if (rlb) rlb.innerHTML = regs.map((r, i) => `
-    <div class="reg-item">
-      <div class="reg-num">${i+1}</div>
-      ${avatarDiv(getPhoto(r.handle, r.name), (r.name || '?')[0], 32)}
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:14px;font-weight:500;">${esc(r.name)}${r.beginner?' <span style="font-size:10px;color:var(--accent-red);">Н</span>':''}</div>
-        ${visHandle(r.handle, r.hideHandle) ? `<div style="font-size:11px;color:var(--muted);">${esc(visHandle(r.handle, r.hideHandle))}</div>` : ''}
-      </div>
-    </div>
-  `).join('');
-}
-
-function showRegSuccess(name, beginner) {
-  const extras = [beginner ? t('extra_beg') : ''].filter(Boolean).join(' · ');
+function showRegSuccess(ev, name, beginner, mode) {
+  const md = mode && ev.modes ? ev.modes[mode] : null;
+  const extras = beginner ? t('extra_beg') : md ? (evText(ev).modes || {})[mode]?.t || '' : '';
+  // Сумма: спринт — price; эндуранс — цена формата × сколько пилотов вписано (команда = 2)
+  const amount = md ? md.price * md.people : ev.price;
+  const payNote = md && md.people > 1 ? t('pay_for_two')(md.price) : '';
   document.getElementById('reg-content').innerHTML = `
     <div class="success-box">
       <div class="success-icon">🏁</div>
       <div class="success-title">${t('success_title')}</div>
-      <div class="success-sub">${esc(name)}<br>${t('success_date')}${extras?'<br><span style="font-size:12px;margin-top:6px;display:block;">'+extras+'</span>':''}</div>
-      ${paymentHtml()}
+      <div class="success-sub">${esc(name)}<br>${t('success_date')(esc(ev.venue || evText(ev).name), esc(evWhen(ev).date))}${extras ? '<br><span style="font-size:12px;margin-top:6px;display:block;">' + esc(extras) + '</span>' : ''}</div>
+      ${amount ? paymentHtml(amount, payNote) : ''}
       <button class="btn-cancel" style="margin-top:16px;" onclick="closeRegModal()">${t('btn_close')}</button>
     </div>
   `;
@@ -3094,16 +3600,15 @@ function showPage(name, btn) {
   btn.classList.add('active');
 }
 
-// COUNTDOWN
-
-// ⬇ Дата/время старта следующей гонки — ЕДИНСТВЕННОЕ место для правки countdown
-const NEXT_RACE_START = '2026-09-19T12:00:00+01:00';  // Мега Спринты · Batalha
+// COUNTDOWN — до старта ивента, выбранного на главной (EVENTS[].start)
 
 function tick() {
-  const target = new Date(NEXT_RACE_START);
-  const diff = target - new Date();
+  const ev = typeof curEvent === 'function' ? curEvent() : null;
+  const cdEl = document.getElementById('countdown');
+  if (!ev || !cdEl) return;
+  const diff = new Date(ev.start) - new Date();
   if (diff <= 0) {
-    const cdEl = document.getElementById('countdown'); if (cdEl) cdEl.innerHTML = `<div style="grid-column:span 4;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:10px;color:var(--accent-red);">${t('race_today')}</div>`;
+    if (!cdEl.dataset.done) { cdEl.dataset.done = '1'; cdEl.innerHTML = `<div style="grid-column:span 4;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:10px;color:var(--accent-red);">${t('race_today')}</div>`; }
     return;
   }
   const p = n => String(n).padStart(2, '0');
@@ -3115,16 +3620,20 @@ function tick() {
 
 // INIT
 
-// Photo slider
-let _slideIdx = 0;
+// Photo slider — карточка ивента на главной (тап по фото = следующее)
 function runSlider() {
-  const slides = document.querySelectorAll('.photo-slide');
+  const slides = document.querySelectorAll('#ev-slider .photo-slide');
   if (slides.length < 2) return;
-  slides[_slideIdx].classList.remove('active-slide');
-  _slideIdx = (_slideIdx + 1) % slides.length;
+  const dots = document.querySelectorAll('#ev-slider .slide-dot');
+  const cur = _slideIdx % slides.length;
+  slides[cur].classList.remove('active-slide');
+  if (dots[cur]) dots[cur].classList.remove('on');
+  _slideIdx = (cur + 1) % slides.length;
   slides[_slideIdx].classList.add('active-slide');
+  if (dots[_slideIdx]) dots[_slideIdx].classList.add('on');
 }
 setInterval(runSlider, 3500);
+renderRaceTab();
 renderChips();
 renderResults(0);
 renderStandings();
@@ -3136,27 +3645,36 @@ setInterval(tick, 1000);
 const nomEl = document.getElementById('nominations-block');
 if (nomEl) nomEl.innerHTML = renderNominations();
 
-// JSONP-загрузка
-function loadRegs() {
+// JSONP-загрузка регистраций (Apps Script отдаёт { regs: [...] })
+function jsonpRegs(url, onRegs) {
+  const cbName = '_regsCb' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
   const script = document.createElement('script');
-  const cbName = '_sheetsCallback';
-  window[cbName] = function(data) {
-    if (data && data.regs) {
-      // applyRegs — единая точка: regs, HIDDEN_HANDLES (hideHandle с сервера), рег-лист
-      applyRegs(data.regs);
-      // Обновляем аватарки в standings/drivers если уже отрисованы
-      renderStandings();
-      renderDrivers();
-      if (typeof renderVoteList === 'function') renderVoteList();
-    }
-    document.body.removeChild(script);
-    delete window[cbName];
-  };
-  script.src = SHEETS_URL + '?callback=' + cbName;
-  script.onerror = function() { document.body.removeChild(script); };
+  const done = () => { if (script.parentNode) script.parentNode.removeChild(script); delete window[cbName]; };
+  window[cbName] = function(data) { done(); if (data && Array.isArray(data.regs)) onRegs(data.regs); };
+  script.onerror = done;
+  script.src = url + (url.indexOf('?') < 0 ? '?' : '&') + 'callback=' + cbName;
   document.body.appendChild(script);
 }
-if (SHEETS_URL) loadRegs();
+// Скрытые @ники и фото с регистраций влияют на все списки — перерисовываем
+function rerenderPeople() {
+  renderStandings();
+  renderDrivers();
+  renderResults(_currentRaceIdx || 0);
+  if (typeof renderMega === 'function') renderMega();
+  if (typeof renderVoteList === 'function') renderVoteList();
+}
+function loadRegs() {
+  EVENTS.forEach(ev => {
+    if (ev.status !== 'open' || !ev.sheetsUrl) return;
+    jsonpRegs(ev.sheetsUrl + '?event=' + encodeURIComponent(ev.id), list => { applyRegs(ev.id, list); rerenderPeople(); });
+  });
+  LEGACY_REG_URLS.forEach(url => jsonpRegs(url, list => {
+    list.map(normReg).forEach(r => LEGACY_REGS.push(r));
+    rememberHidden(LEGACY_REGS);
+    rerenderPeople();
+  }));
+}
+loadRegs();
 
 // ════════════════════════════════════════════════════════════
 //  СКРЫТЫЕ СТРАНИЦЫ: ГОЛОСОВАНИЕ + ОТЗЫВ
@@ -3196,7 +3714,7 @@ function _logoTap() {
   document.querySelectorAll('.bnav-item').forEach((b, i) => b.classList.toggle('active', i === 0));
   document.querySelectorAll('.inner-tab').forEach((tb, i) => tb.classList.toggle('active', i === 0));
   document.querySelectorAll('.inner-panel').forEach(p => p.classList.remove('active'));
-  const tn = document.getElementById('tab-next');
+  const tn = document.getElementById('tab-race');
   if (tn) tn.classList.add('active');
   window.scrollTo(0, 0);
 }
@@ -3268,18 +3786,21 @@ const VOTE_ROSTERS = {
 
 function normName(s) { return (s || '').toLowerCase().replace(/[^a-zа-яё]+/gi, ' ').trim(); }
 
+// Регистрации гонки, за которую голосуем (Batalha — из LEGACY_REGS)
+function voteRegs() { return REGS[VOTE_RACE_ID] || LEGACY_REGS; }
+
 // Дотягиваем handle / hideHandle из регистраций: по хэндлу, по полному имени,
 // иначе по фамилии — но только если совпадение единственное.
 function voteEnrich(p) {
   if (p.handle) {
-    const byH = regs.find(r => r.handle && norm(r.handle) === norm(p.handle));
+    const byH = voteRegs().find(r => r.handle && norm(r.handle) === norm(p.handle));
     return { name: p.name, handle: p.handle, hideHandle: byH ? !!byH.hideHandle : false };
   }
   const pn = normName(p.name);
   const last = pn.split(' ').pop();
-  let r = regs.find(x => normName(x.name) === pn);
+  let r = voteRegs().find(x => normName(x.name) === pn);
   if (!r && last.length > 3) {
-    const cands = regs.filter(x => normName(x.name).split(' ').includes(last));
+    const cands = voteRegs().filter(x => normName(x.name).split(' ').includes(last));
     if (cands.length === 1) r = cands[0];
   }
   return { name: p.name, handle: r ? (r.handle || '') : '', hideHandle: r ? !!r.hideHandle : false };
@@ -3298,7 +3819,7 @@ function voteRoster() {
   }
   const fixed = VOTE_ROSTERS[VOTE_RACE_ID];
   if (fixed && fixed.length) return fixed.map(voteEnrich);
-  return regs;
+  return voteRegs();
 }
 
 function renderVoteList() {
