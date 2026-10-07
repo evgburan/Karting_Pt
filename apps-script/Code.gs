@@ -5,9 +5,10 @@
  *
  * УСТАНОВКА (один раз)
  *  1. script.google.com → «Новый проект» → вставить этот файл целиком вместо Code.gs.
- *  2. ⚙️ Настройки проекта → «Свойства скрипта» → GITHUB_TOKEN = токен с правом записи
- *     Contents в evgburan/Karting_Pt (тот же, что в прошлом скрипте). Без него регистрация
- *     работает, просто фото профиля не загружаются.
+ *  2. Вписать в SECRETS ниже GH_TOKEN (фото → GitHub) и BOT_TOKEN (уведомления в Telegram) —
+ *     те же, что в прошлом скрипте. Пустые → регистрация работает, просто без фото / без сообщений.
+ *     (Можно вместо этого задать их в ⚙️ Настройки проекта → «Свойства скрипта».)
+ *     ⚠️ Этот файл в репозитории хранится с ПУСТЫМИ токенами — репо публичный, токены туда не коммитить.
  *  3. Выбрать функцию setup → «Выполнить» → разрешить доступ (оформит обе таблицы).
  *  4. «Развернуть» → «Новое развёртывание» → тип «Веб-приложение»:
  *       Запуск от имени: «Я» · У кого есть доступ: «Все» → «Развернуть» → скопировать URL …/exec
@@ -28,7 +29,10 @@ var EVENTS = {
     sheetId: '1mPkZ0Z3A_wfYig4qhG7PMeKQX6AWR9SRLlbe6t3E-yM',
     kind: 'sprint',
     open: true,
-    maxDrivers: 24           // лимит пилотов
+    maxDrivers: 24,          // лимит пилотов
+    price: 55,
+    dmWhen: 'Ждём тебя 18 октября в 15:00 в Campera Karting (Carregado).',
+    dmFormat: '2 × (5 мин квалификации + 10 мин гонки), карты 390cc.'
   },
   'endurance-nov': {
     title: 'Эндуранс KIP 01.11',
@@ -36,9 +40,19 @@ var EVENTS = {
     kind: 'endurance',
     open: true,
     maxPilots: 36,           // лимит пилотов: команда = 2, жеребьёвка и Iron Man = 1
-    price: { team: 75, draft: 75, ironman: 130 }   // € с участника
+    price: { team: 75, draft: 75, ironman: 130 },  // € с участника
+    dmWhen: 'Эндуранс · 1 ноября в 13:00, KIP Palmela.',
+    dmFormat: '10 мин квалификации + 50 мин гонки, 1 пит-стоп (≥ 3 мин) + джокер-круг. Карты Sodi RT-10 390cc.'
   }
 };
+
+// ⬇ Токены. В публичный репозиторий — только пустыми.
+var SECRETS = {
+  GH_TOKEN: '',     // GitHub fine-grained PAT: Contents Read and write, только Karting_Pt
+  BOT_TOKEN: ''     // Telegram-бот, который пишет участнику и в оргчат
+};
+var CORE_CHAT = -1003970912551;   // оргчат: «✅ Новая регистрация»
+var PAY = { revolut: 'https://revolut.me/renat1xmv', iban: 'LT843250088480951926', ibanName: 'Renat Ashrafedinov' };
 
 var GITHUB = { repo: 'evgburan/Karting_Pt', branch: 'main', dir: 'photos' };
 var PHOTO_WINDOW_MIN = 30;   // фото принимаем только к свежей регистрации
@@ -176,6 +190,7 @@ function register(p) {
     SpreadsheetApp.flush();
 
     var fresh = readRows(sh);
+    notifyTelegram(ev, row, mode, tgid, fresh);
     return { ok: true, regs: fresh.map(function (r) { return publicReg(ev, r); }) };
   } finally {
     lock.releaseLock();
@@ -205,6 +220,57 @@ function pilotsUsed(rows) {
   return countMode(rows, 'team') * 2 + countMode(rows, 'draft') + countMode(rows, 'ironman');
 }
 
+// ───────────────────────── Telegram ─────────────────────────
+
+// Участнику — подтверждение с оплатой (если открыл форму из Telegram и писал боту), в оргчат — кто записался
+function notifyTelegram(ev, row, mode, tgid, rows) {
+  if (!secret('BOT_TOKEN')) return;
+  try {
+    var amount, payLine;
+    if (ev.kind === 'endurance') {
+      amount = row.due;
+      payLine = mode === 'team' ? ' (2 × €' + ev.price.team + ' — за себя и напарника)' : '';
+    } else {
+      amount = ev.price;
+      payLine = '';
+    }
+    if (tgid) {
+      var lines = ['🏁 ' + row.name + ', ты в гонке!', '', ev.dmWhen];
+      if (ev.kind === 'endurance') lines.push('Формат участия: ' + row.mode + (mode === 'team' ? ' с ' + row.mate + (row.team ? ' («' + row.team + '»)' : '') : ''));
+      if (amount) {
+        lines.push('', '💶 Оплата €' + amount + payLine + ':', 'Revolut: ' + PAY.revolut, 'IBAN: ' + PAY.iban + ' (' + PAY.ibanName + ')', 'В назначении укажи своё имя.');
+      }
+      lines.push('', ev.dmFormat + ' До встречи на трассе! 🛞');
+      sendTelegram(tgid, lines.join('\n'));
+    }
+    var who = row.name + (row.handle ? ' (' + row.handle + ')' : '');
+    if (ev.kind === 'endurance') who += ' · ' + row.mode + (mode === 'team' ? ' + ' + row.mate + (row.team ? ' «' + row.team + '»' : '') : '');
+    var cap = ev.kind === 'endurance' ? ev.maxPilots : ev.maxDrivers;
+    var used = ev.kind === 'endurance' ? pilotsUsed(rows) : rows.length;
+    sendTelegram(CORE_CHAT, '✅ Новая регистрация · ' + ev.title + '\n' + who + '\nВсего: ' + used + (cap ? ' / ' + cap : ''));
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function sendTelegram(chatId, text) {
+  UrlFetchApp.fetch('https://api.telegram.org/bot' + secret('BOT_TOKEN') + '/sendMessage', {
+    method: 'post', contentType: 'application/json',
+    payload: JSON.stringify({ chat_id: chatId, text: text }),
+    muteHttpExceptions: true
+  });
+}
+
+// Токен: из SECRETS, иначе из «Свойств скрипта»
+function secret(name) {
+  return SECRETS[name] || PropertiesService.getScriptProperties().getProperty(name) || '';
+}
+
+// Проверка из редактора: выбрать testTelegram → «Выполнить» → в оргчат придёт тестовое сообщение
+function testTelegram() {
+  sendTelegram(CORE_CHAT, 'Тест уведомлений · регистрации racechat.pt');
+}
+
 // ───────────────────────── Фото → GitHub ─────────────────────────
 
 function savePhoto(d) {
@@ -226,7 +292,7 @@ function savePhoto(d) {
   }
   if (!target) return { ok: false, reason: 'no_registration' };
 
-  var token = PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN');
+  var token = secret('GH_TOKEN');
   if (!token) return { ok: false, reason: 'no_token' };
 
   var key = photoKey(target.handle, target.name);
