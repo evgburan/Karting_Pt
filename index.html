@@ -278,7 +278,7 @@
   .ev-mon { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-top: 1px; }
   .ev-btn.active .ev-mon { color: #ff8a80; }
   .ev-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .ev-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 16px; letter-spacing: .5px; text-transform: uppercase; line-height: 1.05; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ev-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.05; }
   .ev-meta { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ev-btn.active .ev-meta { color: rgba(255,255,255,0.65); }
   .ev-status { display: flex; align-items: center; gap: 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; line-height: 1.15; }
@@ -2907,8 +2907,8 @@ const EVENTS = [
     begNote: false,     // про зачёт начинающих уже сказано в описании — отдельную плашку не показываем
     text: {
       ru: {
-        name: 'Campera',
-        eyebrow: '🏁 Гонка в Campera',
+        name: 'Спринты в Кампере',
+        eyebrow: '🏁 Спринты в Кампере',
         desc: [
           '📅 Встречаемся <strong>18 октября в 15:00</strong> в Campera Karting — Carregado, рядом с Лиссабоном. 815 метров виражей и карты <strong>390cc</strong>.',
           '🏎️ Формат плотный, без пауз на скуку: <strong>5 минут квалы — и сразу 10 минут гонки</strong>. Выдохнули — и ещё раз: вторая квала, вторая гонка. Два старта, два шанса, каждая гонка идёт в зачёт отдельно.',
@@ -2918,8 +2918,8 @@ const EVENTS = [
         ],
       },
       pt: {
-        name: 'Campera',
-        eyebrow: '🏁 Corrida no Campera',
+        name: 'Sprints no Campera',
+        eyebrow: '🏁 Sprints no Campera',
         desc: [
           '📅 Encontramo-nos a <strong>18 de outubro às 15:00</strong> no Campera Karting — Carregado, perto de Lisboa. 815 metros de curvas e karts <strong>390cc</strong>.',
           '🏎️ Formato intenso, sem tempos mortos: <strong>5 minutos de qualificação — e logo 10 minutos de corrida</strong>. Respira fundo — e outra vez: segunda qualificação, segunda corrida. Duas partidas, duas oportunidades, cada corrida conta separadamente.',
@@ -2929,8 +2929,8 @@ const EVENTS = [
         ],
       },
       en: {
-        name: 'Campera',
-        eyebrow: '🏁 Race at Campera',
+        name: 'Sprints at Campera',
+        eyebrow: '🏁 Sprints at Campera',
         desc: [
           '📅 We meet on <strong>18 October at 15:00</strong> at Campera Karting — Carregado, near Lisbon. 815 metres of corners and <strong>390cc</strong> karts.',
           '🏎️ Tight format, no dull moments: <strong>5 minutes of qualifying — straight into a 10-minute race</strong>. Catch your breath — and again: second qualifying, second race. Two starts, two chances, each race counts separately.',
@@ -2964,8 +2964,8 @@ const EVENTS = [
     format: [{ k: 'q', min: 10 }, { k: 'r', min: 50 }],
     text: {
       ru: {
-        name: 'Эндуранс',
-        eyebrow: '🔋 Эндуранс · KIP Palmela',
+        name: 'Эндуранс в Палмеле',
+        eyebrow: '🔋 Эндуранс в Палмеле',
         desc: [
           '📅 <strong>1 ноября, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Карты <strong>Sodi RT-10 390cc</strong>.',
           '⏱️ <strong>10 минут квалификации + 50 минут гонки</strong>. Обязательно: <strong>1 пит-стоп</strong> (минимум 3 минуты в боксах) и <strong>1 джокер-круг</strong> — проезд по пит-лейну без смены карта.',
@@ -2982,8 +2982,8 @@ const EVENTS = [
         ],
       },
       pt: {
-        name: 'Endurance',
-        eyebrow: '🔋 Endurance · KIP Palmela',
+        name: 'Endurance em Palmela',
+        eyebrow: '🔋 Endurance em Palmela',
         desc: [
           '📅 <strong>1 de novembro, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Karts <strong>Sodi RT-10 390cc</strong>.',
           '⏱️ <strong>10 min de qualificação + 50 min de corrida</strong>. Obrigatório: <strong>1 paragem nas boxes</strong> (mínimo 3 minutos) e <strong>1 volta joker</strong> — passagem pelo pit lane sem troca de kart.',
@@ -3000,8 +3000,8 @@ const EVENTS = [
         ],
       },
       en: {
-        name: 'Endurance',
-        eyebrow: '🔋 Endurance · KIP Palmela',
+        name: 'Endurance at Palmela',
+        eyebrow: '🔋 Endurance at Palmela',
         desc: [
           '📅 <strong>1 November, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. <strong>Sodi RT-10 390cc</strong> karts.',
           '⏱️ <strong>10 min qualifying + 50 min race</strong>. Mandatory: <strong>1 pit stop</strong> (at least 3 minutes in the pits) and <strong>1 joker lap</strong> — a pit-lane drive-through without changing karts.',
