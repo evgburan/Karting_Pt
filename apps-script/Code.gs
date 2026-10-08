@@ -237,7 +237,11 @@ function notifyTelegram(ev, row, mode, tgid, rows) {
     if (tgid) {
       var lines = ['🏁 ' + row.name + ', ты в гонке!', '', ev.dmWhen];
       if (ev.kind === 'endurance') lines.push('Формат участия: ' + row.mode + (mode === 'team' ? ' с ' + row.mate + (row.team ? ' («' + row.team + '»)' : '') : ''));
-      if (amount) {
+      if (amount && mode === 'team') {
+        lines.push('', '💶 Оплата: €' + ev.price.team + ' с участника — каждый платит за себя, или €' + amount + ' сразу за двоих:',
+          'Revolut: ' + PAY.revolut, 'IBAN: ' + PAY.iban + ' (' + PAY.ibanName + ')',
+          'В назначении укажи своё имя, а если платишь за двоих — оба имени.');
+      } else if (amount) {
         lines.push('', '💶 Оплата €' + amount + payLine + ':', 'Revolut: ' + PAY.revolut, 'IBAN: ' + PAY.iban + ' (' + PAY.ibanName + ')', 'В назначении укажи своё имя.');
       }
       lines.push('', ev.dmFormat + ' До встречи на трассе! 🛞');
