@@ -39,7 +39,7 @@ var EVENTS = {
     sheetId: '1Rpo827tpqXseK5GvJvH4I0x5Awl3zukg8Akvbmc95fo',
     kind: 'endurance',
     open: true,
-    maxPilots: 36,           // лимит пилотов: команда = 2, жеребьёвка и Iron Man = 1
+    maxTeams: 36,            // лимит команд (картов): команда = 1, Iron Man = 1, двое из жеребьёвки = 1
     price: { team: 75, draft: 75, ironman: 130 },  // € с участника
     dmWhen: 'Эндуранс · 1 ноября в 13:00, KIP Palmela.',
     dmFormat: '15 мин квалификации + 50 мин гонки, 1 пит-стоп (≥ 3 мин) + джокер-круг. Карты Sodi RT-10 390cc.'
@@ -170,9 +170,10 @@ function register(p) {
 
     // Места
     if (ev.kind === 'sprint' && ev.maxDrivers && rows.length >= ev.maxDrivers) return { ok: false, reason: 'full' };
-    if (ev.kind === 'endurance' && ev.maxPilots) {
-      var need = mode === 'team' ? 2 : 1;
-      if (pilotsUsed(rows) + need > ev.maxPilots) return { ok: false, reason: 'full' };
+    if (ev.kind === 'endurance' && ev.maxTeams) {
+      // нечётный пилот жеребьёвки встаёт в пару к уже записанному — новая команда не нужна
+      var need = mode === 'draft' ? (countMode(rows, 'draft') % 2 === 0 ? 1 : 0) : 1;
+      if (teamsUsed(rows) + need > ev.maxTeams) return { ok: false, reason: 'full' };
     }
 
     var row = {
@@ -216,6 +217,10 @@ function countMode(rows, mode) {
   return n;
 }
 
+function teamsUsed(rows) {
+  return countMode(rows, 'team') + countMode(rows, 'ironman') + Math.ceil(countMode(rows, 'draft') / 2);
+}
+
 function pilotsUsed(rows) {
   return countMode(rows, 'team') * 2 + countMode(rows, 'draft') + countMode(rows, 'ironman');
 }
@@ -249,9 +254,10 @@ function notifyTelegram(ev, row, mode, tgid, rows) {
     }
     var who = row.name + (row.handle ? ' (' + row.handle + ')' : '');
     if (ev.kind === 'endurance') who += ' · ' + row.mode + (mode === 'team' ? ' + ' + row.mate + (row.team ? ' «' + row.team + '»' : '') : '');
-    var cap = ev.kind === 'endurance' ? ev.maxPilots : ev.maxDrivers;
-    var used = ev.kind === 'endurance' ? pilotsUsed(rows) : rows.length;
-    sendTelegram(CORE_CHAT, '✅ Новая регистрация · ' + ev.title + '\n' + who + '\nВсего: ' + used + (cap ? ' / ' + cap : ''));
+    var total = ev.kind === 'endurance'
+      ? 'Команд: ' + teamsUsed(rows) + ' / ' + ev.maxTeams + ' · пилотов: ' + pilotsUsed(rows)
+      : 'Всего: ' + rows.length + (ev.maxDrivers ? ' / ' + ev.maxDrivers : '');
+    sendTelegram(CORE_CHAT, '✅ Новая регистрация · ' + ev.title + '\n' + who + '\n' + total);
   } catch (err) {
     console.error(err);
   }

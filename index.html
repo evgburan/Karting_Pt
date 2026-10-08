@@ -669,6 +669,7 @@ const I18N = {
     cd_d: 'Дней', cd_h: 'Часов', cd_m: 'Мин', cd_s: 'Сек',
     schedule: 'Формат дня',
     already_racing: 'Уже едут',
+    teams_lbl: 'Свободно мест для команд', teams_left: (n) => `свободно мест для команд: ${n}`, teams_n: (n, c) => `команд: ${n} / ${c}`, pilots_n: (n) => `пилотов: ${n}`,
     nobody_yet: 'Пока никого — будь первым!', regs_loading: 'Загружаем список…',
     tab_upcoming: 'Гонка', tab_results: 'Прошедшие', tab_standings: 'Зачёт',
     pts_title: 'Начисление очков',
@@ -741,6 +742,7 @@ const I18N = {
     cd_d: 'Dias', cd_h: 'Horas', cd_m: 'Min', cd_s: 'Seg',
     schedule: 'Formato do dia',
     already_racing: 'Já inscritos',
+    teams_lbl: 'Vagas para equipas', teams_left: (n) => `${n} vagas para equipas`, teams_n: (n, c) => `equipas: ${n} / ${c}`, pilots_n: (n) => `${n} pilotos`,
     nobody_yet: 'Ainda ninguém — sê o primeiro!', regs_loading: 'A carregar a lista…',
     tab_upcoming: 'Corrida', tab_results: 'Anteriores', tab_standings: 'Campeonato',
     pts_title: 'Sistema de pontos',
@@ -813,6 +815,7 @@ const I18N = {
     cd_d: 'Days', cd_h: 'Hours', cd_m: 'Min', cd_s: 'Sec',
     schedule: 'Day format',
     already_racing: 'Already in',
+    teams_lbl: 'Team slots left', teams_left: (n) => `${n} team slots left`, teams_n: (n, c) => `teams: ${n} / ${c}`, pilots_n: (n) => `${n} drivers`,
     nobody_yet: 'Nobody yet — be the first!', regs_loading: 'Loading the list…',
     tab_upcoming: 'Race', tab_results: 'Past', tab_standings: 'Standings',
     pts_title: 'Points system',
@@ -2956,7 +2959,7 @@ const EVENTS = [
       { src: 'photos/podium.png', pos: 'center 57%' },
     ],
     trackMap: 'photos/kip-track.png',
-    maxPilots: 36,      // лимит пилотов: команда = 2, жеребьёвка и Iron Man = 1 (в Apps Script — maxPilots)
+    maxTeams: 36,       // лимит команд (картов): команда = 1, Iron Man = 1, двое из жеребьёвки = 1 (в Apps Script — maxTeams)
     beginners: false,
     // € с участника; people — сколько пилотов вписывает одна регистрация
     modes: { team: { price: 75, people: 2 }, draft: { price: 75, people: 1 }, ironman: { price: 130, people: 1 } },
@@ -3047,8 +3050,10 @@ function allRegs() { return Object.values(REGS).reduce((a, l) => a.concat(l), []
 function evRegs(ev) { return REGS[ev.id] || []; }
 function modeCount(ev, mode) { return evRegs(ev).filter(r => r.mode === mode).length; }
 function evPilots(ev) { return evRegs(ev).reduce((n, r) => n + (r.mode === 'team' ? 2 : 1), 0); }
-function evCap(ev) { return ev.kind === 'endurance' ? ev.maxPilots : ev.max; }
-function evUsed(ev) { return ev.kind === 'endurance' ? evPilots(ev) : evRegs(ev).length; }
+// Команды эндуранса: готовая команда = 1, Iron Man = 1, двое из жеребьёвки = 1 (так же считает Apps Script)
+function evTeams(ev) { return modeCount(ev, 'team') + modeCount(ev, 'ironman') + Math.ceil(modeCount(ev, 'draft') / 2); }
+function evCap(ev) { return ev.kind === 'endurance' ? ev.maxTeams : ev.max; }
+function evUsed(ev) { return ev.kind === 'endurance' ? evTeams(ev) : evRegs(ev).length; }
 function evPriceLabel(ev) {
   if (ev.price) return '€' + ev.price;
   if (ev.modes) return '€' + Math.min.apply(null, MODE_ORDER.filter(m => ev.modes[m]).map(m => ev.modes[m].price)) + '+';
@@ -3101,7 +3106,8 @@ function evState(ev) {
   if (ev.status !== 'open') return 'soon';
   if (!ev.sheetsUrl) return 'regsoon';
   const cap = evCap(ev);
-  if (cap && evUsed(ev) >= cap) return 'full';
+  // у эндуранса нечётный пилот жеребьёвки ещё ждёт пару — для второго место есть
+  if (cap && evUsed(ev) >= cap && !(ev.kind === 'endurance' && modeCount(ev, 'draft') % 2 === 1)) return 'full';
   return 'open';
 }
 function selectEvent(id) {
@@ -3212,7 +3218,7 @@ function renderRaceTab() {
   if (ev.status === 'open' && cap) {
     const used = evUsed(ev), left = Math.max(0, cap - used);
     h += `<div class="spots-bar" style="margin-top:14px;">
-      <div class="spots-row"><span class="spots-lbl">${t('spots_lbl')}</span><span class="spots-val"><span class="n">${left}</span> / ${cap}</span></div>
+      <div class="spots-row"><span class="spots-lbl">${isEnd ? t('teams_lbl') : t('spots_lbl')}</span><span class="spots-val"><span class="n">${left}</span> / ${cap}</span></div>
       <div class="prog-track"><div class="prog-fill" style="width:${Math.min(100, used / cap * 100)}%"></div></div>
     </div>`;
   }
@@ -3243,7 +3249,7 @@ function renderRaceTab() {
   // 5 · Уже едут
   if (ev.status === 'open' && ev.sheetsUrl) {
     const head = isEnd
-      ? `${t('already_racing')} (${evPilots(ev)}${cap ? ' / ' + cap : ''})`
+      ? `${t('already_racing')} · ${t('teams_n')(evTeams(ev), cap)} · ${t('pilots_n')(evPilots(ev))}`
       : `${t('already_racing')} (${rl.length}${cap ? ' / ' + cap : ''})`;
     h += `<div class="card"><div class="card-title">${!rl.length && !REGS_FRESH[ev.id] ? t('already_racing') : head}</div>`;
     if (!rl.length) {
@@ -3306,7 +3312,7 @@ function openReg(evId) {
   const w = evWhen(ev), tx = evText(ev);
   const cap = evCap(ev);
   const left = cap ? Math.max(0, cap - evUsed(ev)) : null;
-  const leftTxt = left === null ? '' : ' · ' + t('reg_left')(left);
+  const leftTxt = left === null ? '' : ' · ' + (ev.kind === 'endurance' ? t('teams_left')(left) : t('reg_left')(left));
   const pr = evPriceLabel(ev);
   const tgName   = getTgName();   // имя из Telegram, если открыто как Mini App
   const tgHandle = getTgHandle();
