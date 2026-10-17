@@ -523,7 +523,7 @@
 <div class="page" id="page-vote">
   <div class="page-header">
     <button class="hp-back" onclick="goHome()">← <span id="vote-back">Катаемся Чатом</span></button>
-    <div class="page-eyebrow" id="vote-eyebrow" style="margin-top:8px;">Batalha · Голосование</div>
+    <div class="page-eyebrow" id="vote-eyebrow" style="margin-top:8px;">Campera · Safety Rating</div>
     <div class="page-title" id="vote-title">Чистота борьбы</div>
   </div>
   <div style="padding:0 14px;">
@@ -544,7 +544,7 @@
 <div class="page" id="page-feedback">
   <div class="page-header">
     <button class="hp-back" onclick="goHome()">← <span id="fb-back">Катаемся Чатом</span></button>
-    <div class="page-eyebrow" id="fb-eyebrow" style="margin-top:8px;">Batalha · Отзыв</div>
+    <div class="page-eyebrow" id="fb-eyebrow" style="margin-top:8px;">Campera · Отзыв</div>
     <div class="page-title" id="fb-title">Как тебе гонка?</div>
   </div>
   <div style="padding:0 14px;">
@@ -885,7 +885,7 @@ const I18N = {
 // ── i18n для скрытых страниц (голосование + отзыв) ──
 Object.assign(I18N.ru, {
   vote_back: 'Катаемся Чатом',
-  vote_eyebrow: 'Batalha · Safety Rating',
+  vote_eyebrow: 'Campera · Safety Rating',
   vote_title: 'Safety Rating',
   vote_intro: 'Оцени, с кем тебе было чисто бороться на трассе, а к кому есть вопросы по вождению. 🟢 — чисто поборолись, 🟡 — есть вопросы. Можно оценить не всех — только тех, с кем реально пересекался. Голос анонимный, ник нужен только чтобы не голосовать дважды.',
   vote_tg_lbl: 'Твой Telegram (чтобы не голосовать дважды)',
@@ -898,8 +898,9 @@ Object.assign(I18N.ru, {
   vote_empty: 'Список участников ещё не загрузился. Обнови страницу через минуту.',
   vote_done_title: 'Голос принят!',
   vote_done_sub: 'Спасибо. Результаты объявим после подсчёта.',
+  vote_closed: 'Голосование откроется сразу после гонки 🏁', fb_closed: 'Отзыв можно будет оставить сразу после гонки 🏁',
   fb_back: 'Катаемся Чатом',
-  fb_eyebrow: 'Batalha · Отзыв',
+  fb_eyebrow: 'Campera · Отзыв',
   fb_title: 'Как тебе гонка?',
   fb_intro: 'Анонимный отзыв о мероприятии. Помоги сделать следующие гонки лучше — пара минут.',
   fb_liked_lbl: 'Что понравилось? Что сохранять?',
@@ -912,7 +913,7 @@ Object.assign(I18N.ru, {
 });
 Object.assign(I18N.pt, {
   vote_back: 'Kataemsya Chatom',
-  vote_eyebrow: 'Batalha · Safety Rating',
+  vote_eyebrow: 'Campera · Safety Rating',
   vote_title: 'Safety Rating',
   vote_intro: 'Avalia com quem foi limpo competir e com quem há dúvidas na condução. 🟢 — corrida limpa, 🟡 — há dúvidas. Não precisas avaliar todos — só aqueles com quem realmente lutaste. O voto é anónimo, o nick serve apenas para não votares duas vezes.',
   vote_tg_lbl: 'O teu Telegram (para não votar duas vezes)',
@@ -925,8 +926,9 @@ Object.assign(I18N.pt, {
   vote_empty: 'A lista de participantes ainda não carregou. Atualiza a página dentro de um minuto.',
   vote_done_title: 'Voto registado!',
   vote_done_sub: 'Obrigado. Os resultados serão anunciados após a contagem.',
+  vote_closed: 'A votação abre logo após a corrida 🏁', fb_closed: 'O feedback abre logo após a corrida 🏁',
   fb_back: 'Kataemsya Chatom',
-  fb_eyebrow: 'Batalha · Feedback',
+  fb_eyebrow: 'Campera · Feedback',
   fb_title: 'Que tal a corrida?',
   fb_intro: 'Feedback anónimo sobre o evento. Ajuda-nos a melhorar as próximas corridas — leva dois minutos.',
   fb_liked_lbl: 'O que gostaste? O que manter?',
@@ -939,7 +941,7 @@ Object.assign(I18N.pt, {
 });
 Object.assign(I18N.en, {
   vote_back: 'Kataemsya Chatom',
-  vote_eyebrow: 'Batalha · Safety Rating',
+  vote_eyebrow: 'Campera · Safety Rating',
   vote_title: 'Safety Rating',
   vote_intro: 'Rate who you raced cleanly against and who you have questions about. 🟢 — clean racing, 🟡 — questions. You don\'t have to rate everyone — only those you actually battled. The vote is anonymous; your handle is only used to prevent double voting.',
   vote_tg_lbl: 'Your Telegram (to prevent double voting)',
@@ -952,8 +954,9 @@ Object.assign(I18N.en, {
   vote_empty: 'The participant list hasn\'t loaded yet. Refresh the page in a minute.',
   vote_done_title: 'Vote recorded!',
   vote_done_sub: 'Thanks. Results will be announced after counting.',
+  vote_closed: 'Voting opens right after the race 🏁', fb_closed: 'Feedback opens right after the race 🏁',
   fb_back: 'Kataemsya Chatom',
-  fb_eyebrow: 'Batalha · Feedback',
+  fb_eyebrow: 'Campera · Feedback',
   fb_title: 'How was the race?',
   fb_intro: 'Anonymous feedback about the event. Help us make the next races better — takes two minutes.',
   fb_liked_lbl: 'What did you like? What to keep?',
@@ -3741,6 +3744,7 @@ function routeHash() {
     document.getElementById('page-' + h).classList.add('active');
     if (nav) nav.style.display = 'none';
     window.scrollTo(0, 0);
+    if ((h === 'vote' || h === 'feedback') && !applyVoteGate(h)) return;
     if (h === 'vote') {
       const vtg = document.getElementById('vote-tg');
       if (vtg && !vtg.value && getTgHandle()) vtg.value = getTgHandle();
@@ -3772,11 +3776,37 @@ function voteKey(r) { return (r.handle ? r.handle.replace('@','').toLowerCase() 
 //   1) результаты этапа в RACES (когда протокол уже залит);
 //   2) фиксированный список участников VOTE_ROSTERS (сразу после гонки);
 //   3) регистрации (fallback).
-const VOTE_RACE_ID = 'batalha-sep';
+const VOTE_RACE_ID = 'campera-oct';
+// ⬇ До этого времени #vote и #feedback показывают «откроется после гонки».
+//   Посмотреть заранее: racechat.pt/?preview#vote (или ?preview#feedback).
+const VOTE_OPENS_AT = '2026-10-18T15:30:00+01:00';
+function voteIsOpen() {
+  return /[?&]preview\b/.test(location.search) || Date.now() >= new Date(VOTE_OPENS_AT).getTime();
+}
+// Закрытое состояние страницы: прячем форму, показываем плашку
+function applyVoteGate(page) {
+  const el = document.getElementById('page-' + page);
+  if (!el) return true;
+  const open = voteIsOpen();
+  const body = el.querySelector('.page-header + div');
+  let box = el.querySelector('.vote-closed');
+  if (!box) {
+    box = document.createElement('div');
+    box.className = 'vote-closed';
+    box.style.cssText = 'padding:40px 14px;text-align:center;color:var(--muted);font-size:15px;line-height:1.5;';
+    el.appendChild(box);
+  }
+  box.textContent = t(page === 'vote' ? 'vote_closed' : 'fb_closed');
+  box.style.display = open ? 'none' : 'block';
+  if (body) body.style.display = open ? '' : 'none';
+  return open;
+}
 
 // Мега Спринты · Kartódromo da Batalha, 19 сентября 2026.
 // Пустой handle = подтянется из регистраций по имени (вместе с аватаркой и hideHandle).
 const VOTE_ROSTERS = {
+  // Campera 18.10: пусто = голосуем по регистрациям. После гонки сюда — фактический состав (кто реально ехал).
+  'campera-oct': [],
   'batalha-sep': [
     { name: 'Renat Ashrafedinov', handle: '@renatashrafedinov' },
     { name: 'Alexander Ilyushin',  handle: '@IlyushinAS' },
@@ -3800,8 +3830,8 @@ const VOTE_ROSTERS = {
 
 function normName(s) { return (s || '').toLowerCase().replace(/[^a-zа-яё]+/gi, ' ').trim(); }
 
-// Регистрации гонки, за которую голосуем (Batalha — из LEGACY_REGS)
-function voteRegs() { return REGS[VOTE_RACE_ID] || LEGACY_REGS; }
+// Регистрации гонки, за которую голосуем (новые ивенты — REGS, Batalha — LEGACY_REGS)
+function voteRegs() { return VOTE_RACE_ID === 'batalha-sep' ? LEGACY_REGS : (REGS[VOTE_RACE_ID] || []); }
 
 // Дотягиваем handle / hideHandle из регистраций: по хэндлу, по полному имени,
 // иначе по фамилии — но только если совпадение единственное.
@@ -3839,6 +3869,7 @@ function voteRoster() {
 function renderVoteList() {
   const box = document.getElementById('vote-list');
   if (!box) return;
+  if (document.getElementById('page-vote').classList.contains('active')) applyVoteGate('vote');
   // тексты страницы
   const setTxt = (id, key, html) => { const el = document.getElementById(id); if (el) { if (html) el.innerHTML = t(key); else el.textContent = t(key); } };
   setTxt('vote-back', 'vote_back'); setTxt('vote-eyebrow', 'vote_eyebrow'); setTxt('vote-title', 'vote_title');
@@ -3912,6 +3943,7 @@ function submitVote() {
 let _fbStars = 0;
 
 function applyFeedbackLang() {
+  if (document.getElementById('page-feedback').classList.contains('active')) applyVoteGate('feedback');
   const setTxt = (id, key, html) => { const el = document.getElementById(id); if (el) { if (html) el.innerHTML = t(key); else el.textContent = t(key); } };
   setTxt('fb-back', 'fb_back'); setTxt('fb-eyebrow', 'fb_eyebrow'); setTxt('fb-title', 'fb_title');
   setTxt('fb-intro', 'fb_intro', true); setTxt('fb-liked-lbl', 'fb_liked_lbl'); setTxt('fb-improve-lbl', 'fb_improve_lbl');
