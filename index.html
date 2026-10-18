@@ -1233,6 +1233,9 @@ const BEGINNERS = {
     'elfin13',             // Victor Y
     'riskingh',            // Maksim Grishkin
   ]),
+  'campera-oct': new Set([
+    'ilikru',              // Ilia Nikolaev
+  ]),
   // ⬇ Batalha: впиши хэндлы тех, кто ехал в зачёте начинающих (пока пусто)
   batalha: new Set([]),
   almeirim: new Set([
@@ -1435,6 +1438,32 @@ const RACES = [
           { pos:15, name:'Aleksandr Ilyushin', handle:'@IlyushinAS', r1:3, r2:null, total:3 },  // 55 очк. этапа
           { pos:16, name:'Leonid Kondratev', handle:'@sxuxs', r1:3, r2:null, total:3 },  // 29 очк. этапа
           { pos:17, name:'Miguel Bento', handle:'', r1:3, r2:null, total:3 },  // 13 очк. этапа
+        ]
+      }
+    ]
+  },
+  {
+    id: 'campera-oct',
+    chipLabel: '18 Окт · Campera',
+    date: '18 октября 2026',
+    location: 'Campera Karting',
+    photo: 'campera_oct',
+    // Спринты: 2 × (квала 5 мин + гонка 10 мин). Каждая гонка — отдельно в зачёт.
+    groups: [
+      {
+        label: null,
+        results: [
+          { pos:1,  name:'Dimas Calcai',       handle:'@dimasccd',           r1:25,            r2:20,            total:45 },
+          { pos:2,  name:'Miguel Bento',       handle:'',                    r1:14, r1fl:true, r2:26, r2fl:true, total:40 },
+          { pos:3,  name:'Evgeny Buran',       handle:'@evgenybu',           r1:20,            r2:11,            total:31 },
+          { pos:4,  name:'Renat Ashrafedinov', handle:'@renatashrafedinov',  r1:16,            r2:10,            total:26 },
+          { pos:5,  name:'Vladislav Shkutte',  handle:'@Moresabbath',        r1:11,            r2:13,            total:24 },
+          { pos:6,  name:'Dmitrii Smirnov',    handle:'@mitkas',             r1:10,            r2:8,             total:18 },
+          { pos:7,  name:'EVIL',               handle:'@EVIL',               r1:9,             r2:9,             total:18 },
+          { pos:8,  name:'Igor Arkhangelskii', handle:'@Igor A',             r1:null,          r2:16,            total:16 },
+          { pos:9,  name:'Vladimir Kirienko',  handle:'@vladimir_sourcerer', r1:8,             r2:7,             total:15 },
+          { pos:10, name:'Ilia Nikolaev',      handle:'@ilikru',             r1:7,             r2:6,             total:13 },
+          { pos:11, name:'Vinicius',           handle:'',                    r1:6,             r2:5,             total:11 },
         ]
       }
     ]
@@ -1941,6 +1970,7 @@ const STANDINGS_EVENTS = [
   { raceId:'kip-may',      begId:'kip',          label:'KIP 23.05',      shortDate:'23 мая', ptsFix: fixKipBase },
   { raceId:'almeirim-jun', begId:'almeirim',     label:'Almeirim 06.06', shortDate:'6 июн',  ptsFix: fixModernBase },
   { raceId:'batalha-sep',  begId:'batalha',      label:'Batalha 19.09',  shortDate:'19 сен', ptsFix: fixModernBase },
+  { raceId:'campera-oct',  begId:'campera-oct',  label:'Campera 18.10',  shortDate:'18 окт', ptsFix: fixModernBase },
 ];
 
 function ptsFixFor(raceId) {
