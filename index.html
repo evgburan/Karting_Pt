@@ -2921,7 +2921,7 @@ function closeProfileModal(e) {
 //    status 'open' — регистрация (через REG_API, ивент различается по id)
 //    status 'soon' — анонс без регистрации
 //    kind 'sprint' — лимит пилотов (max) · kind 'endurance' — лимит картов (maxKarts) и форматы участия (modes)
-//  Ивент сам уходит с главной через 6 ч после старта.
+//  Ивент сам уходит с главной в момент старта (или сразу, если done: true).
 //  Время старта — с поясом Лиссабона: до 25.10 летнее (+01:00), после — зимнее (+00:00).
 // ════════════════════════════════════════════════════════════
 
@@ -2934,6 +2934,7 @@ const EVENTS = [
     id: 'campera-oct',
     kind: 'sprint',
     status: 'open',
+    done: true,         // прошла 18.10 — итоги на #campera
     start: '2026-10-18T15:00:00+01:00',
     venue: 'Campera Karting',
     logo: 'photos/venue-campera.png',
@@ -3135,7 +3136,8 @@ function evWhen(ev) {
 }
 function visibleEvents() {
   const now = Date.now();
-  return EVENTS.filter(ev => new Date(ev.start).getTime() + 6 * 3600000 > now);
+  // гонка уходит с главной в момент старта (регистрация уже не нужна, итоги — во вкладке «Итоги»)
+  return EVENTS.filter(ev => !ev.done && new Date(ev.start).getTime() > now);
 }
 let _evId = null;
 let _slideIdx = 0;
