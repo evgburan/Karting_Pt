@@ -126,6 +126,8 @@
   .spots-lbl { font-size: 12px; color: var(--muted); }
   .spots-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; }
   .spots-val .n { color: var(--accent-red); }
+  .spots-val.going { font-size: 17px; }
+  .spots-left { font-size: 12px; color: var(--muted); margin-top: 7px; }
   .prog-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
   .prog-fill { height: 100%; background: var(--accent-red); border-radius: 2px; transition: width 0.5s; }
   .btn-reg { width: 100%; background: var(--text); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: opacity 0.15s; }
@@ -667,6 +669,7 @@ function esc(s) {
 }
 
 
+function ruPl(n, one, few, many) { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many; }
 const I18N = {
   ru: {
     title: 'Катаемся Чатом',
@@ -676,6 +679,7 @@ const I18N = {
     cd_d: 'Дней', cd_h: 'Часов', cd_m: 'Мин', cd_s: 'Сек',
     schedule: 'Формат дня',
     already_racing: 'Уже едут',
+    going_n: (n) => `${n} ${ruPl(n, 'пилот', 'пилота', 'пилотов')}`, left_line: (n, c, team) => `осталось ${n} из ${c} ${team ? 'мест для команд' : 'мест'}`,
     teams_lbl: 'Свободно мест для команд', teams_left: (n) => `свободно мест для команд: ${n}`, teams_n: (n, c) => `команд: ${n} / ${c}`, pilots_n: (n) => `пилотов: ${n}`,
     nobody_yet: 'Пока никого — будь первым!', regs_loading: 'Загружаем список…',
     tab_upcoming: 'Гонка', tab_results: 'Прошедшие', tab_standings: 'Зачёт',
@@ -749,6 +753,7 @@ const I18N = {
     cd_d: 'Dias', cd_h: 'Horas', cd_m: 'Min', cd_s: 'Seg',
     schedule: 'Formato do dia',
     already_racing: 'Já inscritos',
+    going_n: (n) => `${n} ${n === 1 ? 'piloto' : 'pilotos'}`, left_line: (n, c, team) => `restam ${n} de ${c} vagas${team ? ' para equipas' : ''}`,
     teams_lbl: 'Vagas para equipas', teams_left: (n) => `${n} vagas para equipas`, teams_n: (n, c) => `equipas: ${n} / ${c}`, pilots_n: (n) => `${n} pilotos`,
     nobody_yet: 'Ainda ninguém — sê o primeiro!', regs_loading: 'A carregar a lista…',
     tab_upcoming: 'Corrida', tab_results: 'Anteriores', tab_standings: 'Campeonato',
@@ -822,6 +827,7 @@ const I18N = {
     cd_d: 'Days', cd_h: 'Hours', cd_m: 'Min', cd_s: 'Sec',
     schedule: 'Day format',
     already_racing: 'Already in',
+    going_n: (n) => `${n} ${n === 1 ? 'driver' : 'drivers'}`, left_line: (n, c, team) => `${n} of ${c} ${team ? 'team slots' : 'spots'} left`,
     teams_lbl: 'Team slots left', teams_left: (n) => `${n} team slots left`, teams_n: (n, c) => `teams: ${n} / ${c}`, pilots_n: (n) => `${n} drivers`,
     nobody_yet: 'Nobody yet — be the first!', regs_loading: 'Loading the list…',
     tab_upcoming: 'Race', tab_results: 'Past', tab_standings: 'Standings',
@@ -3266,9 +3272,12 @@ function renderRaceTab() {
   const cap = evCap(ev);
   if (ev.status === 'open' && cap) {
     const used = evUsed(ev), left = Math.max(0, cap - used);
+    // Правило анонсов: сначала «Уже едут» (соцдоказательство), потом «осталось X мест»
+    const going = evPilots(ev);
     h += `<div class="spots-bar" style="margin-top:14px;">
-      <div class="spots-row"><span class="spots-lbl">${isEnd ? t('teams_lbl') : t('spots_lbl')}</span><span class="spots-val"><span class="n">${left}</span> / ${cap}</span></div>
+      ${going ? `<div class="spots-row"><span class="spots-lbl">${t('already_racing')}</span><span class="spots-val going"><span class="n">${t('going_n')(going)}</span></span></div>` : ''}
       <div class="prog-track"><div class="prog-fill" style="width:${Math.min(100, used / cap * 100)}%"></div></div>
+      ${left ? `<div class="spots-left">${t('left_line')(left, cap, isEnd)}</div>` : ''}
     </div>`;
   }
   if (st === 'open') h += `<button class="btn-reg" onclick="openReg('${ev.id}')">${t('btn_reg')}</button>`;
@@ -3298,8 +3307,8 @@ function renderRaceTab() {
   // 5 · Уже едут
   if (ev.status === 'open' && ev.sheetsUrl) {
     const head = isEnd
-      ? `${t('already_racing')} · ${t('teams_n')(evTeams(ev), cap)} · ${t('pilots_n')(evPilots(ev))}`
-      : `${t('already_racing')} (${rl.length}${cap ? ' / ' + cap : ''})`;
+      ? `${t('already_racing')} · ${t('going_n')(evPilots(ev))} · ${t('teams_n')(evTeams(ev), cap)}`
+      : `${t('already_racing')} · ${t('going_n')(rl.length)}`;
     h += `<div class="card"><div class="card-title">${!rl.length && !REGS_FRESH[ev.id] ? t('already_racing') : head}</div>`;
     if (!rl.length) {
       h += `<div style="text-align:center;padding:14px 0;color:var(--muted);font-size:13px;">${REGS_FRESH[ev.id] ? t('nobody_yet') : t('regs_loading')}</div>`;
@@ -3361,7 +3370,8 @@ function openReg(evId) {
   const w = evWhen(ev), tx = evText(ev);
   const cap = evCap(ev);
   const left = cap ? Math.max(0, cap - evUsed(ev)) : null;
-  const leftTxt = left === null ? '' : ' · ' + (ev.kind === 'endurance' ? t('teams_left')(left) : t('reg_left')(left));
+  const going = evPilots(ev);
+  const leftTxt = left === null ? '' : (going ? ' · ' + t('already_racing') + ': ' + t('going_n')(going) : '') + ' · ' + t('left_line')(left, cap, ev.kind === 'endurance');
   const pr = evPriceLabel(ev);
   const tgName   = getTgName();   // имя из Telegram, если открыто как Mini App
   const tgHandle = getTgHandle();
