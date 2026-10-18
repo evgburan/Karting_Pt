@@ -326,6 +326,12 @@
   .ev-track { margin-top: 12px; }
   .ev-track img { width: 100%; height: auto; display: block; }
   .ev-track-cap { font-size: 11px; color: var(--muted); text-align: center; margin-top: 4px; }
+  .res-banner { display: flex; align-items: center; gap: 10px; width: 100%; margin-bottom: 10px; padding: 10px 12px; text-align: left; cursor: pointer; background: linear-gradient(90deg, rgba(201,162,39,0.16), rgba(201,162,39,0.04)); border: 1px solid rgba(201,162,39,0.45); border-radius: 12px; color: var(--text); font-family: 'Barlow', sans-serif; }
+  .res-banner-ico { font-size: 22px; line-height: 1; }
+  .res-banner-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+  .res-banner-t { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .5px; text-transform: uppercase; }
+  .res-banner-s { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .res-banner-go { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; color: var(--accent-red); }
   .ev-beg-badge { font-size: 10px; font-weight: 700; color: var(--green); background: #f0f7f1; border: 1px solid #c8e6c9; border-radius: 4px; padding: 0 4px; margin-left: 6px; vertical-align: middle; }
 
   /* LAST RACE NOMINATIONS */
@@ -424,10 +430,11 @@
     <div id="race-wrap"></div>
   </div>
 
-  <!-- ── ИТОГИ (Мега Спринты · Batalha 19.09) ── -->
+  <!-- ── ИТОГИ: Спринты в Кампере 18.10 (renderCampera, CAMP) · Batalha — во «Прошедших» ── -->
   <!-- Контент рисует renderMega() из данных MEGA (внизу файла). -->
   <div class="inner-panel" id="tab-mega">
-    <div id="mega-wrap"></div>
+    <div id="camp-wrap"></div>
+    <div id="mega-wrap" style="display:none"></div>
   </div>
 
   <!-- ── ПРОШЕДШИЕ ── -->
@@ -1160,6 +1167,7 @@ function setLang(lang) {
   renderResults(_currentRaceIdx || 0);
   renderLastRace();
   if (typeof renderMega === 'function') renderMega();
+  if (window.CAMP_READY) renderCampera();
   const nomEl2 = document.getElementById('nominations-block');
   if (nomEl2) nomEl2.innerHTML = renderNominations();
   if (typeof renderVoteList === 'function') renderVoteList();
@@ -1178,6 +1186,7 @@ const RACE_PHOTOS = {
   podium: 'photos/podium.png',
   'kiro': 'photos/campera-race.jpg',
   'campera': 'photos/campera.jpg',
+  'campera_oct': 'photos/campera-oct-podium.jpg',
   'almeirim_podium': 'photos/almeirim-podium.jpg',
   'batalha_podium': 'photos/batalha-podium.jpg',
 };
@@ -3188,8 +3197,13 @@ function renderRaceTab() {
   const tx = evText(ev), w = evWhen(ev), st = evState(ev), rl = evRegs(ev);
   const isEnd = ev.kind === 'endurance';
 
+  // 0 · Итоги прошедшей гонки (кнопка → вкладка «Итоги»)
+  let h = window.CAMP_READY ? `<button class="res-banner" onclick="openCampResults()">
+      <span class="res-banner-ico">🏁</span>
+      <span class="res-banner-txt"><span class="res-banner-t">${ct('bannerT')}</span><span class="res-banner-s">${ct('bannerS')}</span></span>
+      <span class="res-banner-go">→</span></button>` : '';
   // 1 · Кнопки ивентов
-  let h = '<div class="ev-picker">' + list.map(e => {
+  h += '<div class="ev-picker">' + list.map(e => {
     const ew = evWhen(e), es = evState(e);
     const stTxt = { open: t('ev_open'), regsoon: t('ev_reg_soon'), full: t('ev_full'), soon: t('ev_soon') }[es];
     const stCls = es === 'open' ? 'open' : es === 'full' ? 'full' : 'soon';
@@ -3784,6 +3798,13 @@ function routeHash() {
     if (h === 'safety') renderSafetyResults();
   } else {
     if (nav) nav.style.display = 'flex';
+    if (h === 'campera') {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-main').classList.add('active');
+      document.querySelectorAll('.bnav-item').forEach((b, i) => b.classList.toggle('active', i === 0));
+      openCampResults();
+      return;
+    }
     const hidden = document.getElementById('page-vote').classList.contains('active') ||
                    document.getElementById('page-feedback').classList.contains('active') ||
                    document.getElementById('page-safety').classList.contains('active');
@@ -5587,6 +5608,193 @@ function renderMega() {
 }
 
 renderMega();
+
+// ════════════════════════════════════════════════════════════
+//  ИТОГИ · Спринты в Кампере 18.10.2026  (вкладка «Итоги», прямая ссылка racechat.pt/#campera)
+//  Очки этапа = сумма двух гонок (25/20/16/13/11/10/9/8/7/6/5/4/3, +1 лучший круг гонки).
+// ════════════════════════════════════════════════════════════
+const CAMP = {
+  date: '18 октября 2026',
+  venue: 'Campera Karting · Carregado',
+  photo: 'photos/campera-oct-podium.jpg',
+  bestLap: { name: 'Miguel Bento', time: '47.462' },
+  drivers: {
+    dimas:  { name: 'Dimas Calcai',       handle: '@dimasccd' },
+    miguel: { name: 'Miguel Bento',       handle: '' },
+    evgeny: { name: 'Evgeny Buran',       handle: '@evgenybu' },
+    renat:  { name: 'Renat Ashrafedinov', handle: '@renatashrafedinov' },
+    vlad:   { name: 'Vladislav Shkutte',  handle: '@Moresabbath' },
+    dima:   { name: 'Dmitrii Smirnov',    handle: '@mitkas' },
+    evil:   { name: 'EVIL',               handle: '@EVIL' },
+    igor:   { name: 'Igor Arkhangelskii', handle: '@Igor A' },
+    vova:   { name: 'Vladimir Kirienko',  handle: '@vladimir_sourcerer' },
+    ilia:   { name: 'Ilia Nikolaev',      handle: '@ilikru', beg: true },
+    vini:   { name: 'Vinicius',           handle: '' },
+  },
+  // итог этапа: [ключ, очки Г1, очки Г2, сумма]
+  total: [
+    ['dimas', 25, 20, 45], ['miguel', 14, 26, 40], ['evgeny', 20, 11, 31], ['renat', 16, 10, 26],
+    ['vlad', 11, 13, 24], ['dima', 10, 8, 18], ['evil', 9, 9, 18], ['igor', null, 16, 16],
+    ['vova', 8, 7, 15], ['ilia', 7, 6, 13], ['vini', 6, 5, 11],
+  ],
+  races: [
+    { fl: 'miguel', time: '15:21', rows: [ // [ключ, лучший круг, отставание]
+      ['dimas', '47.879', ''], ['evgeny', '47.706', '+0.660'], ['renat', '47.855', '+1.262'], ['miguel', '47.643', '+1.452'],
+      ['vlad', '48.327', '+7.446'], ['dima', '48.592', '+16.288'], ['evil', '48.724', '+18.266'], ['vova', '49.519', '+34.518'],
+      ['ilia', '49.855', '+46.054'], ['vini', '51.205', '+1 круг'] ] },
+    { fl: 'miguel', time: '15:56', rows: [
+      ['miguel', '47.462', ''], ['dimas', '47.818', '+1.882'], ['igor', '47.789', '+2.847'], ['vlad', '47.925', '+3.871'],
+      ['evgeny', '47.961', '+7.833'], ['renat', '48.020', '+7.916'], ['evil', '48.543', '+13.691'], ['dima', '48.490', '+15.310'],
+      ['vova', '48.633', '+17.090'], ['ilia', '50.338', '+43.858'], ['vini', '50.940', '+51.249'] ] },
+  ],
+  qualy: [
+    [['renat', '48.292'], ['dimas', '48.454'], ['evgeny', '48.496'], ['miguel', '48.504'], ['vlad', '49.288'],
+     ['dima', '49.878'], ['evil', '50.286'], ['vova', '50.293'], ['ilia', '51.197'], ['vini', '53.003']],
+    [['miguel', '47.856'], ['dimas', '48.299'], ['igor', '48.389'], ['renat', '48.568'], ['evgeny', '48.574'], ['vlad', '48.926'],
+     ['dima', '49.040'], ['evil', '49.219'], ['vova', '49.656'], ['ilia', '50.616'], ['vini', '50.707']],
+  ],
+};
+const CAMP_PTS = [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4];
+
+const CAMP_T = {
+  ru: { eyebrow: 'Итоги', title: 'Спринты в Кампере', bannerT: 'Итоги: Спринты в Кампере', bannerS: '🥇 Dimas · 🥈 Miguel Bento · 🥉 Evgeny', pilots: 'пилотов', races: 'гонки', bestLap: 'лучший круг',
+        vote: 'Чистота борьбы', podium: 'Подиум', resTitle: 'Итог этапа',
+        resNote: 'Очки за две гонки: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3, +1 за лучший круг гонки. Каждая гонка идёт в зачёт сезона отдельно.',
+        colDrv: 'Пилот', colR1: 'Г1', colR2: 'Г2', colTot: 'Σ', race: 'Гонка', qualy: 'Квалификация', laps: '13 кругов',
+        colBest: 'Круг', colGap: 'Отрыв', ptsShort: 'очк.', colPts: 'Очки', tap: 'нажми, чтобы открыть', beg: 'новичок',
+        begNote: '🟢 Зачёт новичков в этот раз — один участник: Ilia Nikolaev, 13 очков в копилку сезона.',
+        next: 'Следующая гонка — Эндуранс в Палмеле, 1 ноября', nextBtn: 'Записаться →', fl: 'лучший круг' },
+  pt: { eyebrow: 'Resultados', title: 'Sprints no Campera', bannerT: 'Resultados: Sprints no Campera', bannerS: '🥇 Dimas · 🥈 Miguel Bento · 🥉 Evgeny', pilots: 'pilotos', races: 'corridas', bestLap: 'melhor volta',
+        vote: 'Corrida limpa', podium: 'Pódio', resTitle: 'Resultado da etapa',
+        resNote: 'Pontos de duas corridas: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3, +1 pela melhor volta. Cada corrida conta separadamente para o campeonato.',
+        colDrv: 'Piloto', colR1: 'C1', colR2: 'C2', colTot: 'Σ', race: 'Corrida', qualy: 'Qualificação', laps: '13 voltas',
+        colBest: 'Volta', colGap: 'Dif.', ptsShort: 'pts', colPts: 'Pts', tap: 'toca para abrir', beg: 'iniciante',
+        begNote: '🟢 Classificação de iniciantes desta vez — um participante: Ilia Nikolaev, 13 pontos para a época.',
+        next: 'Próxima corrida — Endurance em Palmela, 1 de novembro', nextBtn: 'Inscrever →', fl: 'melhor volta' },
+  en: { eyebrow: 'Results', title: 'Sprints at Campera', bannerT: 'Results: Sprints at Campera', bannerS: '🥇 Dimas · 🥈 Miguel Bento · 🥉 Evgeny', pilots: 'drivers', races: 'races', bestLap: 'best lap',
+        vote: 'Clean racing', podium: 'Podium', resTitle: 'Event result',
+        resNote: 'Points from two races: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3, +1 for the race fastest lap. Each race counts separately for the season.',
+        colDrv: 'Driver', colR1: 'R1', colR2: 'R2', colTot: 'Σ', race: 'Race', qualy: 'Qualifying', laps: '13 laps',
+        colBest: 'Lap', colGap: 'Gap', ptsShort: 'pts', colPts: 'Pts', tap: 'tap to open', beg: 'beginner',
+        begNote: '🟢 Beginners class this time — one entrant: Ilia Nikolaev, 13 points for the season.',
+        next: 'Next race — Endurance at Palmela, 1 November', nextBtn: 'Register →', fl: 'fastest lap' },
+};
+function ct(k) { return (CAMP_T[_lang] || CAMP_T.ru)[k]; }
+function campDrv(k) { return CAMP.drivers[k] || { name: k, handle: '' }; }
+function campAvatar(k, size) { const d = campDrv(k); return avatarDiv(getPhoto(d.handle, d.name), (d.name || '?')[0], size); }
+function campName(k, withHandle) {
+  const d = campDrv(k), vh = visHandle(d.handle, false);
+  return `<div style="min-width:0;"><div style="font-size:13px;font-weight:600;line-height:1.2;">${esc(d.name)}${d.beg ? ` <span class="ev-beg-badge">${ct('beg')}</span>` : ''}</div>
+    ${withHandle && vh ? `<div style="font-size:10px;color:var(--muted);">${esc(vh)}</div>` : ''}</div>`;
+}
+
+function renderCampera() {
+  const wrap = document.getElementById('camp-wrap');
+  if (!wrap) return;
+  const fl = '<span class="fl-badge">FL</span>';
+  let h = `<div style="width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--surface2);">
+    <img src="${CAMP.photo}" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Campera podium">
+  </div><div style="padding:14px 14px 0;">`;
+
+  h += `<div class="page-eyebrow">${ct('eyebrow')} · ${esc(translateFullDate(CAMP.date))}</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${ct('title')}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(CAMP.venue)}</div>`;
+  const chip = txt => `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">${txt}</span>`;
+  h += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+    ${chip(CAMP.total.length + ' ' + ct('pilots'))}${chip('2 ' + ct('races'))}${chip('⚡ ' + CAMP.bestLap.time + ' · ' + esc(CAMP.bestLap.name))}</div>`;
+
+  // голосование + отзыв
+  h += `<div style="display:flex;gap:8px;margin-bottom:16px;">
+    <a href="#vote" class="cta-btn">🤝 ${ct('vote')}</a>
+    <a href="#feedback" class="cta-btn">⭐ ${t('cta_feedback')}</a>
+  </div>`;
+
+  // подиум
+  const medals = ['🥇', '🥈', '🥉'];
+  h += `<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${ct('podium')}</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">` +
+    CAMP.total.slice(0, 3).map((r, i) => `<div class="nom-card" style="align-items:center;text-align:center;">
+      <div class="nom-icon">${medals[i]}</div>${campAvatar(r[0], 44)}
+      <div class="nom-driver" style="margin-top:4px;">${esc(campDrv(r[0]).name)}</div>
+      <div class="nom-desc"><strong style="color:var(--accent-red);">${r[3]}</strong> ${ct('ptsShort')}</div></div>`).join('') + `</div>`;
+
+  // итог этапа
+  h += `<div class="card" style="padding:0;overflow:hidden;">
+    <div style="padding:14px 14px 8px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">🏆 ${ct('resTitle')}</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">${ct('resNote')}</div>
+    </div>
+    <table class="full-res-table"><thead><tr>
+      <th style="width:28px;">#</th><th>${ct('colDrv')}</th><th>${ct('colR1')}</th><th>${ct('colR2')}</th><th>${ct('colTot')}</th>
+    </tr></thead><tbody>`;
+  CAMP.total.forEach((r, i) => {
+    const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
+    const flR = n => CAMP.races[n].fl === r[0] ? fl : '';
+    h += `<tr class="${pc}"><td>${i < 3 ? medals[i] : i + 1}</td>
+      <td><div style="display:flex;align-items:center;gap:8px;">${campAvatar(r[0], 28)}${campName(r[0], true)}</div></td>
+      <td style="color:var(--muted);font-size:13px;white-space:nowrap;">${r[1] === null ? '–' : r[1]}${flR(0)}</td>
+      <td style="color:var(--muted);font-size:13px;white-space:nowrap;">${r[2] === null ? '–' : r[2]}${flR(1)}</td>
+      <td style="color:var(--accent-red);">${r[3]}</td></tr>`;
+  });
+  h += `</tbody></table>
+    <div style="font-size:12px;color:var(--muted);line-height:1.5;padding:10px 14px 14px;">${ct('begNote')}</div></div>`;
+
+  // гонки
+  CAMP.races.forEach((race, n) => {
+    h += `<details class="mega-acc"${n === 1 ? '' : ''}><summary><span>🏁 ${ct('race')} ${n + 1}</span><span class="mega-acc-hint">${race.time} · ${ct('laps')}</span></summary>
+      <table class="full-res-table"><thead><tr><th style="width:28px;">#</th><th>${ct('colDrv')}</th><th>${ct('colBest')}</th><th>${ct('colPts')}</th></tr></thead><tbody>`;
+    race.rows.forEach((row, i) => {
+      const pts = (i < CAMP_PTS.length ? CAMP_PTS[i] : 3) + (race.fl === row[0] ? 1 : 0);
+      const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
+      h += `<tr class="${pc}"><td>${i + 1}</td>
+        <td><div style="display:flex;align-items:center;gap:8px;">${campAvatar(row[0], 24)}${campName(row[0], false)}</div>
+          ${row[2] ? `<div style="font-size:10px;color:var(--muted);font-weight:400;margin-left:32px;">${esc(row[2])}</div>` : ''}</td>
+        <td style="font-size:13px;white-space:nowrap;">${row[1]}${race.fl === row[0] ? fl : ''}</td>
+        <td style="color:var(--accent-red);">${pts}</td></tr>`;
+    });
+    h += `</tbody></table></details>`;
+  });
+
+  // квалификации
+  CAMP.qualy.forEach((q, n) => {
+    h += `<details class="mega-acc"><summary><span>⏱️ ${ct('qualy')} ${n + 1}</span><span class="mega-acc-hint">${q[0] ? '⚡ ' + q[0][1] : ''}</span></summary>
+      <table class="full-res-table"><thead><tr><th style="width:28px;">#</th><th>${ct('colDrv')}</th><th>${ct('colBest')}</th></tr></thead><tbody>`;
+    q.forEach((row, i) => {
+      const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
+      h += `<tr class="${pc}"><td>${i + 1}</td><td>${campName(row[0], false)}</td><td style="font-size:13px;">${row[1]}</td></tr>`;
+    });
+    h += `</tbody></table></details>`;
+  });
+
+  // следующая гонка
+  h += `<div class="card" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+    <div style="flex:1;font-size:13px;line-height:1.4;">🔋 ${ct('next')}</div>
+    <button class="btn-reg" style="width:auto;margin:0;padding:10px 14px;font-size:13px;" onclick="goNextRace()">${ct('nextBtn')}</button>
+  </div>`;
+
+  h += `</div>`;
+  wrap.innerHTML = h;
+}
+
+// «Записаться» со страницы итогов → вкладка «Ближайшие», эндуранс
+function goNextRace() {
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  _evId = 'endurance-nov'; _slideIdx = 0;
+  const btn = document.getElementById('tab-btn-race');
+  if (btn) switchTab('race', btn);
+  renderRaceTab();
+  window.scrollTo(0, 0);
+}
+// Кнопка «Итоги Campera» на вкладке «Ближайшие» и прямая ссылка #campera
+function openCampResults() {
+  const btn = document.getElementById('tab-btn-mega');
+  if (btn) switchTab('mega', btn);
+  window.scrollTo(0, 0);
+}
+
+renderCampera();
+window.CAMP_READY = true;
+renderRaceTab();
 
 // первичная маршрутизация (если открыли по прямой ссылке #vote / #feedback)
 routeHash();
