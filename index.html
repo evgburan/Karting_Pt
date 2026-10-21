@@ -5811,6 +5811,9 @@ renderRaceTab();
 // первичная маршрутизация (если открыли по прямой ссылке #vote / #feedback)
 routeHash();
 
+// язык по ссылке: racechat.pt/?lang=en или ?lang=pt
+{ const ql = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(); if (ql === 'en' || ql === 'pt') setLang(ql); }
+
 </script>
 </body>
 </html>
