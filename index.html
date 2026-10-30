@@ -3020,7 +3020,7 @@ const EVENTS = [
         eyebrow: '🔋 Эндуранс в Палмеле',
         desc: [
           '📅 <strong>1 ноября, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Карты <strong>Sodi RT-10 390cc</strong>.',
-          '⏱️ <strong>15 минут квалификации + 50 минут гонки</strong>. Обязательно: <strong>1 пит-стоп</strong> (минимум 3 минуты в боксах) и <strong>1 джокер-круг</strong> — проезд по пит-лейну без смены карта.',
+          '⏱️ <strong>15 минут квалификации + 50 минут гонки</strong>. Обязательно: <strong>пит-стоп в окно с 25-й по 30-ю минуту</strong> (горит зелёный — заезжаете и меняетесь пилотами) и <strong>1 джокер</strong> — проезд по пит-лейну с остановкой.',
           '🏆 <strong>Три зачёта:</strong> общий, пилоты из жеребьёвки и Iron Man.',
         ],
         modes: {
@@ -3029,8 +3029,8 @@ const EVENTS = [
           ironman: { ico: '🦾', t: 'Iron Man', d: 'Один пилот на всю гонку.' },
         },
         rules: [
-          ['Пит', '1 обязательный пит-стоп — минимум 3 минуты в боксах'],
-          ['Джокер', '1 обязательный джокер-круг — проезд по пит-лейну без смены карта'],
+          ['Пит', 'Пит-окно с 25-й по 30-ю минуту гонки: горит зелёный, заезжаете в боксы и меняетесь пилотами. Без ограничения по времени'],
+          ['Джокер', '1 обязательный джокер на команду — проезд по пит-лейну с остановкой и выездом'],
         ],
       },
       pt: {
@@ -3038,7 +3038,7 @@ const EVENTS = [
         eyebrow: '🔋 Endurance em Palmela',
         desc: [
           '📅 <strong>1 de novembro, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Karts <strong>Sodi RT-10 390cc</strong>.',
-          '⏱️ <strong>15 min de qualificação + 50 min de corrida</strong>. Obrigatório: <strong>1 paragem nas boxes</strong> (mínimo 3 minutos) e <strong>1 volta joker</strong> — passagem pelo pit lane sem troca de kart.',
+          '⏱️ <strong>15 min de qualificação + 50 min de corrida</strong>. Obrigatório: <strong>paragem nas boxes na janela entre o minuto 25 e 30</strong> (luz verde — entram e trocam de piloto) e <strong>1 joker</strong> — passagem pelo pit lane com paragem.',
           '🏆 <strong>Três classificações:</strong> geral, pilotos do sorteio e Iron Man.',
         ],
         modes: {
@@ -3047,8 +3047,8 @@ const EVENTS = [
           ironman: { ico: '🦾', t: 'Iron Man', d: 'Um piloto para a corrida inteira.' },
         },
         rules: [
-          ['Box', '1 paragem obrigatória nas boxes — mínimo 3 minutos'],
-          ['Joker', '1 volta joker obrigatória — passagem pelo pit lane sem troca de kart'],
+          ['Box', 'Janela de boxes entre o minuto 25 e 30 da corrida: luz verde, entram nas boxes e trocam de piloto. Sem tempo mínimo'],
+          ['Joker', '1 joker obrigatório por equipa — passagem pelo pit lane com paragem e saída'],
         ],
       },
       en: {
@@ -3056,7 +3056,7 @@ const EVENTS = [
         eyebrow: '🔋 Endurance at Palmela',
         desc: [
           '📅 <strong>1 November, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. <strong>Sodi RT-10 390cc</strong> karts.',
-          '⏱️ <strong>15 min qualifying + 50 min race</strong>. Mandatory: <strong>1 pit stop</strong> (at least 3 minutes in the pits) and <strong>1 joker lap</strong> — a pit-lane drive-through without changing karts.',
+          '⏱️ <strong>15 min qualifying + 50 min race</strong>. Mandatory: <strong>a pit stop in the window from minute 25 to 30</strong> (green light — come in and swap drivers) and <strong>1 joker</strong> — a pit-lane pass with a stop.',
           '🏆 <strong>Three standings:</strong> overall, drafted drivers and Iron Man.',
         ],
         modes: {
@@ -3065,8 +3065,8 @@ const EVENTS = [
           ironman: { ico: '🦾', t: 'Iron Man', d: 'One driver for the whole race.' },
         },
         rules: [
-          ['Pit', '1 mandatory pit stop — at least 3 minutes in the pits'],
-          ['Joker', '1 mandatory joker lap — a pit-lane drive-through without changing karts'],
+          ['Pit', 'Pit window from minute 25 to 30 of the race: green light, come into the pits and swap drivers. No minimum time'],
+          ['Joker', '1 mandatory joker per team — a pit-lane pass with a stop and exit'],
         ],
       },
     },
