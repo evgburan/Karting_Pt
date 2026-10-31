@@ -898,7 +898,7 @@ const I18N = {
 // ── i18n для скрытых страниц (голосование + отзыв) ──
 Object.assign(I18N.ru, {
   vote_back: 'Катаемся Чатом',
-  vote_eyebrow: 'Campera · Safety Rating',
+  vote_eyebrow: 'Палмела · Safety Rating',
   vote_title: 'Safety Rating',
   vote_intro: 'Оцени, с кем тебе было чисто бороться на трассе, а к кому есть вопросы по вождению. 🟢 — чисто поборолись, 🟡 — есть вопросы. Можно оценить не всех — только тех, с кем реально пересекался. Голос анонимный, ник нужен только чтобы не голосовать дважды.',
   vote_tg_lbl: 'Твой Telegram (чтобы не голосовать дважды)',
@@ -913,7 +913,7 @@ Object.assign(I18N.ru, {
   vote_done_sub: 'Спасибо. Результаты объявим после подсчёта.',
   vote_closed: 'Голосование откроется сразу после гонки 🏁', fb_closed: 'Отзыв можно будет оставить сразу после гонки 🏁',
   fb_back: 'Катаемся Чатом',
-  fb_eyebrow: 'Campera · Отзыв',
+  fb_eyebrow: 'Палмела · Отзыв',
   fb_title: 'Как тебе гонка?',
   fb_intro: 'Анонимный отзыв о мероприятии. Помоги сделать следующие гонки лучше — пара минут.',
   fb_liked_lbl: 'Что понравилось? Что сохранять?',
@@ -926,7 +926,7 @@ Object.assign(I18N.ru, {
 });
 Object.assign(I18N.pt, {
   vote_back: 'Kataemsya Chatom',
-  vote_eyebrow: 'Campera · Safety Rating',
+  vote_eyebrow: 'Palmela · Safety Rating',
   vote_title: 'Safety Rating',
   vote_intro: 'Avalia com quem foi limpo competir e com quem há dúvidas na condução. 🟢 — corrida limpa, 🟡 — há dúvidas. Não precisas avaliar todos — só aqueles com quem realmente lutaste. O voto é anónimo, o nick serve apenas para não votares duas vezes.',
   vote_tg_lbl: 'O teu Telegram (para não votar duas vezes)',
@@ -941,7 +941,7 @@ Object.assign(I18N.pt, {
   vote_done_sub: 'Obrigado. Os resultados serão anunciados após a contagem.',
   vote_closed: 'A votação abre logo após a corrida 🏁', fb_closed: 'O feedback abre logo após a corrida 🏁',
   fb_back: 'Kataemsya Chatom',
-  fb_eyebrow: 'Campera · Feedback',
+  fb_eyebrow: 'Palmela · Feedback',
   fb_title: 'Que tal a corrida?',
   fb_intro: 'Feedback anónimo sobre o evento. Ajuda-nos a melhorar as próximas corridas — leva dois minutos.',
   fb_liked_lbl: 'O que gostaste? O que manter?',
@@ -954,7 +954,7 @@ Object.assign(I18N.pt, {
 });
 Object.assign(I18N.en, {
   vote_back: 'Kataemsya Chatom',
-  vote_eyebrow: 'Campera · Safety Rating',
+  vote_eyebrow: 'Palmela · Safety Rating',
   vote_title: 'Safety Rating',
   vote_intro: 'Rate who you raced cleanly against and who you have questions about. 🟢 — clean racing, 🟡 — questions. You don\'t have to rate everyone — only those you actually battled. The vote is anonymous; your handle is only used to prevent double voting.',
   vote_tg_lbl: 'Your Telegram (to prevent double voting)',
@@ -969,7 +969,7 @@ Object.assign(I18N.en, {
   vote_done_sub: 'Thanks. Results will be announced after counting.',
   vote_closed: 'Voting opens right after the race 🏁', fb_closed: 'Feedback opens right after the race 🏁',
   fb_back: 'Kataemsya Chatom',
-  fb_eyebrow: 'Campera · Feedback',
+  fb_eyebrow: 'Palmela · Feedback',
   fb_title: 'How was the race?',
   fb_intro: 'Anonymous feedback about the event. Help us make the next races better — takes two minutes.',
   fb_liked_lbl: 'What did you like? What to keep?',
@@ -3839,10 +3839,10 @@ function voteKey(r) { return (r.handle ? r.handle.replace('@','').toLowerCase() 
 //   1) результаты этапа в RACES (когда протокол уже залит);
 //   2) фиксированный список участников VOTE_ROSTERS (сразу после гонки);
 //   3) регистрации (fallback).
-const VOTE_RACE_ID = 'campera-oct';
+const VOTE_RACE_ID = 'endurance-nov';
 // ⬇ До этого времени #vote и #feedback показывают «откроется после гонки».
 //   Посмотреть заранее: racechat.pt/?preview#vote (или ?preview#feedback).
-const VOTE_OPENS_AT = '2026-10-18T15:30:00+01:00';
+const VOTE_OPENS_AT = '2026-11-01T14:30:00+00:00';
 function voteIsOpen() {
   return /[?&]preview\b/.test(location.search) || Date.now() >= new Date(VOTE_OPENS_AT).getTime();
 }
@@ -3870,6 +3870,8 @@ function applyVoteGate(page) {
 const VOTE_ROSTERS = {
   // Campera 18.10: пусто = голосуем по регистрациям. После гонки сюда — фактический состав (кто реально ехал).
   'campera-oct': [],
+  // Эндуранс Палмела 01.11: пусто = голосуем по регистрациям (команды раскладываются на двух пилотов).
+  'endurance-nov': [],
   'batalha-sep': [
     { name: 'Renat Ashrafedinov', handle: '@renatashrafedinov' },
     { name: 'Alexander Ilyushin',  handle: '@IlyushinAS' },
@@ -3894,7 +3896,13 @@ const VOTE_ROSTERS = {
 function normName(s) { return (s || '').toLowerCase().replace(/[^a-zа-яё]+/gi, ' ').trim(); }
 
 // Регистрации гонки, за которую голосуем (новые ивенты — REGS, Batalha — LEGACY_REGS)
-function voteRegs() { return VOTE_RACE_ID === 'batalha-sep' ? LEGACY_REGS : (REGS[VOTE_RACE_ID] || []); }
+function voteRegs() {
+  const list = VOTE_RACE_ID === 'batalha-sep' ? LEGACY_REGS : (REGS[VOTE_RACE_ID] || []);
+  // Эндуранс: строка «Команда» = два пилота, напарник голосуется отдельно
+  return list.flatMap(r => r.mode === 'team' && r.mate
+    ? [r, { name: r.mate, handle: r.mateHandle || '', hideHandle: false, photoUrl: null }]
+    : [r]);
+}
 
 // Дотягиваем handle / hideHandle из регистраций: по хэндлу, по полному имени,
 // иначе по фамилии — но только если совпадение единственное.
