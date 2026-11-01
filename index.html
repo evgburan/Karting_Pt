@@ -3246,6 +3246,9 @@ function renderRaceTab() {
       <span class="res-banner-txt"><span class="res-banner-t">${et('bannerT')}</span><span class="res-banner-s">${et('bannerS')}</span></span>
       <span class="res-banner-go">→</span></button>` : '';
   if (!list.length) {
+    // нет ближайших гонок → на главной висят свежие итоги
+    if (window.END_READY) { wrap.innerHTML = `<div style="margin:-14px -14px 0;">${endHtml()}</div>` + `<div class="card" style="text-align:center;padding:18px 16px;color:var(--muted);font-size:13px;line-height:1.5;margin-top:4px;">${t('upcoming_none')}
+      <a class="ev-chat-link" style="margin-top:12px;" href="${CHAT_URL}" target="_blank" rel="noopener">${TG_ICON} ${t('follow_chat')}</a></div>`; return; }
     wrap.innerHTML = banner + `<div class="card" style="text-align:center;padding:24px 16px;color:var(--muted);font-size:14px;line-height:1.5;">${t('upcoming_none')}
       <a class="ev-chat-link" style="margin-top:14px;" href="${CHAT_URL}" target="_blank" rel="noopener">${TG_ICON} ${t('follow_chat')}</a></div>`;
     return;
@@ -5937,7 +5940,9 @@ function endWho(r, small) {
 
 function renderEndurance() {
   const wrap = document.getElementById('end-wrap');
-  if (!wrap) return;
+  if (wrap) wrap.innerHTML = endHtml();
+}
+function endHtml() {
   const medals = ['🥇', '🥈', '🥉'];
   const fl = '<span class="fl-badge">FL</span>';
   const lbl = txt => `<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:4px 0 10px;">${txt}</div>`;
@@ -6031,7 +6036,7 @@ function renderEndurance() {
     <div style="flex:1;font-size:13px;line-height:1.4;">🤝 ${et('next')}</div>
     <a href="#vote" class="btn-reg" style="width:auto;margin:0;padding:10px 14px;font-size:13px;text-decoration:none;">→</a></div>`;
   h += `</div>`;
-  wrap.innerHTML = h;
+  return h;
 }
 
 renderEndurance();
