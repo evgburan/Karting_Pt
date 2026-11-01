@@ -435,7 +435,8 @@
   <!-- ── ИТОГИ: Спринты в Кампере 18.10 (renderCampera, CAMP) · Batalha — во «Прошедших» ── -->
   <!-- Контент рисует renderMega() из данных MEGA (внизу файла). -->
   <div class="inner-panel" id="tab-mega">
-    <div id="camp-wrap"></div>
+    <div id="end-wrap"></div>
+    <div id="camp-wrap" style="display:none"></div>
     <div id="mega-wrap" style="display:none"></div>
   </div>
 
@@ -1174,6 +1175,7 @@ function setLang(lang) {
   renderLastRace();
   if (typeof renderMega === 'function') renderMega();
   if (window.CAMP_READY) renderCampera();
+  if (window.END_READY) renderEndurance();
   const nomEl2 = document.getElementById('nominations-block');
   if (nomEl2) nomEl2.innerHTML = renderNominations();
   if (typeof renderVoteList === 'function') renderVoteList();
@@ -1193,6 +1195,7 @@ const RACE_PHOTOS = {
   'kiro': 'photos/campera-race.jpg',
   'campera': 'photos/campera.jpg',
   'campera_oct': 'photos/campera-oct-podium.jpg',
+  'palmela_nov': 'photos/palmela-group.jpg',
   'almeirim_podium': 'photos/almeirim-podium.jpg',
   'batalha_podium': 'photos/batalha-podium.jpg',
 };
@@ -1248,6 +1251,7 @@ const BEGINNERS = {
     'elfin13',             // Victor Y
     'riskingh',            // Maksim Grishkin
   ]),
+  'endurance-nov': new Set([]),
   'campera-oct': new Set([
     'ilikru',              // Ilia Nikolaev
   ]),
@@ -1478,7 +1482,46 @@ const RACES = [
           { pos:8,  name:'Igor Arkhangelskii', handle:'@Igor A',             r1:null,          r2:16,            total:16 },
           { pos:9,  name:'Vladimir Kirienko',  handle:'@vladimir_sourcerer', r1:8,             r2:7,             total:15 },
           { pos:10, name:'Ilia Nikolaev',      handle:'@ilikru',             r1:7,             r2:6,             total:13 },
-          { pos:11, name:'Vinicius',           handle:'',                    r1:6,             r2:5,             total:11 },
+          { pos:11, name:'Vinicius Frezza do Nascimento', handle:'',                    r1:6,             r2:5,             total:11 },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'endurance-nov',
+    chipLabel: '1 Ноя · Palmela',
+    date: '1 ноября 2026',
+    location: 'KIP Palmela',
+    photo: 'palmela_nov',
+    // Эндуранс 50 мин: очки за место команды обоим пилотам, +1 лучший круг гонки обоим. Штрафы KIP (−1 круг) учтены.
+    groups: [
+      {
+        label: null,
+        results: [
+          { pos:1, name:"Miguel Bento", handle:"", r1:25, r1fl:true, r2:null, total:26 },  // Team 10
+          { pos:1, name:"Ailton Donadony", handle:"", r1:25, r1fl:true, r2:null, total:26 },  // Team 10
+          { pos:2, name:"Andrei Musinov", handle:"@AndreyM43", r1:20, r2:null, total:20 },  // Andrei Musinov
+          { pos:3, name:"Sergei Shaliapin", handle:"@Sergei_Shaliapin", r1:16, r2:null, total:16 },  // HWBT
+          { pos:3, name:"Dmitrii Smirnov", handle:"@mitkas", r1:16, r2:null, total:16 },  // HWBT
+          { pos:4, name:"Alex Bash", handle:"@bashalex0100", r1:13, r2:null, total:13 },  // Alex Bash
+          { pos:5, name:"Henriikh Hruz", handle:"@uzlos", r1:11, r2:null, total:11 },  // Henriikh Hruz
+          { pos:6, name:"Artemy Buran", handle:"@Forza_FERRARII", r1:10, r2:null, total:10 },  // Allo, Buran
+          { pos:6, name:"Evgeny Buran", handle:"@evgenybu", r1:10, r2:null, total:10 },  // Allo, Buran
+          { pos:7, name:"Alexander Ilyushin", handle:"@IlyushinAS", r1:9, r2:null, total:9 },  // Team 4
+          { pos:7, name:"Karen Mkrtchian", handle:"@karen_makaren", r1:9, r2:null, total:9 },  // Team 4
+          { pos:8, name:"Peter Prins", handle:"@peterprins", r1:8, r2:null, total:8 },  // Champions
+          { pos:8, name:"Dimas Calcai", handle:"@dimasccd", r1:8, r2:null, total:8 },  // Champions
+          { pos:9, name:"Yan Zhilkin", handle:"", r1:7, r2:null, total:7 },  // Team 7
+          { pos:9, name:"Sergey Zhilkin", handle:"@zhaklinzhaklinzhaklinzhaklin", r1:7, r2:null, total:7 },  // Team 7
+          { pos:10, name:"Fabrizio Rinaldi", handle:"@linuz90", r1:6, r2:null, total:6 },  // Team 8
+          { pos:10, name:"Dima Bencheci", handle:"@dimabencheci", r1:6, r2:null, total:6 },  // Team 8
+          { pos:11, name:"Aleksandr", handle:"@Leviik", r1:5, r2:null, total:5 },  // Team 5
+          { pos:11, name:"Vladislav Shkutte", handle:"@Moresabbath", r1:5, r2:null, total:5 },  // Team 5
+          { pos:12, name:"VP", handle:"@pultik", r1:4, r2:null, total:4 },  // VP
+          { pos:13, name:"Pavel Orlov", handle:"@Orlov_Pavel_E", r1:3, r2:null, total:3 },  // Partner
+          { pos:13, name:"Renat Ashrafedinov", handle:"@renatashrafedinov", r1:3, r2:null, total:3 },  // Partner
+          { pos:14, name:"Vinicius Frezza do Nascimento", handle:"", r1:3, r2:null, total:3 },  // Frezza
+          { pos:14, name:"Octávio Frezza do Nascimento", handle:"", r1:3, r2:null, total:3 },  // Frezza
         ]
       }
     ]
@@ -1986,6 +2029,7 @@ const STANDINGS_EVENTS = [
   { raceId:'almeirim-jun', begId:'almeirim',     label:'Almeirim 06.06', shortDate:'6 июн',  ptsFix: fixModernBase },
   { raceId:'batalha-sep',  begId:'batalha',      label:'Batalha 19.09',  shortDate:'19 сен', ptsFix: fixModernBase },
   { raceId:'campera-oct',  begId:'campera-oct',  label:'Campera 18.10',  shortDate:'18 окт', ptsFix: fixModernBase },
+  { raceId:'endurance-nov', begId:'endurance-nov', label:'Палмела 01.11', shortDate:'1 ноя', ptsFix: fixModernBase },
 ];
 
 function ptsFixFor(raceId) {
@@ -2997,6 +3041,7 @@ const EVENTS = [
     id: 'endurance-nov',
     kind: 'endurance',
     status: 'open',
+    done: true,         // прошла 01.11 — итоги на #palmela
     start: '2026-11-01T13:00:00+00:00',
     venue: 'KIP Palmela',
     logo: 'photos/venue-kip.png',
@@ -3196,8 +3241,12 @@ function renderRaceTab() {
   const wrap = document.getElementById('race-wrap');
   if (!wrap) return;
   const list = visibleEvents();
+  const banner = window.END_READY ? `<button class="res-banner" onclick="openCampResults('end')">
+      <span class="res-banner-ico">🏁</span>
+      <span class="res-banner-txt"><span class="res-banner-t">${et('bannerT')}</span><span class="res-banner-s">${et('bannerS')}</span></span>
+      <span class="res-banner-go">→</span></button>` : '';
   if (!list.length) {
-    wrap.innerHTML = `<div class="card" style="text-align:center;padding:24px 16px;color:var(--muted);font-size:14px;line-height:1.5;">${t('upcoming_none')}
+    wrap.innerHTML = banner + `<div class="card" style="text-align:center;padding:24px 16px;color:var(--muted);font-size:14px;line-height:1.5;">${t('upcoming_none')}
       <a class="ev-chat-link" style="margin-top:14px;" href="${CHAT_URL}" target="_blank" rel="noopener">${TG_ICON} ${t('follow_chat')}</a></div>`;
     return;
   }
@@ -3206,10 +3255,7 @@ function renderRaceTab() {
   const isEnd = ev.kind === 'endurance';
 
   // 0 · Итоги прошедшей гонки (кнопка → вкладка «Итоги»)
-  let h = window.CAMP_READY ? `<button class="res-banner" onclick="openCampResults()">
-      <span class="res-banner-ico">🏁</span>
-      <span class="res-banner-txt"><span class="res-banner-t">${ct('bannerT')}</span><span class="res-banner-s">${ct('bannerS')}</span></span>
-      <span class="res-banner-go">→</span></button>` : '';
+  let h = banner;
   // 1 · Кнопки ивентов
   h += '<div class="ev-picker">' + list.map(e => {
     const ew = evWhen(e), es = evState(e);
@@ -3810,11 +3856,11 @@ function routeHash() {
     if (h === 'safety') renderSafetyResults();
   } else {
     if (nav) nav.style.display = 'flex';
-    if (h === 'campera') {
+    if (h === 'campera' || h === 'palmela') {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-main').classList.add('active');
       document.querySelectorAll('.bnav-item').forEach((b, i) => b.classList.toggle('active', i === 0));
-      openCampResults();
+      openCampResults(h === 'campera' ? 'camp' : 'end');
       return;
     }
     const hidden = document.getElementById('page-vote').classList.contains('active') ||
@@ -5649,7 +5695,7 @@ const CAMP = {
     igor:   { name: 'Igor Arkhangelskii', handle: '@Igor A' },
     vova:   { name: 'Vladimir Kirienko',  handle: '@vladimir_sourcerer' },
     ilia:   { name: 'Ilia Nikolaev',      handle: '@ilikru', beg: true },
-    vini:   { name: 'Vinicius',           handle: '' },
+    vini:   { name: 'Vinicius Frezza do Nascimento', handle: '' },
   },
   // итог этапа: [ключ, очки Г1, очки Г2, сумма]
   total: [
@@ -5786,10 +5832,10 @@ function renderCampera() {
     h += `</tbody></table></details>`;
   });
 
-  // следующая гонка
+  // свежие итоги
   h += `<div class="card" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-    <div style="flex:1;font-size:13px;line-height:1.4;">🔋 ${ct('next')}</div>
-    <button class="btn-reg" style="width:auto;margin:0;padding:10px 14px;font-size:13px;" onclick="goNextRace()">${ct('nextBtn')}</button>
+    <div style="flex:1;font-size:13px;line-height:1.4;">🔋 ${et('bannerT')}</div>
+    <button class="btn-reg" style="width:auto;margin:0;padding:10px 14px;font-size:13px;" onclick="openCampResults('end')">→</button>
   </div>`;
 
   h += `</div>`;
@@ -5806,12 +5852,190 @@ function goNextRace() {
   window.scrollTo(0, 0);
 }
 // Кнопка «Итоги Campera» на вкладке «Ближайшие» и прямая ссылка #campera
-function openCampResults() {
+function openCampResults(which) {
+  const camp = which === 'camp';
+  const cw = document.getElementById('camp-wrap'), ew = document.getElementById('end-wrap');
+  if (cw) cw.style.display = camp ? '' : 'none';
+  if (ew) ew.style.display = camp ? 'none' : '';
   const btn = document.getElementById('tab-btn-mega');
   if (btn) switchTab('mega', btn);
   window.scrollTo(0, 0);
 }
 
+
+// ════════════════════════════════════════════════════════════
+//  ИТОГИ · Эндуранс в Палмеле 01.11.2026  (вкладка «Итоги», прямая ссылка racechat.pt/#palmela)
+//  Очки: место команды → обоим пилотам (25/20/16/…/4, дальше 3), +1 лучший круг гонки обоим.
+//  Протокол и штрафы — KIP (Apex). Статистика посчитана по круговке.
+// ════════════════════════════════════════════════════════════
+const END = {"rows": [{"k": "t10", "kart": 82, "name": "Team 10", "kind": "team", "m": [["Miguel Bento", ""], ["Ailton Donadony", ""]], "laps": 46, "gap": "", "best": "1:03.218", "pts": 26, "pen": "", "pace": "1:03.786", "sd": 0.45, "loss": 79, "q": 1, "s1": "1:03.477", "s2": "1:04.200"}, {"k": "andrei", "kart": 57, "name": "Andrei Musinov", "kind": "iron", "m": [["Andrei Musinov", "@AndreyM43"]], "laps": 46, "gap": "+39.442", "best": "1:04.013", "pts": 20, "pen": "", "pace": "1:04.479", "sd": 0.69, "loss": 86, "q": 3, "s1": "1:04.497", "s2": "1:04.443"}, {"k": "hwbt", "kart": 83, "name": "HWBT", "kind": "team", "m": [["Sergei Shaliapin", "@Sergei_Shaliapin"], ["Dmitrii Smirnov", "@mitkas"]], "laps": 46, "gap": "+10.146", "best": "1:04.030", "pts": 16, "pen": "", "pace": "1:04.854", "sd": 0.52, "loss": 79, "q": 4, "s1": "1:04.580", "s2": "1:05.186"}, {"k": "bash", "kart": 74, "name": "Alex Bash", "kind": "iron", "m": [["Alex Bash", "@bashalex0100"]], "laps": 46, "gap": "+9.366", "best": "1:04.299", "pts": 13, "pen": "", "pace": "1:05.087", "sd": 0.74, "loss": 78, "q": 5, "s1": "1:05.336", "s2": "1:04.901"}, {"k": "henri", "kart": 67, "name": "Henriikh Hruz", "kind": "iron", "m": [["Henriikh Hruz", "@uzlos"]], "laps": 45, "gap": "+1 lap", "best": "1:04.684", "pts": 11, "pen": "", "pace": "1:05.376", "sd": 0.53, "loss": 78, "q": 10, "s1": "1:05.650", "s2": "1:05.310"}, {"k": "buran", "kart": 47, "name": "Allo, Buran", "kind": "team", "m": [["Artemy Buran", "@Forza_FERRARII"], ["Evgeny Buran", "@evgenybu"]], "laps": 45, "gap": "+2.031", "best": "1:04.309", "pts": 10, "pen": "", "pace": "1:04.967", "sd": 0.66, "loss": 100, "q": 6, "s1": "1:05.244", "s2": "1:04.676"}, {"k": "t4", "kart": 72, "name": "Team 4", "kind": "team", "m": [["Alexander Ilyushin", "@IlyushinAS"], ["Karen Mkrtchian", "@karen_makaren"]], "laps": 45, "gap": "+22.959", "best": "1:05.106", "pts": 9, "pen": "", "pace": "1:05.957", "sd": 0.49, "loss": 77, "q": 11, "s1": "1:05.700", "s2": "1:06.179"}, {"k": "champ", "kart": 46, "name": "Champions", "kind": "team", "m": [["Peter Prins", "@peterprins"], ["Dimas Calcai", "@dimasccd"]], "laps": 45, "gap": "+17.846", "best": "1:03.548", "pts": 8, "pen": "", "pace": "1:04.514", "sd": 0.43, "loss": 162, "q": 2, "s1": "1:04.192", "s2": "1:04.821"}, {"k": "t7", "kart": 71, "name": "Team 7", "kind": "team", "m": [["Yan Zhilkin", ""], ["Sergey Zhilkin", "@zhaklinzhaklinzhaklinzhaklin"]], "laps": 44, "gap": "+1 lap", "best": "1:05.250", "pts": 7, "pen": "", "pace": "1:06.552", "sd": 0.83, "loss": 84, "q": 13, "s1": "1:07.169", "s2": "1:06.047"}, {"k": "t8", "kart": 65, "name": "Team 8", "kind": "draft", "m": [["Fabrizio Rinaldi", "@linuz90"], ["Dima Bencheci", "@dimabencheci"]], "laps": 44, "gap": "+34.315", "best": "1:04.142", "pts": 6, "pen": "joker", "pace": "1:06.240", "sd": 2.06, "loss": 71, "q": 8, "s1": "1:04.741", "s2": "1:08.444"}, {"k": "t5", "kart": 84, "name": "Team 5", "kind": "draft", "m": [["Aleksandr", "@Leviik"], ["Vladislav Shkutte", "@Moresabbath"]], "laps": 44, "gap": "+3.442", "best": "1:04.275", "pts": 5, "pen": "joker", "pace": "1:05.786", "sd": 1.35, "loss": 92, "q": 7, "s1": "1:06.972", "s2": "1:04.707"}, {"k": "vp", "kart": 70, "name": "VP", "kind": "iron", "m": [["VP", "@pultik"]], "laps": 43, "gap": "+1 lap", "best": "1:05.438", "pts": 4, "pen": "", "pace": "1:06.685", "sd": 1.3, "loss": 167, "q": 12, "s1": "1:06.707", "s2": "1:06.673"}, {"k": "partner", "kart": 54, "name": "Partner", "kind": "team", "m": [["Pavel Orlov", "@Orlov_Pavel_E"], ["Renat Ashrafedinov", "@renatashrafedinov"]], "laps": 42, "gap": "+1 lap", "best": "1:04.322", "pts": 3, "pen": "", "pace": "1:09.631", "sd": 4.18, "loss": 92, "q": 9, "s1": "1:05.280", "s2": "1:13.153"}, {"k": "frezza", "kart": 87, "name": "Frezza", "kind": "team", "m": [["Vinicius Frezza do Nascimento", ""], ["Octávio Frezza do Nascimento", ""]], "laps": 40, "gap": "+2 laps", "best": "1:07.807", "pts": 3, "pen": "", "pace": "1:10.087", "sd": 2.23, "loss": 256, "q": 14, "s1": "1:09.517", "s2": "1:10.123"}], "qual": [["t10", "1:03.270"], ["champ", "1:03.944"], ["andrei", "1:04.102"], ["hwbt", "1:04.238"], ["bash", "1:04.303"], ["buran", "1:04.484"], ["t5", "1:04.598"], ["t8", "1:04.862"], ["partner", "1:04.866"], ["henri", "1:05.246"], ["t4", "1:05.313"], ["vp", "1:06.020"], ["t7", "1:07.087"], ["frezza", "1:09.076"]]};
+END.date = '1 ноября 2026';
+END.venue = 'KIP · Kartódromo Internacional de Palmela';
+END.fl = { k: 't10', time: '1:03.218' };
+
+const END_T = {
+  ru: { eyebrow: 'Итоги', title: 'Эндуранс в Палмеле', bannerT: 'Итоги: Эндуранс в Палмеле', bannerS: '🥇 Team 10 · 🥈 Andrei Musinov · 🥉 HWBT',
+        pilots: 'пилотов', karts: 'картов', race: '50 мин', vote: 'Чистота борьбы',
+        podium: 'Подиумы', pAbs: 'Общий', pIron: 'Iron Man', pDraft: 'Жеребьёвка',
+        resTitle: 'Итоговый протокол', resNote: 'Очки за место команды получают оба пилота: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3. +1 за лучший круг гонки — обоим. Штрафы KIP учтены.',
+        colTeam: 'Команда', colLaps: 'Кр.', colGap: 'Интервал', colBest: 'Лучший', colPts: 'Очки',
+        pen: '−1 круг: нет второго джокера', lapsW: 'кр.', iron: 'Iron Man', draft: 'жеребьёвка',
+        stats: 'Статистика гонки', sPace: 'Чистый темп', sPaceN: 'Средний круг без первого круга, питов и джокеров.',
+        sCons: 'Стабильность', sConsN: 'Разброс чистых кругов: чем меньше, тем ровнее ехали.',
+        sPit: 'Пит-стоп и джокеры', sPitN: 'Сколько секунд суммарно ушло на пит и джокеры сверх обычного круга.',
+        sGain: 'Прорыв дня', sGainN: 'Позиция в квалификации → финиш.', sStint: 'Темп по стинтам', sStintN: 'Средний круг до пит-стопа и после.',
+        s1: 'до пита', s2: 'после', sec: 'сек', qualy: 'Квалификация · 15 мин', story: 'Главное',
+        st1: 'Team 10 — 29 кругов быстрее 1:04. Больше ни у кого, кроме Champions (7).',
+        st2: 'Andrei Musinov — 2-е место в одиночку, впереди всех команд кроме победителей.',
+        st3: 'Champions — второй темп гонки, но 3 минуты на пит-стопе отбросили их на 8-е место.',
+        st4: 'Henriikh Hruz — с 10-го места квалификации на 5-е в финише.',
+        gallery: 'Фото', next: 'Голосуй за чистоту борьбы и оставь отзыв — пара минут.' },
+  pt: { eyebrow: 'Resultados', title: 'Endurance em Palmela', bannerT: 'Resultados: Endurance em Palmela', bannerS: '🥇 Team 10 · 🥈 Andrei Musinov · 🥉 HWBT',
+        pilots: 'pilotos', karts: 'karts', race: '50 min', vote: 'Corrida limpa',
+        podium: 'Pódios', pAbs: 'Geral', pIron: 'Iron Man', pDraft: 'Sorteio',
+        resTitle: 'Classificação final', resNote: 'Os pontos da posição da equipa vão para os dois pilotos: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3. +1 pela melhor volta, para os dois. Penalizações do KIP incluídas.',
+        colTeam: 'Equipa', colLaps: 'V.', colGap: 'Intervalo', colBest: 'Melhor', colPts: 'Pts',
+        pen: '−1 volta: falta o segundo joker', lapsW: 'v.', iron: 'Iron Man', draft: 'sorteio',
+        stats: 'Estatísticas', sPace: 'Ritmo limpo', sPaceN: 'Volta média sem a 1.ª volta, boxes e jokers.',
+        sCons: 'Consistência', sConsN: 'Dispersão das voltas limpas: quanto menor, mais regular.',
+        sPit: 'Boxes e jokers', sPitN: 'Segundos perdidos nas boxes e jokers face a uma volta normal.',
+        sGain: 'Subida do dia', sGainN: 'Posição na qualificação → final.', sStint: 'Ritmo por stint', sStintN: 'Volta média antes e depois da paragem.',
+        s1: 'antes', s2: 'depois', sec: 's', qualy: 'Qualificação · 15 min', story: 'Destaques',
+        st1: 'Team 10 — 29 voltas abaixo de 1:04. Ninguém mais, exceto Champions (7).',
+        st2: 'Andrei Musinov — 2.º lugar sozinho, à frente de todas as equipas menos os vencedores.',
+        st3: 'Champions — segundo melhor ritmo, mas 3 minutos nas boxes deixaram-nos em 8.º.',
+        st4: 'Henriikh Hruz — do 10.º lugar na qualificação para 5.º no final.',
+        gallery: 'Fotos', next: 'Vota na corrida limpa e deixa o teu feedback — dois minutos.' },
+  en: { eyebrow: 'Results', title: 'Palmela Endurance', bannerT: 'Results: Palmela Endurance', bannerS: '🥇 Team 10 · 🥈 Andrei Musinov · 🥉 HWBT',
+        pilots: 'drivers', karts: 'karts', race: '50 min', vote: 'Clean racing',
+        podium: 'Podiums', pAbs: 'Overall', pIron: 'Iron Man', pDraft: 'Draw',
+        resTitle: 'Final classification', resNote: 'Team position points go to both drivers: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3. +1 for the race fastest lap, to both. KIP penalties included.',
+        colTeam: 'Team', colLaps: 'Laps', colGap: 'Interval', colBest: 'Best', colPts: 'Pts',
+        pen: '−1 lap: second joker missing', lapsW: 'laps', iron: 'Iron Man', draft: 'draw',
+        stats: 'Race stats', sPace: 'Clean pace', sPaceN: 'Average lap without lap 1, pit stop and jokers.',
+        sCons: 'Consistency', sConsN: 'Spread of clean laps: lower means steadier.',
+        sPit: 'Pit stop and jokers', sPitN: 'Seconds spent on the pit stop and jokers beyond a normal lap.',
+        sGain: 'Charge of the day', sGainN: 'Qualifying position → finish.', sStint: 'Pace by stint', sStintN: 'Average lap before and after the pit stop.',
+        s1: 'before', s2: 'after', sec: 's', qualy: 'Qualifying · 15 min', story: 'Highlights',
+        st1: 'Team 10 — 29 laps under 1:04. Nobody else had any, except Champions (7).',
+        st2: 'Andrei Musinov — 2nd on his own, ahead of every team but the winners.',
+        st3: 'Champions — second-best pace, but a 3-minute pit stop dropped them to 8th.',
+        st4: 'Henriikh Hruz — from 10th in qualifying to 5th at the flag.',
+        gallery: 'Photos', next: 'Vote for clean racing and leave feedback — two minutes.' },
+};
+function et(k) { return (END_T[_lang] || END_T.ru)[k]; }
+function endRow(k) { return END.rows.find(r => r.k === k); }
+function endAvatars(r, size) {
+  return `<div class="team-avs">${r.m.map(([n, h]) => avatarDiv(getPhoto(h, n), (n || '?')[0], size)).join('')}</div>`;
+}
+function endWho(r, small) {
+  const tag = r.kind === 'iron' ? ` <span class="ev-beg-badge">${et('iron')}</span>` : r.kind === 'draft' ? ` <span class="ev-beg-badge">${et('draft')}</span>` : '';
+  const sub = r.kind === 'iron' ? visHandle(r.m[0][1], false) : r.m.map(x => x[0]).join(' · ');
+  return `<div style="min-width:0;"><div style="font-size:${small ? 12 : 13}px;font-weight:700;line-height:1.2;">${esc(r.name)}${tag}</div>
+    ${sub ? `<div style="font-size:10px;color:var(--muted);line-height:1.3;">${esc(sub)}</div>` : ''}</div>`;
+}
+
+function renderEndurance() {
+  const wrap = document.getElementById('end-wrap');
+  if (!wrap) return;
+  const medals = ['🥇', '🥈', '🥉'];
+  const fl = '<span class="fl-badge">FL</span>';
+  const lbl = txt => `<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:4px 0 10px;">${txt}</div>`;
+  const chip = txt => `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">${txt}</span>`;
+  const pilots = END.rows.reduce((n, r) => n + r.m.length, 0);
+
+  let h = `<div style="width:100%;aspect-ratio:1400/788;overflow:hidden;background:var(--surface2);">
+    <img src="photos/palmela-group.jpg" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Palmela endurance">
+  </div><div style="padding:14px 14px 0;">`;
+  h += `<div class="page-eyebrow">${et('eyebrow')} · ${esc(translateFullDate(END.date))}</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${et('title')}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(END.venue)}</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${chip(pilots + ' ' + et('pilots'))}${chip(END.rows.length + ' ' + et('karts'))}${chip(et('race'))}${chip('⚡ ' + END.fl.time + ' · ' + esc(endRow(END.fl.k).name))}</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <a href="#vote" class="cta-btn">🤝 ${et('vote')}</a>
+      <a href="#feedback" class="cta-btn">⭐ ${t('cta_feedback')}</a>
+    </div>`;
+
+  // главное
+  h += lbl(et('story')) + `<div class="card" style="display:flex;flex-direction:column;gap:8px;font-size:13px;line-height:1.45;margin-bottom:14px;">
+    ${['st1', 'st2', 'st3', 'st4'].map((k, i) => `<div>${['⚡', '🦾', '⏱️', '🚀'][i]} ${et(k)}</div>`).join('')}</div>`;
+
+  // подиумы
+  const podCard = (title, keys, photo) => `<div class="card" style="padding:0;overflow:hidden;margin-bottom:10px;">
+    ${photo ? `<div style="aspect-ratio:4/3;overflow:hidden;background:var(--surface2);"><img src="${photo}" loading="lazy" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""></div>` : ''}
+    <div style="padding:12px 14px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">${title}</div>
+      ${keys.map((k, i) => { const r = endRow(k); return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;${i ? 'border-top:1px solid var(--border);' : ''}">
+        <div style="font-size:20px;width:26px;">${medals[i]}</div>${endAvatars(r, 30)}${endWho(r)}</div>`; }).join('')}
+    </div></div>`;
+  h += lbl(et('podium'));
+  h += podCard(et('pAbs'), ['t10', 'andrei', 'hwbt'], 'photos/palmela-podium.jpg');
+  h += podCard(et('pIron'), ['andrei', 'bash', 'henri'], 'photos/palmela-ironman.jpg');
+  h += podCard(et('pDraft'), ['t8', 't5'], 'photos/palmela-draft.jpg');
+
+  // протокол
+  h += `<div class="card" style="padding:0;overflow:hidden;margin-top:6px;">
+    <div style="padding:14px 14px 8px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">🏆 ${et('resTitle')}</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">${et('resNote')}</div>
+    </div>
+    <div style="overflow-x:auto;"><table class="full-res-table"><thead><tr>
+      <th style="width:28px;">#</th><th>${et('colTeam')}</th><th>${et('colLaps')}</th><th>${et('colBest')}</th><th>${et('colPts')}</th>
+    </tr></thead><tbody>`;
+  END.rows.forEach((r, i) => {
+    const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
+    h += `<tr class="${pc}"><td>${i < 3 ? medals[i] : i + 1}</td>
+      <td><div style="display:flex;align-items:center;gap:8px;">${endAvatars(r, 24)}${endWho(r, true)}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">#${r.kart}${r.gap ? ' · ' + esc(r.gap.replace('laps', et('lapsW')).replace('lap', et('lapsW'))) : ''}${r.pen ? ` · <span style="color:var(--accent-red);">${et('pen')}</span>` : ''}</div></td>
+      <td style="font-size:13px;">${r.laps}</td>
+      <td style="font-size:12px;white-space:nowrap;">${r.best}${END.fl.k === r.k ? fl : ''}</td>
+      <td style="color:var(--accent-red);">${r.pts}</td></tr>`;
+  });
+  h += `</tbody></table></div></div>`;
+
+  // статистика
+  const bar = (rows, val, fmt, note, lowGood) => {
+    const vals = rows.map(val), mx = Math.max(...vals), mn = Math.min(...vals);
+    return rows.map((r, i) => {
+      const v = val(r), w = lowGood ? 100 - (v - mn) / ((mx - mn) || 1) * 70 : 30 + (v - mn) / ((mx - mn) || 1) * 70;
+      return `<div style="display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:4px 0;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
+        <div style="min-width:0;"><div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(r.name)}</div>
+          <div style="height:4px;border-radius:2px;background:var(--surface2);margin-top:3px;"><div style="height:4px;border-radius:2px;width:${w.toFixed(0)}%;background:${i === 0 ? 'var(--accent-red)' : 'var(--muted2)'};"></div></div></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;">${fmt(r)}</div></div>`;
+    }).join('');
+  };
+  const secs = t => { const [m, x] = t.split(':'); return +m * 60 + +x; };
+  const statBox = (title, note, body) => `<details class="mega-acc"><summary><span>${title}</span></summary><div style="padding:6px 14px 12px;"><div style="font-size:11px;color:var(--muted);line-height:1.4;margin-bottom:6px;">${note}</div>${body}</div></details>`;
+  h += `<div style="margin-top:16px;">${lbl('📊 ' + et('stats'))}`;
+  const byPace = END.rows.slice().sort((a, b) => secs(a.pace) - secs(b.pace));
+  h += statBox('⏱️ ' + et('sPace'), et('sPaceN'), bar(byPace, r => secs(r.pace), r => r.pace, '', true));
+  const byCons = END.rows.slice().sort((a, b) => a.sd - b.sd);
+  h += statBox('🎯 ' + et('sCons'), et('sConsN'), bar(byCons, r => r.sd, r => '±' + r.sd.toFixed(2) + ' ' + et('sec'), '', true));
+  const byPit = END.rows.slice().sort((a, b) => a.loss - b.loss);
+  h += statBox('🔧 ' + et('sPit'), et('sPitN'), bar(byPit, r => r.loss, r => r.loss + ' ' + et('sec'), '', true));
+  const byGain = END.rows.map((r, i) => ({ ...r, fin: i + 1, gain: r.q - (i + 1) })).sort((a, b) => b.gain - a.gain);
+  h += statBox('🚀 ' + et('sGain'), et('sGainN'), byGain.map((r, i) => `<div style="display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:4px 0;font-size:12px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
+      <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(r.name)}</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;">P${r.q} → P${r.fin} <span style="color:${r.gain > 0 ? 'var(--green)' : r.gain < 0 ? 'var(--accent-red)' : 'var(--muted)'};">${r.gain > 0 ? '+' + r.gain : r.gain || '='}</span></div></div>`).join(''));
+  h += statBox('🔁 ' + et('sStint'), et('sStintN'), `<div style="overflow-x:auto;"><table class="full-res-table"><thead><tr><th>${et('colTeam')}</th><th>${et('s1')}</th><th>${et('s2')}</th></tr></thead><tbody>` +
+    END.rows.map(r => { const d = secs(r.s2) - secs(r.s1); return `<tr><td style="font-size:12px;">${esc(r.name)}</td><td style="font-size:12px;">${r.s1}</td><td style="font-size:12px;">${r.s2} <span style="color:${d < 0 ? 'var(--green)' : 'var(--accent-red)'};font-size:10px;">${d < 0 ? '' : '+'}${d.toFixed(2)}</span></td></tr>`; }).join('') + `</tbody></table></div>`);
+  // квалификация
+  h += `<details class="mega-acc"><summary><span>⏱️ ${et('qualy')}</span><span class="mega-acc-hint">⚡ ${END.qual[0][1]}</span></summary>
+    <table class="full-res-table"><thead><tr><th style="width:28px;">#</th><th>${et('colTeam')}</th><th>${et('colBest')}</th></tr></thead><tbody>` +
+    END.qual.map(([k, tm], i) => `<tr class="${i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : ''}"><td>${i + 1}</td><td>${endWho(endRow(k), true)}</td><td style="font-size:13px;">${tm}</td></tr>`).join('') +
+    `</tbody></table></details></div>`;
+
+  h += `<div class="card" style="display:flex;align-items:center;gap:12px;margin:12px 0 16px;">
+    <div style="flex:1;font-size:13px;line-height:1.4;">🤝 ${et('next')}</div>
+    <a href="#vote" class="btn-reg" style="width:auto;margin:0;padding:10px 14px;font-size:13px;text-decoration:none;">→</a></div>`;
+  h += `</div>`;
+  wrap.innerHTML = h;
+}
+
+renderEndurance();
+window.END_READY = true;
 renderCampera();
 window.CAMP_READY = true;
 renderRaceTab();
