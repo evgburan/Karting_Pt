@@ -280,9 +280,14 @@ function trackNames(c) { return c.tracks.map(function (id) { var t = byId(TRACKS
 
 // ── MAP ──
 var map = L.map('map', { scrollWheelZoom: true, zoomControl: true, attributionControl: true });
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  maxZoom: 19, subdomains: 'abcd',
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+// Esri Light Gray: светлая подложка без API-ключа (+ отдельный слой подписей)
+var ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/';
+L.tileLayer(ESRI + 'World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+  maxNativeZoom: 16, maxZoom: 18,
+  attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors'
+}).addTo(map);
+L.tileLayer(ESRI + 'World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+  maxNativeZoom: 16, maxZoom: 18, pane: 'shadowPane'
 }).addTo(map);
 
 var markers = {};
@@ -298,7 +303,7 @@ TRACKS.forEach(function (t) {
 function fitAll() {
   map.fitBounds(L.latLngBounds(TRACKS.map(function (t) { return [t.lat, t.lng]; })), { padding: [70, 70], maxZoom: 11 });
 }
-fitAll();
+map.setView([38.80, -8.90], 9); // стартовый вид; точный fitAll — когда блок с картой видим
 
 // ── ACTIONS ──
 function pickTrack(id) {
@@ -314,7 +319,10 @@ function go(n) {
   if (n >= 3 && !S.coach) return;
   S.step = n;
   render();
-  if (n === 1) setTimeout(function () { map.invalidateSize(); }, 0);
+  if (n === 1) setTimeout(function () {
+    map.invalidateSize();
+    if (!S.track && !S._fitted) { fitAll(); S._fitted = true; }
+  }, 0);
   var top = document.getElementById('steps').getBoundingClientRect().top + window.pageYOffset - 64;
   if (window.pageYOffset > top) window.scrollTo({ top: top, behavior: 'smooth' });
 }
