@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Onboard review · Катаемся Чатом</title>
+<link rel="icon" href="photos/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+  :root {
+    --bg: #f4f4f0;
+    --surface: #ffffff;
+    --surface2: #f0f0ec;
+    --border: #e0e0d8;
+    --accent-red: #d93025;
+    --text: #1a1a1a;
+    --muted: #767676;
+    --muted2: #bbb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.5; min-height: 100vh; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; }
+
+  nav {
+    position: sticky; top: 0; z-index: 1000;
+    background: rgba(244,244,240,0.96); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px; height: 50px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; line-height: 1.1; text-decoration: none; }
+  .logo em { font-style: normal; color: var(--accent-red); }
+  .lang-switcher { display: flex; gap: 2px; }
+  .lang-btn { background: none; border: none; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--muted); cursor: pointer; padding: 8px 7px; border-radius: 4px; text-transform: uppercase; }
+  .lang-btn.active { color: var(--text); background: var(--surface2); }
+
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+
+  .hero { padding: 48px 0 28px; }
+  .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase; font-size: clamp(40px, 8vw, 68px); line-height: 0.95; letter-spacing: 0.5px; }
+  .hero h1 em { font-style: normal; color: var(--accent-red); display: block; }
+  .hero p { margin-top: 14px; max-width: 480px; font-size: 18px; color: var(--muted); }
+
+  /* STEPPER */
+  .steps { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 20px; }
+  .steps li { display: flex; align-items: center; gap: 8px; }
+  .steps .line { width: 22px; height: 1px; background: var(--border); }
+  .step {
+    display: flex; align-items: center; gap: 8px; min-height: 44px;
+    padding: 6px 16px 6px 6px; border-radius: 999px;
+    border: 1px solid var(--border); background: transparent; color: var(--muted2);
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.5px; text-transform: uppercase;
+    cursor: not-allowed;
+  }
+  .step .n { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--surface2); font-size: 14px; }
+  .step.current { background: var(--text); border-color: var(--text); color: #fff; cursor: default; }
+  .step.current .n { background: #fff; color: var(--text); }
+  .step.done { color: var(--text); background: var(--surface); cursor: pointer; }
+  .step.done .n { background: var(--accent-red); color: #fff; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* STEP 1 */
+  .s1 { display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch; }
+  .map-box { flex: 999 1 480px; min-width: 0; height: 440px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--surface2); }
+  #map { width: 100%; height: 100%; }
+  .s1-side { flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  .hint { font-size: 13px; color: var(--muted); }
+
+  .track {
+    display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px; cursor: pointer;
+  }
+  .track img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; }
+  .track .t-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; text-transform: uppercase; line-height: 1.05; }
+  .track .t-meta { font-size: 13px; color: var(--muted); }
+  .track.on { border-color: var(--text); box-shadow: inset 0 0 0 1px var(--text); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px;
+    padding: 0 20px; border-radius: 999px; border: 1px solid var(--text);
+    background: var(--text); color: #fff; text-decoration: none; cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .btn.red { background: var(--accent-red); border-color: var(--accent-red); }
+  .btn.ghost { background: transparent; color: var(--text); }
+  .btn[disabled] { background: var(--surface2); border-color: var(--border); color: var(--muted2); cursor: not-allowed; }
+  .s1-side .btn { margin-top: auto; width: 100%; }
+
+  /* Leaflet markers */
+  .pin { width: 44px; height: 44px; border-radius: 10px; overflow: hidden; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.3); background: #fff; transition: transform .15s; }
+  .pin img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pin.on { border-color: var(--accent-red); transform: scale(1.15); }
+  .leaflet-tooltip.pin-label { background: var(--surface); border: 1px solid var(--border); box-shadow: none; border-radius: 6px; padding: 2px 7px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .5px; text-transform: uppercase; color: var(--text); }
+  .leaflet-tooltip.pin-label::before { display: none; }
+  .leaflet-container { font-family: 'Barlow', sans-serif; }
+
+  /* STEP 2 */
+  .head2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 26px; text-transform: uppercase; line-height: 1.1; margin-bottom: 12px; }
+  .head2 #p2-track { color: var(--muted); }
+  .coaches { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .coach { display: flex; flex-direction: column; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+  .coach-top { display: flex; align-items: center; gap: 12px; }
+  .ava { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 20px; color: var(--muted); }
+  .c-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 20px; text-transform: uppercase; line-height: 1.05; }
+  .c-meta { font-size: 13px; color: var(--muted); }
+  .c-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; }
+  .c-price { font-size: 14px; color: var(--muted); }
+
+  /* STEP 3 */
+  .s3 { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
+  .pick { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .s3 p { color: var(--muted); }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .linkbtn { background: none; border: none; padding: 10px 0; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 14px; }
+
+  /* COACH CTA */
+  .cta { margin: 56px 0 0; padding: 32px 0; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+  .cta h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 26px; text-transform: uppercase; line-height: 1.1; }
+  .cta p { color: var(--muted); max-width: 520px; }
+
+  footer { border-top: 1px solid var(--border); padding: 20px 0 32px; font-size: 13px; color: var(--muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+
+  @media (max-width: 560px) {
+    .hero { padding-top: 32px; }
+    .map-box { height: 340px; }
+    .steps { gap: 6px; }
+    .steps .line { width: 12px; }
+    .step:not(.current) { padding: 6px; }
+    .step:not(.current) [data-i] { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">Катаемся<br><em>Чатом</em></a>
+  <div class="lang-switcher">
+    <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+    <button class="lang-btn" data-lang="pt" onclick="setLang('pt')">PT</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="hero">
+    <h1><span data-i="h1a"></span><em data-i="h1b"></em></h1>
+    <p data-i="sub"></p>
+  </section>
+
+  <ol class="steps" id="steps" aria-label="Steps">
+    <li><button type="button" class="step" data-step="1"><span class="n">1</span><span data-i="st1"></span></button><span class="line" aria-hidden="true"></span></li>
+    <li><button type="button" class="step" data-step="2"><span class="n">2</span><span data-i="st2"></span></button><span class="line" aria-hidden="true"></span></li>
+    <li><button type="button" class="step" data-step="3"><span class="n">3</span><span data-i="st3"></span></button></li>
+  </ol>
+
+  <!-- STEP 1: TRACK -->
+  <section class="panel" id="p1">
+    <div class="s1">
+      <div class="map-box"><div id="map" role="region" aria-label="Map of karting tracks"></div></div>
+      <div class="s1-side">
+        <div id="track-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+        <p class="hint" data-i="maphint"></p>
+        <button type="button" class="btn" id="to2" disabled></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: COACH -->
+  <section class="panel" id="p2">
+    <h2 class="head2"><span data-i="st2"></span> <span id="p2-track"></span></h2>
+    <div class="coaches" id="coach-list"></div>
+  </section>
+
+  <!-- STEP 3: FEEDBACK -->
+  <section class="panel" id="p3">
+    <div class="s3">
+      <div class="pick" id="p3-pick"></div>
+      <p data-i="s3text"></p>
+      <div class="row">
+        <a class="btn red" id="tg-btn" href="https://t.me/evgenybu" target="_blank" rel="noopener" data-i="s3btn"></a>
+        <button type="button" class="btn ghost" onclick="go(2)" data-i="change"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div>
+      <h2 data-i="ctaH"></h2>
+      <p data-i="ctaP"></p>
+    </div>
+    <a class="btn ghost" href="https://t.me/evgenybu" target="_blank" rel="noopener" data-i="ctaBtn"></a>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="/" style="text-decoration:none;">Катаемся Чатом · racechat.pt</a>
+    <span>Lisbon, Portugal</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ── ДАННЫЕ: трассы и тренеры. Добавлять новые сюда. ──
+var TRACKS = [
+  { id: 'kip',     name: 'KIP Palmela',     place: 'Palmela',   logo: 'photos/venue-kip.png',     lat: 38.5787, lng: -8.8279 },
+  { id: 'campera', name: 'Campera Karting', place: 'Carregado', logo: 'photos/venue-campera.png', lat: 39.0275, lng: -8.9645 }
+];
+
+// photo: null → инициалы. price: null → «цена скоро». tracks — id из TRACKS.
+var COACHES = [
+  { id: 'miguel', name: 'Miguel Silva', photo: null,                  tracks: ['kip', 'campera'], price: null },
+  { id: 'evgeny', name: 'Evgeny Buran', photo: 'photos/evgenybu.jpg', tracks: ['kip', 'campera'], price: null }
+];
+
+var I18N = {
+  en: {
+    h1a: 'Upload your onboard.', h1b: 'Be one second faster.',
+    sub: 'Send a few laps to a coach who knows your track and get clear notes back.',
+    st1: 'Choose a track', st2: 'Choose a coach', st3: 'Get feedback',
+    maphint: 'Drag and zoom the map. More tracks soon.',
+    next: 'Choose a coach', pickFirst: 'Pick a track first',
+    coaches: function (n) { return n + (n === 1 ? ' coach' : ' coaches'); },
+    at: 'at', choose: 'Choose', priceSoon: 'Price soon', coachAt: 'Coach',
+    s3text: 'Onboard upload opens soon. For now, message us on Telegram and we will set up your first review.',
+    s3btn: 'Message on Telegram', change: 'Change coach',
+    ctaH: 'Are you a coach?', ctaP: 'Review onboards from anywhere and open track-day slots when it suits you.', ctaBtn: 'Join as a coach',
+    tgMsg: function (c, t) { return 'Hi! I want an onboard review from ' + c + ' (' + t + ').'; }
+  },
+  ru: {
+    h1a: 'Загрузи онборд.', h1b: 'Стань на секунду быстрее.',
+    sub: 'Отправь пару кругов тренеру, который знает твою трассу, и получи понятный разбор.',
+    st1: 'Выбери трассу', st2: 'Выбери тренера', st3: 'Получи разбор',
+    maphint: 'Карту можно двигать и приближать. Скоро добавим новые трассы.',
+    next: 'Выбрать тренера', pickFirst: 'Сначала выбери трассу',
+    coaches: function (n) { var m10 = n % 10, m100 = n % 100; return n + (m10 === 1 && m100 !== 11 ? ' тренер' : (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) ? ' тренера' : ' тренеров'); },
+    at: '·', choose: 'Выбрать', priceSoon: 'Цена скоро', coachAt: 'Тренер',
+    s3text: 'Загрузка онбордов скоро откроется. Пока напиши в Telegram — договоримся о первом разборе.',
+    s3btn: 'Написать в Telegram', change: 'Сменить тренера',
+    ctaH: 'Ты тренер?', ctaP: 'Разбирай онборды откуда угодно и открывай слоты на трассе, когда удобно.', ctaBtn: 'Стать тренером',
+    tgMsg: function (c, t) { return 'Привет! Хочу разбор онборда у ' + c + ' (' + t + ').'; }
+  },
+  pt: {
+    h1a: 'Envia o teu onboard.', h1b: 'Sê um segundo mais rápido.',
+    sub: 'Envia algumas voltas a um treinador que conhece a tua pista e recebe notas claras.',
+    st1: 'Escolhe a pista', st2: 'Escolhe o treinador', st3: 'Recebe feedback',
+    maphint: 'Arrasta e faz zoom no mapa. Mais pistas em breve.',
+    next: 'Escolher treinador', pickFirst: 'Escolhe primeiro a pista',
+    coaches: function (n) { return n + (n === 1 ? ' treinador' : ' treinadores'); },
+    at: '·', choose: 'Escolher', priceSoon: 'Preço em breve', coachAt: 'Treinador',
+    s3text: 'O envio de onboards abre em breve. Por agora, fala connosco no Telegram para marcar a primeira análise.',
+    s3btn: 'Escrever no Telegram', change: 'Mudar de treinador',
+    ctaH: 'És treinador?', ctaP: 'Analisa onboards de qualquer lugar e abre horários na pista quando te der jeito.', ctaBtn: 'Junta-te como treinador',
+    tgMsg: function (c, t) { return 'Olá! Quero uma análise de onboard com ' + c + ' (' + t + ').'; }
+  }
+};
+
+var S = { lang: 'en', step: 1, track: null, coach: null };
+try { var saved = localStorage.getItem('rc_lang'); if (saved && I18N[saved]) S.lang = saved; } catch (e) {}
+
+function T(k) { return I18N[S.lang][k]; }
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function byId(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return null; }
+function coachesFor(trackId) { return COACHES.filter(function (c) { return c.tracks.indexOf(trackId) !== -1; }); }
+function initials(n) { return n.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase(); }
+function avatar(c) {
+  return c.photo
+    ? '<img class="ava" src="' + esc(c.photo) + '" alt="">'
+    : '<span class="ava" aria-hidden="true">' + esc(initials(c.name)) + '</span>';
+}
+function trackNames(c) { return c.tracks.map(function (id) { var t = byId(TRACKS, id); return t ? t.name : id; }).join(', '); }
+
+// ── MAP ──
+var map = L.map('map', { scrollWheelZoom: true, zoomControl: true, attributionControl: true });
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  maxZoom: 19, subdomains: 'abcd',
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+}).addTo(map);
+
+var markers = {};
+TRACKS.forEach(function (t) {
+  var m = L.marker([t.lat, t.lng], {
+    icon: L.divIcon({ className: '', html: '<div class="pin" data-pin="' + t.id + '"><img src="' + esc(t.logo) + '" alt=""></div>', iconSize: [44, 44], iconAnchor: [22, 22] }),
+    title: t.name, keyboard: true
+  }).addTo(map);
+  m.bindTooltip(t.name, { permanent: true, direction: 'bottom', offset: [0, 26], className: 'pin-label' });
+  m.on('click', function () { pickTrack(t.id); });
+  markers[t.id] = m;
+});
+function fitAll() {
+  map.fitBounds(L.latLngBounds(TRACKS.map(function (t) { return [t.lat, t.lng]; })), { padding: [70, 70], maxZoom: 11 });
+}
+fitAll();
+
+// ── ACTIONS ──
+function pickTrack(id) {
+  S.track = id;
+  if (S.coach && byId(COACHES, S.coach).tracks.indexOf(id) === -1) S.coach = null;
+  var t = byId(TRACKS, id);
+  map.flyTo([t.lat, t.lng], Math.max(map.getZoom(), 11), { duration: 0.6 });
+  render();
+}
+function pickCoach(id) { S.coach = id; go(3); }
+function go(n) {
+  if (n >= 2 && !S.track) return;
+  if (n >= 3 && !S.coach) return;
+  S.step = n;
+  render();
+  if (n === 1) setTimeout(function () { map.invalidateSize(); }, 0);
+  var top = document.getElementById('steps').getBoundingClientRect().top + window.pageYOffset - 64;
+  if (window.pageYOffset > top) window.scrollTo({ top: top, behavior: 'smooth' });
+}
+function setLang(l) {
+  S.lang = l;
+  try { localStorage.setItem('rc_lang', l); } catch (e) {}
+  render();
+}
+
+// ── RENDER ──
+function render() {
+  document.documentElement.lang = S.lang;
+  document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-lang') === S.lang); });
+  document.querySelectorAll('[data-i]').forEach(function (el) { var v = T(el.getAttribute('data-i')); if (typeof v === 'string') el.textContent = v; });
+
+  // stepper
+  var reach = S.coach ? 3 : (S.track ? 2 : 1);
+  document.querySelectorAll('.step').forEach(function (b) {
+    var n = +b.getAttribute('data-step');
+    b.classList.toggle('current', n === S.step);
+    b.classList.toggle('done', n !== S.step && n <= reach);
+    var enabled = n <= reach;
+    b.disabled = !enabled;
+    if (n === S.step) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    b.onclick = enabled ? function () { go(n); } : null;
+  });
+  ['p1', 'p2', 'p3'].forEach(function (id, i) { document.getElementById(id).classList.toggle('active', S.step === i + 1); });
+
+  // step 1
+  document.getElementById('track-list').innerHTML = TRACKS.map(function (t) {
+    return '<button type="button" class="track' + (S.track === t.id ? ' on' : '') + '" onclick="pickTrack(\'' + t.id + '\')" aria-pressed="' + (S.track === t.id) + '">' +
+      '<img src="' + esc(t.logo) + '" alt="">' +
+      '<span><span class="t-name" style="display:block">' + esc(t.name) + '</span>' +
+      '<span class="t-meta">' + esc(t.place) + ' · ' + esc(T('coaches')(coachesFor(t.id).length)) + '</span></span></button>';
+  }).join('');
+  document.querySelectorAll('.pin').forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-pin') === S.track); });
+  var to2 = document.getElementById('to2');
+  to2.disabled = !S.track;
+  to2.textContent = S.track ? T('next') + ' →' : T('pickFirst');
+  to2.onclick = function () { go(2); };
+
+  // step 2
+  var tr = S.track ? byId(TRACKS, S.track) : null;
+  document.getElementById('p2-track').textContent = tr ? T('at') + ' ' + tr.name : '';
+  document.getElementById('coach-list').innerHTML = tr ? coachesFor(tr.id).map(function (c) {
+    return '<div class="coach"><div class="coach-top">' + avatar(c) +
+      '<div><div class="c-name">' + esc(c.name) + '</div><div class="c-meta">' + esc(T('coachAt')) + ' · ' + esc(trackNames(c)) + '</div></div></div>' +
+      '<div class="c-foot"><span class="c-price">' + (c.price ? '€' + esc(c.price) : esc(T('priceSoon'))) + '</span>' +
+      '<button type="button" class="btn" onclick="pickCoach(\'' + c.id + '\')">' + esc(T('choose')) + '</button></div></div>';
+  }).join('') : '';
+
+  // step 3
+  var co = S.coach ? byId(COACHES, S.coach) : null;
+  document.getElementById('p3-pick').innerHTML = co && tr
+    ? avatar(co) + '<div><div class="c-name">' + esc(co.name) + '</div><div class="c-meta">' + esc(tr.name) + '</div></div>'
+    : '';
+  document.getElementById('tg-btn').href = 'https://t.me/evgenybu' + (co && tr ? '?text=' + encodeURIComponent(T('tgMsg')(co.name, tr.name)) : '');
+}
+
+go(1);
+</script>
+</body>
+</html>
