@@ -1314,6 +1314,7 @@ const RACES = [
   {
     id: 'kiro',
     chipLabel: '28 Мар · Kiro',
+    eventName: 'KIRO Sprint',   // название этапа на кнопке в «Прошедших»
     date: '28 марта 2026',
     location: 'KIRO Karting',
     photo: 'kiro',
@@ -1344,6 +1345,7 @@ const RACES = [
   {
     id: 'campera-apr',
     chipLabel: '12 Апр · Campera',
+    eventName: 'Campera Sprints',   // название этапа на кнопке в «Прошедших»
     date: '12 апреля 2026',
     location: 'Campera Karting',
     photo: 'campera',
@@ -1398,6 +1400,7 @@ const RACES = [
   {
     id: 'kip-may',
     chipLabel: '23 Мая · KIP',
+    eventName: 'KIP Sprints',   // название этапа на кнопке в «Прошедших»
     date: '23 мая 2026',
     location: 'KIP Palmela',
     photo: 'podium',
@@ -1441,6 +1444,7 @@ const RACES = [
   {
     id: 'almeirim-jun',
     chipLabel: '6 Июн · Almeirim',
+    eventName: 'Almeirim Sprints',   // название этапа на кнопке в «Прошедших»
     date: '6 июня 2026',
     location: 'Kartódromo de Almeirím',
     photo: 'almeirim_podium',
@@ -1472,6 +1476,7 @@ const RACES = [
   {
     id: 'batalha-sep',
     chipLabel: '19 Сен · Batalha',
+    eventName: 'Batalha Mega Sprints',   // название этапа на кнопке в «Прошедших»
     date: '19 сентября 2026',
     location: 'Kartódromo da Batalha',
     photo: 'batalha_podium',
@@ -1505,6 +1510,7 @@ const RACES = [
   {
     id: 'campera-oct',
     chipLabel: '18 Окт · Campera',
+    eventName: 'Campera Sprints',   // название этапа на кнопке в «Прошедших»
     date: '18 октября 2026',
     location: 'Campera Karting',
     photo: 'campera_oct',
@@ -1531,6 +1537,7 @@ const RACES = [
   {
     id: 'endurance-nov',
     chipLabel: '1 Ноя · Palmela',
+    eventName: 'KIP Endurance',   // название этапа на кнопке в «Прошедших»
     date: '1 ноября 2026',
     location: 'KIP Palmela',
     photo: 'palmela_nov',
@@ -2356,6 +2363,10 @@ function _applyMap(str, map) {
   return r;
 }
 
+// Кнопка этапа в «Прошедших»: дата + название формата (eventName), напр. «1 Ноя · KIP Endurance»
+function eventChip(race) {
+  return translateChip(race.eventName ? race.chipLabel.split(' · ')[0] + ' · ' + race.eventName : race.chipLabel);
+}
 function translateChip(chip) {
   const lang = _lang || 'ru';
   if (lang === 'ru') return chip;
@@ -2389,7 +2400,7 @@ function buildRaceViews() {
         views.push({
           raceId: race.id,
           chipLabel: translateChip(race.chipLabel),
-          eventLabel: translateChip(race.chipLabel), subLabel: null,
+          eventLabel: eventChip(race), subLabel: null,
           date: translateFullDate(race.date), groupLabel: null,
           location: race.location, photo: race.photo || null,
           // Та же шкала, что в зачёте: очки этапа = ptsFix(результат) + FL
@@ -2404,7 +2415,7 @@ function buildRaceViews() {
         views.push({
           raceId: race.id,
           chipLabel: translateChip(race.chipLabel) + ' · ' + { ru:'Г1', pt:'C1', en:'R1' }[_lang||'ru'],
-          eventLabel: translateChip(race.chipLabel), subLabel: { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
+          eventLabel: eventChip(race), subLabel: { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
           date: translateFullDate(race.date), groupLabel: race.location + ' · ' + { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
           location: race.location, photo: race.photo || null,
           results: r1rows,
@@ -2416,7 +2427,7 @@ function buildRaceViews() {
         if (r2rows.length) views.push({
           raceId: race.id,
           chipLabel: translateChip(race.chipLabel) + ' · ' + { ru:'Г2', pt:'C2', en:'R2' }[_lang||'ru'],
-          eventLabel: translateChip(race.chipLabel), subLabel: { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
+          eventLabel: eventChip(race), subLabel: { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
           date: translateFullDate(race.date), groupLabel: race.location + ' · ' + { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
           location: race.location, photo: race.photo || null,
           results: r2rows,
@@ -2449,7 +2460,7 @@ function buildRaceViews() {
         views.push({
           raceId: race.id,
           chipLabel: `${dateAbbr(race.date)} · Campera ${grpLbl} · ${r1lbl}`,
-          eventLabel: translateChip(race.chipLabel), subLabel: `${grpLbl} · ${r1lbl}`,
+          eventLabel: eventChip(race), subLabel: `${grpLbl} · ${r1lbl}`,
           date: translateFullDate(race.date),
           groupLabel: r1GroupLabel,
           location: race.location,
@@ -2466,7 +2477,7 @@ function buildRaceViews() {
           views.push({
             raceId: race.id,
             chipLabel: `${dateAbbr(race.date)} · Campera ${grpLbl} · ${r2lbl}`,
-            eventLabel: translateChip(race.chipLabel), subLabel: `${grpLbl} · ${r2lbl}`,
+            eventLabel: eventChip(race), subLabel: `${grpLbl} · ${r2lbl}`,
             date: translateFullDate(race.date),
             groupLabel: r2GroupLabel,
             location: race.location,
