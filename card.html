@@ -5,27 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Карточка для канала · Катаемся Чатом</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;600;700;800;900&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg:#f4f4f0; --surface:#fff; --border:#e0e0d8;
     --accent-red:#d93025; --text:#1a1a1a; --muted:#888;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif; padding:20px 14px 60px; }
+  body { background:var(--bg); color:var(--text); font-family:'Fira Sans',sans-serif; padding:20px 14px 60px; }
   .wrap { max-width:520px; margin:0 auto; }
-  h1 { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px; }
+  h1 { font-family:'Fira Sans Extra Condensed',sans-serif; font-weight:900; font-size:22px; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px; }
   h1 em { font-style:normal; color:var(--accent-red); }
   .sub { font-size:12px; color:var(--muted); margin-bottom:16px; }
   .card-ui { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:14px; }
-  label { display:block; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:10px 0 4px; }
+  label { display:block; font-family:'Fira Sans Extra Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:10px 0 4px; }
   label:first-child { margin-top:0; }
-  input[type=text], select { width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 11px; font-size:14px; font-family:'Barlow',sans-serif; background:var(--bg); }
+  input[type=text], select { width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 11px; font-size:14px; font-family:'Fira Sans',sans-serif; background:var(--bg); }
   .photo-btn { display:block; width:100%; border:1px dashed var(--border); border-radius:8px; padding:14px; text-align:center; font-size:13px; color:var(--muted); cursor:pointer; background:var(--bg); }
   .fmt { display:flex; gap:6px; margin-top:4px; }
-  .fmt button { flex:1; border:1px solid var(--border); background:var(--bg); border-radius:8px; padding:8px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; cursor:pointer; color:var(--muted); }
+  .fmt button { flex:1; border:1px solid var(--border); background:var(--bg); border-radius:8px; padding:8px; font-family:'Fira Sans Extra Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; cursor:pointer; color:var(--muted); }
   .fmt button.active { background:var(--text); color:#fff; border-color:var(--text); }
-  .dl { display:block; width:100%; background:var(--accent-red); color:#fff; border:none; border-radius:10px; padding:14px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; margin-top:14px; }
+  .dl { display:block; width:100%; background:var(--accent-red); color:#fff; border:none; border-radius:10px; padding:14px; font-family:'Fira Sans Extra Condensed',sans-serif; font-weight:700; font-size:16px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; margin-top:14px; }
   canvas { width:100%; height:auto; border-radius:12px; border:1px solid var(--border); display:block; }
   .status { font-size:12px; padding:8px 12px; border-radius:8px; margin-bottom:10px; line-height:1.4; }
   .status.ok { background:#e8f5e9; border:1px solid #c8e6c9; color:#2d5a30; }
@@ -252,7 +252,7 @@ function medalDot(x, yC, r, n) {
   ctx.lineWidth = 3;
   ctx.strokeStyle = 'rgba(0,0,0,0.35)';
   ctx.stroke();
-  ctx.font = `900 ${Math.round(r * 1.15)}px 'Barlow Condensed'`;
+  ctx.font = `900 ${Math.round(r * 1.15)}px 'Fira Sans Extra Condensed'`;
   ctx.fillStyle = '#1a1a1a';
   const prev = ctx.textAlign; ctx.textAlign = 'center';
   const prevB = ctx.textBaseline; ctx.textBaseline = 'middle';
@@ -291,8 +291,8 @@ function renderContent(measure) {
   // Быстрейший круг
   const fl = v('fl');
   if (fl) {
-    fitText('⚡ ' + fl, '500 32px Barlow', MAXW);
-    put('⚡ ' + fl, PAD, y, 'rgba(255,255,255,0.88)');
+    fitText('FL  ' + fl, '500 32px Fira Sans', MAXW);
+    put('FL  ' + fl, PAD, y, 'rgba(255,255,255,0.88)');
     y -= LH.fl + LH.sect;
   }
 
@@ -302,13 +302,13 @@ function renderContent(measure) {
     [...begs].reverse().forEach((name, i) => {
       const nn = begs.length - i;
       const line = name.replace(/^\d+\.\s*/, '').toUpperCase();
-      fitText(line, "700 38px 'Barlow Condensed'", NAME_W);
+      fitText(line, "700 38px 'Fira Sans Extra Condensed'", NAME_W);
       if (!measure) medalDot(AXIS - R_BEG, y - 13, R_BEG, nn);
       put(line, TEXT_X, y, 'rgba(255,255,255,0.94)');
       y -= LH.beg;
     });
     if (!measure) {
-      ctx.font = "700 27px 'Barlow Condensed'";
+      ctx.font = "700 27px 'Fira Sans Extra Condensed'";
       ctx.fillStyle = 'rgba(255,255,255,0.65)';
       ctx.fillText('НАЧИНАЮЩИЕ', PAD, y);
     }
@@ -320,7 +320,7 @@ function renderContent(measure) {
   podium.forEach(([nn, name]) => {
     if (!name) return;
     const big = nn === 1;
-    const font = (big ? '900 62px' : '700 50px') + " 'Barlow Condensed'";
+    const font = (big ? '900 62px' : '700 50px') + " 'Fira Sans Extra Condensed'";
     const line = name.replace(/^🥇|^🥈|^🥉/, '').trim().toUpperCase();
     fitText(line, font, NAME_W);
     if (!measure) medalDot(AXIS - R_POD, y - (big ? 21 : 17), R_POD, nn);
@@ -331,7 +331,7 @@ function renderContent(measure) {
 
   // Заголовок
   const title = (v('title') || 'РЕЗУЛЬТАТЫ').toUpperCase();
-  fitText(title, "900 104px 'Barlow Condensed'", MAXW);
+  fitText(title, "900 104px 'Fira Sans Extra Condensed'", MAXW);
   put(title, PAD, y, '#fff');
   const titleW = ctx.measureText(title).width;
   if (!measure) {
@@ -346,7 +346,7 @@ function renderContent(measure) {
   if (eyebrow || count) {
     let x = PAD;
     if (eyebrow) {
-      fitText(eyebrow, "700 36px 'Barlow Condensed'", MAXW * 0.72);
+      fitText(eyebrow, "700 36px 'Fira Sans Extra Condensed'", MAXW * 0.72);
       const tw = ctx.measureText(eyebrow).width;
       if (!measure) {
         ctx.fillStyle = RED;
@@ -357,7 +357,7 @@ function renderContent(measure) {
       x += tw + 44 + 12;
     }
     if (count) {
-      ctx.font = "700 36px 'Barlow Condensed'";
+      ctx.font = "700 36px 'Fira Sans Extra Condensed'";
       const cw = ctx.measureText(count).width;
       if (!measure) {
         ctx.fillStyle = 'rgba(0,0,0,0.78)';
@@ -402,13 +402,13 @@ function draw() {
 
   // Брендинг: верх
   const PAD = 64;
-  ctx.font = "900 44px 'Barlow Condensed'";
+  ctx.font = "900 44px 'Fira Sans Extra Condensed'";
   ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 14;
   ctx.fillStyle = '#fff';
   ctx.fillText('КАТАЕМСЯ', PAD, PAD + 38);
   ctx.fillStyle = RED;
   ctx.fillText('ЧАТОМ', PAD + ctx.measureText('КАТАЕМСЯ ').width, PAD + 38);
-  ctx.font = "700 34px 'Barlow Condensed'";
+  ctx.font = "700 34px 'Fira Sans Extra Condensed'";
   ctx.fillStyle = 'rgba(255,255,255,0.92)';
   ctx.textAlign = 'right';
   ctx.fillText('RACECHAT.PT', W - PAD, PAD + 36);
@@ -428,9 +428,9 @@ function download() {
 
 // Шрифты → данные → отрисовка
 Promise.all([
-  document.fonts.load("900 104px 'Barlow Condensed'"),
-  document.fonts.load("700 36px 'Barlow Condensed'"),
-  document.fonts.load("500 32px Barlow"),
+  document.fonts.load("900 104px 'Fira Sans Extra Condensed'"),
+  document.fonts.load("700 36px 'Fira Sans Extra Condensed'"),
+  document.fonts.load("500 32px Fira Sans"),
 ]).then(() => { draw(); loadPortalData(); });
 draw();
 </script>

@@ -14,7 +14,7 @@
         data-cf-beacon='{"token": "ВСТАВЬ_ТОКЕН_СЮДА"}'></script>
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;600;700;800;900&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #f4f4f0;
@@ -34,7 +34,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body { background: var(--bg); color: var(--text); font-family: 'Fira Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
   nav {
     position: sticky; top: 0; z-index: 100;
@@ -42,11 +42,11 @@
     border-bottom: 1px solid var(--border);
     padding: 0 16px; display: flex; align-items: center; justify-content: space-between; height: 50px;
   }
-  .logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; color: var(--text); text-transform: uppercase; line-height: 1.1; cursor: pointer; }
+  .logo { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; color: var(--text); text-transform: uppercase; line-height: 1.1; cursor: pointer; }
   .logo em { font-style: normal; color: var(--accent-red); }
-  .nav-meta { font-size: 11px; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-meta { font-size: 11px; color: var(--muted); font-family: 'Fira Sans Extra Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
   .lang-switcher { display: flex; gap: 2px; }
-  .lang-btn { background: none; border: none; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--muted2); cursor: pointer; padding: 3px 5px; border-radius: 4px; text-transform: uppercase; transition: color 0.15s, background 0.15s; }
+  .lang-btn { background: none; border: none; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--muted2); cursor: pointer; padding: 3px 5px; border-radius: 4px; text-transform: uppercase; transition: color 0.15s, background 0.15s; }
   .lang-btn.active { color: var(--text); background: var(--surface2); }
 
   .bottom-nav {
@@ -57,7 +57,7 @@
   .bnav-item {
     flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
     background: none; border: none; color: var(--muted2);
-    font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+    font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 10px; font-weight: 700;
     letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; padding: 4px 0; transition: color 0.15s;
   }
   .bnav-item.active { color: var(--text); }
@@ -73,7 +73,7 @@
   }
   .inner-tab {
     flex: 1 1 auto; background: none; border: none; border-bottom: 2px solid transparent;
-    padding: 12px 2px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+    padding: 12px 2px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 12px;
     font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted);
     cursor: pointer; transition: all 0.15s; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
@@ -97,13 +97,13 @@
     display: flex; align-items: flex-end; justify-content: space-between;
   }
   .venue-name-block { color: #fff; }
-  .venue-label { font-size: 10px; opacity: 0.8; letter-spacing: 1px; text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; }
-  .venue-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; line-height: 1.1; }
+  .venue-label { font-size: 10px; opacity: 0.8; letter-spacing: 1px; text-transform: uppercase; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; }
+  .venue-name { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 18px; font-weight: 900; line-height: 1.1; }
   .venue-link {
     background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);
     border: 1px solid rgba(255,255,255,0.3); border-radius: 6px;
     color: #fff; text-decoration: none;
-    padding: 5px 9px; font-size: 11px; font-family: 'Barlow Condensed', sans-serif;
+    padding: 5px 9px; font-size: 11px; font-family: 'Fira Sans Extra Condensed', sans-serif;
     font-weight: 700; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;
     white-space: nowrap;
   }
@@ -112,46 +112,46 @@
     background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);
     border: 1px solid rgba(255,255,255,0.3);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 900; color: #fff;
+    font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 13px; font-weight: 900; color: #fff;
     letter-spacing: 1px;
   }
 
   /* EVENT CARD */
   .event-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
-  .event-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-red); margin-bottom: 8px; }
+  .event-eyebrow { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-bottom: 8px; }
   .event-desc { font-size: 14px; line-height: 1.6; margin-bottom: 9px; }
   .beginner-note { background: #f0f7f1; border: 1px solid #c8e6c9; border-radius: 8px; padding: 11px 13px; font-size: 13px; line-height: 1.5; color: #2d5a30; margin: 14px 0; }
   .spots-bar { background: var(--surface2); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; }
   .spots-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .spots-lbl { font-size: 12px; color: var(--muted); }
-  .spots-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; }
+  .spots-val { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 13px; }
   .spots-val .n { color: var(--accent-red); }
   .spots-val.going { font-size: 17px; }
   .spots-left { font-size: 12px; color: var(--muted); margin-top: 7px; }
   .prog-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
   .prog-fill { height: 100%; background: var(--accent-red); border-radius: 2px; transition: width 0.5s; }
-  .btn-reg { width: 100%; background: var(--text); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: opacity 0.15s; }
+  .btn-reg { width: 100%; background: var(--text); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: opacity 0.15s; }
   .btn-reg:active { opacity: 0.8; }
 
   .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; }
   .cd-block { background: var(--surface2); border-radius: 8px; padding: 10px 6px; text-align: center; }
-  .cd-num { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 900; color: var(--text); line-height: 1; }
+  .cd-num { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 26px; font-weight: 900; color: var(--text); line-height: 1; }
   .cd-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
 
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
-  .card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .card-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
   .sched-row { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
   .sched-row:last-child { border-bottom: none; }
-  .sched-time { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; color: var(--accent-red); min-width: 44px; padding-top: 1px; }
+  .sched-time { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 13px; color: var(--accent-red); min-width: 44px; padding-top: 1px; }
   .sched-txt { font-size: 13px; line-height: 1.3; }
 
   .reg-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
   .reg-item:last-child { border-bottom: none; }
-  .reg-num { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; color: var(--muted); min-width: 20px; }
+  .reg-num { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 15px; font-weight: 700; color: var(--muted); min-width: 20px; }
 
   /* RACE CHIPS */
   .race-selector { display: flex; gap: 7px; margin-bottom: 12px; flex-wrap: wrap; }
-  .race-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .race-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
   .race-chip.active { background: var(--text); color: #fff; border-color: var(--text); }
 
   /* RESULTS TABLE */
@@ -161,7 +161,7 @@
   .res-table-header span:last-child { text-align: right; }
 
   /* sub-heading inside results */
-  .res-sub { padding: 7px 12px 3px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .res-sub { padding: 7px 12px 3px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
 
   .result-row { display: grid; grid-template-columns: 30px 1fr 52px; padding: 9px 12px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer; transition: background 0.1s; }
   .result-row:last-child { border-bottom: none; }
@@ -169,13 +169,13 @@
   .result-row.p1 { border-left: 3px solid var(--gold); }
   .result-row.p2 { border-left: 3px solid var(--silver); }
   .result-row.p3 { border-left: 3px solid var(--bronze); }
-  .res-pos { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); }
+  .res-pos { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); }
   .p1 .res-pos { color: var(--gold); }
   .p2 .res-pos { color: var(--silver); }
   .p3 .res-pos { color: var(--bronze); }
   .res-name { font-size: 13px; font-weight: 600; }
   .res-handle { font-size: 11px; color: var(--muted); }
-  .res-pts { text-align: right; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; }
+  .res-pts { text-align: right; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 16px; font-weight: 700; }
 
   /* STANDINGS */
   .standings-table { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -187,14 +187,14 @@
   .st-row.p1 { border-left: 3px solid var(--gold); }
   .st-row.p2 { border-left: 3px solid var(--silver); }
   .st-row.p3 { border-left: 3px solid var(--bronze); }
-  .st-pos { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); }
+  .st-pos { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); }
   .p1 .st-pos { color: var(--gold); }
   .p2 .st-pos { color: var(--silver); }
   .p3 .st-pos { color: var(--bronze); }
   .st-name { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .st-handle { font-size: 11px; color: var(--muted); }
   .st-races { text-align: center; font-size: 12px; color: var(--muted); }
-  .st-pts { text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; }
+  .st-pts { text-align: center; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 700; }
 
   .safety-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-left: 4px; vertical-align: middle; }
   .sg { background: var(--green); }
@@ -203,12 +203,12 @@
 
   /* DRIVERS */
   .page-header { padding: 14px 14px 0; margin-bottom: 10px; }
-  .page-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-red); margin-bottom: 3px; }
-  .page-title { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 900; }
+  .page-eyebrow { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-bottom: 3px; }
+  .page-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 26px; font-weight: 900; }
 
   .driver-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 11px 13px; display: flex; align-items: center; gap: 11px; cursor: pointer; transition: background 0.1s; margin: 0 14px 8px; }
   .driver-card:hover { background: var(--surface2); }
-  .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); flex-shrink: 0; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); flex-shrink: 0; }
 
   /* MODAL */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: flex-end; }
@@ -218,11 +218,11 @@
   .modal-handle { width: 32px; height: 3px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
 
   .profile-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .profile-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: var(--muted); flex-shrink: 0; }
+  .profile-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 22px; font-weight: 900; color: var(--muted); flex-shrink: 0; }
 
   .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px; }
   .stat-block { background: var(--surface2); border-radius: 8px; padding: 10px 8px; text-align: center; }
-  .stat-val { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; }
+  .stat-val { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 20px; font-weight: 900; }
   .stat-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
   .safety-card { background: #f0f7f1; border: 1px solid #c8e6c9; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
@@ -233,14 +233,14 @@
   .hist-row:last-child { border-bottom: none; }
   .hist-race { font-size: 13px; font-weight: 500; }
   .hist-meta { font-size: 11px; color: var(--muted); }
-  .hist-pts { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; }
+  .hist-pts { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 16px; font-weight: 700; }
 
-  .section-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .section-lbl { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 
   /* REG FORM */
   .reg-form { display: flex; flex-direction: column; gap: 10px; }
   .form-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; display: block; }
-  .form-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; width: 100%; transition: border-color 0.15s; }
+  .form-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Fira Sans', sans-serif; font-size: 15px; outline: none; width: 100%; transition: border-color 0.15s; }
   .form-input:focus { border-color: var(--text); }
   .photo-upload-area { border: 1.5px dashed var(--border); border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: border-color 0.15s, background 0.15s; position: relative; display: flex; align-items: center; gap: 10px; }
   .photo-upload-area:hover, .photo-upload-area.has-photo { border-color: var(--text); background: var(--surface2); }
@@ -255,10 +255,10 @@
   .check-input:checked + .check-box { background: var(--text); border-color: var(--text); }
   .check-input:checked + .check-box::after { content: ''; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg); }
   .check-txt { font-size: 13px; line-height: 1.4; }
-  .btn-cancel { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 11px; font-family: 'Barlow', sans-serif; font-size: 14px; cursor: pointer; width: 100%; }
+  .btn-cancel { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 11px; font-family: 'Fira Sans', sans-serif; font-size: 14px; cursor: pointer; width: 100%; }
   .success-box { text-align: center; padding: 16px 0 8px; }
   .success-icon { font-size: 42px; margin-bottom: 10px; }
-  .success-title { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 900; margin-bottom: 5px; }
+  .success-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 24px; font-weight: 900; margin-bottom: 5px; }
   .success-sub { font-size: 13px; color: var(--muted); line-height: 1.5; }
 
   /* PHOTO SLIDER */
@@ -271,19 +271,19 @@
   /* ── БЛИЖАЙШИЕ ГОНКИ: кнопки ивентов + карточка ── */
   .ev-picker { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(158px, 1fr); gap: 8px; overflow-x: auto; margin-bottom: 12px; scrollbar-width: none; }
   .ev-picker::-webkit-scrollbar { display: none; }
-  .ev-btn { display: flex; align-items: center; gap: 8px; min-width: 0; text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 9px 9px; cursor: pointer; color: var(--text); font-family: 'Barlow', sans-serif; transition: background .15s, border-color .15s, color .15s; }
+  .ev-btn { display: flex; align-items: center; gap: 8px; min-width: 0; text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 9px 9px; cursor: pointer; color: var(--text); font-family: 'Fira Sans', sans-serif; transition: background .15s, border-color .15s, color .15s; }
   .ev-btn:active { transform: scale(0.98); }
   .ev-btn.active { background: var(--text); border-color: var(--text); color: #fff; }
   .ev-date { flex-shrink: 0; width: 42px; height: 50px; border-radius: 8px; background: var(--surface2); display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .ev-btn.active .ev-date { background: rgba(255,255,255,0.12); }
-  .ev-day { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 24px; line-height: 1; }
-  .ev-mon { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-top: 1px; }
+  .ev-day { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 24px; line-height: 1; }
+  .ev-mon { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-top: 1px; }
   .ev-btn.active .ev-mon { color: #ff8a80; }
   .ev-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .ev-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.05; }
+  .ev-name { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.05; }
   .ev-meta { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ev-btn.active .ev-meta { color: rgba(255,255,255,0.65); }
-  .ev-status { display: flex; align-items: center; gap: 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; line-height: 1.15; }
+  .ev-status { display: flex; align-items: center; gap: 4px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; line-height: 1.15; }
   .ev-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
   .ev-status.open { color: var(--green); }
   .ev-status.soon, .ev-status.full { color: var(--muted); }
@@ -299,51 +299,51 @@
   .venue-logo { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255,255,255,0.5); background: #fff; flex-shrink: 0; }
   .ev-teaser { position: relative; aspect-ratio: 16 / 9; max-height: 320px; width: 100%; overflow: hidden; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; background: repeating-linear-gradient(135deg, #1b1b1b 0 18px, #222 18px 36px); }
   .ev-teaser-flag { position: absolute; top: 0; right: 0; width: 42%; height: 100%; opacity: .16; background: conic-gradient(#fff 25%, transparent 0 50%, #fff 0 75%, transparent 0) 0 0 / 28px 28px; -webkit-mask: linear-gradient(90deg, transparent, #000 75%); mask: linear-gradient(90deg, transparent, #000 75%); }
-  .ev-teaser-badge { position: absolute; top: 12px; left: 14px; background: var(--accent-red); color: #fff; border-radius: 4px; padding: 3px 7px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
-  .ev-teaser-title { position: relative; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 46px; line-height: .95; letter-spacing: 1px; text-transform: uppercase; }
-  .ev-teaser-sub { position: relative; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.75); margin-top: 6px; }
+  .ev-teaser-badge { position: absolute; top: 12px; left: 14px; background: var(--accent-red); color: #fff; border-radius: 4px; padding: 3px 7px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+  .ev-teaser-title { position: relative; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 46px; line-height: .95; letter-spacing: 1px; text-transform: uppercase; }
+  .ev-teaser-sub { position: relative; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.75); margin-top: 6px; }
   .btn-reg:disabled { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); cursor: default; letter-spacing: 1px; }
-  .ev-chat-link { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; padding: 11px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-  .ev-modes-title { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin: 14px 0 8px; }
+  .ev-chat-link { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; padding: 11px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); text-decoration: none; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .ev-modes-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin: 14px 0 8px; }
   .ev-modes { display: flex; flex-direction: column; gap: 6px; }
   .ev-mode { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
   .ev-mode-ico { font-size: 20px; line-height: 1; flex-shrink: 0; width: 24px; text-align: center; }
   .ev-mode-body { flex: 1; min-width: 0; }
-  .ev-mode-t { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.15; }
+  .ev-mode-t { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.15; }
   .ev-mode-d { font-size: 12px; color: var(--muted); line-height: 1.4; margin-top: 2px; }
-  .ev-mode-p { flex-shrink: 0; text-align: right; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 20px; line-height: 1; color: var(--accent-red); }
+  .ev-mode-p { flex-shrink: 0; text-align: right; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 20px; line-height: 1; color: var(--accent-red); }
   .ev-mode-p span { display: block; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
   .mode-pick { display: flex; flex-direction: column; gap: 6px; }
-  .mode-opt { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; font-family: 'Barlow', sans-serif; color: var(--text); transition: border-color .15s, background .15s; }
+  .mode-opt { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; font-family: 'Fira Sans', sans-serif; color: var(--text); transition: border-color .15s, background .15s; }
   .mode-opt.sel { border-color: var(--text); background: #fff; box-shadow: inset 0 0 0 1px var(--text); }
   .mode-opt-ico { font-size: 18px; width: 22px; text-align: center; flex-shrink: 0; }
   .mode-opt-t { flex: 1; font-size: 14px; font-weight: 600; }
-  .mode-opt-p { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .mode-opt-p { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 13px; color: var(--muted); white-space: nowrap; }
   .mode-opt.sel .mode-opt-p { color: var(--accent-red); }
   .team-avs { display: flex; flex-shrink: 0; }
   .team-avs > * + * { margin-left: -10px; }
   .team-avs img, .team-avs > div { box-shadow: 0 0 0 2px var(--surface); }
-  .reg-grp { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); padding: 12px 0 2px; border-bottom: 1px solid var(--border); }
+  .reg-grp { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); padding: 12px 0 2px; border-bottom: 1px solid var(--border); }
   .reg-grp:first-of-type { padding-top: 0; }
   .ev-track { margin-top: 12px; }
   .ev-track img { width: 100%; height: auto; display: block; }
   .ev-track-cap { font-size: 11px; color: var(--muted); text-align: center; margin-top: 4px; }
-  .res-banner { display: flex; align-items: center; gap: 10px; width: 100%; margin-bottom: 10px; padding: 10px 12px; text-align: left; cursor: pointer; background: linear-gradient(90deg, rgba(201,162,39,0.16), rgba(201,162,39,0.04)); border: 1px solid rgba(201,162,39,0.45); border-radius: 12px; color: var(--text); font-family: 'Barlow', sans-serif; }
+  .res-banner { display: flex; align-items: center; gap: 10px; width: 100%; margin-bottom: 10px; padding: 10px 12px; text-align: left; cursor: pointer; background: linear-gradient(90deg, rgba(201,162,39,0.16), rgba(201,162,39,0.04)); border: 1px solid rgba(201,162,39,0.45); border-radius: 12px; color: var(--text); font-family: 'Fira Sans', sans-serif; }
   .res-banner-ico { font-size: 22px; line-height: 1; }
   .res-banner-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-  .res-banner-t { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .5px; text-transform: uppercase; }
+  .res-banner-t { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .5px; text-transform: uppercase; }
   .res-banner-s { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .res-banner-go { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; color: var(--accent-red); }
+  .res-banner-go { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 18px; color: var(--accent-red); }
   .ev-beg-badge { font-size: 10px; font-weight: 700; color: var(--green); background: #f0f7f1; border: 1px solid #c8e6c9; border-radius: 4px; padding: 0 4px; margin-left: 6px; vertical-align: middle; }
 
   /* LAST RACE NOMINATIONS */
   .mega-acc { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0 14px; margin-bottom: 12px; }
   .mega-acc > summary { list-style: none; cursor: pointer; padding: 14px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; }
+    font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; }
   .mega-acc > summary::-webkit-details-marker { display: none; }
   .mega-acc > summary::after { content: '▾'; color: var(--muted); font-size: 13px; }
   .mega-acc[open] > summary::after { content: '▴'; }
-  .mega-acc-hint { font-family: 'Barlow', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted2); margin-left: auto; margin-right: 6px; }
+  .mega-acc-hint { font-family: 'Fira Sans', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted2); margin-left: auto; margin-right: 6px; }
   .mega-acc > *:last-child { margin-bottom: 14px; }
   .nom-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
   .nom-card {
@@ -354,25 +354,25 @@
   }
   .nom-card.nom-pending { opacity: 0.55; }
   .nom-icon { font-size: 22px; line-height: 1; }
-  .nom-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); line-height: 1.2; }
-  .nom-driver { font-size: 13px; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.2px; line-height: 1.2; }
+  .nom-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); line-height: 1.2; }
+  .nom-driver { font-size: 13px; font-weight: 700; font-family: 'Fira Sans Extra Condensed', sans-serif; letter-spacing: 0.2px; line-height: 1.2; }
   .nom-desc { font-size: 11px; color: var(--muted); }
 
   /* LAST RACE FULL RESULTS TABLE */
-  .full-res-table { width: 100%; border-collapse: collapse; font-family: 'Barlow Condensed', sans-serif; }
+  .full-res-table { width: 100%; border-collapse: collapse; font-family: 'Fira Sans Extra Condensed', sans-serif; }
   .full-res-table thead tr { background: var(--surface2); }
   .full-res-table th { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 7px 6px; text-align: center; border-bottom: 1px solid var(--border); }
   .full-res-table th:nth-child(2) { text-align: left; }
   .full-res-table td { padding: 8px 6px; border-bottom: 1px solid var(--border); text-align: center; font-size: 15px; font-weight: 700; color: var(--text); vertical-align: middle; }
-  .full-res-table td:nth-child(2) { text-align: left; font-size: 13px; font-weight: 600; font-family: 'Barlow', sans-serif; }
+  .full-res-table td:nth-child(2) { text-align: left; font-size: 13px; font-weight: 600; font-family: 'Fira Sans', sans-serif; }
   .full-res-table tr.p1 td { background: linear-gradient(90deg, rgba(201,162,39,0.12) 0%, transparent 60%); }
   .full-res-table tr.p2 td { background: linear-gradient(90deg, rgba(122,122,122,0.10) 0%, transparent 60%); }
   .full-res-table tr.p3 td { background: linear-gradient(90deg, rgba(160,103,74,0.10) 0%, transparent 60%); }
   .full-res-table .fl-badge { display: inline-block; background: var(--accent-red); color: #fff; font-size: 9px; font-weight: 900; letter-spacing: 0.5px; border-radius: 3px; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
-  .group-header-row td { background: var(--surface2); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); padding: 6px 8px; text-align: left !important; font-family: 'Barlow Condensed', sans-serif; }
+  .group-header-row td { background: var(--surface2); font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 6px 8px; text-align: left !important; font-family: 'Fira Sans Extra Condensed', sans-serif; }
 
   /* ── HIDDEN PAGES: VOTE + FEEDBACK ── */
-  .hp-back { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; padding: 0; }
+  .hp-back { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; color: var(--muted); font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; padding: 0; }
   .hp-intro { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
 
   .vote-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
@@ -391,12 +391,40 @@
   .star { font-size: 40px; cursor: pointer; line-height: 1; color: var(--muted2); transition: transform 0.1s; }
   .star.on { color: var(--gold); }
   .star:active { transform: scale(1.15); }
-  .star-label { text-align: center; font-size: 12px; color: var(--muted); height: 16px; margin-bottom: 14px; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
-  .form-textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; width: 100%; min-height: 90px; resize: vertical; transition: border-color 0.15s; }
+  .star-label { text-align: center; font-size: 12px; color: var(--muted); height: 16px; margin-bottom: 14px; font-family: 'Fira Sans Extra Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+  .form-textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Fira Sans', sans-serif; font-size: 15px; outline: none; width: 100%; min-height: 90px; resize: vertical; transition: border-color 0.15s; }
   .form-textarea:focus { border-color: var(--text); }
 
-  .cta-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:var(--surface2); border:1px solid var(--border); color:var(--muted); text-decoration:none; border-radius:8px; padding:9px 8px; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; text-align:center; line-height:1.2; }
+  .cta-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:var(--surface2); border:1px solid var(--border); color:var(--muted); text-decoration:none; border-radius:8px; padding:9px 8px; font-family:'Fira Sans Extra Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; text-align:center; line-height:1.2; }
   .cta-btn:active { background:var(--border); }
+
+  /* ── design clean-up (Nov 2026) ── */
+  body { font-variant-numeric: tabular-nums; }
+  .nom-icon, .ev-mode-ico, .res-banner-ico, .success-icon:empty, .photo-upload-icon:empty { display: none; }
+  .nom-card { gap: 4px; }
+  .pm { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%;
+        font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 800; font-size: 13px; line-height: 1; color: #fff; vertical-align: middle; }
+  .pm1 { background: var(--gold); } .pm2 { background: var(--silver); } .pm3 { background: var(--bronze); }
+  .sr { display: inline-block; width: 9px; height: 9px; border-radius: 50%; vertical-align: 1px; }
+  .sr-g { background: var(--green); } .sr-y { background: #e0a800; } .sr-r { background: var(--red); }
+  .vpill .sr { width: 16px; height: 16px; vertical-align: middle; }
+  /* podium rows: one accent edge instead of per-cell gradients */
+  .full-res-table tr.p1 td, .full-res-table tr.p2 td, .full-res-table tr.p3 td { background: none; }
+  .full-res-table tr.p1 td:first-child { box-shadow: inset 3px 0 var(--gold); }
+  .full-res-table tr.p2 td:first-child { box-shadow: inset 3px 0 var(--silver); }
+  .full-res-table tr.p3 td:first-child { box-shadow: inset 3px 0 var(--bronze); }
+  /* race facts: a line of numbers, not a row of pills */
+  .stat-chip { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; color: var(--text); white-space: nowrap; }
+  .stat-chip + .stat-chip { border-left: 1px solid var(--border); padding-left: 10px; }
+  .ev-beg-badge { color: var(--muted); background: none; border-color: var(--border); font-weight: 600; }
+  .cta-btn { background: var(--surface); color: var(--text); }
+  /* drivers: one list, positions on the left */
+  .drv-list { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin: 0 14px; overflow: hidden; }
+  .drv-list .driver-card { margin: 0; border: 0; border-radius: 0; border-top: 1px solid var(--border); padding: 9px 12px; }
+  .drv-list .driver-card:first-child { border-top: 0; }
+  .drv-pos { width: 22px; flex-shrink: 0; text-align: center; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 800; font-size: 16px; color: var(--muted); }
+  .drv-pts { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 19px; font-weight: 800; min-width: 34px; text-align: right; }
+  .drv-head { display: flex; justify-content: space-between; margin: 0 14px 6px; padding: 0 12px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
 </style>
 
 </head>
@@ -410,7 +438,7 @@
       <button class="lang-btn" onclick="setLang('pt')">PT</button>
       <button class="lang-btn" onclick="setLang('en')">EN</button>
     </div>
-    <a href="https://t.me/+xF4eAlUWBddjMjgy" target="_blank" style="display:flex;align-items:center;gap:5px;background:var(--text);color:#fff;text-decoration:none;border-radius:20px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">
+    <a href="https://t.me/+xF4eAlUWBddjMjgy" target="_blank" style="display:flex;align-items:center;gap:5px;background:var(--text);color:#fff;text-decoration:none;border-radius:20px;padding:6px 12px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">
       <svg viewBox="0 0 24 24" width="13" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.247l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.95 14.382l-2.95-.924c-.64-.203-.652-.64.136-.953l11.527-4.445c.534-.194 1.001.13.899.187z"/></svg>
       Join us
     </a>
@@ -458,13 +486,13 @@
     <div class="card" style="margin-bottom:12px;">
       <div class="card-title" id="pts-title">Начисление очков</div>
       <p id="pts-p1" style="font-size:13px;line-height:1.6;margin-bottom:10px;">
-        🏁 <strong>За каждую гонку:</strong> 1-е — 25 очков, 2-е — 20, 3-е — 16, 4-е — 13, 5-е — 11, 6-е — 10... с 13-го — минимум 3 очка. Быстрейший круг — бонус +1.
+        <strong>За каждую гонку:</strong> 1-е — 25 очков, 2-е — 20, 3-е — 16, 4-е — 13, 5-е — 11, 6-е — 10... с 13-го — минимум 3 очка. Быстрейший круг — бонус +1.
       </p>
       <p id="pts-p2" style="font-size:13px;line-height:1.6;margin-bottom:10px;">
-        📊 <strong>Итоговый зачёт:</strong> Очки суммируются по всем гонкам сезона. На каждом событии Campera проводит по две гонки — каждая считается отдельно. Если ты пропустил гонку — просто получаешь 0 за неё.
+        <strong>Итоговый зачёт:</strong> Очки суммируются по всем гонкам сезона. На каждом событии Campera проводит по две гонки — каждая считается отдельно. Если ты пропустил гонку — просто получаешь 0 за неё.
       </p>
       <p id="pts-p3" style="font-size:13px;line-height:1.6;margin-bottom:10px;">
-        🗑️ <strong>Худшие результаты не считаются</strong> — чем больше гонок ты проехал, тем больше плохих результатов можно отбросить:
+        <strong>Худшие результаты не считаются</strong> — чем больше гонок ты проехал, тем больше плохих результатов можно отбросить:
       </p>
       <div id="drop-lines" style="background:var(--surface2);border-radius:8px;padding:10px 14px;font-size:12px;line-height:2;margin-bottom:10px;">
         <span style="color:var(--muted);">1–3 гонки в сезоне</span> → <strong>все идут в зачёт</strong><br>
@@ -478,8 +506,8 @@
     </div>
 
     <div style="display:flex;gap:8px;margin-bottom:10px;">
-      <button id="btn-all" onclick="filterStandings('all',this)" style="background:var(--text);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Все</button>
-      <button id="btn-beg" onclick="filterStandings('beg',this)" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">🏆 Начинающие</button>
+      <button id="btn-all" onclick="filterStandings('all',this)" style="background:var(--text);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Все</button>
+      <button id="btn-beg" onclick="filterStandings('beg',this)" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Начинающие</button>
     </div>
 
     <div id="nominations-block" class="card" style="margin-bottom:12px;"></div>
@@ -503,13 +531,13 @@
   <div style="padding:0 14px 12px;">
     <div style="display:flex;gap:8px;margin-bottom:12px;">
       <div style="flex:1;position:relative;">
-        <select id="h2h-select1" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
+        <select id="h2h-select1" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Fira Sans',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
           <option value="">Гонщик 1...</option>
         </select>
       </div>
-      <div style="display:flex;align-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--muted);">⚔️</div>
+      <div style="display:flex;align-items:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--muted);letter-spacing:1px;">VS</div>
       <div style="flex:1;position:relative;">
-        <select id="h2h-select2" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
+        <select id="h2h-select2" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Fira Sans',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
           <option value="">Гонщик 2...</option>
         </select>
       </div>
@@ -676,7 +704,7 @@ const I18N = {
     title: 'Катаемся Чатом',
     spots_lbl: 'Свободных мест',
     btn_reg: 'Зарегистрироваться →',
-    beginner_note: '🟢 <strong>Начинающим:</strong> отметь галочку при регистрации — попадёшь в отдельный зачёт новичков.',
+    beginner_note: '<strong>Начинающим:</strong> отметь галочку при регистрации — попадёшь в отдельный зачёт новичков.',
     cd_d: 'Дней', cd_h: 'Часов', cd_m: 'Мин', cd_s: 'Сек',
     schedule: 'Формат дня',
     already_racing: 'Уже едут',
@@ -685,7 +713,7 @@ const I18N = {
     nobody_yet: 'Пока никого — будь первым!', regs_loading: 'Загружаем список…',
     tab_upcoming: 'Гонка', tab_results: 'Прошедшие', tab_standings: 'Зачёт',
     pts_title: 'Начисление очков',
-    pts1: `🏁 <strong>За каждую гонку:</strong> 1-е — 25 очков, 2-е — 20, 3-е — 16, 4-е — 13, 5-е — 11, затем убывает. С 13-го места — минимум 3 очка. Быстрейший круг — бонус +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
+    pts1: `<strong>За каждую гонку:</strong> 1-е — 25 очков, 2-е — 20, 3-е — 16, 4-е — 13, 5-е — 11, затем убывает. С 13-го места — минимум 3 очка. Быстрейший круг — бонус +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
 <tr style="background:var(--surface2)"><th style="padding:4px 8px;text-align:left;font-weight:700;">Позиция</th><th style="padding:4px 8px;text-align:center;font-weight:700;">Очки</th></tr>
 <tr><td style="padding:3px 8px;">1</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">25</td></tr>
 <tr style="background:var(--surface2)"><td style="padding:3px 8px;">2</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">20</td></tr>
@@ -700,38 +728,38 @@ const I18N = {
 <tr><td style="padding:3px 8px;">11</td><td style="padding:3px 8px;text-align:center;">5</td></tr>
 <tr style="background:var(--surface2)"><td style="padding:3px 8px;">12</td><td style="padding:3px 8px;text-align:center;">4</td></tr>
 <tr><td style="padding:3px 8px;">13+</td><td style="padding:3px 8px;text-align:center;">3 (мин)</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;color:var(--muted);">⚡ Быстрейший круг</td><td style="padding:3px 8px;text-align:center;font-weight:700;">+1</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;color:var(--muted);">Быстрейший круг</td><td style="padding:3px 8px;text-align:center;font-weight:700;">+1</td></tr>
 </table>`,
-    pts2: '📊 <strong>Итоговый зачёт:</strong> Очки суммируются по всем гонкам сезона. Каждая гонка считается отдельно. С 13-го места и ниже — минимум 3 очка.',
-    pts3: '🗑️ <strong>Худшие результаты не считаются</strong> — чем больше гонок ты проехал, тем больше плохих результатов можно отбросить:',
+    pts2: '<strong>Итоговый зачёт:</strong> Очки суммируются по всем гонкам сезона. Каждая гонка считается отдельно. С 13-го места и ниже — минимум 3 очка.',
+    pts3: '<strong>Худшие результаты не считаются</strong> — чем больше гонок ты проехал, тем больше плохих результатов можно отбросить:',
     drops_html: `<span style="color:var(--muted);">1–3 гонки в сезоне</span> → <strong>все идут в зачёт</strong><br><span style="color:var(--muted);">4–5 гонок</span> → <strong>лучшие 4 результата</strong><br><span style="color:var(--muted);">6–8 гонок</span> → <strong>лучшие 5 результатов</strong><br><span style="color:var(--muted);">9+ гонок</span> → <strong>лучшие 6 результатов</strong>`,
     pts_note: 'Например: проехал 6 гонок за сезон — худший результат автоматически не считается. Проехал 3 — все три идут в зачёт. Чем больше стартов, тем больше права на ошибку.',
-    btn_all: 'Все', btn_beg: '🏆 Начинающие',
+    btn_all: 'Все', btn_beg: 'Начинающие',
     h2h_eyebrow: 'Сравнение', h2h_title: 'Head to Head',
     h2h_driver1: 'Гонщик 1...', h2h_driver2: 'Гонщик 2...',
     h2h_pick: 'Выбери двух гонщиков для сравнения',
-    h2h_same: 'Выбери разных гонщиков 😄',
+    h2h_same: 'Выбери разных гонщиков',
     drivers_eyebrow: 'Сообщество', drivers_title: 'Гонщики',
     nav_race: 'Гонка', nav_1v1: '1v1', nav_drivers: 'Гонщики',
-    race_today: 'Гонка сегодня! 🏁',
+    race_today: 'Гонка сегодня!',
     on_map: 'На карте',
     form_name: 'Имя *', form_name_ph: 'Имя и фамилия для гонки',
     form_tg: 'Telegram', form_tg_ph: 'Ник в Telegram (с @ или без)',
-    check_beg: '🏆 Хочу участвовать в <strong>зачёте начинающих</strong>',
+    check_beg: 'Хочу участвовать в <strong>зачёте начинающих</strong>',
     photo_lbl: 'Фото профиля', photo_btn: 'Добавь фото, если не добавлял ранее',
     photo_done: '✓ Фото загружено',
     privacy_note: 'Имя, ник и фото будут видны посетителям этой страницы.',
     btn_confirm: 'Подтвердить →', btn_cancel: 'Отмена', btn_close: 'Закрыть',
     reg_sending: 'Отправляем…',
-    reg_full: 'Мест больше нет 😕 Следи за анонсами — возможно, откроем дополнительные заезды.',
+    reg_full: 'Мест больше нет Следи за анонсами — возможно, откроем дополнительные заезды.',
     reg_dup: 'Похоже, ты уже зарегистрирован. Если это не так — напиши организатору.',
     reg_err: 'Не получилось отправить регистрацию. Проверь интернет и попробуй ещё раз.',
     success_title: 'Ты в гонке!',
     stat_pts: 'Очков', stat_races: 'Гонок', stat_avg: 'Среднее', stat_best: 'Лучший', stat_fl: 'Быстр. круг', stat_pos: 'Место в зачёте',
-    h2h_btn: '⚔️ Head to Head — сравнить с другим гонщиком',
+    h2h_btn: 'Head to Head — сравнить с другим гонщиком',
     hist_lbl: 'История гонок', pts_sfx: 'оч.',
     shared_none: 'Совместных гонок пока нет',
-    nom_title: '🏅 Номинации',
+    nom_title: 'Номинации',
     nom_hot: 'В ударе', nom_progress: 'Прогресс',
     h2h_pick_opp: 'Выбери соперника для сравнения',
     h2h_back: '← Назад',
@@ -742,15 +770,15 @@ const I18N = {
     standings_header: ['#','Гонщик','Гонок','Avg','Очки'],
     col_driver:'Гонщик', col_q1:'Кв1', col_r1:'Г1', col_q2:'Кв2', col_r2:'Г2', col_pts:'Очки',
     races_header: ['#','Гонщик','Очки'],
-    safety: { g:'🟢 Чисто едет', y:'🟡 Осторожно', r:'🔴 Опасный' },
-    extra_beg: '🏆 Зачёт начинающих',
+    safety: { g:'<i class="sr sr-g"></i> Чисто едет', y:'<i class="sr sr-y"></i> Осторожно', r:'<i class="sr sr-r"></i> Опасный' },
+    extra_beg: 'Зачёт начинающих',
     races_sfx: 'гон.',
   },
   pt: {
     title: 'Kart Chat',
     spots_lbl: 'Lugares disponíveis',
     btn_reg: 'Inscrever-me →',
-    beginner_note: '🟢 <strong>Iniciantes:</strong> marca a caixa ao registares-te — entras na classificação separada de iniciantes.',
+    beginner_note: '<strong>Iniciantes:</strong> marca a caixa ao registares-te — entras na classificação separada de iniciantes.',
     cd_d: 'Dias', cd_h: 'Horas', cd_m: 'Min', cd_s: 'Seg',
     schedule: 'Formato do dia',
     already_racing: 'Já inscritos',
@@ -759,7 +787,7 @@ const I18N = {
     nobody_yet: 'Ainda ninguém — sê o primeiro!', regs_loading: 'A carregar a lista…',
     tab_upcoming: 'Corrida', tab_results: 'Anteriores', tab_standings: 'Campeonato',
     pts_title: 'Sistema de pontos',
-    pts1: `🏁 <strong>Por corrida</strong> — 1.º — 25 pts, 2.º — 20, 3.º — 16, 4.º — 13, 5.º — 11, 6.º — 10... Do 13.º — mínimo 3 pts. Volta mais rápida — bónus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
+    pts1: `<strong>Por corrida</strong> — 1.º — 25 pts, 2.º — 20, 3.º — 16, 4.º — 13, 5.º — 11, 6.º — 10... Do 13.º — mínimo 3 pts. Volta mais rápida — bónus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
 <tr style="background:var(--surface2)"><th style="padding:4px 8px;text-align:left;font-weight:700;">Posição</th><th style="padding:4px 8px;text-align:center;font-weight:700;">Pts</th></tr>
 <tr><td style="padding:3px 8px;">1</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">25</td></tr>
 <tr style="background:var(--surface2)"><td style="padding:3px 8px;">2</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">20</td></tr>
@@ -774,38 +802,38 @@ const I18N = {
 <tr><td style="padding:3px 8px;">11</td><td style="padding:3px 8px;text-align:center;">5</td></tr>
 <tr style="background:var(--surface2)"><td style="padding:3px 8px;">12</td><td style="padding:3px 8px;text-align:center;">4</td></tr>
 <tr><td style="padding:3px 8px;">13+</td><td style="padding:3px 8px;text-align:center;">3 (mín)</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;color:var(--muted);">⚡ Volta mais rápida</td><td style="padding:3px 8px;text-align:center;font-weight:700;">+1</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;color:var(--muted);">Volta mais rápida</td><td style="padding:3px 8px;text-align:center;font-weight:700;">+1</td></tr>
 </table>`,
-    pts2: '📊 <strong>Classificação geral:</strong> Os pontos acumulam em todas as corridas da época. Cada corrida conta separadamente. Mesmo no último lugar — recebes no mínimo 3 pontos do 13.º lugar em diante.',
-    pts3: '🗑️ <strong>Os piores resultados não contam</strong> — quanto mais corridas fizeres, mais podes descartar:',
+    pts2: '<strong>Classificação geral:</strong> Os pontos acumulam em todas as corridas da época. Cada corrida conta separadamente. Mesmo no último lugar — recebes no mínimo 3 pontos do 13.º lugar em diante.',
+    pts3: '<strong>Os piores resultados não contam</strong> — quanto mais corridas fizeres, mais podes descartar:',
     drops_html: `<span style="color:var(--muted);">1–3 corridas na época</span> → <strong>todas contam</strong><br><span style="color:var(--muted);">4–5 corridas</span> → <strong>os 4 melhores resultados</strong><br><span style="color:var(--muted);">6–8 corridas</span> → <strong>os 5 melhores resultados</strong><br><span style="color:var(--muted);">9+ corridas</span> → <strong>os 6 melhores resultados</strong>`,
     pts_note: 'Exemplo: com 6 corridas na época, o pior resultado não conta. Com 3 — todos contam. Quanto mais starts, mais margem para errar.',
-    btn_all: 'Todos', btn_beg: '🏆 Iniciantes',
+    btn_all: 'Todos', btn_beg: 'Iniciantes',
     h2h_eyebrow: 'Comparação', h2h_title: 'Head to Head',
     h2h_driver1: 'Piloto 1...', h2h_driver2: 'Piloto 2...',
     h2h_pick: 'Escolhe dois pilotos para comparar',
-    h2h_same: 'Escolhe pilotos diferentes 😄',
+    h2h_same: 'Escolhe pilotos diferentes',
     drivers_eyebrow: 'Comunidade', drivers_title: 'Pilotos',
     nav_race: 'Corrida', nav_1v1: '1v1', nav_drivers: 'Pilotos',
-    race_today: 'Corrida hoje! 🏁',
+    race_today: 'Corrida hoje!',
     on_map: 'No mapa',
     form_name: 'Nome *', form_name_ph: 'Nome e apelido para a corrida',
     form_tg: 'Telegram', form_tg_ph: 'Username do Telegram (com @ ou sem)',
-    check_beg: '🏆 Quero participar na <strong>classificação de iniciantes</strong>',
+    check_beg: 'Quero participar na <strong>classificação de iniciantes</strong>',
     photo_lbl: 'Foto de perfil', photo_btn: 'Adiciona foto, se ainda não o fizeste',
     photo_done: '✓ Foto carregada',
     privacy_note: 'O nome, username e foto ficarão visíveis para os visitantes desta página.',
     btn_confirm: 'Confirmar →', btn_cancel: 'Cancelar', btn_close: 'Fechar',
     reg_sending: 'A enviar…',
-    reg_full: 'Já não há lugares 😕 Fica atento aos anúncios — podemos abrir mais sessões.',
+    reg_full: 'Já não há lugares Fica atento aos anúncios — podemos abrir mais sessões.',
     reg_dup: 'Parece que já estás inscrito. Se não for o caso, contacta o organizador.',
     reg_err: 'Não foi possível enviar a inscrição. Verifica a ligação e tenta novamente.',
     success_title: 'Estás na corrida!',
     stat_pts: 'Pontos', stat_races: 'Corridas', stat_avg: 'Média', stat_best: 'Melhor', stat_fl: 'V. rápida', stat_pos: 'Posição geral',
-    h2h_btn: '⚔️ Head to Head — comparar com outro piloto',
+    h2h_btn: 'Head to Head — comparar com outro piloto',
     hist_lbl: 'Histórico de corridas', pts_sfx: 'pts',
     shared_none: 'Sem corridas em comum ainda',
-    nom_title: '🏅 Destaques',
+    nom_title: 'Destaques',
     nom_hot: 'Em forma', nom_progress: 'Progresso',
     h2h_pick_opp: 'Escolhe um adversário para comparar',
     h2h_back: '← Voltar',
@@ -816,15 +844,15 @@ const I18N = {
     standings_header: ['#','Piloto','Corr.','Méd.','Pts'],
     col_driver:'Piloto', col_q1:'Q1', col_r1:'C1', col_q2:'Q2', col_r2:'C2', col_pts:'Pts',
     races_header: ['#','Piloto','Pts'],
-    safety: { g:'🟢 Pilotagem limpa', y:'🟡 Cuidado', r:'🔴 Perigoso' },
-    extra_beg: '🏆 Classificação iniciantes',
+    safety: { g:'<i class="sr sr-g"></i> Pilotagem limpa', y:'<i class="sr sr-y"></i> Cuidado', r:'<i class="sr sr-r"></i> Perigoso' },
+    extra_beg: 'Classificação iniciantes',
     races_sfx: 'corr.',
   },
   en: {
     title: 'Kart Chat',
     spots_lbl: 'Spots available',
     btn_reg: 'Register →',
-    beginner_note: "🟢 <strong>Beginners:</strong> tick the box when you register — you'll join the separate beginners standings.",
+    beginner_note: "<strong>Beginners:</strong> tick the box when you register — you'll join the separate beginners standings.",
     cd_d: 'Days', cd_h: 'Hours', cd_m: 'Min', cd_s: 'Sec',
     schedule: 'Day format',
     already_racing: 'Already in',
@@ -833,7 +861,7 @@ const I18N = {
     nobody_yet: 'Nobody yet — be the first!', regs_loading: 'Loading the list…',
     tab_upcoming: 'Race', tab_results: 'Past', tab_standings: 'Standings',
     pts_title: 'Points system',
-    pts1: `🏁 <strong>Per race</strong> — 1st — 25 pts, 2nd — 20, 3rd — 16, 4th — 13, 5th — 11, 6th — 10... 13th+ — minimum 3 pts. Fastest lap — bonus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
+    pts1: `<strong>Per race</strong> — 1st — 25 pts, 2nd — 20, 3rd — 16, 4th — 13, 5th — 11, 6th — 10... 13th+ — minimum 3 pts. Fastest lap — bonus +1.<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;">
 <tr style="background:var(--surface2)"><th style="padding:4px 8px;text-align:left;font-weight:700;">Position</th><th style="padding:4px 8px;text-align:center;font-weight:700;">Pts</th></tr>
 <tr><td style="padding:3px 8px;">1st</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">25</td></tr>
 <tr style="background:var(--surface2)"><td style="padding:3px 8px;">2nd</td><td style="padding:3px 8px;text-align:center;font-weight:700;color:var(--accent-red);">20</td></tr>
@@ -848,38 +876,38 @@ const I18N = {
 <tr><td style="padding:3px 8px;">11th</td><td style="padding:3px 8px;text-align:center;">5</td></tr>
 <tr style="background:var(--surface2)"><td style="padding:3px 8px;">12th</td><td style="padding:3px 8px;text-align:center;">4</td></tr>
 <tr><td style="padding:3px 8px;">13th+</td><td style="padding:3px 8px;text-align:center;">3 (min)</td></tr>
-<tr style="background:var(--surface2)"><td style="padding:3px 8px;color:var(--muted);">⚡ Fastest lap</td><td style="padding:3px 8px;text-align:center;font-weight:700;">+1</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:3px 8px;color:var(--muted);">Fastest lap</td><td style="padding:3px 8px;text-align:center;font-weight:700;">+1</td></tr>
 </table>`,
-    pts2: '📊 <strong>Overall standings:</strong> Points accumulate across all season races. Each race counts separately. 13th place and below earns a minimum of 3 points.',
-    pts3: '🗑️ <strong>Worst results are dropped</strong> — the more races you run, the more you can discard:',
+    pts2: '<strong>Overall standings:</strong> Points accumulate across all season races. Each race counts separately. 13th place and below earns a minimum of 3 points.',
+    pts3: '<strong>Worst results are dropped</strong> — the more races you run, the more you can discard:',
     drops_html: `<span style="color:var(--muted);">1–3 races in season</span> → <strong>all count</strong><br><span style="color:var(--muted);">4–5 races</span> → <strong>best 4 results</strong><br><span style="color:var(--muted);">6–8 races</span> → <strong>best 5 results</strong><br><span style="color:var(--muted);">9+ races</span> → <strong>best 6 results</strong>`,
     pts_note: 'Example: if you\'ve run 6 races, your worst result is automatically dropped. 3 races — all three count. More starts = more room for error.',
-    btn_all: 'All', btn_beg: '🏆 Beginners',
+    btn_all: 'All', btn_beg: 'Beginners',
     h2h_eyebrow: 'Comparison', h2h_title: 'Head to Head',
     h2h_driver1: 'Driver 1...', h2h_driver2: 'Driver 2...',
     h2h_pick: 'Select two drivers to compare',
-    h2h_same: 'Pick different drivers 😄',
+    h2h_same: 'Pick different drivers',
     drivers_eyebrow: 'Community', drivers_title: 'Drivers',
     nav_race: 'Race', nav_1v1: '1v1', nav_drivers: 'Drivers',
-    race_today: 'Race day! 🏁',
+    race_today: 'Race day!',
     on_map: 'On map',
     form_name: 'Name *', form_name_ph: 'Full name for the race',
     form_tg: 'Telegram', form_tg_ph: 'Telegram username (with @ or without)',
-    check_beg: '🏆 I want to enter the <strong>beginners standings</strong>',
+    check_beg: 'I want to enter the <strong>beginners standings</strong>',
     photo_lbl: 'Profile photo', photo_btn: 'Add a photo if you haven\'t yet',
     photo_done: '✓ Photo uploaded',
     privacy_note: 'Your name, handle and photo will be visible to visitors of this page.',
     btn_confirm: 'Confirm →', btn_cancel: 'Cancel', btn_close: 'Close',
     reg_sending: 'Sending…',
-    reg_full: 'No spots left 😕 Watch the announcements — we may open extra sessions.',
+    reg_full: 'No spots left Watch the announcements — we may open extra sessions.',
     reg_dup: 'Looks like you are already registered. If not, contact the organizer.',
     reg_err: 'Could not submit your registration. Check your connection and try again.',
     success_title: 'You\'re in!',
     stat_pts: 'Points', stat_races: 'Races', stat_avg: 'Average', stat_best: 'Best', stat_fl: 'Fast lap', stat_pos: 'Standing',
-    h2h_btn: '⚔️ Head to Head — compare with another driver',
+    h2h_btn: 'Head to Head — compare with another driver',
     hist_lbl: 'Race history', pts_sfx: 'pts',
     shared_none: 'No shared races yet',
-    nom_title: '🏅 Awards',
+    nom_title: 'Awards',
     nom_hot: 'On fire', nom_progress: 'Progress',
     h2h_pick_opp: 'Pick an opponent to compare',
     h2h_back: '← Back',
@@ -890,8 +918,8 @@ const I18N = {
     standings_header: ['#','Driver','Races','Avg','Pts'],
     col_driver:'Driver', col_q1:'Q1', col_r1:'R1', col_q2:'Q2', col_r2:'R2', col_pts:'Pts',
     races_header: ['#','Driver','Pts'],
-    safety: { g:'🟢 Clean driver', y:'🟡 Caution', r:'🔴 Dangerous' },
-    extra_beg: '🏆 Beginners standings',
+    safety: { g:'<i class="sr sr-g"></i> Clean driver', y:'<i class="sr sr-y"></i> Caution', r:'<i class="sr sr-r"></i> Dangerous' },
+    extra_beg: 'Beginners standings',
     races_sfx: 'races',
   }
 };
@@ -901,7 +929,7 @@ Object.assign(I18N.ru, {
   vote_back: 'Катаемся Чатом',
   vote_eyebrow: 'Палмела · Safety Rating',
   vote_title: 'Safety Rating',
-  vote_intro: 'Оцени, с кем тебе было чисто бороться на трассе, а к кому есть вопросы по вождению. 🟢 — чисто поборолись, 🟡 — есть вопросы. Можно оценить не всех — только тех, с кем реально пересекался. Голос анонимный, ник нужен только чтобы не голосовать дважды.',
+  vote_intro: 'Оцени, с кем тебе было чисто бороться на трассе, а к кому есть вопросы по вождению. <i class="sr sr-g"></i> — чисто поборолись, <i class="sr sr-y"></i> — есть вопросы. Можно оценить не всех — только тех, с кем реально пересекался. Голос анонимный, ник нужен только чтобы не голосовать дважды.',
   vote_tg_lbl: 'Твой Telegram (чтобы не голосовать дважды)',
   vote_submit: 'Отправить голос →',
   vote_clean: 'Чисто поборолись!',
@@ -912,7 +940,7 @@ Object.assign(I18N.ru, {
   vote_empty: 'Список участников ещё не загрузился. Обнови страницу через минуту.',
   vote_done_title: 'Голос принят!',
   vote_done_sub: 'Спасибо. Результаты объявим после подсчёта.',
-  vote_closed: 'Голосование откроется сразу после гонки 🏁', fb_closed: 'Отзыв можно будет оставить сразу после гонки 🏁',
+  vote_closed: 'Голосование откроется сразу после гонки', fb_closed: 'Отзыв можно будет оставить сразу после гонки',
   fb_back: 'Катаемся Чатом',
   fb_eyebrow: 'Палмела · Отзыв',
   fb_title: 'Как тебе гонка?',
@@ -929,7 +957,7 @@ Object.assign(I18N.pt, {
   vote_back: 'Kataemsya Chatom',
   vote_eyebrow: 'Palmela · Safety Rating',
   vote_title: 'Safety Rating',
-  vote_intro: 'Avalia com quem foi limpo competir e com quem há dúvidas na condução. 🟢 — corrida limpa, 🟡 — há dúvidas. Não precisas avaliar todos — só aqueles com quem realmente lutaste. O voto é anónimo, o nick serve apenas para não votares duas vezes.',
+  vote_intro: 'Avalia com quem foi limpo competir e com quem há dúvidas na condução. <i class="sr sr-g"></i> — corrida limpa, <i class="sr sr-y"></i> — há dúvidas. Não precisas avaliar todos — só aqueles com quem realmente lutaste. O voto é anónimo, o nick serve apenas para não votares duas vezes.',
   vote_tg_lbl: 'O teu Telegram (para não votar duas vezes)',
   vote_submit: 'Enviar voto →',
   vote_clean: 'Corrida limpa!',
@@ -940,7 +968,7 @@ Object.assign(I18N.pt, {
   vote_empty: 'A lista de participantes ainda não carregou. Atualiza a página dentro de um minuto.',
   vote_done_title: 'Voto registado!',
   vote_done_sub: 'Obrigado. Os resultados serão anunciados após a contagem.',
-  vote_closed: 'A votação abre logo após a corrida 🏁', fb_closed: 'O feedback abre logo após a corrida 🏁',
+  vote_closed: 'A votação abre logo após a corrida', fb_closed: 'O feedback abre logo após a corrida',
   fb_back: 'Kataemsya Chatom',
   fb_eyebrow: 'Palmela · Feedback',
   fb_title: 'Que tal a corrida?',
@@ -957,7 +985,7 @@ Object.assign(I18N.en, {
   vote_back: 'Kataemsya Chatom',
   vote_eyebrow: 'Palmela · Safety Rating',
   vote_title: 'Safety Rating',
-  vote_intro: 'Rate who you raced cleanly against and who you have questions about. 🟢 — clean racing, 🟡 — questions. You don\'t have to rate everyone — only those you actually battled. The vote is anonymous; your handle is only used to prevent double voting.',
+  vote_intro: 'Rate who you raced cleanly against and who you have questions about. <i class="sr sr-g"></i> — clean racing, <i class="sr sr-y"></i> — questions. You don\'t have to rate everyone — only those you actually battled. The vote is anonymous; your handle is only used to prevent double voting.',
   vote_tg_lbl: 'Your Telegram (to prevent double voting)',
   vote_submit: 'Submit vote →',
   vote_clean: 'Clean racing!',
@@ -968,7 +996,7 @@ Object.assign(I18N.en, {
   vote_empty: 'The participant list hasn\'t loaded yet. Refresh the page in a minute.',
   vote_done_title: 'Vote recorded!',
   vote_done_sub: 'Thanks. Results will be announced after counting.',
-  vote_closed: 'Voting opens right after the race 🏁', fb_closed: 'Feedback opens right after the race 🏁',
+  vote_closed: 'Voting opens right after the race', fb_closed: 'Feedback opens right after the race',
   fb_back: 'Kataemsya Chatom',
   fb_eyebrow: 'Palmela · Feedback',
   fb_title: 'How was the race?',
@@ -1007,7 +1035,7 @@ Object.assign(I18N.ru, {
   safe_back: 'Катаемся Чатом',
   safe_eyebrow: 'Batalha · Safety Rating',
   safe_title: 'Итоги голосования',
-  safe_intro: 'Как гонщики оценили друг друга по чистоте борьбы на трассе. 🟢 — поборолись чисто, 🟡 — есть вопросы по вождению. Голосование анонимное.',
+  safe_intro: 'Как гонщики оценили друг друга по чистоте борьбы на трассе. <i class="sr sr-g"></i> — поборолись чисто, <i class="sr sr-y"></i> — есть вопросы по вождению. Голосование анонимное.',
   safe_cta: 'Итоги Safety Rating',
   safe_clean_lbl: 'Едут чисто',
   safe_quest_lbl: 'Есть вопросы',
@@ -1016,7 +1044,7 @@ Object.assign(I18N.pt, {
   safe_back: 'Kataemsya Chatom',
   safe_eyebrow: 'Batalha · Safety Rating',
   safe_title: 'Resultados da votação',
-  safe_intro: 'Como os pilotos se avaliaram quanto à limpeza da disputa em pista. 🟢 — corrida limpa, 🟡 — dúvidas na condução. A votação é anónima.',
+  safe_intro: 'Como os pilotos se avaliaram quanto à limpeza da disputa em pista. <i class="sr sr-g"></i> — corrida limpa, <i class="sr sr-y"></i> — dúvidas na condução. A votação é anónima.',
   safe_cta: 'Resultados Safety Rating',
   safe_clean_lbl: 'Pilotagem limpa',
   safe_quest_lbl: 'Com dúvidas',
@@ -1025,7 +1053,7 @@ Object.assign(I18N.en, {
   safe_back: 'Kataemsya Chatom',
   safe_eyebrow: 'Batalha · Safety Rating',
   safe_title: 'Voting results',
-  safe_intro: 'How drivers rated each other on clean racing. 🟢 — clean battle, 🟡 — questions about driving. The vote is anonymous.',
+  safe_intro: 'How drivers rated each other on clean racing. <i class="sr sr-g"></i> — clean battle, <i class="sr sr-y"></i> — questions about driving. The vote is anonymous.',
   safe_cta: 'Safety Rating results',
   safe_clean_lbl: 'Clean drivers',
   safe_quest_lbl: 'Questions raised',
@@ -1044,10 +1072,10 @@ Object.assign(I18N.ru, {
   tg_prefill: '✓ Данные подтянулись из Telegram',
   hide_handle: 'Скрыть мой @ник на портале',
   success_date: (v, d) => `Ждём тебя в ${v} · ${d}`,
-  pay_title: '💶 Оплата участия', pay_note: 'В назначении платежа укажи своё имя 🙌',
+  pay_title: 'Оплата участия', pay_note: 'В назначении платежа укажи своё имя',
   copy_lbl: 'копировать', copied_lbl: 'скопировано ✓',
   beg_short: 'новичок',
-  photo_uploading: '📷 Фото загружается, появится через ~минуту',
+  photo_uploading: 'Фото загружается, появится через ~минуту',
   how_join: 'Как вписаться', per_person: 'с участника',
   mode_pick: 'Формат участия *', mode_need: 'Выбери формат участия',
   form_mate: 'Напарник *', form_mate_ph: 'Имя и фамилия напарника', form_mate_tg: 'Telegram напарника',
@@ -1069,10 +1097,10 @@ Object.assign(I18N.pt, {
   tg_prefill: '✓ Dados preenchidos a partir do Telegram',
   hide_handle: 'Esconder o meu @username no portal',
   success_date: (v, d) => `Esperamos por ti: ${v} · ${d}`,
-  pay_title: '💶 Pagamento da inscrição', pay_note: 'Na descrição da transferência indica o teu nome 🙌',
+  pay_title: 'Pagamento da inscrição', pay_note: 'Na descrição da transferência indica o teu nome',
   copy_lbl: 'copiar', copied_lbl: 'copiado ✓',
   beg_short: 'iniciante',
-  photo_uploading: '📷 A foto está a carregar — aparece dentro de ~1 minuto',
+  photo_uploading: 'A foto está a carregar — aparece dentro de ~1 minuto',
   how_join: 'Como participar', per_person: 'por piloto',
   mode_pick: 'Formato *', mode_need: 'Escolhe o formato de participação',
   form_mate: 'Colega de equipa *', form_mate_ph: 'Nome e apelido do colega', form_mate_tg: 'Telegram do colega',
@@ -1094,10 +1122,10 @@ Object.assign(I18N.en, {
   tg_prefill: '✓ Filled in from Telegram',
   hide_handle: 'Hide my @handle on the portal',
   success_date: (v, d) => `See you at ${v} · ${d}`,
-  pay_title: '💶 Entry fee', pay_note: 'Put your name in the payment reference 🙌',
+  pay_title: 'Entry fee', pay_note: 'Put your name in the payment reference',
   copy_lbl: 'copy', copied_lbl: 'copied ✓',
   beg_short: 'beginner',
-  photo_uploading: '📷 Photo is uploading — it will show up in ~1 minute',
+  photo_uploading: 'Photo is uploading — it will show up in ~1 minute',
   how_join: 'How to enter', per_person: 'per driver',
   mode_pick: 'Entry type *', mode_need: 'Choose an entry type',
   form_mate: 'Teammate *', form_mate_ph: 'Teammate full name', form_mate_tg: 'Teammate Telegram',
@@ -1660,7 +1688,7 @@ function renderSafetyResults() {
   if (!page) return;
   document.getElementById('safe-eyebrow').textContent = t('safe_eyebrow');
   document.getElementById('safe-title').textContent = t('safe_title');
-  document.getElementById('safe-intro').textContent = t('safe_intro');
+  document.getElementById('safe-intro').innerHTML = t('safe_intro');
   document.getElementById('safe-back').textContent = t('safe_back');
 
   // Анонимное голосование — счётчик проголосовавших не показываем.
@@ -1682,14 +1710,14 @@ function renderSafetyResults() {
     const avs = list.map(x => `<div style="display:flex;align-items:center;gap:6px;">${avatarDiv(getPhoto(x.handle, x.name), x.name[0], 28)}<div class="nom-driver">${x.name.split(' ')[0]} ${x.name.split(' ')[1]?.[0]||''}.</div></div>`).join('<div style="color:var(--muted2);font-size:11px;">·</div>');
     return `<div class="nom-card" style="position:relative;"><div class="nom-icon">${icon}</div><div class="nom-title">${title}</div><div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div></div>`;
   };
-  const noms = multiNomCard('🤝', t('safe_clean_lbl'), cleanLeaders(SAFETY_PAGE.ds))
-             + multiNomCard('⚠️', t('safe_quest_lbl'), attentionList(SAFETY_PAGE.ds));
+  const noms = multiNomCard('', t('safe_clean_lbl'), cleanLeaders(SAFETY_PAGE.ds))
+             + multiNomCard('', t('safe_quest_lbl'), attentionList(SAFETY_PAGE.ds));
   if (noms) html += `<div class="nom-cards" style="margin-bottom:16px;">${noms}</div>`;
 
   // Полный список с аватарками
   const row = (x, s) => {
     const vh = visHandle(x.handle, false);
-    const counts = `${x.pos > 0 ? `<span style="color:var(--green);font-weight:700;">${x.pos} 🟢</span>` : ''}${x.neg > 0 ? `<span style="color:var(--yellow);font-weight:700;margin-left:8px;">${x.neg} 🟡</span>` : ''}`;
+    const counts = `${x.pos > 0 ? `<span style="color:var(--green);font-weight:700;">${x.pos} <i class="sr sr-g"></i></span>` : ''}${x.neg > 0 ? `<span style="color:var(--yellow);font-weight:700;margin-left:8px;">${x.neg} <i class="sr sr-y"></i></span>` : ''}`;
     const key = driverKey(x.handle, x.name);
     return `<div class="driver-card" style="margin:0 0 8px;" onclick="openProfile('${key}')">
         ${avatarDiv(getPhoto(x.handle, x.name), x.name[0], 36)}
@@ -1701,8 +1729,8 @@ function renderSafetyResults() {
       </div>`;
   };
 
-  if (clean.length) html += `<div class="section-lbl" style="margin:6px 0 8px;">🟢 ${t('safe_clean_lbl')}</div>` + clean.map(x => row(x, 'g')).join('');
-  if (quest.length) html += `<div class="section-lbl" style="margin:18px 0 8px;">🟡 ${t('safe_quest_lbl')}</div>` + quest.map(x => row(x, 'y')).join('');
+  if (clean.length) html += `<div class="section-lbl" style="margin:6px 0 8px;"><i class="sr sr-g"></i> ${t('safe_clean_lbl')}</div>` + clean.map(x => row(x, 'g')).join('');
+  if (quest.length) html += `<div class="section-lbl" style="margin:18px 0 8px;"><i class="sr sr-y"></i> ${t('safe_quest_lbl')}</div>` + quest.map(x => row(x, 'y')).join('');
   document.getElementById('safe-list').innerHTML = html;
 }
 
@@ -1812,7 +1840,7 @@ function renderLastRace() {
     clean:    { ru:'Чистая борьба',   en:'Clean racing', pt:'Pilotagem limpa' },
     dirty:    { ru:'Есть вопросы',   en:'Questions raised', pt:'Com dúvidas' },
     pending:  { ru:'Идёт подсчёт…',   en:'Counting…',    pt:'A contar…' },
-    awards:   { ru:'🏅 Номинации',    en:'🏅 Awards',    pt:'🏅 Destaques' },
+    awards:   { ru:'Номинации',    en:'Awards',    pt:'Destaques' },
     q:        { ru:'Квал.',           en:'Q',            pt:'Q' },
     fin:      { ru:'финиш',           en:'fin',          pt:'fin' },
   };
@@ -1827,12 +1855,12 @@ function renderLastRace() {
     ? `<img src="${podSrc}" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">`
     : _podiumPlaceholder();
   html += `</div>`;
-  html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">${venueLogoTile((LAST_RACE.location||'') + ' ' + (LAST_RACE.title||''), 44)}<div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;">${LAST_RACE.title}</div></div>`;
+  html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">${venueLogoTile((LAST_RACE.location||'') + ' ' + (LAST_RACE.title||''), 44)}<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;">${LAST_RACE.title}</div></div>`;
 
   // ── 2. Ссылки: отзыв + итоги Safety Rating (вторичные, не отвлекают) ──
   html += `<div style="display:flex;gap:8px;margin-bottom:16px;">
-    <a href="#feedback" class="cta-btn">⭐ ${t('cta_feedback')}</a>
-    <a href="#safety" class="cta-btn">📋 ${t('safe_cta')}</a>
+    <a href="#feedback" class="cta-btn">${t('cta_feedback')}</a>
+    <a href="#safety" class="cta-btn">${t('safe_cta')}</a>
   </div>`;
 
   // ── 3. Номинации ──
@@ -1860,7 +1888,7 @@ function renderLastRace() {
     if (flW) {
       const tm = flR1.length ? (LAST_RACE.flTimes?.r1) : (LAST_RACE.flTimes?.r2);
       const lbl = flR1.length ? {ru:'Г1',pt:'C1',en:'R1'}[lang] : {ru:'Г2',pt:'C2',en:'R2'}[lang];
-      noms += card('⚡', nt('fl'), flW, tm ? `${tm} · ${lbl}` : lbl);
+      noms += card('', nt('fl'), flW, tm ? `${tm} · ${lbl}` : lbl);
     }
     // Мощный прорыв
     let maxGain = -Infinity, chW = null, chR1 = true;
@@ -1871,13 +1899,13 @@ function renderLastRace() {
     });
     if (chW && maxGain > 0) {
       const qq = chR1 ? chW.q1 : chW.q2, ff = chR1 ? chW.r1pos : chW.r2pos;
-      noms += card('🚀', nt('charge'), chW, `${nt('q')} ${qq} → ${nt('fin')} ${ff} (+${maxGain})`);
+      noms += card('', nt('charge'), chW, `${nt('q')} ${qq} → ${nt('fin')} ${ff} (+${maxGain})`);
     }
     // Феникс
     let maxReb = -Infinity, phW = null;
     allRes.forEach(r => { const d = r.r1pos - r.r2pos; if (d > maxReb) { maxReb = d; phW = r; } });
     if (phW && maxReb > 0) {
-      noms += card('🔥', nt('phoenix'), phW, { ru:`+${maxReb} поз. Г1→Г2`, en:`+${maxReb} places R1→R2`, pt:`+${maxReb} lugares C1→C2` }[lang]);
+      noms += card('', nt('phoenix'), phW, { ru:`+${maxReb} поз. Г1→Г2`, en:`+${maxReb} places R1→R2`, pt:`+${maxReb} lugares C1→C2` }[lang]);
     }
   }
 
@@ -1888,10 +1916,10 @@ function renderLastRace() {
     return `<div class="nom-card" style="position:relative;"><div class="nom-icon">${icon}</div><div class="nom-title">${title}</div><div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">${avs}</div></div>`;
   };
   const nm = LAST_RACE.nominations;
-  noms += (nm && nm.clean && nm.clean.length) ? multiNom('🤝', nt('clean'), nm.clean) : teaser('🤝', nt('clean'));
-  noms += (nm && nm.dirty && nm.dirty.length) ? multiNom('⚠️', nt('dirty'), nm.dirty) : teaser('⚠️', nt('dirty'));
+  noms += (nm && nm.clean && nm.clean.length) ? multiNom('', nt('clean'), nm.clean) : teaser('', nt('clean'));
+  noms += (nm && nm.dirty && nm.dirty.length) ? multiNom('', nt('dirty'), nm.dirty) : teaser('', nt('dirty'));
 
-  html += `<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${nt('awards')}</div>`;
+  html += `<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${nt('awards')}</div>`;
   html += `<div class="nom-cards" style="margin-bottom:14px;">${noms}</div>`;
 
   // ── 4. Результаты ──
@@ -1909,7 +1937,7 @@ function renderLastRace() {
         const pc = i===0?'p1':i===1?'p2':i===2?'p3':'';
         const r1fl = r.r1fl ? ' <span class="fl-badge">FL</span>' : '';
         const r2fl = r.r2fl ? ' <span class="fl-badge">FL</span>' : '';
-        const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1);
+        const medal = i===0?'<span class="pm pm1">1</span>':i===1?'<span class="pm pm2">2</span>':i===2?'<span class="pm pm3">3</span>':(i+1);
         html += `<tr class="${pc}">
           <td>${medal}</td>
           <td><div style="font-size:13px;font-weight:600;line-height:1.2;">${r.name}</div>
@@ -1930,8 +1958,8 @@ function renderLastRace() {
 }
 
 function _podiumPlaceholder() {
-  const txt = { ru:'📸 Фото с подиума<br>появится здесь после гонки', en:'📸 Podium photo<br>coming after the race', pt:'📸 Foto do pódio<br>em breve após a corrida' }[_lang||'ru'];
-  return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted2);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.6;padding:30px;">${txt}</div>`;
+  const txt = { ru:'Фото с подиума<br>появится здесь после гонки', en:'Podium photo<br>coming after the race', pt:'Foto do pódio<br>em breve após a corrida' }[_lang||'ru'];
+  return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted2);font-family:'Fira Sans Extra Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.6;padding:30px;">${txt}</div>`;
 }
 
 
@@ -2207,9 +2235,9 @@ function getPhoto(handle, name) {
 function avatarDiv(photoUrls, letter, size) {
   const sz = size || 40;
   const L = esc(letter || '?');
-  const initials = `<div style="display:none;width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${L}</div>`;
+  const initials = `<div style="display:none;width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);align-items:center;justify-content:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${L}</div>`;
   if (!photoUrls || !photoUrls.length) {
-    return `<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${L}</div>`;
+    return `<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${L}</div>`;
   }
   // esc() и для src, и для JSON-цепочки — photoUrl приходит с сервера
   const srcsJson = esc(JSON.stringify(photoUrls));
@@ -2280,22 +2308,22 @@ function renderRaceNominations(raceId) {
   if (flWinner) {
     const isR1 = !!flR1.length;
     const tm = isR1 ? cfg.flTimes.r1 : cfg.flTimes.r2;
-    cards += card('⚡', nt('fl'), flWinner, tm ? `${tm} · ${rLbl(isR1)}` : rLbl(isR1));
+    cards += card('', nt('fl'), flWinner, tm ? `${tm} · ${rLbl(isR1)}` : rLbl(isR1));
   }
   if (chargeWinner && maxGain > 0) {
     const qq = chargeIsR1 ? chargeWinner.q1 : chargeWinner.q2;
     const ff = chargeIsR1 ? chargeWinner.r1pos : chargeWinner.r2pos;
-    cards += card('🚀', nt('charge'), chargeWinner, `Q${qq} → P${ff} (+${maxGain})`);
+    cards += card('', nt('charge'), chargeWinner, `Q${qq} → P${ff} (+${maxGain})`);
   }
   if (phoenixWinner && maxRebound > 0) {
-    cards += card('🔥', nt('phoenix'), phoenixWinner, { ru:`+${maxRebound} поз. Г1→Г2`, en:`+${maxRebound} places R1→R2`, pt:`+${maxRebound} lugares C1→C2` }[_lang||'ru']);
+    cards += card('', nt('phoenix'), phoenixWinner, { ru:`+${maxRebound} поз. Г1→Г2`, en:`+${maxRebound} places R1→R2`, pt:`+${maxRebound} lugares C1→C2` }[_lang||'ru']);
   }
-  cards += multiCard('🤝', nt('clean'), cleanLeaders(cfg.safety));
-  cards += multiCard('⚠️', nt('dirty'), attentionList(cfg.safety));
+  cards += multiCard('', nt('clean'), cleanLeaders(cfg.safety));
+  cards += multiCard('', nt('dirty'), attentionList(cfg.safety));
 
   return `
     <div style="padding:14px 14px 0;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">🏅 ${{ ru:'Номинации', en:'Awards', pt:'Destaques' }[_lang||'ru']}</div>
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${{ ru:'Номинации', en:'Awards', pt:'Destaques' }[_lang||'ru']}</div>
       <div class="nom-cards" style="margin-bottom:14px;">${cards}</div>
     </div>`;
 }
@@ -2461,7 +2489,7 @@ function renderResults(idx) {
   let html = '';
   v.results.forEach(r => {
     const pc = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
-    const fl = r.fl ? ` <span style="font-size:9px;color:var(--accent-red);">⚡FL</span>` : '';
+    const fl = r.fl ? ` <span style="font-size:9px;color:var(--accent-red);">FL</span>` : '';
     const photo = getPhoto(r.handle, r.name);
     const av = avatarDiv(photo, r.name[0], 32);
     html += `<div class="result-row ${pc}" onclick="openProfile('${driverKey(r.handle, r.name)}')">
@@ -2520,22 +2548,23 @@ function renderStandings() {
 
 // Drivers
 function renderDrivers() {
-  document.getElementById('drivers-list').innerHTML = STANDINGS.map(d => {
+  document.getElementById('drivers-list').innerHTML =
+    `<div class="drv-head"><span>#</span><span>${t('stat_pts')}</span></div><div class="drv-list">` +
+    STANDINGS.map((d, i) => {
     const photo = getPhoto(d.handle, d.name);
-    const av = avatarDiv(photo, d.name[0], 40);
+    const av = avatarDiv(photo, d.name[0], 36);
+    const h = visHandle(d.handle, d.hideHandle);
     return `
     <div class="driver-card" onclick="openProfile('${d.key}')">
+      <div class="drv-pos">${i + 1}</div>
       ${av}
       <div style="flex:1;min-width:0;">
-        <div style="font-weight:600;font-size:13px;">${d.name}${sdot(d.handle, d.name)}</div>
-        <div style="font-size:11px;color:var(--muted);">${visHandle(d.handle, d.hideHandle)||''} ${visHandle(d.handle,d.hideHandle)?'· ':''} ${d.raceCount} ${t('races_sfx')}</div>
+        <div style="font-weight:600;font-size:14px;">${d.name}${sdot(d.handle, d.name)}</div>
+        <div style="font-size:12px;color:var(--muted);">${h ? h + ' · ' : ''}${d.raceCount} ${t('races_sfx')}</div>
       </div>
-      <div style="text-align:right;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;">${d.totalPts}</div>
-        <div style="font-size:10px;color:var(--muted);">${t('stat_pts')}</div>
-      </div>
+      <div class="drv-pts">${d.totalPts}</div>
     </div>
-  `}).join('');
+  `}).join('') + `</div>`;
 }
 
 // FASTEST LAPS + NOMINATIONS + HEAD TO HEAD
@@ -2571,7 +2600,7 @@ function buildNominations(begOnly) {
   if (maxFL > 0) {
     const leaders = pool.filter(d => countFastestLaps(d.key) === maxFL);
     noms.push({
-      icon: '⚡',
+      icon: '',
       title: t('nom_hot'),
       desc: `${maxFL} быстр. ${maxFL === 1 ? 'круг' : maxFL < 5 ? 'круга' : 'кругов'}`,
       drivers: leaders,
@@ -2592,7 +2621,7 @@ function buildNominations(begOnly) {
   });
   if (progressWinner && maxGrowth > 0) {
     noms.push({
-      icon: '🚀',
+      icon: '',
       title: t('nom_progress'),
       desc: `+${Math.round(maxGrowth * 10) / 10} оч./гонку`,
       drivers: [progressWinner],
@@ -2615,7 +2644,6 @@ function renderNominations() {
         const av = avatarDiv(photo, d.name[0], 36);
         const extra = n.drivers.length > 1 ? ` +${n.drivers.length-1}` : '';
         return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);">
-          <div style="font-size:22px;width:30px;text-align:center;">${n.icon}</div>
           ${av}
           <div style="flex:1;min-width:0;">
             <div style="font-weight:600;font-size:13px;">${n.title}</div>
@@ -2651,8 +2679,8 @@ function openH2H(key1) {
 
   document.getElementById('h2h-body').innerHTML = `
     <div style="padding:16px 16px 0;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;margin-bottom:4px;">
-        ⚔️ ${d1.name}
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:18px;font-weight:900;margin-bottom:4px;">
+        ${d1.name}
       </div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">${t('h2h_pick_opp')}</div>
     </div>
@@ -2667,8 +2695,8 @@ function h2hSafetyRow(d1, d2) {
   const sf2 = getSafety(d2.handle, d2.name);
   const counts = sf => {
     const p = [];
-    if (sf.pos > 0) p.push(`<span style="color:var(--green);font-weight:700;">${sf.pos}🟢</span>`);
-    if (sf.neg > 0) p.push(`<span style="color:var(--yellow);font-weight:700;">${sf.neg}🟡</span>`);
+    if (sf.pos > 0) p.push(`<span style="color:var(--green);font-weight:700;">${sf.pos}<i class="sr sr-g"></i></span>`);
+    if (sf.neg > 0) p.push(`<span style="color:var(--yellow);font-weight:700;">${sf.neg}<i class="sr sr-y"></i></span>`);
     return p.length ? p.join(' ') : `<span style="color:var(--muted);">—</span>`;
   };
   const dot = sf => `<span class="safety-dot s${sf.rating}" style="width:9px;height:9px;margin:0;"></span>`;
@@ -2713,12 +2741,12 @@ function loadH2H(key1, key2) {
         const win1 = r.pts1 > r.pts2, win2 = r.pts2 > r.pts1;
         return `<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);gap:8px;">
           <div style="text-align:left;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${win1?'var(--green)':'var(--text)'};">${r.pts1}</div>
+            <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:18px;font-weight:900;color:${win1?'var(--green)':'var(--text)'};">${r.pts1}</div>
             <div style="font-size:10px;color:var(--muted);">P${r.pos1}</div>
           </div>
           <div style="text-align:center;font-size:10px;color:var(--muted);white-space:nowrap;">${r.race.replace('Campera Karting · ','').replace('KIRO Karting','KIRO')}</div>
           <div style="text-align:right;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${win2?'var(--green)':'var(--text)'};">${r.pts2}</div>
+            <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:18px;font-weight:900;color:${win2?'var(--green)':'var(--text)'};">${r.pts2}</div>
             <div style="font-size:10px;color:var(--muted);">P${r.pos2}</div>
           </div>
         </div>`;
@@ -2727,8 +2755,8 @@ function loadH2H(key1, key2) {
   document.getElementById('h2h-body').innerHTML = `
     <div style="padding:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-        <button onclick="openH2H('${key1}')" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--muted);">${t('h2h_back')}</button>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">⚔️ Head to Head</div>
+        <button onclick="openH2H('${key1}')" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--muted);">${t('h2h_back')}</button>
+        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);">Head to Head</div>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:16px;">
@@ -2738,7 +2766,7 @@ function loadH2H(key1, key2) {
           <div style="font-size:10px;color:var(--muted);">${d1.handle||'—'}</div>
         </div>
         <div style="text-align:center;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1;">
+          <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1;">
             <span style="color:${scoreColor1};">${w1}</span>
             <span style="color:var(--muted);font-size:16px;">–</span>
             <span style="color:${scoreColor2};">${w2}</span>
@@ -2755,11 +2783,11 @@ function loadH2H(key1, key2) {
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
         <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;">${avg1}</div>
+          <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;">${avg1}</div>
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Avg очков</div>
         </div>
         <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;">${avg2}</div>
+          <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;">${avg2}</div>
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Avg очков</div>
         </div>
       </div>
@@ -2838,11 +2866,11 @@ function updateH2HPage() {
     return `<div style="margin-bottom:10px;">
       <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;text-align:center;">${label}</div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;text-align:right;">${v1}</div>
+        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;text-align:right;">${v1}</div>
         <div style="flex:1;height:6px;border-radius:3px;overflow:hidden;background:var(--border);display:flex;">
           <div style="width:${pct1}%;background:var(--accent-red);transition:width .3s;"></div>
         </div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;">${v2}</div>
+        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;">${v2}</div>
       </div>
     </div>`;
   };
@@ -2854,12 +2882,12 @@ function updateH2HPage() {
         const label = r.race.replace('KIRO Karting','KIRO').replace('Campera Karting · ','');
         return `<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:8px;">
           <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:${win1?'var(--green)':win2?'var(--muted)':'var(--text)'};">${r.pts1}</div>
+            <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;color:${win1?'var(--green)':win2?'var(--muted)':'var(--text)'};">${r.pts1}</div>
             <div style="font-size:10px;color:var(--muted);">P${r.pos1}</div>
           </div>
           <div style="text-align:center;font-size:10px;color:var(--muted);white-space:nowrap;padding:0 4px;">${label}</div>
           <div style="text-align:right;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:${win2?'var(--green)':win1?'var(--muted)':'var(--text)'};">${r.pts2}</div>
+            <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;color:${win2?'var(--green)':win1?'var(--muted)':'var(--text)'};">${r.pts2}</div>
             <div style="font-size:10px;color:var(--muted);">P${r.pos2}</div>
           </div>
         </div>`;
@@ -2873,7 +2901,7 @@ function updateH2HPage() {
           <div style="font-size:12px;font-weight:600;">${d1.name.split(' ')[0]}</div>
         </div>
         <div style="text-align:center;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1;">
+          <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1;">
             <span style="color:${sc1};">${w1}</span><span style="color:var(--muted);font-size:18px;"> – </span><span style="color:${sc2};">${w2}</span>
           </div>
           ${ties > 0 ? `<div style="font-size:10px;color:var(--muted);">${t('h2h_ties')(ties)}</div>` : ''}
@@ -2886,7 +2914,7 @@ function updateH2HPage() {
       </div>
       ${bar(d1.totalPts, d2.totalPts, 'Очков в зачёте')}
       ${bar(avg1, avg2, `Avg в общих гонках`)}
-      ${bar(fl1, fl2, '⚡ Быстрых кругов')}
+      ${bar(fl1, fl2, 'Быстрых кругов')}
       ${h2hSafetyRow(d1, d2)}
     </div>
 
@@ -2914,7 +2942,7 @@ function openProfile(key) {
     <div class="profile-head">
       ${avatarDiv(getPhoto(d.handle, d.name), d.name[0], 52)}
       <div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;line-height:1.1;">${d.name}</div>
+        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;line-height:1.1;">${d.name}</div>
         <div style="font-size:12px;color:var(--muted);margin-top:2px;">${visHandle(d.handle,d.hideHandle)||''} ${visHandle(d.handle,d.hideHandle)?'·':''} ${pos}-е место</div>
       </div>
     </div>
@@ -2924,9 +2952,9 @@ function openProfile(key) {
       <div class="stat-block"><div class="stat-val">${d.raceCount}</div><div class="stat-lbl">${t('stat_races')}</div></div>
       <div class="stat-block"><div class="stat-val">${avg}</div><div class="stat-lbl">${t('stat_avg')}</div></div>
       <div class="stat-block"><div class="stat-val">${best}</div><div class="stat-lbl">${t('stat_best')}</div></div>
-      <div class="stat-block"><div class="stat-val" style="color:var(--accent-red);">⚡${flCount}</div><div class="stat-lbl">${t('stat_fl')}</div></div>
+      <div class="stat-block"><div class="stat-val" style="color:var(--accent-red);">${flCount}</div><div class="stat-lbl">${t('stat_fl')}</div></div>
       <div class="stat-block">
-        <div class="stat-val" style="font-size:13px;">${pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : '#'+pos}</div>
+        <div class="stat-val" style="font-size:13px;">${pos === 1 ? '<span class="pm pm1">1</span>' : pos === 2 ? '<span class="pm pm2">2</span>' : pos === 3 ? '<span class="pm pm3">3</span>' : '#'+pos}</div>
         <div class="stat-lbl">${t('stat_pos')}</div>
       </div>
     </div>
@@ -2940,7 +2968,7 @@ function openProfile(key) {
     </div>
 
     <div style="margin-bottom:14px;">
-      <button onclick="document.getElementById('profile-modal').classList.remove('open');openH2H('${d.key}')" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.5px;cursor:pointer;color:var(--text);">
+      <button onclick="document.getElementById('profile-modal').classList.remove('open');openH2H('${d.key}')" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.5px;cursor:pointer;color:var(--text);">
         ${t('h2h_btn')}
       </button>
     </div>
@@ -3004,35 +3032,35 @@ const EVENTS = [
     text: {
       ru: {
         name: 'Спринты в Кампере',
-        eyebrow: '🏁 Спринты в Кампере',
+        eyebrow: 'Спринты в Кампере',
         desc: [
-          '📅 Встречаемся <strong>18 октября в 15:00</strong> в Campera Karting — Carregado, рядом с Лиссабоном. 815 метров виражей и карты <strong>390cc</strong>.',
-          '🏎️ Формат плотный, без пауз на скуку: <strong>5 минут квалы — и сразу 10 минут гонки</strong>. Выдохнули — и ещё раз: вторая квала, вторая гонка. Два старта, два шанса, каждая гонка идёт в зачёт отдельно.',
-          '🟢 <strong>Опыт не нужен!</strong> Можно поучаствовать в зачёте начинающих — просто поставь отметку при регистрации.',
-          '🍾 После финиша — подиум, разбор обгонов и планы на следующие выезды.',
-          '💶 Участие — <strong>€55</strong>.',
+          'Встречаемся <strong>18 октября в 15:00</strong> в Campera Karting — Carregado, рядом с Лиссабоном. 815 метров виражей и карты <strong>390cc</strong>.',
+          'Формат плотный, без пауз на скуку: <strong>5 минут квалы — и сразу 10 минут гонки</strong>. Выдохнули — и ещё раз: вторая квала, вторая гонка. Два старта, два шанса, каждая гонка идёт в зачёт отдельно.',
+          '<strong>Опыт не нужен!</strong> Можно поучаствовать в зачёте начинающих — просто поставь отметку при регистрации.',
+          'После финиша — подиум, разбор обгонов и планы на следующие выезды.',
+          'Участие — <strong>€55</strong>.',
         ],
       },
       pt: {
         name: 'Sprints no Campera',
-        eyebrow: '🏁 Sprints no Campera',
+        eyebrow: 'Sprints no Campera',
         desc: [
-          '📅 Encontramo-nos a <strong>18 de outubro às 15:00</strong> no Campera Karting — Carregado, perto de Lisboa. 815 metros de curvas e karts <strong>390cc</strong>.',
-          '🏎️ Formato intenso, sem tempos mortos: <strong>5 minutos de qualificação — e logo 10 minutos de corrida</strong>. Respira fundo — e outra vez: segunda qualificação, segunda corrida. Duas partidas, duas oportunidades, cada corrida conta separadamente.',
-          '🟢 <strong>Não é preciso experiência!</strong> Podes entrar na classificação de iniciantes — basta marcar a opção na inscrição.',
-          '🍾 Depois da bandeirada — pódio, conversa sobre as ultrapassagens e planos para as próximas saídas.',
-          '💶 Participação — <strong>€55</strong>.',
+          'Encontramo-nos a <strong>18 de outubro às 15:00</strong> no Campera Karting — Carregado, perto de Lisboa. 815 metros de curvas e karts <strong>390cc</strong>.',
+          'Formato intenso, sem tempos mortos: <strong>5 minutos de qualificação — e logo 10 minutos de corrida</strong>. Respira fundo — e outra vez: segunda qualificação, segunda corrida. Duas partidas, duas oportunidades, cada corrida conta separadamente.',
+          '<strong>Não é preciso experiência!</strong> Podes entrar na classificação de iniciantes — basta marcar a opção na inscrição.',
+          'Depois da bandeirada — pódio, conversa sobre as ultrapassagens e planos para as próximas saídas.',
+          'Participação — <strong>€55</strong>.',
         ],
       },
       en: {
         name: 'Sprints at Campera',
-        eyebrow: '🏁 Sprints at Campera',
+        eyebrow: 'Sprints at Campera',
         desc: [
-          '📅 We meet on <strong>18 October at 15:00</strong> at Campera Karting — Carregado, near Lisbon. 815 metres of corners and <strong>390cc</strong> karts.',
-          '🏎️ Tight format, no dull moments: <strong>5 minutes of qualifying — straight into a 10-minute race</strong>. Catch your breath — and again: second qualifying, second race. Two starts, two chances, each race counts separately.',
-          '🟢 <strong>No experience needed!</strong> You can join the beginners standings — just tick the box when you register.',
-          '🍾 After the flag — podium, talking through the overtakes and plans for the next trips.',
-          '💶 Entry — <strong>€55</strong>.',
+          'We meet on <strong>18 October at 15:00</strong> at Campera Karting — Carregado, near Lisbon. 815 metres of corners and <strong>390cc</strong> karts.',
+          'Tight format, no dull moments: <strong>5 minutes of qualifying — straight into a 10-minute race</strong>. Catch your breath — and again: second qualifying, second race. Two starts, two chances, each race counts separately.',
+          '<strong>No experience needed!</strong> You can join the beginners standings — just tick the box when you register.',
+          'After the flag — podium, talking through the overtakes and plans for the next trips.',
+          'Entry — <strong>€55</strong>.',
         ],
       },
     },
@@ -3062,16 +3090,16 @@ const EVENTS = [
     text: {
       ru: {
         name: 'Эндуранс в Палмеле',
-        eyebrow: '🔋 Эндуранс в Палмеле',
+        eyebrow: 'Эндуранс в Палмеле',
         desc: [
-          '📅 <strong>1 ноября, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Карты <strong>Sodi RT-10 390cc</strong>.',
-          '⏱️ <strong>15 минут квалификации + 50 минут гонки</strong>. Обязательно: <strong>1 пит-стоп</strong> со сменой пилотов и <strong>1 джокер</strong> — проезд по пит-лейну.',
-          '🏆 <strong>Три зачёта:</strong> общий, пилоты из жеребьёвки и Iron Man.',
+          '<strong>1 ноября, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Карты <strong>Sodi RT-10 390cc</strong>.',
+          '<strong>15 минут квалификации + 50 минут гонки</strong>. Обязательно: <strong>1 пит-стоп</strong> со сменой пилотов и <strong>1 джокер</strong> — проезд по пит-лейну.',
+          '<strong>Три зачёта:</strong> общий, пилоты из жеребьёвки и Iron Man.',
         ],
         modes: {
-          team:    { ico: '👥', t: 'Командой из двух', d: 'Вписываешь себя и напарника — едете вдвоём.' },
-          draft:   { ico: '🎲', t: 'Без команды — жеребьёвка', d: 'Пары определим жеребьёвкой, уравнивая шансы: опытный пилот с менее опытным. Честно и весело.' },
-          ironman: { ico: '🦾', t: 'Iron Man', d: 'Один пилот на всю гонку.' },
+          team:    { ico: '', t: 'Командой из двух', d: 'Вписываешь себя и напарника — едете вдвоём.' },
+          draft:   { ico: '', t: 'Без команды — жеребьёвка', d: 'Пары определим жеребьёвкой, уравнивая шансы: опытный пилот с менее опытным. Честно и весело.' },
+          ironman: { ico: '', t: 'Iron Man', d: 'Один пилот на всю гонку.' },
         },
         rules: [
           ['Пит', '1 обязательный пит-стоп: заезжаете в боксы и меняетесь пилотами, без ограничения по времени.'],
@@ -3080,16 +3108,16 @@ const EVENTS = [
       },
       pt: {
         name: 'Endurance em Palmela',
-        eyebrow: '🔋 Endurance em Palmela',
+        eyebrow: 'Endurance em Palmela',
         desc: [
-          '📅 <strong>1 de novembro, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Karts <strong>Sodi RT-10 390cc</strong>.',
-          '⏱️ <strong>15 min de qualificação + 50 min de corrida</strong>. Obrigatório: <strong>1 paragem nas boxes</strong> com troca de piloto e <strong>1 joker</strong> — passagem pelo pit lane.',
-          '🏆 <strong>Três classificações:</strong> geral, pilotos do sorteio e Iron Man.',
+          '<strong>1 de novembro, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. Karts <strong>Sodi RT-10 390cc</strong>.',
+          '<strong>15 min de qualificação + 50 min de corrida</strong>. Obrigatório: <strong>1 paragem nas boxes</strong> com troca de piloto e <strong>1 joker</strong> — passagem pelo pit lane.',
+          '<strong>Três classificações:</strong> geral, pilotos do sorteio e Iron Man.',
         ],
         modes: {
-          team:    { ico: '👥', t: 'Equipa de dois', d: 'Inscreves-te a ti e ao teu colega — correm os dois.' },
-          draft:   { ico: '🎲', t: 'Sem equipa — sorteio', d: 'Os pares são definidos por sorteio, equilibrando as hipóteses: um piloto experiente com um menos experiente. Justo e divertido.' },
-          ironman: { ico: '🦾', t: 'Iron Man', d: 'Um piloto para a corrida inteira.' },
+          team:    { ico: '', t: 'Equipa de dois', d: 'Inscreves-te a ti e ao teu colega — correm os dois.' },
+          draft:   { ico: '', t: 'Sem equipa — sorteio', d: 'Os pares são definidos por sorteio, equilibrando as hipóteses: um piloto experiente com um menos experiente. Justo e divertido.' },
+          ironman: { ico: '', t: 'Iron Man', d: 'Um piloto para a corrida inteira.' },
         },
         rules: [
           ['Box', '1 paragem obrigatória: entram nas boxes e trocam de piloto, sem tempo mínimo.'],
@@ -3098,16 +3126,16 @@ const EVENTS = [
       },
       en: {
         name: 'Endurance at Palmela',
-        eyebrow: '🔋 Endurance at Palmela',
+        eyebrow: 'Endurance at Palmela',
         desc: [
-          '📅 <strong>1 November, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. <strong>Sodi RT-10 390cc</strong> karts.',
-          '⏱️ <strong>15 min qualifying + 50 min race</strong>. Mandatory: <strong>1 pit stop</strong> with a driver swap and <strong>1 joker</strong> — a pass through the pit lane.',
-          '🏆 <strong>Three standings:</strong> overall, drafted drivers and Iron Man.',
+          '<strong>1 November, 13:00</strong> · KIP — Kartódromo Internacional de Palmela. <strong>Sodi RT-10 390cc</strong> karts.',
+          '<strong>15 min qualifying + 50 min race</strong>. Mandatory: <strong>1 pit stop</strong> with a driver swap and <strong>1 joker</strong> — a pass through the pit lane.',
+          '<strong>Three standings:</strong> overall, drafted drivers and Iron Man.',
         ],
         modes: {
-          team:    { ico: '👥', t: 'Team of two', d: 'Register yourself and your teammate — you race as a pair.' },
-          draft:   { ico: '🎲', t: 'No team — draft', d: 'Pairs are decided by draw, evening out the chances: an experienced driver with a less experienced one. Fair and fun.' },
-          ironman: { ico: '🦾', t: 'Iron Man', d: 'One driver for the whole race.' },
+          team:    { ico: '', t: 'Team of two', d: 'Register yourself and your teammate — you race as a pair.' },
+          draft:   { ico: '', t: 'No team — draft', d: 'Pairs are decided by draw, evening out the chances: an experienced driver with a less experienced one. Fair and fun.' },
+          ironman: { ico: '', t: 'Iron Man', d: 'One driver for the whole race.' },
         },
         rules: [
           ['Pit', '1 mandatory pit stop: come into the pits and swap drivers, no minimum time.'],
@@ -3242,7 +3270,7 @@ function renderRaceTab() {
   if (!wrap) return;
   const list = visibleEvents();
   const banner = window.END_READY ? `<button class="res-banner" onclick="openCampResults('end')">
-      <span class="res-banner-ico">🏁</span>
+      <span class="res-banner-ico"></span>
       <span class="res-banner-txt"><span class="res-banner-t">${et('bannerT')}</span><span class="res-banner-s">${et('bannerS')}</span></span>
       <span class="res-banner-go">→</span></button>` : '';
   if (!list.length) {
@@ -3366,9 +3394,9 @@ function renderRaceTab() {
         const g = rl.filter(r => r.mode === mode);
         return g.length ? `<div class="reg-grp">${title} · ${g.length}</div>` + g.map((r, i) => rowFn(i + 1, r)).join('') : '';
       };
-      h += grp('team', '👥 ' + t('grp_teams'), teamRow)
-         + grp('draft', '🎲 ' + t('grp_draft'), (i, r) => regRow(i, r))
-         + grp('ironman', '🦾 ' + t('grp_iron'), (i, r) => regRow(i, r));
+      h += grp('team', '' + t('grp_teams'), teamRow)
+         + grp('draft', '' + t('grp_draft'), (i, r) => regRow(i, r))
+         + grp('ironman', '' + t('grp_iron'), (i, r) => regRow(i, r));
     } else {
       h += rl.map((r, i) => regRow(i + 1, r, r.beginner ? `<span class="ev-beg-badge">${t('beg_short')}</span>` : '')).join('');
     }
@@ -3398,7 +3426,7 @@ function paymentHtml(amount, subtitle) {
   const revHref = revTag ? (/^https?:/i.test(revTag) ? revTag : 'https://revolut.me/' + revTag) : '';
   return `
     <div style="margin-top:16px;text-align:left;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;margin-bottom:${subtitle ? 2 : 10}px;text-align:center;">${t('pay_title')} · €${esc(amount)}</div>
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;margin-bottom:${subtitle ? 2 : 10}px;text-align:center;">${t('pay_title')} · €${esc(amount)}</div>
       ${subtitle ? `<div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:10px;">${esc(subtitle)}</div>` : ''}
       ${revHref ? `<a href="${esc(revHref)}" target="_blank" rel="noopener" style="display:block;background:#0666EB;color:#fff;text-align:center;padding:12px;border-radius:10px;font-weight:700;text-decoration:none;margin-bottom:12px;">Revolut · ${esc(rev.startsWith('@') ? rev : '@' + revTag)}</a>` : ''}
       <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">IBAN · ${esc(PAY.ibanName)}</div>
@@ -3454,7 +3482,7 @@ function openReg(evId) {
       </div>` : '';
 
   document.getElementById('reg-content').innerHTML = `
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">${t('reg_title')} · ${esc(tx.name || '')}</div>
+    <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">${t('reg_title')} · ${esc(tx.name || '')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">${esc(w.date)}, ${esc(w.time)}${leftTxt}${pr ? ' · ' + pr : ''}</div>
     ${isTg ? `<div style="font-size:12px;background:#e8f5e9;border:1px solid #c8e6c9;border-radius:8px;padding:8px 12px;margin-bottom:12px;color:#2d5a30;">${t('tg_prefill')}</div>` : ''}
     <div class="reg-form">
@@ -3472,7 +3500,7 @@ function openReg(evId) {
         <label class="form-lbl">${t('photo_lbl')}</label>
         <div class="photo-upload-area" id="photo-drop" onclick="document.getElementById('rphoto').click()">
           <div id="photo-drop-inner">
-            <div class="photo-upload-icon">📷</div>
+            <div class="photo-upload-icon"></div>
             <div class="photo-upload-lbl">${t('photo_btn')}</div>
           </div>
           <input type="file" id="rphoto" accept="image/*" style="display:none" onchange="handlePhotoChange(this)">
@@ -3689,7 +3717,7 @@ function showRegSuccess(ev, name, beginner, mode) {
   const payNote = md && md.people > 1 ? t('pay_for_two')(md.price) : '';
   document.getElementById('reg-content').innerHTML = `
     <div class="success-box">
-      <div class="success-icon">🏁</div>
+      <div class="success-icon"></div>
       <div class="success-title">${t('success_title')}</div>
       <div class="success-sub">${esc(name)}<br>${t('success_date')(esc(ev.venue || evText(ev).name), esc(evWhen(ev).date))}${extras ? '<br><span style="font-size:12px;margin-top:6px;display:block;">' + esc(extras) + '</span>' : ''}</div>
       ${amount ? paymentHtml(amount, payNote) : ''}
@@ -3730,7 +3758,7 @@ function tick() {
   if (!ev || !cdEl) return;
   const diff = new Date(ev.start) - new Date();
   if (diff <= 0) {
-    if (!cdEl.dataset.done) { cdEl.dataset.done = '1'; cdEl.innerHTML = `<div style="grid-column:span 4;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:10px;color:var(--accent-red);">${t('race_today')}</div>`; }
+    if (!cdEl.dataset.done) { cdEl.dataset.done = '1'; cdEl.innerHTML = `<div style="grid-column:span 4;text-align:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:18px;font-weight:700;padding:10px;color:var(--accent-red);">${t('race_today')}</div>`; }
     return;
   }
   const p = n => String(n).padStart(2, '0');
@@ -4018,8 +4046,8 @@ function renderVoteList() {
           ${handleTxt ? `<div class="vh">${esc(handleTxt)}</div>` : ''}
         </div>
         <div class="vote-pills">
-          <div class="vpill clean ${sel==='clean'?'sel':''}" title="${t('vote_clean')}" onclick="setVoteChoice(${kAttr},'clean')">🟢</div>
-          <div class="vpill quest ${sel==='quest'?'sel':''}" title="${t('vote_quest')}" onclick="setVoteChoice(${kAttr},'quest')">🟡</div>
+          <div class="vpill clean ${sel==='clean'?'sel':''}" title="${t('vote_clean')}" onclick="setVoteChoice(${kAttr},'clean')"><i class="sr sr-g"></i></div>
+          <div class="vpill quest ${sel==='quest'?'sel':''}" title="${t('vote_quest')}" onclick="setVoteChoice(${kAttr},'quest')"><i class="sr sr-y"></i></div>
         </div>
       </div>`;
   }).join('');
@@ -4053,7 +4081,7 @@ function submitVote() {
   after.style.display = 'block';
   after.innerHTML = `
     <div class="success-box">
-      <div class="success-icon">✅</div>
+      <div class="success-icon"></div>
       <div class="success-title">${t('vote_done_title')}</div>
       <div class="success-sub">${t('vote_done_sub')}</div>
     </div>`;
@@ -4093,7 +4121,7 @@ function submitFeedback() {
   after.style.display = 'block';
   after.innerHTML = `
     <div class="success-box">
-      <div class="success-icon">🙏</div>
+      <div class="success-icon"></div>
       <div class="success-title">${t('fb_done_title')}</div>
       <div class="success-sub">${t('fb_done_sub')}</div>
     </div>`;
@@ -5482,7 +5510,7 @@ const MEGA_L = {
   pilots:   { ru:'пилотов',                pt:'pilotos',                 en:'drivers' },
   sprints:  { ru:'спринтов',               pt:'sprints',                 en:'sprints' },
   finals:   { ru:'финала',                 pt:'finais',                  en:'finals' },
-  awards:   { ru:'🏅 Номинации',           pt:'🏅 Destaques',            en:'🏅 Awards' },
+  awards:   { ru:'Номинации',           pt:'Destaques',            en:'Awards' },
   fl:       { ru:'Быстрейший круг дня',    pt:'Volta mais rápida',       en:'Fastest lap of the day' },
   king:     { ru:'Король спринтов',        pt:'Rei dos sprints',         en:'King of the sprints' },
   kingd:    { ru:'по 3 победы в заездах',  pt:'3 vitórias cada',         en:'3 heat wins each' },
@@ -5541,13 +5569,13 @@ function megaNomCards() {
   const keys = list => list.map(keyOf).filter(Boolean);
 
   let out = '';
-  out += card('⚡', mt('fl'), 'musi', '48.279 · ' + mt('finalA'));
-  out += multi('🥇', mt('king'), ['calc', 'yelk', 'musi'], mt('kingd'));
-  out += card('🚀', mt('charge'), 'boga', { ru:'квала 14 → 7 место (+7)', pt:'quali 14 → 7.º (+7)', en:'quali 14 → P7 (+7)' }[_lang||'ru']);
-  out += multi('🔥', mt('photof'), ['khar', 'shku'], { ru:'Финал B — 0.241 с', pt:'Final B — 0.241 s', en:'Final B — 0.241 s' }[_lang||'ru']);
+  out += card('', mt('fl'), 'musi', '48.279 · ' + mt('finalA'));
+  out += multi('<span class="pm pm1">1</span>', mt('king'), ['calc', 'yelk', 'musi'], mt('kingd'));
+  out += card('', mt('charge'), 'boga', { ru:'квала 14 → 7 место (+7)', pt:'quali 14 → 7.º (+7)', en:'quali 14 → P7 (+7)' }[_lang||'ru']);
+  out += multi('', mt('photof'), ['khar', 'shku'], { ru:'Финал B — 0.241 с', pt:'Final B — 0.241 s', en:'Final B — 0.241 s' }[_lang||'ru']);
   const cl = keys(cleanLeaders(BATALHA_SAFETY)), at = keys(attentionList(BATALHA_SAFETY));
-  if (cl.length) out += multi('🤝', mt('clean'), cl);
-  if (at.length) out += multi('⚠️', mt('dirty'), at);
+  if (cl.length) out += multi('', mt('clean'), cl);
+  if (at.length) out += multi('', mt('dirty'), at);
   return out;
 }
 
@@ -5560,7 +5588,7 @@ function megaRaceTable(rows) {
   rows.forEach((r, i) => {
     const d = megaDrv(r[0]);
     const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
-    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+    const medal = i === 0 ? '<span class="pm pm1">1</span>' : i === 1 ? '<span class="pm pm2">2</span>' : i === 2 ? '<span class="pm pm3">3</span>' : (i + 1);
     const note = r[3] ? ` <span class="fl-badge">+5s</span>` : '';
     h += `<tr class="${pc}"><td>${medal}</td>
       <td><div style="font-size:13px;font-weight:600;line-height:1.2;">${esc(d.name)}${note}</div></td>
@@ -5574,7 +5602,7 @@ function megaHeatsBlock(letter) {
   let inner = '';
   list.forEach(h => {
     inner += `<div style="padding:10px 0 2px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">
         ${mt('heat')} ${h.no} · ${esc(h.time)} · ${h.laps} ${mt('laps')}</div>
       ${megaRaceTable(h.rows)}
     </div>`;
@@ -5594,27 +5622,27 @@ function renderMega() {
 
   h += `<div style="padding:14px 14px 0;">`;
   h += `<div class="page-eyebrow">${mt('eyebrow')} · ${esc(translateFullDate(MEGA.date))}</div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${mt('title')}</div>
+    <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${mt('title')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(MEGA.venue)}</div>`;
 
-  const chip = txt => `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">${txt}</span>`;
+  const chip = txt => `<span class="stat-chip">${txt}</span>`;
   h += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
-    ${chip('17 ' + mt('pilots'))}${chip('18 ' + mt('sprints'))}${chip('2 ' + mt('finals'))}${chip('⚡ 48.279')}</div>`;
+    ${chip('17 ' + mt('pilots'))}${chip('18 ' + mt('sprints'))}${chip('2 ' + mt('finals'))}${chip('FL 48.279')}</div>`;
 
   // ── CTA: голосование + отзыв ──
   h += `<div style="display:flex;gap:8px;margin-bottom:16px;">
-    <a href="#safety" class="cta-btn">📋 ${t('safe_cta')}</a>
-    <a href="#feedback" class="cta-btn">⭐ ${t('cta_feedback')}</a>
+    <a href="#safety" class="cta-btn">${t('safe_cta')}</a>
+    <a href="#feedback" class="cta-btn">${t('cta_feedback')}</a>
   </div>`;
 
   // ── номинации ──
-  h += `<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${mt('awards')}</div>`;
+  h += `<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${mt('awards')}</div>`;
   h += `<div class="nom-cards">${megaNomCards()}</div>`;
 
   // ── итог дня ──
   h += `<div class="card" style="padding:0;overflow:hidden;">
     <div style="padding:14px 14px 8px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">🏆 ${mt('resTitle')}</div>
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${mt('resTitle')}</div>
       <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">${mt('resNote')}</div>
     </div>
     <table class="full-res-table"><thead><tr>
@@ -5628,7 +5656,7 @@ function renderMega() {
     if (row.grp !== prevGrp) h += `<tr class="group-header-row"><td colspan="5">${grpLbl(row.grp)}</td></tr>`;
     prevGrp = row.grp;
     const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
-    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+    const medal = i === 0 ? '<span class="pm pm1">1</span>' : i === 1 ? '<span class="pm pm2">2</span>' : i === 2 ? '<span class="pm pm3">3</span>' : (i + 1);
     h += `<tr class="${pc}"><td>${medal}</td>
       <td><div style="display:flex;align-items:center;gap:8px;">${megaAvatar(row.d, 28)}
         <div><div style="font-size:13px;font-weight:600;line-height:1.2;">${esc(d.name)}</div>
@@ -5644,7 +5672,7 @@ function renderMega() {
     h += `<div class="card" style="padding:0;overflow:hidden;">
       ${f.photo ? `<div style="width:100%;aspect-ratio:3/2;overflow:hidden;background:var(--surface2);"><img src="${f.photo}" loading="lazy" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;" alt="${lbl}"></div>` : ''}
       <div style="padding:12px 14px 6px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">🏁 ${lbl}</div>
+        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${lbl}</div>
         <div style="font-size:11px;color:var(--muted);margin-top:2px;">${esc(f.time)} · ${f.laps} ${mt('laps')} · ${mt('dblPts')}</div>
       </div>
       ${megaRaceTable(f.rows)}
@@ -5726,26 +5754,26 @@ const CAMP = {
 const CAMP_PTS = [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4];
 
 const CAMP_T = {
-  ru: { eyebrow: 'Итоги', title: 'Спринты в Кампере', bannerT: 'Итоги: Спринты в Кампере', bannerS: '🥇 Dimas · 🥈 Miguel Bento · 🥉 Evgeny', pilots: 'пилотов', races: 'гонки', bestLap: 'лучший круг',
+  ru: { eyebrow: 'Итоги', title: 'Спринты в Кампере', bannerT: 'Итоги: Спринты в Кампере', bannerS: 'P1 Dimas · P2 Miguel Bento · P3 Evgeny', pilots: 'пилотов', races: 'гонки', bestLap: 'лучший круг',
         vote: 'Чистота борьбы', podium: 'Подиум', resTitle: 'Итог этапа',
         resNote: 'Очки за две гонки: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3, +1 за лучший круг гонки. Каждая гонка идёт в зачёт сезона отдельно.',
         colDrv: 'Пилот', colR1: 'Г1', colR2: 'Г2', colTot: 'Σ', race: 'Гонка', qualy: 'Квалификация', laps: '13 кругов',
         colBest: 'Круг', colGap: 'Отрыв', ptsShort: 'очк.', colPts: 'Очки', tap: 'нажми, чтобы открыть', beg: 'новичок',
-        begNote: '🟢 Зачёт новичков в этот раз — один участник: Ilia Nikolaev, 13 очков в копилку сезона.',
+        begNote: 'Зачёт новичков в этот раз — один участник: Ilia Nikolaev, 13 очков в копилку сезона.',
         next: 'Следующая гонка — Эндуранс в Палмеле, 1 ноября', nextBtn: 'Записаться →', fl: 'лучший круг' },
-  pt: { eyebrow: 'Resultados', title: 'Sprints no Campera', bannerT: 'Resultados: Sprints no Campera', bannerS: '🥇 Dimas · 🥈 Miguel Bento · 🥉 Evgeny', pilots: 'pilotos', races: 'corridas', bestLap: 'melhor volta',
+  pt: { eyebrow: 'Resultados', title: 'Sprints no Campera', bannerT: 'Resultados: Sprints no Campera', bannerS: 'P1 Dimas · P2 Miguel Bento · P3 Evgeny', pilots: 'pilotos', races: 'corridas', bestLap: 'melhor volta',
         vote: 'Corrida limpa', podium: 'Pódio', resTitle: 'Resultado da etapa',
         resNote: 'Pontos de duas corridas: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3, +1 pela melhor volta. Cada corrida conta separadamente para o campeonato.',
         colDrv: 'Piloto', colR1: 'C1', colR2: 'C2', colTot: 'Σ', race: 'Corrida', qualy: 'Qualificação', laps: '13 voltas',
         colBest: 'Volta', colGap: 'Dif.', ptsShort: 'pts', colPts: 'Pts', tap: 'toca para abrir', beg: 'iniciante',
-        begNote: '🟢 Classificação de iniciantes desta vez — um participante: Ilia Nikolaev, 13 pontos para a época.',
+        begNote: 'Classificação de iniciantes desta vez — um participante: Ilia Nikolaev, 13 pontos para a época.',
         next: 'Próxima corrida — Endurance em Palmela, 1 de novembro', nextBtn: 'Inscrever →', fl: 'melhor volta' },
-  en: { eyebrow: 'Results', title: 'Sprints at Campera', bannerT: 'Results: Sprints at Campera', bannerS: '🥇 Dimas · 🥈 Miguel Bento · 🥉 Evgeny', pilots: 'drivers', races: 'races', bestLap: 'best lap',
+  en: { eyebrow: 'Results', title: 'Sprints at Campera', bannerT: 'Results: Sprints at Campera', bannerS: 'P1 Dimas · P2 Miguel Bento · P3 Evgeny', pilots: 'drivers', races: 'races', bestLap: 'best lap',
         vote: 'Clean racing', podium: 'Podium', resTitle: 'Event result',
         resNote: 'Points from two races: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3, +1 for the race fastest lap. Each race counts separately for the season.',
         colDrv: 'Driver', colR1: 'R1', colR2: 'R2', colTot: 'Σ', race: 'Race', qualy: 'Qualifying', laps: '13 laps',
         colBest: 'Lap', colGap: 'Gap', ptsShort: 'pts', colPts: 'Pts', tap: 'tap to open', beg: 'beginner',
-        begNote: '🟢 Beginners class this time — one entrant: Ilia Nikolaev, 13 points for the season.',
+        begNote: 'Beginners class this time — one entrant: Ilia Nikolaev, 13 points for the season.',
         next: 'Next race — Endurance at Palmela, 1 November', nextBtn: 'Register →', fl: 'fastest lap' },
 };
 function ct(k) { return (CAMP_T[_lang] || CAMP_T.ru)[k]; }
@@ -5766,21 +5794,21 @@ function renderCampera() {
   </div><div style="padding:14px 14px 0;">`;
 
   h += `<div class="page-eyebrow">${ct('eyebrow')} · ${esc(translateFullDate(CAMP.date))}</div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${ct('title')}</div>
+    <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${ct('title')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(CAMP.venue)}</div>`;
-  const chip = txt => `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">${txt}</span>`;
+  const chip = txt => `<span class="stat-chip">${txt}</span>`;
   h += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
-    ${chip(CAMP.total.length + ' ' + ct('pilots'))}${chip('2 ' + ct('races'))}${chip('⚡ ' + CAMP.bestLap.time + ' · ' + esc(CAMP.bestLap.name))}</div>`;
+    ${chip(CAMP.total.length + ' ' + ct('pilots'))}${chip('2 ' + ct('races'))}${chip('FL ' + CAMP.bestLap.time + ' · ' + esc(CAMP.bestLap.name))}</div>`;
 
   // голосование + отзыв
   h += `<div style="display:flex;gap:8px;margin-bottom:16px;">
-    <a href="#vote" class="cta-btn">🤝 ${ct('vote')}</a>
-    <a href="#feedback" class="cta-btn">⭐ ${t('cta_feedback')}</a>
+    <a href="#vote" class="cta-btn">${ct('vote')}</a>
+    <a href="#feedback" class="cta-btn">${t('cta_feedback')}</a>
   </div>`;
 
   // подиум
-  const medals = ['🥇', '🥈', '🥉'];
-  h += `<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${ct('podium')}</div>
+  const medals = ['<span class="pm pm1">1</span>', '<span class="pm pm2">2</span>', '<span class="pm pm3">3</span>'];
+  h += `<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${ct('podium')}</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">` +
     CAMP.total.slice(0, 3).map((r, i) => `<div class="nom-card" style="align-items:center;text-align:center;">
       <div class="nom-icon">${medals[i]}</div>${campAvatar(r[0], 44)}
@@ -5790,7 +5818,7 @@ function renderCampera() {
   // итог этапа
   h += `<div class="card" style="padding:0;overflow:hidden;">
     <div style="padding:14px 14px 8px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">🏆 ${ct('resTitle')}</div>
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${ct('resTitle')}</div>
       <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">${ct('resNote')}</div>
     </div>
     <table class="full-res-table"><thead><tr>
@@ -5810,7 +5838,7 @@ function renderCampera() {
 
   // гонки
   CAMP.races.forEach((race, n) => {
-    h += `<details class="mega-acc"${n === 1 ? '' : ''}><summary><span>🏁 ${ct('race')} ${n + 1}</span><span class="mega-acc-hint">${race.time} · ${ct('laps')}</span></summary>
+    h += `<details class="mega-acc"${n === 1 ? '' : ''}><summary><span>${ct('race')} ${n + 1}</span><span class="mega-acc-hint">${race.time} · ${ct('laps')}</span></summary>
       <table class="full-res-table"><thead><tr><th style="width:28px;">#</th><th>${ct('colDrv')}</th><th>${ct('colBest')}</th><th>${ct('colPts')}</th></tr></thead><tbody>`;
     race.rows.forEach((row, i) => {
       const pts = (i < CAMP_PTS.length ? CAMP_PTS[i] : 3) + (race.fl === row[0] ? 1 : 0);
@@ -5826,7 +5854,7 @@ function renderCampera() {
 
   // квалификации
   CAMP.qualy.forEach((q, n) => {
-    h += `<details class="mega-acc"><summary><span>⏱️ ${ct('qualy')} ${n + 1}</span><span class="mega-acc-hint">${q[0] ? '⚡ ' + q[0][1] : ''}</span></summary>
+    h += `<details class="mega-acc"><summary><span>${ct('qualy')} ${n + 1}</span><span class="mega-acc-hint">${q[0] ? q[0][1] : ''}</span></summary>
       <table class="full-res-table"><thead><tr><th style="width:28px;">#</th><th>${ct('colDrv')}</th><th>${ct('colBest')}</th></tr></thead><tbody>`;
     q.forEach((row, i) => {
       const pc = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
@@ -5837,7 +5865,7 @@ function renderCampera() {
 
   // свежие итоги
   h += `<div class="card" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-    <div style="flex:1;font-size:13px;line-height:1.4;">🔋 ${et('bannerT')}</div>
+    <div style="flex:1;font-size:13px;line-height:1.4;">${et('bannerT')}</div>
     <button class="btn-reg" style="width:auto;margin:0;padding:10px 14px;font-size:13px;" onclick="openCampResults('end')">→</button>
   </div>`;
 
@@ -5877,7 +5905,7 @@ END.venue = 'KIP · Kartódromo Internacional de Palmela';
 END.fl = { k: 't10', time: '1:03.218' };
 
 const END_T = {
-  ru: { eyebrow: 'Итоги', title: 'Эндуранс в Палмеле', bannerT: 'Итоги: Эндуранс в Палмеле', bannerS: '🥇 Miguel & Ailton · 🥈 Andrei Musinov · 🥉 HWBT',
+  ru: { eyebrow: 'Итоги', title: 'Эндуранс в Палмеле', bannerT: 'Итоги: Эндуранс в Палмеле', bannerS: 'P1 Miguel & Ailton · P2 Andrei Musinov · P3 HWBT',
         pilots: 'пилотов', karts: 'картов', race: '50 мин', vote: 'Чистота борьбы',
         podium: 'Подиумы', pAbs: 'Общий', pIron: 'Iron Man', pDraft: 'Жеребьёвка',
         resTitle: 'Итоговый протокол', resNote: 'Очки за место команды получают оба пилота: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3. +1 за лучший круг гонки — обоим. Штрафы KIP учтены.',
@@ -5893,7 +5921,7 @@ const END_T = {
         st3: 'Champions — второй темп гонки, но 3 минуты на пит-стопе отбросили их на 8-е место.',
         st4: 'Henriikh Hruz — с 10-го места квалификации на 5-е в финише.',
         gallery: 'Фото', next: 'Голосуй за чистоту борьбы и оставь отзыв — пара минут.' },
-  pt: { eyebrow: 'Resultados', title: 'Endurance em Palmela', bannerT: 'Resultados: Endurance em Palmela', bannerS: '🥇 Miguel & Ailton · 🥈 Andrei Musinov · 🥉 HWBT',
+  pt: { eyebrow: 'Resultados', title: 'Endurance em Palmela', bannerT: 'Resultados: Endurance em Palmela', bannerS: 'P1 Miguel & Ailton · P2 Andrei Musinov · P3 HWBT',
         pilots: 'pilotos', karts: 'karts', race: '50 min', vote: 'Corrida limpa',
         podium: 'Pódios', pAbs: 'Geral', pIron: 'Iron Man', pDraft: 'Sorteio',
         resTitle: 'Classificação final', resNote: 'Os pontos da posição da equipa vão para os dois pilotos: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3. +1 pela melhor volta, para os dois. Penalizações do KIP incluídas.',
@@ -5909,7 +5937,7 @@ const END_T = {
         st3: 'Champions — segundo melhor ritmo, mas 3 minutos nas boxes deixaram-nos em 8.º.',
         st4: 'Henriikh Hruz — do 10.º lugar na qualificação para 5.º no final.',
         gallery: 'Fotos', next: 'Vota na corrida limpa e deixa o teu feedback — dois minutos.' },
-  en: { eyebrow: 'Results', title: 'Palmela Endurance', bannerT: 'Results: Palmela Endurance', bannerS: '🥇 Miguel & Ailton · 🥈 Andrei Musinov · 🥉 HWBT',
+  en: { eyebrow: 'Results', title: 'Palmela Endurance', bannerT: 'Results: Palmela Endurance', bannerS: 'P1 Miguel & Ailton · P2 Andrei Musinov · P3 HWBT',
         pilots: 'drivers', karts: 'karts', race: '50 min', vote: 'Clean racing',
         podium: 'Podiums', pAbs: 'Overall', pIron: 'Iron Man', pDraft: 'Draw',
         resTitle: 'Final classification', resNote: 'Team position points go to both drivers: 25 · 20 · 16 · 13 · 11 · 10 · 9 · 8 · 7 · 6 · 5 · 4 · 3. +1 for the race fastest lap, to both. KIP penalties included.',
@@ -5943,33 +5971,33 @@ function renderEndurance() {
   if (wrap) wrap.innerHTML = endHtml();
 }
 function endHtml() {
-  const medals = ['🥇', '🥈', '🥉'];
+  const medals = ['<span class="pm pm1">1</span>', '<span class="pm pm2">2</span>', '<span class="pm pm3">3</span>'];
   const fl = '<span class="fl-badge">FL</span>';
-  const lbl = txt => `<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:4px 0 10px;">${txt}</div>`;
-  const chip = txt => `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">${txt}</span>`;
+  const lbl = txt => `<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin:4px 0 10px;">${txt}</div>`;
+  const chip = txt => `<span class="stat-chip">${txt}</span>`;
   const pilots = END.rows.reduce((n, r) => n + r.m.length, 0);
 
   let h = `<div style="width:100%;aspect-ratio:1400/788;overflow:hidden;background:var(--surface2);">
     <img src="photos/palmela-group.jpg" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Palmela endurance">
   </div><div style="padding:14px 14px 0;">`;
   h += `<div class="page-eyebrow">${et('eyebrow')} · ${esc(translateFullDate(END.date))}</div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${et('title')}</div>
+    <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${et('title')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(END.venue)}</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${chip(pilots + ' ' + et('pilots'))}${chip(END.rows.length + ' ' + et('karts'))}${chip(et('race'))}${chip('⚡ ' + END.fl.time + ' · ' + esc(endRow(END.fl.k).name))}</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${chip(pilots + ' ' + et('pilots'))}${chip(END.rows.length + ' ' + et('karts'))}${chip(et('race'))}${chip('FL ' + END.fl.time + ' · ' + esc(endRow(END.fl.k).name))}</div>
     <div style="display:flex;gap:8px;margin-bottom:16px;">
-      <a href="#vote" class="cta-btn">🤝 ${et('vote')}</a>
-      <a href="#feedback" class="cta-btn">⭐ ${t('cta_feedback')}</a>
+      <a href="#vote" class="cta-btn">${et('vote')}</a>
+      <a href="#feedback" class="cta-btn">${t('cta_feedback')}</a>
     </div>`;
 
   // главное
   h += lbl(et('story')) + `<div class="card" style="display:flex;flex-direction:column;gap:8px;font-size:13px;line-height:1.45;margin-bottom:14px;">
-    ${['st1', 'st2', 'st3', 'st4'].map((k, i) => `<div>${['⚡', '🦾', '⏱️', '🚀'][i]} ${et(k)}</div>`).join('')}</div>`;
+    ${['st1', 'st2', 'st3', 'st4'].map((k, i) => `<div>${['', '', '', ''][i]} ${et(k)}</div>`).join('')}</div>`;
 
   // подиумы
   const podCard = (title, keys, photo) => `<div class="card" style="padding:0;overflow:hidden;margin-bottom:10px;">
     ${photo ? `<div style="aspect-ratio:4/3;overflow:hidden;background:var(--surface2);"><img src="${photo}" loading="lazy" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""></div>` : ''}
     <div style="padding:12px 14px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">${title}</div>
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">${title}</div>
       ${keys.map((k, i) => { const r = endRow(k); return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;${i ? 'border-top:1px solid var(--border);' : ''}">
         <div style="font-size:20px;width:26px;">${medals[i]}</div>${endAvatars(r, 30)}${endWho(r)}</div>`; }).join('')}
     </div></div>`;
@@ -5981,7 +6009,7 @@ function endHtml() {
   // протокол
   h += `<div class="card" style="padding:0;overflow:hidden;margin-top:6px;">
     <div style="padding:14px 14px 8px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">🏆 ${et('resTitle')}</div>
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${et('resTitle')}</div>
       <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">${et('resNote')}</div>
     </div>
     <div style="overflow-x:auto;"><table class="full-res-table"><thead><tr>
@@ -6004,36 +6032,36 @@ function endHtml() {
     return rows.map((r, i) => {
       const v = val(r), w = lowGood ? 100 - (v - mn) / ((mx - mn) || 1) * 70 : 30 + (v - mn) / ((mx - mn) || 1) * 70;
       return `<div style="display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:4px 0;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
+        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
         <div style="min-width:0;"><div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(r.name)}</div>
           <div style="height:4px;border-radius:2px;background:var(--surface2);margin-top:3px;"><div style="height:4px;border-radius:2px;width:${w.toFixed(0)}%;background:${i === 0 ? 'var(--accent-red)' : 'var(--muted2)'};"></div></div></div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;">${fmt(r)}</div></div>`;
+        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;">${fmt(r)}</div></div>`;
     }).join('');
   };
   const secs = t => { const [m, x] = t.split(':'); return +m * 60 + +x; };
   const statBox = (title, note, body) => `<details class="mega-acc"><summary><span>${title}</span></summary><div style="padding:6px 14px 12px;"><div style="font-size:11px;color:var(--muted);line-height:1.4;margin-bottom:6px;">${note}</div>${body}</div></details>`;
-  h += `<div style="margin-top:16px;">${lbl('📊 ' + et('stats'))}`;
+  h += `<div style="margin-top:16px;">${lbl('' + et('stats'))}`;
   const byPace = END.rows.slice().sort((a, b) => secs(a.pace) - secs(b.pace));
-  h += statBox('⏱️ ' + et('sPace'), et('sPaceN'), bar(byPace, r => secs(r.pace), r => r.pace, '', true));
+  h += statBox('' + et('sPace'), et('sPaceN'), bar(byPace, r => secs(r.pace), r => r.pace, '', true));
   const byCons = END.rows.slice().sort((a, b) => a.sd - b.sd);
-  h += statBox('🎯 ' + et('sCons'), et('sConsN'), bar(byCons, r => r.sd, r => '±' + r.sd.toFixed(2) + ' ' + et('sec'), '', true));
+  h += statBox('' + et('sCons'), et('sConsN'), bar(byCons, r => r.sd, r => '±' + r.sd.toFixed(2) + ' ' + et('sec'), '', true));
   const byPit = END.rows.slice().sort((a, b) => a.loss - b.loss);
-  h += statBox('🔧 ' + et('sPit'), et('sPitN'), bar(byPit, r => r.loss, r => r.loss + ' ' + et('sec'), '', true));
+  h += statBox('' + et('sPit'), et('sPitN'), bar(byPit, r => r.loss, r => r.loss + ' ' + et('sec'), '', true));
   const byGain = END.rows.map((r, i) => ({ ...r, fin: i + 1, gain: r.q - (i + 1) })).sort((a, b) => b.gain - a.gain);
-  h += statBox('🚀 ' + et('sGain'), et('sGainN'), byGain.map((r, i) => `<div style="display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:4px 0;font-size:12px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
+  h += statBox('' + et('sGain'), et('sGainN'), byGain.map((r, i) => `<div style="display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:4px 0;font-size:12px;">
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
       <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(r.name)}</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;">P${r.q} → P${r.fin} <span style="color:${r.gain > 0 ? 'var(--green)' : r.gain < 0 ? 'var(--accent-red)' : 'var(--muted)'};">${r.gain > 0 ? '+' + r.gain : r.gain || '='}</span></div></div>`).join(''));
-  h += statBox('🔁 ' + et('sStint'), et('sStintN'), `<div style="overflow-x:auto;"><table class="full-res-table"><thead><tr><th>${et('colTeam')}</th><th>${et('s1')}</th><th>${et('s2')}</th></tr></thead><tbody>` +
+      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;">P${r.q} → P${r.fin} <span style="color:${r.gain > 0 ? 'var(--green)' : r.gain < 0 ? 'var(--accent-red)' : 'var(--muted)'};">${r.gain > 0 ? '+' + r.gain : r.gain || '='}</span></div></div>`).join(''));
+  h += statBox('' + et('sStint'), et('sStintN'), `<div style="overflow-x:auto;"><table class="full-res-table"><thead><tr><th>${et('colTeam')}</th><th>${et('s1')}</th><th>${et('s2')}</th></tr></thead><tbody>` +
     END.rows.map(r => { const d = secs(r.s2) - secs(r.s1); return `<tr><td style="font-size:12px;">${esc(r.name)}</td><td style="font-size:12px;">${r.s1}</td><td style="font-size:12px;">${r.s2} <span style="color:${d < 0 ? 'var(--green)' : 'var(--accent-red)'};font-size:10px;">${d < 0 ? '' : '+'}${d.toFixed(2)}</span></td></tr>`; }).join('') + `</tbody></table></div>`);
   // квалификация
-  h += `<details class="mega-acc"><summary><span>⏱️ ${et('qualy')}</span><span class="mega-acc-hint">⚡ ${END.qual[0][1]}</span></summary>
+  h += `<details class="mega-acc"><summary><span>${et('qualy')}</span><span class="mega-acc-hint">${END.qual[0][1]}</span></summary>
     <table class="full-res-table"><thead><tr><th style="width:28px;">#</th><th>${et('colTeam')}</th><th>${et('colBest')}</th></tr></thead><tbody>` +
     END.qual.map(([k, tm], i) => `<tr class="${i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : ''}"><td>${i + 1}</td><td>${endWho(endRow(k), true)}</td><td style="font-size:13px;">${tm}</td></tr>`).join('') +
     `</tbody></table></details></div>`;
 
   h += `<div class="card" style="display:flex;align-items:center;gap:12px;margin:12px 0 16px;">
-    <div style="flex:1;font-size:13px;line-height:1.4;">🤝 ${et('next')}</div>
+    <div style="flex:1;font-size:13px;line-height:1.4;">${et('next')}</div>
     <a href="#vote" class="btn-reg" style="width:auto;margin:0;padding:10px 14px;font-size:13px;text-decoration:none;">→</a></div>`;
   h += `</div>`;
   return h;
