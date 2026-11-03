@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Rotax в Алмейриме · Катаемся Чатом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Скрытый лендинг: прокат спортивных картов Rotax на шасси Tony Kart, Kartódromo de Almeirim.
+   Регистрация — тот же Apps Script, что и гонки (event=rotax-nov). Ссылка: racechat.pt/rotax/ */
+:root{
+  --ink:#0d0f12; --ink2:#161a20; --line:#262c35; --fg:#f2f3f5; --muted:#9aa3ad;
+  --red:#e2231a; --green:#35c26b; --amber:#f2b33d;
+  --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif; --body:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5}
+a{color:inherit}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+
+/* hero */
+.hero{position:relative;min-height:680px;display:flex;align-items:flex-end;overflow:hidden;border-bottom:4px solid var(--red)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.05)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,15,18,.55) 0%,rgba(13,15,18,.6) 45%,rgba(13,15,18,.97) 100%)}
+.hero .wrap{position:relative;z-index:1;padding-block:90px 34px;width:100%}
+.top{position:absolute;top:0;left:0;right:0;z-index:2;padding-top:calc(14px + env(safe-area-inset-top,0px))}
+.top .wrap{display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:var(--display);font-weight:900;font-size:18px;letter-spacing:1px;text-transform:uppercase;text-decoration:none}
+.logo em{font-style:normal;color:var(--red)}
+.tag{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.2);padding:4px 10px;border-radius:20px}
+.eyebrow{font-family:var(--display);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:13px;color:#ff4a3f;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+h1{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(46px,11vw,104px);line-height:.86;margin:8px 0 14px;letter-spacing:.5px}
+h1 span{display:block;color:transparent;-webkit-text-stroke:2px var(--fg)}
+.lead{font-size:clamp(16px,2.4vw,19px);max-width:46ch;color:#d9dde2;margin:0 0 18px}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.fact{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:1px;text-transform:uppercase;background:var(--ink2);border:1px solid var(--line);border-radius:8px;padding:7px 12px}
+.fact b{color:var(--red)}
+.cta{display:inline-block;margin-top:20px;background:var(--red);color:#fff;font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:2px;text-transform:uppercase;padding:14px 26px;border-radius:10px;text-decoration:none}
+
+section{padding-block:44px}
+h2{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(30px,6vw,46px);line-height:.95;margin:0 0 6px;letter-spacing:.5px}
+.sub{color:var(--muted);margin:0 0 22px;max-width:60ch}
+
+/* karts */
+.karts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.kart{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;min-width:0}
+.kart::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.kart .cls{font-family:var(--display);font-weight:900;font-size:30px;text-transform:uppercase;line-height:1}
+.kart .who{font-size:13px;color:var(--muted)}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+.spec dt{color:var(--muted)} .spec dd{margin:0;font-weight:600}
+.hp{font-family:var(--display);font-weight:900;font-size:44px;line-height:1;color:var(--c)}
+.hp small{font-size:16px;color:var(--muted);font-weight:700;margin-left:4px}
+
+/* venue */
+.venue{display:grid;grid-template-columns:1fr 1.1fr;gap:16px;align-items:start}
+.venue img{width:100%;height:100%;max-height:440px;object-fit:cover;border-radius:14px;min-height:260px;display:block}
+.vinfo{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.vinfo .row{display:flex;gap:10px;align-items:baseline}
+.vinfo .row b{font-family:var(--display);font-size:18px;min-width:118px;flex-shrink:0;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+/* booking */
+.book{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:18px}
+.lbl{font-family:var(--display);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:13px;color:var(--muted);margin:0 0 8px}
+.slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.slot{background:var(--ink);border:2px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center}
+.slot .t{font-family:var(--display);font-weight:900;font-size:26px;line-height:1}
+.slot .f{font-size:12px;color:var(--muted)}
+.slot[aria-pressed="true"]{border-color:var(--red);background:#1d1012}
+.classes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.cbtn{background:var(--ink);border:2px solid var(--line);border-radius:12px;padding:10px;text-align:left;display:flex;flex-direction:column;gap:2px}
+.cbtn .n{font-family:var(--display);font-weight:800;font-size:19px;text-transform:uppercase}
+.cbtn .a{font-size:12px;color:var(--muted)}
+.cbtn[aria-pressed="true"]{border-color:var(--c)}
+.cbtn:disabled{opacity:.35;cursor:not-allowed}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.form input,.form select{font:inherit;font-size:16px;color:var(--fg);background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+.form .full{grid-column:1/-1}
+.submit{margin-top:16px;width:100%;background:var(--red);color:#fff;font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:12px}
+.submit:disabled{opacity:.5;cursor:default}
+.msg{margin-top:12px;font-size:14px;min-height:20px}
+.msg.err{color:#ff7b74}.msg.ok{color:var(--green)}
+.done{text-align:center;padding:26px 10px}
+.done .big{font-family:var(--display);font-weight:900;font-size:36px;text-transform:uppercase;line-height:1}
+.price{font-size:13px;color:var(--muted);margin-top:10px}
+
+footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--muted);font-size:13px}
+.flag{height:16px;background:conic-gradient(#fff 25%,var(--ink) 0 50%,#fff 0 75%,var(--ink) 0) 0 0/16px 16px;opacity:.9}
+
+@media (max-width:760px){
+  .karts{grid-template-columns:1fr}
+  .venue{grid-template-columns:1fr}
+  .slots{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .classes{grid-template-columns:1fr}
+  .form{grid-template-columns:1fr}
+  .hero{min-height:700px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="top"><div class="wrap"><a class="logo" href="/">Катаемся <em>Чатом</em></a><span class="tag">Закрытый тест</span></div></div>
+  <img src="../photos/ka-aerial.jpg" alt="Kartódromo de Almeirim с высоты">
+  <div class="wrap">
+    <div class="eyebrow">Kartódromo de Almeirim · суббота, 7 ноября</div>
+    <h1>Настоящий<span>спорткарт</span></h1>
+    <p class="lead">Rotax Max, Rotax DD2 и Rotax Junior на шасси Tony Kart. Прокатные сессии по 15 минут — без своего карта, механика и прицепа.</p>
+    <div class="facts">
+      <span class="fact"><b>7.11</b> · с 12:00</span>
+      <span class="fact">Сессии <b>15 мин</b></span>
+      <span class="fact">Шасси <b>Tony Kart</b></span>
+      <span class="fact"><b>3</b> класса Rotax</span>
+    </div>
+    <a class="cta" href="#book">Выбрать сессию →</a>
+  </div>
+</header>
+
+<main>
+  <section class="wrap" id="karts">
+    <h2>Три класса Rotax</h2>
+    <p class="sub">Двухтактные 125 см³ — после прокатных 390cc это другой мир: карт заметно легче, отзывчивее и быстрее в поворотах.</p>
+    <div class="karts">
+      <article class="kart" style="--c:var(--red)">
+        <div class="cls">Rotax Max</div><div class="who">Главный класс. Для тех, кто уверенно едет на прокате.</div>
+        <div class="hp">≈30<small>л.с.</small></div>
+        <dl class="spec"><dt>Двигатель</dt><dd>125 см³, 2 такта</dd><dt>Трансмиссия</dt><dd>Без коробки, автоматическое сцепление</dd><dt>Шасси</dt><dd>Tony Kart</dd></dl>
+      </article>
+      <article class="kart" style="--c:var(--amber)">
+        <div class="cls">Rotax DD2</div><div class="who">Самый быстрый. Для опытных пилотов.</div>
+        <div class="hp">≈34<small>л.с.</small></div>
+        <dl class="spec"><dt>Двигатель</dt><dd>125 см³, 2 такта</dd><dt>Трансмиссия</dt><dd>2 передачи, лепестки на руле</dd><dt>Тормоза</dt><dd>На все четыре колеса</dd></dl>
+      </article>
+      <article class="kart" style="--c:var(--green)">
+        <div class="cls">Rotax Junior</div><div class="who">Мягче мощность. Для подростков и первого знакомства с Rotax.</div>
+        <div class="hp">≈23<small>л.с.</small></div>
+        <dl class="spec"><dt>Двигатель</dt><dd>125 см³, 2 такта, с ограничителем</dd><dt>Трансмиссия</dt><dd>Без коробки, автоматическое сцепление</dd><dt>Шасси</dt><dd>Tony Kart</dd></dl>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap" id="venue">
+    <h2>Трасса</h2>
+    <p class="sub">Kartódromo de Almeirim — один из самых интересных картодромов под Лиссабоном: быстрые связки, шпильки и широкий асфальт.</p>
+    <div class="venue">
+      <img src="../photos/ka-ready.jpg" alt="Старт на Kartódromo de Almeirim" loading="lazy">
+      <div class="vinfo">
+        <div class="row"><b>Где</b><span>Kartódromo de Almeirim, Quinta da Conceição, Almeirim · ~1 час от Лиссабона</span></div>
+        <div class="row"><b>Когда</b><span>Суббота, 7 ноября, сессии с 12:00</span></div>
+        <div class="row"><b>Сессия</b><span>15 минут на трассе, между сессиями смена пилотов</span></div>
+        <div class="row"><b>Экипировка</b><span>Уточним вместе с ценой. Своя экипировка — приветствуется</span></div>
+        <div class="row"><b>Цена</b><span>Уточняется — пришлём в Telegram после записи</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="book">
+    <h2>Запись</h2>
+    <p class="sub">Выбери сессию и класс. Можно записаться на несколько сессий — просто отправь форму ещё раз.</p>
+    <div class="book" id="book-box">
+      <p class="lbl">1 · Сессия</p>
+      <div class="slots" id="slots"></div>
+      <p class="lbl">2 · Класс</p>
+      <div class="classes" id="classes"></div>
+      <p class="lbl">3 · Пилот</p>
+      <form class="form" id="form" novalidate>
+        <label for="f-name">Имя и фамилия<input id="f-name" autocomplete="name" required></label>
+        <label for="f-tg">Telegram<input id="f-tg" placeholder="@nickname" autocomplete="off"></label>
+        <label for="f-exp" class="full">Опыт
+          <select id="f-exp">
+            <option value="">Выбери</option>
+            <option>Только прокат 270–390cc</option>
+            <option>Регулярно гоняю на прокате</option>
+            <option>Уже ездил на Rotax / спорткарте</option>
+            <option>Гонялся в чемпионатах</option>
+          </select></label>
+      </form>
+      <button class="submit" id="submit" type="button">Записаться</button>
+      <div class="msg" id="msg" role="status"></div>
+      <div class="price">После записи пришлём в Telegram подтверждение, цену и детали.</div>
+    </div>
+  </section>
+</main>
+
+<div class="flag" aria-hidden="true"></div>
+<footer><div class="wrap">Катаемся Чатом · racechat.pt · Вопросы — <a href="https://t.me/evgenybu" target="_blank" rel="noopener">@evgenybu</a></div></footer>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbyePWRgZqXMs90Tby6WzCnCHFyomEZ0ryLJxdDPG-bz2ziDgEmAqLeXgL1T0BPNs_KN/exec';
+const EVENT = 'rotax-nov';
+// Должно совпадать с EVENTS['rotax-nov'] в Apps Script
+const SESSIONS = ['12:00', '12:30', '13:00', '13:30'];
+const CLASSES = {
+  max:    { label: 'Rotax Max',    cap: 4, color: 'var(--red)',   note: '≈30 л.с.' },
+  dd2:    { label: 'Rotax DD2',    cap: 2, color: 'var(--amber)', note: '≈34 л.с., 2 передачи' },
+  junior: { label: 'Rotax Junior', cap: 2, color: 'var(--green)', note: '≈23 л.с.' },
+};
+const $ = id => document.getElementById(id);
+let regs = [], pick = { session: '', kart: '' };
+
+function jsonp(params, cb) {
+  const name = '_rx' + Date.now() + Math.floor(Math.random() * 1e6);
+  const s = document.createElement('script');
+  const done = () => { s.remove(); delete window[name]; };
+  window[name] = d => { done(); cb(d); };
+  s.onerror = () => { done(); cb(null); };
+  s.src = API + '?' + new URLSearchParams(Object.assign({ event: EVENT, callback: name }, params)).toString();
+  document.body.appendChild(s);
+}
+const taken = (s, k) => regs.filter(r => r.session === s && r.kart === k).length;
+const freeIn = s => Object.keys(CLASSES).reduce((n, k) => n + Math.max(0, CLASSES[k].cap - taken(s, k)), 0);
+
+function render() {
+  $('slots').innerHTML = SESSIONS.map(s => {
+    const f = freeIn(s);
+    return `<button type="button" class="slot" data-s="${s}" aria-pressed="${pick.session === s}" ${f ? '' : 'disabled'}>
+      <div class="t">${s}</div><div class="f">${f ? 'свободно ' + f : 'мест нет'}</div></button>`;
+  }).join('');
+  $('classes').innerHTML = Object.entries(CLASSES).map(([k, c]) => {
+    const left = pick.session ? c.cap - taken(pick.session, k) : c.cap;
+    return `<button type="button" class="cbtn" style="--c:${c.color}" data-k="${k}" aria-pressed="${pick.kart === k}" ${left > 0 ? '' : 'disabled'}>
+      <span class="n">${c.label}</span><span class="a">${c.note} · ${left > 0 ? 'мест: ' + left : 'занято'}</span></button>`;
+  }).join('');
+}
+$('slots').addEventListener('click', e => { const b = e.target.closest('.slot'); if (!b || b.disabled) return; pick.session = b.dataset.s;
+  if (pick.kart && CLASSES[pick.kart].cap - taken(pick.session, pick.kart) <= 0) pick.kart = ''; render(); });
+$('classes').addEventListener('click', e => { const b = e.target.closest('.cbtn'); if (!b || b.disabled) return; pick.kart = b.dataset.k; render(); });
+
+const REASONS = {
+  full: 'В этой сессии этот класс уже занят — выбери другой.',
+  duplicate: 'Ты уже записан на эту сессию.',
+  invalid: 'Проверь имя, сессию и класс.',
+  closed: 'Запись откроется совсем скоро. Пока можно написать @evgenybu.',
+  busy: 'Сервер занят, попробуй ещё раз через пару секунд.',
+};
+function say(t, cls) { $('msg').textContent = t; $('msg').className = 'msg ' + (cls || ''); }
+
+$('submit').onclick = () => {
+  const name = $('f-name').value.trim(), tg = $('f-tg').value.trim().replace(/^@+/, '');
+  if (!pick.session) return say('Выбери сессию.', 'err');
+  if (!pick.kart) return say('Выбери класс карта.', 'err');
+  if (!name) { $('f-name').focus(); return say('Впиши имя.', 'err'); }
+  const tgUser = window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user;
+  $('submit').disabled = true; say('Записываем…');
+  jsonp({ action: 'register', name, handle: tg, session: pick.session, kart: pick.kart, exp: $('f-exp').value, telegram_id: tgUser ? tgUser.id : '' }, d => {
+    $('submit').disabled = false;
+    if (!d) return say('Нет связи с сервером. Попробуй ещё раз или напиши @evgenybu.', 'err');
+    if (!d.ok) { if (d.reason === 'full') load(); return say(REASONS[d.reason] || 'Что-то пошло не так. Напиши @evgenybu.', 'err'); }
+    regs = d.regs || regs;
+    const c = CLASSES[pick.kart];
+    $('book-box').innerHTML = `<div class="done"><div class="big">Ты в списке 🏁</div>
+      <p>Суббота, 7 ноября · сессия <b>${pick.session}</b> · <b>${c.label}</b></p>
+      <p class="sub" style="margin:8px auto 16px;">Цену и детали пришлём в Telegram. Хочешь ещё одну сессию?</p>
+      <button class="submit" type="button" onclick="location.reload()">Записаться ещё</button></div>`;
+  });
+};
+function load() { jsonp({}, d => { if (d && Array.isArray(d.regs)) { regs = d.regs; render(); } }); }
+render(); load();
+</script>
+</body>
+</html>
