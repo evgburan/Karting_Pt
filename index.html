@@ -153,6 +153,10 @@
   .race-selector { display: flex; gap: 7px; margin-bottom: 12px; flex-wrap: wrap; }
   .race-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
   .race-chip.active { background: var(--text); color: #fff; border-color: var(--text); }
+  .race-chip .mega-word { font-size: 17px; font-weight: 900; color: var(--accent-red); letter-spacing: 1px; line-height: 0; vertical-align: -1px; }
+  .race-chip.active .mega-word { color: #ff6b5e; }
+  .race-sub[hidden] { display: none; }
+  .race-format { font-size: 13px; line-height: 1.5; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent-red); border-radius: 8px; padding: 9px 12px; margin-bottom: 10px; }
   .race-sub { display: flex; gap: 6px; margin: 0 0 12px; padding-top: 10px; border-top: 1px solid var(--border); flex-wrap: wrap; }
   .race-sub-chip { background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 11px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; white-space: nowrap; }
   .race-sub-chip.active { border-color: var(--accent-red); color: var(--accent-red); background: var(--surface); }
@@ -1314,6 +1318,7 @@ const RACES = [
   {
     id: 'kiro',
     chipLabel: '28 Мар · Kiro',
+    format: { ru: "Спринт: одна гонка — с неё начался сезон.", pt: "Sprint: uma corrida — o arranque da época.", en: "Sprint: a single race — the season opener." },   // кратко о формате — над результатами в «Прошедших»
     eventName: 'KIRO Sprint',   // название этапа на кнопке в «Прошедших»
     date: '28 марта 2026',
     location: 'KIRO Karting',
@@ -1345,6 +1350,7 @@ const RACES = [
   {
     id: 'campera-apr',
     chipLabel: '12 Апр · Campera',
+    format: { ru: "Спринты: 2 группы (A и B), в каждой 2 × (квалификация 5 мин + гонка 10 мин). Каждая гонка идёт в зачёт отдельно.", pt: "Sprints: 2 grupos (A e B), cada um com 2 × (qualificação 5 min + corrida 10 min). Cada corrida conta separadamente.", en: "Sprints: 2 groups (A and B), each 2 × (5-min qualifying + 10-min race). Each race scores separately." },   // кратко о формате — над результатами в «Прошедших»
     eventName: 'Campera Sprints',   // название этапа на кнопке в «Прошедших»
     date: '12 апреля 2026',
     location: 'Campera Karting',
@@ -1400,6 +1406,7 @@ const RACES = [
   {
     id: 'kip-may',
     chipLabel: '23 Мая · KIP',
+    format: { ru: "Спринты: 2 × (квалификация 5 мин + гонка 10 мин), между ними меняемся картами. Каждая гонка идёт в зачёт отдельно.", pt: "Sprints: 2 × (qualificação 5 min + corrida 10 min), com troca de karts entre elas. Cada corrida conta separadamente.", en: "Sprints: 2 × (5-min qualifying + 10-min race), swapping karts in between. Each race scores separately." },   // кратко о формате — над результатами в «Прошедших»
     eventName: 'KIP Sprints',   // название этапа на кнопке в «Прошедших»
     date: '23 мая 2026',
     location: 'KIP Palmela',
@@ -1444,6 +1451,7 @@ const RACES = [
   {
     id: 'almeirim-jun',
     chipLabel: '6 Июн · Almeirim',
+    format: { ru: "Спринты: 2 × (квалификация 5 мин + гонка 10 мин), между ними меняемся картами. Каждая гонка идёт в зачёт отдельно.", pt: "Sprints: 2 × (qualificação 5 min + corrida 10 min), com troca de karts entre elas. Cada corrida conta separadamente.", en: "Sprints: 2 × (5-min qualifying + 10-min race), swapping karts in between. Each race scores separately." },   // кратко о формате — над результатами в «Прошедших»
     eventName: 'Almeirim Sprints',   // название этапа на кнопке в «Прошедших»
     date: '6 июня 2026',
     location: 'Kartódromo de Almeirím',
@@ -1476,6 +1484,7 @@ const RACES = [
   {
     id: 'batalha-sep',
     chipLabel: '19 Сен · Batalha',
+    format: { ru: "Мега Спринты: 11 выездов за день — квалификация 15 мин, 9 заездов по 4–5 кругов в группах A/B и финал на 8 кругов за двойные очки. В зачёт сезона — одна гонка по итогам дня.", pt: "Mega Sprints: 11 saídas num dia — qualificação 15 min, 9 mangas de 4–5 voltas nos grupos A/B e final de 8 voltas a pontos a dobrar. No campeonato conta como uma corrida, pela classificação do dia.", en: "Mega Sprints: 11 sessions in one day — 15-min qualifying, 9 heats of 4–5 laps in groups A/B and an 8-lap final for double points. Counts as one race in the season, by the day’s classification." },   // кратко о формате — над результатами в «Прошедших»
     eventName: 'Batalha Mega Sprints',   // название этапа на кнопке в «Прошедших»
     date: '19 сентября 2026',
     location: 'Kartódromo da Batalha',
@@ -1510,6 +1519,7 @@ const RACES = [
   {
     id: 'campera-oct',
     chipLabel: '18 Окт · Campera',
+    format: { ru: "Спринты: 2 × (квалификация 5 мин + гонка 10 мин), между ними меняемся картами. Каждая гонка идёт в зачёт отдельно.", pt: "Sprints: 2 × (qualificação 5 min + corrida 10 min), com troca de karts entre elas. Cada corrida conta separadamente.", en: "Sprints: 2 × (5-min qualifying + 10-min race), swapping karts in between. Each race scores separately." },   // кратко о формате — над результатами в «Прошедших»
     eventName: 'Campera Sprints',   // название этапа на кнопке в «Прошедших»
     date: '18 октября 2026',
     location: 'Campera Karting',
@@ -1537,6 +1547,7 @@ const RACES = [
   {
     id: 'endurance-nov',
     chipLabel: '1 Ноя · Palmela',
+    format: { ru: "Эндуранс: квалификация 15 мин + гонка 50 мин. Команды из 2 пилотов или Iron Man в одиночку, 1 пит-стоп со сменой пилота и 1 джокер через пит-лейн. Оба пилота получают очки команды.", pt: "Endurance: qualificação 15 min + corrida 50 min. Equipas de 2 pilotos ou Iron Man a solo, 1 pit-stop com troca de piloto e 1 joker pelo pit-lane. Ambos os pilotos recebem os pontos da equipa.", en: "Endurance: 15-min qualifying + 50-min race. Teams of 2 or solo Iron Man, 1 pit stop with a driver change and 1 joker through the pit lane. Both drivers get the team’s points." },   // кратко о формате — над результатами в «Прошедших»
     eventName: 'KIP Endurance',   // название этапа на кнопке в «Прошедших»
     date: '1 ноября 2026',
     location: 'KIP Palmela',
@@ -2365,7 +2376,8 @@ function _applyMap(str, map) {
 
 // Кнопка этапа в «Прошедших»: дата + название формата (eventName), напр. «1 Ноя · KIP Endurance»
 function eventChip(race) {
-  return translateChip(race.eventName ? race.chipLabel.split(' · ')[0] + ' · ' + race.eventName : race.chipLabel);
+  const lbl = translateChip(race.eventName ? race.chipLabel.split(' · ')[0] + ' · ' + race.eventName : race.chipLabel);
+  return lbl.replace(/\bMega\b/, '<b class="mega-word">MEGA</b>');   // Мега Спринты — мега-крупно
 }
 function translateChip(chip) {
   const lang = _lang || 'ru';
@@ -2400,7 +2412,7 @@ function buildRaceViews() {
         views.push({
           raceId: race.id,
           chipLabel: translateChip(race.chipLabel),
-          eventLabel: eventChip(race), subLabel: null,
+          eventLabel: eventChip(race), format: race.format, subLabel: null,
           date: translateFullDate(race.date), groupLabel: null,
           location: race.location, photo: race.photo || null,
           // Та же шкала, что в зачёте: очки этапа = ptsFix(результат) + FL
@@ -2415,7 +2427,7 @@ function buildRaceViews() {
         views.push({
           raceId: race.id,
           chipLabel: translateChip(race.chipLabel) + ' · ' + { ru:'Г1', pt:'C1', en:'R1' }[_lang||'ru'],
-          eventLabel: eventChip(race), subLabel: { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
+          eventLabel: eventChip(race), format: race.format, subLabel: { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
           date: translateFullDate(race.date), groupLabel: race.location + ' · ' + { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
           location: race.location, photo: race.photo || null,
           results: r1rows,
@@ -2427,7 +2439,7 @@ function buildRaceViews() {
         if (r2rows.length) views.push({
           raceId: race.id,
           chipLabel: translateChip(race.chipLabel) + ' · ' + { ru:'Г2', pt:'C2', en:'R2' }[_lang||'ru'],
-          eventLabel: eventChip(race), subLabel: { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
+          eventLabel: eventChip(race), format: race.format, subLabel: { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
           date: translateFullDate(race.date), groupLabel: race.location + ' · ' + { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
           location: race.location, photo: race.photo || null,
           results: r2rows,
@@ -2460,7 +2472,7 @@ function buildRaceViews() {
         views.push({
           raceId: race.id,
           chipLabel: `${dateAbbr(race.date)} · Campera ${grpLbl} · ${r1lbl}`,
-          eventLabel: eventChip(race), subLabel: `${grpLbl} · ${r1lbl}`,
+          eventLabel: eventChip(race), format: race.format, subLabel: `${grpLbl} · ${r1lbl}`,
           date: translateFullDate(race.date),
           groupLabel: r1GroupLabel,
           location: race.location,
@@ -2477,7 +2489,7 @@ function buildRaceViews() {
           views.push({
             raceId: race.id,
             chipLabel: `${dateAbbr(race.date)} · Campera ${grpLbl} · ${r2lbl}`,
-            eventLabel: eventChip(race), subLabel: `${grpLbl} · ${r2lbl}`,
+            eventLabel: eventChip(race), format: race.format, subLabel: `${grpLbl} · ${r2lbl}`,
             date: translateFullDate(race.date),
             groupLabel: r2GroupLabel,
             location: race.location,
@@ -2522,6 +2534,7 @@ function renderResults(idx) {
     ? `<div style="width:100%;aspect-ratio:4/3;max-height:220px;overflow:hidden;border-radius:10px;margin-bottom:10px;"><img src="${photoSrc}" onerror="this.closest('div').style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="race photo"></div>`
     : '';
   photoHtml += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">${venueLogoTile((v.chipLabel||'') + ' ' + (v.location||''), 40)}<div class="res-sub" style="margin:0;">${v.date} · ${v.groupLabel || v.location}</div></div>`;
+  if (v.format) photoHtml += `<div class="race-format">${v.format[_lang || 'ru'] || v.format.ru}</div>`;
   const photoEl = document.getElementById('race-photo');
   if (photoEl) photoEl.innerHTML = photoHtml;
 
