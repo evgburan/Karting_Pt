@@ -235,6 +235,11 @@
   .hist-meta { font-size: 11px; color: var(--muted); }
   .hist-pts { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 16px; font-weight: 700; }
 
+  .lap-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .lap-row:last-child { border-bottom: none; }
+  .lap-row .lap-tr { flex: 1; min-width: 0; }
+  .lap-time { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 20px; font-weight: 900; font-variant-numeric: tabular-nums; }
+  .lap-rec { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: #fff; background: var(--accent-red); border-radius: 4px; padding: 1px 5px; margin-left: 4px; vertical-align: 1px; }
   .section-lbl { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 
   /* REG FORM */
@@ -758,6 +763,7 @@ const I18N = {
     stat_pts: 'Очков', stat_races: 'Гонок', stat_avg: 'Среднее', stat_best: 'Лучший', stat_fl: 'Быстр. круг', stat_pos: 'Место в зачёте',
     h2h_btn: 'Head to Head — сравнить с другим гонщиком',
     hist_lbl: 'История гонок', pts_sfx: 'оч.',
+    laps_lbl: 'Лучшие круги по трассам', lap_team: 'лучший круг команды', lap_rec: 'рекорд', lap_of: (p, n) => `${p}-й из ${n} на трассе`,
     shared_none: 'Совместных гонок пока нет',
     nom_title: 'Номинации',
     nom_hot: 'В ударе', nom_progress: 'Прогресс',
@@ -832,6 +838,7 @@ const I18N = {
     stat_pts: 'Pontos', stat_races: 'Corridas', stat_avg: 'Média', stat_best: 'Melhor', stat_fl: 'V. rápida', stat_pos: 'Posição geral',
     h2h_btn: 'Head to Head — comparar com outro piloto',
     hist_lbl: 'Histórico de corridas', pts_sfx: 'pts',
+    laps_lbl: 'Melhores voltas por pista', lap_team: 'melhor volta da equipa', lap_rec: 'recorde', lap_of: (p, n) => `${p}.º de ${n} na pista`,
     shared_none: 'Sem corridas em comum ainda',
     nom_title: 'Destaques',
     nom_hot: 'Em forma', nom_progress: 'Progresso',
@@ -906,6 +913,7 @@ const I18N = {
     stat_pts: 'Points', stat_races: 'Races', stat_avg: 'Average', stat_best: 'Best', stat_fl: 'Fast lap', stat_pos: 'Standing',
     h2h_btn: 'Head to Head — compare with another driver',
     hist_lbl: 'Race history', pts_sfx: 'pts',
+    laps_lbl: 'Best laps by track', lap_team: 'team best lap', lap_rec: 'record', lap_of: (p, n) => `${p} of ${n} at this track`,
     shared_none: 'No shared races yet',
     nom_title: 'Awards',
     nom_hot: 'On fire', nom_progress: 'Progress',
@@ -1241,6 +1249,7 @@ function venueLogoFor(text) {
   if (/Campera/i.test(s))       return VENUE_LOGOS.campera;
   if (/KIP|Palmela/i.test(s))   return VENUE_LOGOS.kip;
   if (/Almeir/i.test(s))        return VENUE_LOGOS.almeirim;
+  if (/Batalha/i.test(s) && VENUE_LOGOS.batalha) return VENUE_LOGOS.batalha;
   return null;
 }
 function venueLogoTile(text, size) {
@@ -2926,6 +2935,99 @@ function updateH2HPage() {
     </div>
   `;
 }
+// ── ЛУЧШИЕ КРУГИ ПО ТРАССАМ ───────────────────────────────────
+// Собираются из протоколов, которые уже есть на сайте. Новая гонка с временами
+// круга — добавь её источник в buildBestLaps(), профиль подхватит сам.
+const LAP_TRACKS = [
+  { id: 'kip',      name: 'KIP Palmela',             logo: 'KIP' },
+  { id: 'campera',  name: 'Campera Karting',         logo: 'Campera' },
+  { id: 'batalha',  name: 'Kartódromo da Batalha',   logo: 'Batalha' },
+  { id: 'almeirim', name: 'Kartódromo de Almeirím',  logo: 'Almeirim' },
+  { id: 'kiro',     name: 'KIRO Karting',            logo: 'KIRO' },
+];
+// Эндуранс 01.11: лучший круг каждого стинта (пит = самый долгий круг в середине гонки).
+// Кто ехал первым стинтом — в END_STINT_ORDER; пока порядок неизвестен, обоим пилотам
+// показывается лучший круг команды с пометкой «команды».
+const END_STINT_BEST = {
+  t10: ['1:03.218', '1:03.403'], hwbt: ['1:04.030', '1:04.548'], buran: ['1:04.570', '1:04.309'],
+  t4: ['1:05.106', '1:05.772'], champ: ['1:03.548', '1:04.383'], t7: ['1:06.007', '1:05.250'],
+  t8: ['1:04.142', '1:07.102'], t5: ['1:05.403', '1:04.275'], partner: ['1:04.322', '1:10.403'],
+};
+const END_STINT_ORDER = { buran: ['Artemy Buran', 'Evgeny Buran'] };
+const lapSec = t => { const p = String(t).split(':'); return p.length > 1 ? (+p[0]) * 60 + parseFloat(p[1]) : parseFloat(p[0]); };
+let BEST_LAPS = null;
+function buildBestLaps() {
+  const out = {};   // key → trackId → { t, sec, ev } — личный круг; командный (эндуранс) — отдельно в .teamBest
+  const add = (track, handle, name, t, ev, team) => {
+    if (!t) return;
+    const k = driverKey(handle, name), sec = lapSec(t);
+    if (!k || !isFinite(sec)) return;
+    const tr = (out[k] = out[k] || {})[track] = out[k][track] || {};
+    const slot = team ? 'teamBest' : 'own';
+    if (!tr[slot] || sec < tr[slot].sec) tr[slot] = { t, sec, ev };
+  };
+  // KIP 23.05 — в протоколе есть только быстрейшие круги гонок
+  if (typeof KIP_DETAIL !== 'undefined') KIP_DETAIL.groups.flatMap(g => g.results).forEach(r => {
+    if (r.r1fl) add('kip', r.handle, r.name, '1:04.007', 'KIP 23.05');
+    if (r.r2fl) add('kip', r.handle, r.name, '1:04.209', 'KIP 23.05');
+  });
+  // Almeirím 06.06 — тоже только быстрейшие круги
+  if (typeof LAST_RACE !== 'undefined' && LAST_RACE.flTimes) LAST_RACE.groups.flatMap(g => g.results).forEach(r => {
+    if (r.r1fl) add('almeirim', r.handle, r.name, LAST_RACE.flTimes.r1, 'Almeirím 06.06');
+    if (r.r2fl) add('almeirim', r.handle, r.name, LAST_RACE.flTimes.r2, 'Almeirím 06.06');
+  });
+  // Batalha 19.09 — квала, отборочные заезды, финалы
+  if (typeof MEGA !== 'undefined') {
+    const d = k => MEGA.drivers[k] || {};
+    const ev = 'Batalha 19.09';
+    (MEGA.qualy || []).forEach(([k, t]) => add('batalha', d(k).handle, d(k).name, t, ev));
+    Object.values(MEGA.heats || {}).forEach(list => list.forEach(h => h.rows.forEach(r => add('batalha', d(r[0]).handle, d(r[0]).name, r[2], ev))));
+    Object.values(MEGA.finals || {}).forEach(f => f.rows.forEach(r => add('batalha', d(r[0]).handle, d(r[0]).name, r[2], ev)));
+  }
+  // Campera 18.10 — две квалы и две гонки
+  if (typeof CAMP !== 'undefined') {
+    const d = k => CAMP.drivers[k] || {};
+    const ev = 'Campera 18.10';
+    CAMP.races.forEach(rc => rc.rows.forEach(([k, t]) => add('campera', d(k).handle, d(k).name, t, ev)));
+    CAMP.qualy.forEach(q => q.forEach(([k, t]) => add('campera', d(k).handle, d(k).name, t, ev)));
+  }
+  // KIP 01.11 — эндуранс
+  if (typeof END !== 'undefined') {
+    const ev = 'KIP 01.11';
+    END.rows.forEach(r => {
+      if (r.m.length === 1) { add('kip', r.m[0][1], r.m[0][0], r.best, ev); return; }
+      const order = END_STINT_ORDER[r.k], st = END_STINT_BEST[r.k];
+      r.m.forEach(([name, handle]) => {
+        const i = order && st ? order.indexOf(name) : -1;
+        if (i >= 0) add('kip', handle, name, st[i], ev);
+        else add('kip', handle, name, r.best, ev, true);
+      });
+    });
+  }
+  return out;
+}
+function bestLapsHtml(key) {
+  BEST_LAPS = BEST_LAPS || buildBestLaps();
+  const mine = BEST_LAPS[key];
+  if (!mine) return '';
+  const rows = LAP_TRACKS.filter(tr => mine[tr.id]).map(tr => {
+    const m = mine[tr.id], own = m.own, tb = m.teamBest;
+    const all = Object.values(BEST_LAPS).map(d => d[tr.id]).filter(Boolean);
+    const indiv = all.map(d => d.own).filter(Boolean);
+    const recSec = Math.min(...all.flatMap(d => [d.own, d.teamBest]).filter(Boolean).map(y => y.sec));
+    const x = own || tb;
+    const isRec = x.sec <= recSec;
+    let meta = own
+      ? [own.ev, indiv.length > 1 ? t('lap_of')(indiv.filter(y => y.sec < own.sec).length + 1, indiv.length) : ''].filter(Boolean).join(' · ')
+      : `${tb.ev} · ${t('lap_team')}`;
+    if (own && tb && tb.sec < own.sec) meta += `<br>${t('lap_team')} ${tb.ev}: ${tb.t}`;
+    return `<div class="lap-row">${venueLogoTile(tr.logo, 32) || `<div style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:13px;color:var(--muted);flex-shrink:0;">${tr.name.replace(/^Kart[óo]dromo d[aoe] /,'')[0]}</div>`}
+      <div class="lap-tr"><div class="hist-race">${tr.name}</div><div class="hist-meta">${meta}</div></div>
+      <div class="lap-time">${x.t}${isRec ? `<span class="lap-rec">${t('lap_rec')}</span>` : ''}</div></div>`;
+  }).join('');
+  return `<div class="section-lbl">${t('laps_lbl')}</div><div style="margin-bottom:16px;">${rows}</div>`;
+}
+
 // PROFILE MODAL
 
 function openProfile(key) {
@@ -2972,6 +3074,8 @@ function openProfile(key) {
         ${t('h2h_btn')}
       </button>
     </div>
+
+    ${bestLapsHtml(d.key)}
 
     <div class="section-lbl">${t('hist_lbl')}</div>
     ${d.races.map(r => `
