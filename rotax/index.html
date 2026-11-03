@@ -67,12 +67,12 @@ h2{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size
 /* booking */
 .book{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:18px}
 .lbl{font-family:var(--display);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:13px;color:var(--muted);margin:0 0 8px}
-.slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:18px}
 .slot{background:var(--ink);border:2px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center}
-.slot .t{font-family:var(--display);font-weight:900;font-size:26px;line-height:1}
+.slot .t{font-family:var(--display);font-weight:900;font-size:26px;line-height:1;white-space:nowrap}
 .slot .f{font-size:12px;color:var(--muted)}
 .slot[aria-pressed="true"]{border-color:var(--red);background:#1d1012}
-.classes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.classes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:18px}
 .cbtn{background:var(--ink);border:2px solid var(--line);border-radius:12px;padding:10px;text-align:left;display:flex;flex-direction:column;gap:2px}
 .cbtn .n{font-family:var(--display);font-weight:800;font-size:19px;text-transform:uppercase}
 .cbtn .a{font-size:12px;color:var(--muted)}
@@ -82,6 +82,9 @@ h2{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size
 .form label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
 .form input,.form select{font:inherit;font-size:16px;color:var(--fg);background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
 .form .full{grid-column:1/-1}
+.opt{font-weight:400;text-transform:none;letter-spacing:0;font-family:var(--body);font-size:13px}
+.why{grid-column:1/-1;margin:-4px 0 0;font-size:13px;color:var(--muted);line-height:1.45;border-left:3px solid var(--amber);padding-left:10px}
+.form input:invalid:not(:placeholder-shown){border-color:#ff7b74}
 .submit{margin-top:16px;width:100%;background:var(--red);color:#fff;font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:12px}
 .submit:disabled{opacity:.5;cursor:default}
 .msg{margin-top:12px;font-size:14px;min-height:20px}
@@ -96,11 +99,11 @@ footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--mute
 @media (max-width:760px){
   .karts{grid-template-columns:1fr}
   .venue{grid-template-columns:1fr}
-  .slots{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .classes{grid-template-columns:1fr}
+  .classes{grid-template-columns:repeat(2,minmax(0,1fr))}
   .form{grid-template-columns:1fr}
   .hero{min-height:700px}
 }
+@media (max-width:480px){.slots{grid-template-columns:1fr}.slot{display:flex;justify-content:space-between;align-items:center;padding:12px 14px}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
@@ -114,12 +117,12 @@ footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--mute
     <h1>Настоящий<span>спорткарт</span></h1>
     <p class="lead">Rotax Max, Rotax DD2 и Rotax Junior на шасси Tony Kart. Прокатные сессии по 15 минут — без своего карта, механика и прицепа.</p>
     <div class="facts">
-      <span class="fact"><b>7.11</b> · с 12:00</span>
+      <span class="fact"><b>7.11</b> · 10:00–16:00</span>
       <span class="fact">Сессии <b>15 мин</b></span>
       <span class="fact">Шасси <b>Tony Kart</b></span>
       <span class="fact"><b>3</b> класса Rotax</span>
     </div>
-    <a class="cta" href="#book">Выбрать сессию →</a>
+    <a class="cta" href="#book">Записаться →</a>
   </div>
 </header>
 
@@ -153,7 +156,7 @@ footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--mute
       <img src="../photos/ka-ready.jpg" alt="Старт на Kartódromo de Almeirim" loading="lazy">
       <div class="vinfo">
         <div class="row"><b>Где</b><span>Kartódromo de Almeirim, Quinta da Conceição, Almeirim · ~1 час от Лиссабона</span></div>
-        <div class="row"><b>Когда</b><span>Суббота, 7 ноября, сессии с 12:00</span></div>
+        <div class="row"><b>Когда</b><span>Суббота, 7 ноября, с 10:00 до 16:00 — выбираешь удобное окно</span></div>
         <div class="row"><b>Сессия</b><span>15 минут на трассе, между сессиями смена пилотов</span></div>
         <div class="row"><b>Экипировка</b><span>Уточним вместе с ценой. Своя экипировка — приветствуется</span></div>
         <div class="row"><b>Цена</b><span>Уточняется — пришлём в Telegram после записи</span></div>
@@ -163,16 +166,19 @@ footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--mute
 
   <section class="wrap" id="book">
     <h2>Запись</h2>
-    <p class="sub">Выбери сессию и класс. Можно записаться на несколько сессий — просто отправь форму ещё раз.</p>
+    <p class="sub">Выбери удобное временное окно — точное время сессии пришлём ближе к дате. Класс карта можно выбрать сейчас или решить уже на месте.</p>
     <div class="book" id="book-box">
-      <p class="lbl">1 · Сессия</p>
+      <p class="lbl">1 · Время</p>
       <div class="slots" id="slots"></div>
-      <p class="lbl">2 · Класс</p>
+      <p class="lbl">2 · Класс <span class="opt">— необязательно</span></p>
       <div class="classes" id="classes"></div>
       <p class="lbl">3 · Пилот</p>
       <form class="form" id="form" novalidate>
         <label for="f-name">Имя и фамилия<input id="f-name" autocomplete="name" required></label>
         <label for="f-tg">Telegram<input id="f-tg" placeholder="@nickname" autocomplete="off"></label>
+        <label for="f-h">Рост, см<input id="f-h" type="number" inputmode="numeric" min="120" max="230" placeholder="например, 178" required></label>
+        <label for="f-w">Вес, кг<input id="f-w" type="number" inputmode="numeric" min="30" max="200" placeholder="например, 75" required></label>
+        <p class="why">Рост и вес нужны для подгонки карта: заранее выставим сиденье, педали и балласт, чтобы ты сел и сразу поехал.</p>
         <label for="f-exp" class="full">Опыт
           <select id="f-exp">
             <option value="">Выбери</option>
@@ -196,12 +202,15 @@ footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--mute
 const API = 'https://script.google.com/macros/s/AKfycbyePWRgZqXMs90Tby6WzCnCHFyomEZ0ryLJxdDPG-bz2ziDgEmAqLeXgL1T0BPNs_KN/exec';
 const EVENT = 'rotax-nov';
 // Должно совпадать с EVENTS['rotax-nov'] в Apps Script
-const SESSIONS = ['12:00', '12:30', '13:00', '13:30'];
+const SESSIONS = ['10:00–12:00', '12:00–14:00', '14:00–16:00'];
+const WINDOW_CAP = 12;
 const CLASSES = {
-  max:    { label: 'Rotax Max',    cap: 4, color: 'var(--red)',   note: '≈30 л.с.' },
-  dd2:    { label: 'Rotax DD2',    cap: 2, color: 'var(--amber)', note: '≈34 л.с., 2 передачи' },
-  junior: { label: 'Rotax Junior', cap: 2, color: 'var(--green)', note: '≈23 л.с.' },
+  '':     { label: 'Решу на месте', color: 'var(--muted)', note: 'Подскажем на трассе' },
+  max:    { label: 'Rotax Max',     color: 'var(--red)',   note: '≈30 л.с.' },
+  dd2:    { label: 'Rotax DD2',     color: 'var(--amber)', note: '≈34 л.с., 2 передачи' },
+  junior: { label: 'Rotax Junior',  color: 'var(--green)', note: '≈23 л.с.' },
 };
+const CLASS_ORDER = ['max', 'dd2', 'junior', ''];
 const $ = id => document.getElementById(id);
 let regs = [], pick = { session: '', kart: '' };
 
@@ -214,8 +223,7 @@ function jsonp(params, cb) {
   s.src = API + '?' + new URLSearchParams(Object.assign({ event: EVENT, callback: name }, params)).toString();
   document.body.appendChild(s);
 }
-const taken = (s, k) => regs.filter(r => r.session === s && r.kart === k).length;
-const freeIn = s => Object.keys(CLASSES).reduce((n, k) => n + Math.max(0, CLASSES[k].cap - taken(s, k)), 0);
+const freeIn = s => Math.max(0, WINDOW_CAP - regs.filter(r => r.session === s).length);
 
 function render() {
   $('slots').innerHTML = SESSIONS.map(s => {
@@ -223,20 +231,18 @@ function render() {
     return `<button type="button" class="slot" data-s="${s}" aria-pressed="${pick.session === s}" ${f ? '' : 'disabled'}>
       <div class="t">${s}</div><div class="f">${f ? 'свободно ' + f : 'мест нет'}</div></button>`;
   }).join('');
-  $('classes').innerHTML = Object.entries(CLASSES).map(([k, c]) => {
-    const left = pick.session ? c.cap - taken(pick.session, k) : c.cap;
-    return `<button type="button" class="cbtn" style="--c:${c.color}" data-k="${k}" aria-pressed="${pick.kart === k}" ${left > 0 ? '' : 'disabled'}>
-      <span class="n">${c.label}</span><span class="a">${c.note} · ${left > 0 ? 'мест: ' + left : 'занято'}</span></button>`;
+  $('classes').innerHTML = CLASS_ORDER.map(k => { const c = CLASSES[k];
+    return `<button type="button" class="cbtn" style="--c:${c.color}" data-k="${k}" aria-pressed="${pick.kart === k}">
+      <span class="n">${c.label}</span><span class="a">${c.note}</span></button>`;
   }).join('');
 }
-$('slots').addEventListener('click', e => { const b = e.target.closest('.slot'); if (!b || b.disabled) return; pick.session = b.dataset.s;
-  if (pick.kart && CLASSES[pick.kart].cap - taken(pick.session, pick.kart) <= 0) pick.kart = ''; render(); });
+$('slots').addEventListener('click', e => { const b = e.target.closest('.slot'); if (!b || b.disabled) return; pick.session = b.dataset.s; render(); });
 $('classes').addEventListener('click', e => { const b = e.target.closest('.cbtn'); if (!b || b.disabled) return; pick.kart = b.dataset.k; render(); });
 
 const REASONS = {
-  full: 'В этой сессии этот класс уже занят — выбери другой.',
-  duplicate: 'Ты уже записан на эту сессию.',
-  invalid: 'Проверь имя, сессию и класс.',
+  full: 'В этом окне мест больше нет — выбери другое время.',
+  duplicate: 'Ты уже записан на это время.',
+  invalid: 'Проверь имя, время, рост и вес.',
   closed: 'Запись откроется совсем скоро. Пока можно написать @evgenybu.',
   busy: 'Сервер занят, попробуй ещё раз через пару секунд.',
 };
@@ -244,20 +250,22 @@ function say(t, cls) { $('msg').textContent = t; $('msg').className = 'msg ' + (
 
 $('submit').onclick = () => {
   const name = $('f-name').value.trim(), tg = $('f-tg').value.trim().replace(/^@+/, '');
-  if (!pick.session) return say('Выбери сессию.', 'err');
-  if (!pick.kart) return say('Выбери класс карта.', 'err');
+  const h = Number($('f-h').value), w = Number($('f-w').value);
+  if (!pick.session) return say('Выбери время.', 'err');
   if (!name) { $('f-name').focus(); return say('Впиши имя.', 'err'); }
+  if (!(h >= 120 && h <= 230)) { $('f-h').focus(); return say('Впиши рост в сантиметрах — он нужен для подгонки карта.', 'err'); }
+  if (!(w >= 30 && w <= 200)) { $('f-w').focus(); return say('Впиши вес в килограммах — он нужен для подгонки карта.', 'err'); }
   const tgUser = window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user;
   $('submit').disabled = true; say('Записываем…');
-  jsonp({ action: 'register', name, handle: tg, session: pick.session, kart: pick.kart, exp: $('f-exp').value, telegram_id: tgUser ? tgUser.id : '' }, d => {
+  jsonp({ action: 'register', name, handle: tg, session: pick.session, kart: pick.kart, height: h, weight: w, exp: $('f-exp').value, telegram_id: tgUser ? tgUser.id : '' }, d => {
     $('submit').disabled = false;
     if (!d) return say('Нет связи с сервером. Попробуй ещё раз или напиши @evgenybu.', 'err');
     if (!d.ok) { if (d.reason === 'full') load(); return say(REASONS[d.reason] || 'Что-то пошло не так. Напиши @evgenybu.', 'err'); }
     regs = d.regs || regs;
     const c = CLASSES[pick.kart];
     $('book-box').innerHTML = `<div class="done"><div class="big">Ты в списке 🏁</div>
-      <p>Суббота, 7 ноября · сессия <b>${pick.session}</b> · <b>${c.label}</b></p>
-      <p class="sub" style="margin:8px auto 16px;">Цену и детали пришлём в Telegram. Хочешь ещё одну сессию?</p>
+      <p>Суббота, 7 ноября · <b>${pick.session}</b> · <b>${pick.kart ? c.label : 'класс выберешь на месте'}</b></p>
+      <p class="sub" style="margin:8px auto 16px;">Точное время сессии, цену и детали пришлём в Telegram.</p>
       <button class="submit" type="button" onclick="location.reload()">Записаться ещё</button></div>`;
   });
 };

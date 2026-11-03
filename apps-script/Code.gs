@@ -47,17 +47,18 @@ var EVENTS = {
   'rotax-nov': {
     title: 'Rotax Almeirim 07.11',
     sheetId: '1bOEKeKWwiZl2qZ5Y9ZCCvY_De7Wx-MjCEcalo4m8U0w',
-    kind: 'rental',          // прокатные сессии: пилот выбирает сессию и класс карта
+    kind: 'rental',          // прокат: пилот выбирает окно, класс карта — по желанию
     open: true,
-    sessions: ['12:00', '12:30', '13:00', '13:30'],
-    classes: {               // cap — сколько картов этого класса в одной сессии
-      max:    { label: 'Rotax Max',    cap: 4 },
-      dd2:    { label: 'Rotax DD2',    cap: 2 },
-      junior: { label: 'Rotax Junior', cap: 2 }
+    sessions: ['10:00–12:00', '12:00–14:00', '14:00–16:00'],
+    windowCap: 12,           // сколько пилотов в одном окне
+    classes: {
+      max:    { label: 'Rotax Max' },
+      dd2:    { label: 'Rotax DD2' },
+      junior: { label: 'Rotax Junior' }
     },
     price: null,             // цена уточняется — пока в DM пишем «пришлём отдельно»
     dmWhen: 'Прокат Rotax · суббота, 7 ноября, Kartódromo de Almeirim.',
-    dmFormat: 'Сессия 15 минут, шасси Tony Kart.'
+    dmFormat: 'Сессии по 15 минут, шасси Tony Kart.'
   }
 };
 
@@ -78,7 +79,7 @@ var COL = {
   mate: 'Напарник', mateHandle: 'Telegram напарника', team: 'Команда',
   tgid: 'Telegram ID', beginner: 'Новичок', hide: 'Скрыть ник',
   due: 'К оплате €', photo: 'Фото', paid: 'Оплачено', note: 'Комментарий',
-  session: 'Сессия', kart: 'Карт', exp: 'Опыт'
+  session: 'Окно', kart: 'Карт', exp: 'Опыт', height: 'Рост, см', weight: 'Вес, кг'
 };
 var BOOL_COLS = ['beginner', 'hide', 'paid'];
 var MODE_LABEL = { team: 'Команда', draft: 'Жеребьёвка', ironman: 'Iron Man' };
@@ -169,12 +170,15 @@ function register(p) {
     }
   }
 
-  var session = '', kart = '', exp = '';
+  var session = '', kart = '', exp = '', height = '', weight = '';
   if (ev.kind === 'rental') {
     session = String(p.session || '');
     kart = String(p.kart || '');
     exp = clean(p.exp, 40);
-    if (ev.sessions.indexOf(session) < 0 || !ev.classes[kart]) return { ok: false, reason: 'invalid' };
+    height = Number(p.height);
+    weight = Number(p.weight);
+    if (ev.sessions.indexOf(session) < 0 || (kart && !ev.classes[kart])) return { ok: false, reason: 'invalid' };
+    if (!(height >= 120 && height <= 230) || !(weight >= 30 && weight <= 200)) return { ok: false, reason: 'invalid' };
   }
 
   var me = { name: name, handle: handle, tgid: tgid };
@@ -198,10 +202,10 @@ function register(p) {
     }
 
     // Места
-    if (ev.kind === 'rental') {
+    if (ev.kind === 'rental' && ev.windowCap) {
       var taken = 0;
-      for (var q = 0; q < rows.length; q++) if (rows[q].session === session && rows[q].kart === kart) taken++;
-      if (taken >= ev.classes[kart].cap) return { ok: false, reason: 'full' };
+      for (var q = 0; q < rows.length; q++) if (rows[q].session === session) taken++;
+      if (taken >= ev.windowCap) return { ok: false, reason: 'full' };
     }
     if (ev.kind === 'sprint' && ev.maxDrivers && rows.length >= ev.maxDrivers) return { ok: false, reason: 'full' };
     if (ev.kind === 'endurance' && ev.maxTeams) {
@@ -222,9 +226,11 @@ function register(p) {
       row.due = mode === 'team' ? ev.price.team * 2 : ev.price[mode];
     }
     if (ev.kind === 'rental') {
-      row.session = "'" + session;          // текстом, чтобы Sheets не превратил в время
-      row.kart = ev.classes[kart].label;
+      row.session = session;
+      row.kart = kart ? ev.classes[kart].label : 'На месте';
       row.exp = exp;
+      row.height = height;
+      row.weight = weight;
       if (ev.price) row.due = ev.price;
     }
     writeRow(sh, row);
@@ -282,18 +288,19 @@ function notifyTelegram(ev, row, mode, tgid, rows) {
       payLine = '';
     }
     if (ev.kind === 'rental') {
-      var kl = ev.classes[row._kartCode].label;
+      var kl = row._kartCode ? ev.classes[row._kartCode].label : 'класс выберешь на месте';
       if (tgid) {
-        var rl = ['🏁 ' + row.name + ', ты записан!', '', ev.dmWhen, 'Сессия ' + row._session + ' · ' + kl + '.'];
+        var rl = ['🏁 ' + row.name + ', ты записан!', '', ev.dmWhen, 'Окно ' + row._session + ' · ' + kl + '.', 'Рост ' + row.height + ' см, вес ' + row.weight + ' кг — подгоним карт под тебя.'];
         if (ev.price) rl.push('', '💶 Оплата €' + ev.price + ':', 'Revolut: ' + PAY.revolut, 'IBAN: ' + PAY.iban + ' (' + PAY.ibanName + ')', 'В назначении укажи своё имя.');
         else rl.push('', '💶 Цену и оплату пришлём отдельно.');
         rl.push('', ev.dmFormat + ' До встречи на трассе! 🛞');
         sendTelegram(tgid, rl.join('\n'));
       }
       var inS = 0;
-      for (var n = 0; n < rows.length; n++) if (rows[n].session === row._session && rows[n].kart === row._kartCode) inS++;
+      for (var n = 0; n < rows.length; n++) if (rows[n].session === row._session) inS++;
       sendTelegram(CORE_CHAT, '✅ Новая регистрация · ' + ev.title + '\n' + row.name + (row.handle ? ' (' + row.handle + ')' : '') +
-        '\nСессия ' + row._session + ' · ' + kl + ': ' + inS + ' / ' + ev.classes[row._kartCode].cap + (row.exp ? '\nОпыт: ' + row.exp : ''));
+        '\nОкно ' + row._session + ' · ' + kl + ' · ' + row.height + ' см / ' + row.weight + ' кг' +
+        '\nВ окне: ' + inS + (ev.windowCap ? ' / ' + ev.windowCap : '') + (row.exp ? '\nОпыт: ' + row.exp : ''));
       return;
     }
     if (tgid) {
@@ -437,7 +444,7 @@ function readRows(sh) {
       mate: String(get('mate') || '').trim(),
       mateHandle: String(get('mateHandle') || '').trim(),
       team: String(get('team') || '').trim(),
-      session: cellTime(get('session')),
+      session: String(get('session') || '').trim(),
       kart: kartCode(get('kart'))
     });
   }
@@ -483,7 +490,7 @@ function setup() {
     sh.setFrozenRows(1);
     sh.getRange(1, 1, 1, width).setFontWeight('bold').setBackground('#1a1a1a').setFontColor('#ffffff');
     var map = headerMap(sh);
-    var widths = { session: 80, kart: 120, exp: 160, ts: 140, mode: 110, name: 180, handle: 140, mate: 170, mateHandle: 150, team: 150, tgid: 110, beginner: 80, hide: 90, due: 90, photo: 120, paid: 90, note: 220 };
+    var widths = { session: 110, kart: 120, exp: 160, height: 80, weight: 80, ts: 140, mode: 110, name: 180, handle: 140, mate: 170, mateHandle: 150, team: 150, tgid: 110, beginner: 80, hide: 90, due: 90, photo: 120, paid: 90, note: 220 };
     for (var k in widths) if (map[k]) sh.setColumnWidth(map[k], widths[k]);
     if (map.ts) sh.getRange(2, map.ts, sh.getMaxRows() - 1, 1).setNumberFormat('dd.MM HH:mm');
     var last = lastFilledRow(sh, map.name);
@@ -527,7 +534,7 @@ function kartCode(label) {
     if (!cl) continue;
     for (var k in cl) if (cl[k].label.toLowerCase() === s || k === s) return k;
   }
-  return s;
+  return s === 'на месте' ? '' : s;
 }
 
 function modeCode(label) {
