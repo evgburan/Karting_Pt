@@ -6136,7 +6136,7 @@ function endHtml() {
   h += `<div class="page-eyebrow">${et('eyebrow')} · ${esc(translateFullDate(END.date))}</div>
     <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${et('title')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(END.venue)}</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${chip(pilots + ' ' + et('pilots'))}${chip(END.rows.length + ' ' + et('karts'))}${chip(et('race'))}${chip('FL ' + END.fl.time + ' · ' + esc(endRow(END.fl.k).name))}</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${chip(pilots + ' ' + ((_lang || 'ru') === 'ru' ? ruPl(pilots, 'пилот', 'пилота', 'пилотов') : et('pilots')))}${chip(END.rows.length + ' ' + ((_lang || 'ru') === 'ru' ? ruPl(END.rows.length, 'карт', 'карта', 'картов') : et('karts')))}${chip(et('race'))}${chip('FL ' + END.fl.time + ' · ' + esc(endRow(END.fl.k).name))}</div>
     <div style="display:flex;gap:8px;margin-bottom:16px;">
       <a href="#vote" class="cta-btn">${et('vote')}</a>
       <a href="#feedback" class="cta-btn">${t('cta_feedback')}</a>
