@@ -153,6 +153,9 @@
   .race-selector { display: flex; gap: 7px; margin-bottom: 12px; flex-wrap: wrap; }
   .race-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
   .race-chip.active { background: var(--text); color: #fff; border-color: var(--text); }
+  .race-sub { display: flex; gap: 6px; margin: 0 0 12px; padding-top: 10px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .race-sub-chip { background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 11px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; white-space: nowrap; }
+  .race-sub-chip.active { border-color: var(--accent-red); color: var(--accent-red); background: var(--surface); }
 
   /* RESULTS TABLE */
   .results-table { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 12px; }
@@ -476,6 +479,7 @@
   <!-- ── ПРОШЕДШИЕ ── -->
   <div class="inner-panel" id="tab-results">
     <div class="race-selector" id="race-chips"></div>
+    <div class="race-sub" id="race-sub" hidden></div>
     <div id="race-photo"></div>
     <div id="race-nominations"></div>
     <div class="results-table">
@@ -2385,6 +2389,7 @@ function buildRaceViews() {
         views.push({
           raceId: race.id,
           chipLabel: translateChip(race.chipLabel),
+          eventLabel: translateChip(race.chipLabel), subLabel: null,
           date: translateFullDate(race.date), groupLabel: null,
           location: race.location, photo: race.photo || null,
           // Та же шкала, что в зачёте: очки этапа = ptsFix(результат) + FL
@@ -2399,6 +2404,7 @@ function buildRaceViews() {
         views.push({
           raceId: race.id,
           chipLabel: translateChip(race.chipLabel) + ' · ' + { ru:'Г1', pt:'C1', en:'R1' }[_lang||'ru'],
+          eventLabel: translateChip(race.chipLabel), subLabel: { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
           date: translateFullDate(race.date), groupLabel: race.location + ' · ' + { ru:'Гонка 1', pt:'Corrida 1', en:'Race 1' }[_lang||'ru'],
           location: race.location, photo: race.photo || null,
           results: r1rows,
@@ -2410,6 +2416,7 @@ function buildRaceViews() {
         if (r2rows.length) views.push({
           raceId: race.id,
           chipLabel: translateChip(race.chipLabel) + ' · ' + { ru:'Г2', pt:'C2', en:'R2' }[_lang||'ru'],
+          eventLabel: translateChip(race.chipLabel), subLabel: { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
           date: translateFullDate(race.date), groupLabel: race.location + ' · ' + { ru:'Гонка 2', pt:'Corrida 2', en:'Race 2' }[_lang||'ru'],
           location: race.location, photo: race.photo || null,
           results: r2rows,
@@ -2442,6 +2449,7 @@ function buildRaceViews() {
         views.push({
           raceId: race.id,
           chipLabel: `${dateAbbr(race.date)} · Campera ${grpLbl} · ${r1lbl}`,
+          eventLabel: translateChip(race.chipLabel), subLabel: `${grpLbl} · ${r1lbl}`,
           date: translateFullDate(race.date),
           groupLabel: r1GroupLabel,
           location: race.location,
@@ -2458,7 +2466,8 @@ function buildRaceViews() {
           views.push({
             raceId: race.id,
             chipLabel: `${dateAbbr(race.date)} · Campera ${grpLbl} · ${r2lbl}`,
-            date: race.date,
+            eventLabel: translateChip(race.chipLabel), subLabel: `${grpLbl} · ${r2lbl}`,
+            date: translateFullDate(race.date),
             groupLabel: r2GroupLabel,
             location: race.location,
             photo: race.photo || null,
@@ -2473,10 +2482,20 @@ function buildRaceViews() {
 
 let RACE_VIEWS = buildRaceViews();
 
+// «Прошедшие»: одна кнопка на этап (новые слева), под ней — гонки/группы этапа
+function raceEventIds() { return [...new Set(RACE_VIEWS.map(v => v.raceId))].reverse(); }
+function defaultRaceIdx() { const id = raceEventIds()[0]; return Math.max(0, RACE_VIEWS.findIndex(v => v.raceId === id)); }
 function renderChips() {
-  document.getElementById('race-chips').innerHTML = RACE_VIEWS.map((v, i) =>
-    `<button class="race-chip${i===0?' active':''}" onclick="selectRace(${i},this)">${v.chipLabel}</button>`
-  ).join('');
+  const cur = RACE_VIEWS[_currentRaceIdx] || RACE_VIEWS[0];
+  document.getElementById('race-chips').innerHTML = raceEventIds().map(id => {
+    const first = RACE_VIEWS.findIndex(v => v.raceId === id);
+    return `<button class="race-chip${id === cur.raceId ? ' active' : ''}" onclick="selectRace(${first})">${RACE_VIEWS[first].eventLabel || RACE_VIEWS[first].chipLabel}</button>`;
+  }).join('');
+  const subs = RACE_VIEWS.map((v, i) => ({ v, i })).filter(x => x.v.raceId === cur.raceId);
+  const box = document.getElementById('race-sub');
+  box.hidden = subs.length < 2;
+  box.innerHTML = subs.length < 2 ? '' : subs.map(x =>
+    `<button class="race-sub-chip${x.i === _currentRaceIdx ? ' active' : ''}" onclick="selectRace(${x.i})">${x.v.subLabel || x.v.chipLabel}</button>`).join('');
 }
 
 // Results panel
@@ -3839,11 +3858,10 @@ function switchTab(name, btn) {
   document.getElementById('tab-' + name).classList.add('active');
 }
 
-let _currentRaceIdx = 0;
-function selectRace(idx, btn) {
-  document.querySelectorAll('.race-chip').forEach(c => c.classList.remove('active'));
-  btn.classList.add('active');
+var _currentRaceIdx = 0;
+function selectRace(idx) {
   _currentRaceIdx = idx;
+  renderChips();
   renderResults(idx);
 }
 
@@ -3888,8 +3906,9 @@ function runSlider() {
 }
 setInterval(runSlider, 3500);
 renderRaceTab();
+_currentRaceIdx = defaultRaceIdx();
 renderChips();
-renderResults(0);
+renderResults(_currentRaceIdx);
 renderStandings();
 renderDrivers();
 renderLastRace();
