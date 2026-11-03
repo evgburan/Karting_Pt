@@ -3392,6 +3392,11 @@ function renderRaceTab() {
   const wrap = document.getElementById('race-wrap');
   if (!wrap) return;
   const list = visibleEvents();
+  // Пока нет ближайших гонок, «Ближайшие» и «Итоги» — одна вкладка «Итоги» (на ней свежие итоги)
+  const merged = !list.length && !!window.END_READY;
+  const mb = document.getElementById('tab-btn-mega'), rb = document.getElementById('tab-btn-race');
+  if (mb) { mb.hidden = merged; if (merged && mb.classList.contains('active')) switchTab('race', rb); }
+  if (rb) rb.textContent = merged ? t('tab_mega') : t('tab_race');
   const banner = window.END_READY ? `<button class="res-banner" onclick="openCampResults('end')">
       <span class="res-banner-ico"></span>
       <span class="res-banner-txt"><span class="res-banner-t">${et('bannerT')}</span><span class="res-banner-s">${et('bannerS')}</span></span>
@@ -6011,8 +6016,9 @@ function openCampResults(which) {
   const cw = document.getElementById('camp-wrap'), ew = document.getElementById('end-wrap');
   if (cw) cw.style.display = camp ? '' : 'none';
   if (ew) ew.style.display = camp ? 'none' : '';
-  const btn = document.getElementById('tab-btn-mega');
-  if (btn) switchTab('mega', btn);
+  const mb = document.getElementById('tab-btn-mega'), rb = document.getElementById('tab-btn-race');
+  if (mb && mb.hidden) { if (camp) switchTab('mega', rb); else switchTab('race', rb); }   // вкладки объединены
+  else if (mb) switchTab('mega', mb);
   window.scrollTo(0, 0);
 }
 
