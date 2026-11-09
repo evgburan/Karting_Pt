@@ -456,7 +456,7 @@
   html { scrollbar-color: #b3b8b2 var(--bg); }
 
   /* Шапка */
-  nav { background: rgba(20,18,16,0.97); border-bottom: 0; height: 56px; padding: 0 20px; }
+  nav { background: #141210; backdrop-filter: none; -webkit-backdrop-filter: none; border-bottom: 0; height: 56px; padding: 0 20px; }
   nav .logo { color: #fbfcfa; font-size: 20px; letter-spacing: 0.01em; line-height: 0.92; }
   nav .logo em { color: var(--brand-hi); }
   .lang-switcher { background: rgba(251,252,250,0.1); border-radius: 999px; padding: 3px; gap: 0; }
@@ -468,7 +468,7 @@
   .inner-tab.active { border-bottom-color: var(--ink); }
 
   /* Нижнее меню */
-  .bottom-nav { background: rgba(20,18,16,0.95); border-top: 0; padding: 8px 0 calc(14px + env(safe-area-inset-bottom)); backdrop-filter: blur(14px); }
+  .bottom-nav { background: #141210; border-top: 0; padding: 8px 0 calc(14px + env(safe-area-inset-bottom)); backdrop-filter: none; -webkit-backdrop-filter: none; }
   .bnav-item { color: rgba(251,252,250,0.5); font-size: 12px; letter-spacing: 0.06em; transition: color 160ms var(--ease-out); }
   .bnav-item.active { color: #fbfcfa; }
   .bnav-item svg { width: 22px; height: 22px; }
@@ -493,14 +493,15 @@
   .home-wrap { padding: 0 20px; }
   .home-top { background: var(--ink); color: #fbfcfa; margin: 0 calc(50% - 50vw); padding: 0 calc(50vw - 50%); }
   .home-top .home-wrap { padding-top: 0; }
-  .album { position: relative; display: grid; gap: 2px; grid-template-columns: repeat(2, 1fr); grid-template-rows: 62fr 38fr; height: clamp(320px, 50svh, 540px); margin: 0 -20px; overflow: hidden; }
-  @media (min-width: 640px) { .album { margin: 0; border-radius: 14px; } }
-  .album figure { position: relative; overflow: hidden; background: #2a2620; margin: 0; animation: h-open 700ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 70ms); }
-  .album figure:first-child { grid-column: 1 / -1; }
-  .album img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1100ms var(--ease-out), transform 7000ms linear; }
-  .album img.on { opacity: 1; transform: scale(1); }
-  @keyframes h-open { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
-  .album-pause { position: absolute; right: 10px; bottom: 10px; z-index: 2; width: 36px; height: 36px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: #fbfcfa; background: rgba(20,18,16,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background-color 160ms var(--ease-out), transform 140ms var(--ease-out); }
+  .album { position: relative; aspect-ratio: 4 / 3; max-height: 62svh; margin: 0 -20px; overflow: hidden; background: #2a2620; touch-action: pan-y; cursor: pointer; user-select: none; -webkit-user-select: none; }
+  @media (min-width: 640px) { .album { margin: 0; border-radius: 14px; aspect-ratio: 16 / 10; } }
+  .album img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 700ms ease; pointer-events: none; }
+  .album img.on { opacity: 1; }
+  .album img.on, .album img.next { will-change: opacity; }
+  .album-dots { position: absolute; left: 14px; bottom: 16px; z-index: 2; display: flex; gap: 5px; }
+  .album-dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(251,252,250,0.5); transition: width 300ms var(--ease-out), background-color 300ms ease; }
+  .album-dots i.on { width: 18px; background: #fbfcfa; }
+  .album-pause { position: absolute; right: 10px; bottom: 10px; z-index: 2; width: 36px; height: 36px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: #fbfcfa; background: rgba(20,18,16,0.6); transition: background-color 160ms var(--ease-out), transform 140ms var(--ease-out); }
   .album-pause:active { transform: scale(0.94); }
   .album-pause svg { width: 16px; height: 16px; }
   .album-pause .i-play, .album-pause[aria-pressed="true"] .i-pause { display: none; }
@@ -592,9 +593,8 @@
   .detail-back svg { width: 18px; height: 18px; }
 
   @media (prefers-reduced-motion: reduce) {
-    .album figure, [data-enter] { animation: none; }
-    .album img { transition: opacity 400ms ease; transform: none; }
-    .album img.on { transform: none; }
+    [data-enter] { animation: none; }
+    .album img { transition: opacity 300ms ease; }
     .h-js .h-table:not(.shown) .h-gap i { transform: scaleX(var(--w)); }
     .h-js .h-table.shown .h-gap i { transition: none; }
   }
@@ -625,10 +625,8 @@
   <div id="home-view">
     <div class="home-top">
       <div class="home-wrap">
-        <div class="album" id="album" aria-label="Фото с наших гонок">
-          <figure style="--i:0" data-every="5200" data-photos="campera:50% 48%|palmela-group:50% 55%|batalha-group:50% 60%|kiro:45% 55%|campera-oct:50% 60%|almeirim:50% 50%"></figure>
-          <figure style="--i:1" data-every="4300" data-photos="kip-sodi:50% 50%|batalha-helmets:50% 40%|campera-pack:50% 60%|palmela-draft:50% 40%|kip-karts:55% 50%"></figure>
-          <figure style="--i:2" data-every="4700" data-photos="palmela-ironman:50% 40%|campera-start:30% 60%|batalha-a:50% 30%|kiro:30% 50%"></figure>
+        <div class="album" id="album" data-every="4500" data-photos="campera:50% 45%|kip-sodi:50% 50%|palmela-group:50% 55%|batalha-helmets:50% 35%|batalha-group:50% 55%|campera-pack:50% 60%|kiro:45% 50%|palmela-ironman:50% 35%|campera-oct:50% 60%|kip-karts:55% 50%|palmela-draft:50% 35%|campera-start:35% 60%|batalha-a:50% 30%">
+          <div class="album-dots" id="album-dots" aria-hidden="true"></div>
           <button type="button" class="album-pause" id="album-pause" aria-pressed="false" aria-label="Пауза">
             <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="5" width="3.5" height="14" rx="1"/><rect x="13.5" y="5" width="3.5" height="14" rx="1"/></svg>
             <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.87l10.5-6.5a1 1 0 0 0 0-1.74L9.5 4.63A1 1 0 0 0 8 5.5z"/></svg>
@@ -6556,40 +6554,62 @@ function hRaceStats() {
   });
 }
 
-// ── Слайдшоу: каждая плитка меняет фото в своём ритме ──
+// ── Слайдшоу: одно крупное фото, плавная смена, свайп/тап, пауза; стоит, когда не на экране ──
 const _album = document.getElementById('album');
 let _albumPaused = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const _albumTiles = _album ? [..._album.querySelectorAll('figure')].map((fig, ti) => {
-  const imgs = fig.dataset.photos.split('|').map((x, k) => {
-    const [src, pos] = x.split(':');
-    const img = new Image(); img.alt = ''; img.decoding = 'async'; img.style.objectPosition = pos;
-    if (k === 0) { img.src = `photos/home/${src}.jpg`; img.className = 'on'; if (ti === 0) img.fetchPriority = 'high'; }
-    else img.dataset.src = `photos/home/${src}.jpg`;
-    fig.appendChild(img); return img;
-  });
-  return { imgs, i: 0, every: +fig.dataset.every, next: performance.now() + 2600 + ti * 900 };
+let _albumVisible = true, _albumTimer = null, _albumI = 0;
+const _albumImgs = _album ? _album.dataset.photos.split('|').map(x => {
+  const [src, pos] = x.split(':');
+  const img = new Image(); img.alt = ''; img.decoding = 'async'; img.style.objectPosition = pos;
+  img.dataset.src = `photos/home/${src}.jpg`;
+  _album.insertBefore(img, document.getElementById('album-dots'));
+  return img;
 }) : [];
-function _albumLoad(img) { if (img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; } }
-function _albumStep(now) {
-  const homeOn = document.getElementById('page-main')?.classList.contains('active') && !document.getElementById('home-view').hidden;
-  if (!_albumPaused && !document.hidden && homeOn) _albumTiles.forEach(t => {
-    if (now < t.next) return;
-    const n = (t.i + 1) % t.imgs.length, img = t.imgs[n];
-    _albumLoad(img); _albumLoad(t.imgs[(n + 1) % t.imgs.length]);
-    const go = () => { t.imgs[t.i].classList.remove('on'); img.classList.add('on'); t.i = n; };
-    img.complete ? go() : img.addEventListener('load', go, { once: true });
-    t.next = now + t.every;
-  });
-  requestAnimationFrame(_albumStep);
+function _albumLoad(img) { if (img && img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; } }
+function _albumDots() {
+  const d = document.getElementById('album-dots'); if (!d) return;
+  if (d.children.length !== _albumImgs.length) d.innerHTML = _albumImgs.map(() => '<i></i>').join('');
+  [...d.children].forEach((x, k) => x.classList.toggle('on', k === _albumI));
 }
-if (_albumTiles.length) requestAnimationFrame(_albumStep);
+function _albumShow(n) {
+  if (!_albumImgs.length) return;
+  n = (n + _albumImgs.length) % _albumImgs.length;
+  const img = _albumImgs[n];
+  _albumLoad(img); _albumLoad(_albumImgs[(n + 1) % _albumImgs.length]);
+  const go = () => {
+    _albumImgs.forEach((x, k) => { x.classList.toggle('on', k === n); x.classList.toggle('next', k === (n + 1) % _albumImgs.length); });
+    _albumI = n; _albumDots();
+  };
+  img.complete && img.naturalWidth ? go() : img.addEventListener('load', go, { once: true });
+}
+function _albumSchedule() {
+  clearTimeout(_albumTimer);
+  const homeOn = document.getElementById('page-main')?.classList.contains('active') && !document.getElementById('home-view')?.hidden;
+  if (_albumPaused || !_albumVisible || document.hidden || !homeOn) return;
+  _albumTimer = setTimeout(() => { _albumShow(_albumI + 1); _albumSchedule(); }, +(_album?.dataset.every || 4500));
+}
+if (_album) {
+  _albumImgs[0].fetchPriority = 'high';
+  _albumShow(0);
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { _albumVisible = es[0].isIntersecting; _albumSchedule(); }, { threshold: 0.2 }).observe(_album);
+  document.addEventListener('visibilitychange', _albumSchedule);
+  // тап — следующее фото, свайп влево/вправо — листать
+  let x0 = null;
+  _album.addEventListener('pointerdown', e => { if (e.target.closest('.album-pause')) return; x0 = e.clientX; });
+  _album.addEventListener('pointerup', e => {
+    if (x0 === null) return;
+    const dx = e.clientX - x0; x0 = null;
+    _albumShow(_albumI + (dx > 40 ? -1 : 1)); _albumSchedule();
+  });
+  _album.addEventListener('pointercancel', () => { x0 = null; });
+}
 function _albumSetPaused(v) {
   _albumPaused = v;
-  const b = document.getElementById('album-pause'); if (!b) return;
-  b.setAttribute('aria-pressed', String(v)); b.setAttribute('aria-label', v ? ht('play') : ht('pause'));
-  if (!v) { const now = performance.now(); _albumTiles.forEach((t, k) => { t.next = now + 600 + k * 700; }); }
+  const b = document.getElementById('album-pause');
+  if (b) { b.setAttribute('aria-pressed', String(v)); b.setAttribute('aria-label', v ? ht('play') : ht('pause')); }
+  _albumSchedule();
 }
-document.getElementById('album-pause')?.addEventListener('click', () => _albumSetPaused(!_albumPaused));
+document.getElementById('album-pause')?.addEventListener('click', e => { e.stopPropagation(); _albumSetPaused(!_albumPaused); });
 
 // ── Блоки главной ──
 function hNextHtml() {
@@ -6760,6 +6780,7 @@ function placeRaceWrap() {
 function showHome() {
   const hv = document.getElementById('home-view'), dv = document.getElementById('detail-view');
   if (hv) hv.hidden = false; if (dv) dv.hidden = true;
+  _albumSchedule();
   if (location.hash === '#standings' || location.hash === '#results') history.replaceState(null, '', location.pathname + location.search);
   window.scrollTo(0, 0);
 }
