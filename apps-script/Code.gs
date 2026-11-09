@@ -21,7 +21,19 @@
  *  GET  ?action=register&event=ID&callback=cb&...   → cb({ ok: true, regs }) | cb({ ok: false, reason })
  *       reason: full | duplicate | mate_dup | invalid | closed | busy | error
  *  POST { action: 'photo', event, name, handle, telegram_id, photoBase64 }  → фото в photos/{ключ}.jpg
+ *  GET  ?action=subscribe&callback=cb&name=&handle=&telegram_id=&lang=&src=
+ *       → cb({ ok: true, dm: бот смог написать, isNew }) — подписка на анонс следующей гонки
+ *
+ * ПОДПИСЧИКИ НА АНОНСЫ
+ *  Таблица «racechat.pt — подписчики» создаётся сама при первой подписке, ссылка приходит в оргчат.
+ *  Разослать анонс: вписать текст в ANNOUNCE_TEXT ниже → выполнить announceTest (придёт только в оргчат)
+ *  → если всё ок, выполнить announceSend. Бот пишет тем, у кого «Бот может писать» = да;
+ *  остальным (оставили только @ник) — писать руками, они в той же таблице.
+ *  importPastRegs — один раз добавить в таблицу всех, кто регистрировался на прошлые гонки через Telegram.
  */
+
+// ⬇ Текст рассылки подписчикам (announceTest / announceSend). После рассылки можно стереть.
+var ANNOUNCE_TEXT = '';
 
 var EVENTS = {
   'campera-oct': {
@@ -91,7 +103,9 @@ function doGet(e) {
   var cb = safeCallback(p.callback);
   var out;
   try {
-    out = p.action === 'register' ? register(p) : { regs: listRegs(p.event) };
+    out = p.action === 'register' ? register(p)
+      : p.action === 'subscribe' ? subscribe(p)
+      : { regs: listRegs(p.event) };
   } catch (err) {
     console.error(err);
     out = { ok: false, reason: 'error' };
@@ -333,6 +347,167 @@ function sendTelegram(chatId, text) {
     payload: JSON.stringify({ chat_id: chatId, text: text }),
     muteHttpExceptions: true
   });
+}
+
+// То же, но с ответом: true — сообщение доставлено (человек запускал бота / разрешил писать)
+function sendTelegramOk(chatId, text) {
+  try {
+    var r = UrlFetchApp.fetch('https://api.telegram.org/bot' + secret('BOT_TOKEN') + '/sendMessage', {
+      method: 'post', contentType: 'application/json',
+      payload: JSON.stringify({ chat_id: chatId, text: text }),
+      muteHttpExceptions: true
+    });
+    return JSON.parse(r.getContentText()).ok === true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
+// ───────────────────────── Подписка на анонсы ─────────────────────────
+
+var SUBS_COLS = ['Дата', 'Имя', 'Telegram', 'Telegram ID', 'Бот может писать', 'Язык', 'Источник', 'Последняя рассылка'];
+var SUBS_DM = {
+  ru: '🔔 Готово, ты в списке. Напишу сюда, как только откроется регистрация на следующую гонку.\n\nКатаемся Чатом · racechat.pt',
+  pt: '🔔 Feito, estás na lista. Escrevo-te aqui assim que abrirem as inscrições para a próxima corrida.\n\nКатаемся Чатом · racechat.pt',
+  en: '🔔 Done, you are on the list. I will message you here as soon as registration for the next race opens.\n\nКатаемся Чатом · racechat.pt'
+};
+
+// Таблица подписчиков: создаётся сама, id хранится в «Свойствах скрипта» (SUBS_SHEET_ID)
+function subsSheet() {
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('SUBS_SHEET_ID');
+  var ss;
+  if (id) {
+    ss = SpreadsheetApp.openById(id);
+  } else {
+    ss = SpreadsheetApp.create('racechat.pt — подписчики');
+    props.setProperty('SUBS_SHEET_ID', ss.getId());
+    var sh0 = ss.getSheets()[0];
+    sh0.setName('Подписчики');
+    sh0.getRange(1, 1, 1, SUBS_COLS.length).setValues([SUBS_COLS])
+      .setFontWeight('bold').setBackground('#1a1a1a').setFontColor('#ffffff');
+    sh0.setFrozenRows(1);
+    sh0.getRange('A2:A').setNumberFormat('dd.MM HH:mm');
+    sh0.getRange('H2:H').setNumberFormat('dd.MM HH:mm');
+    var w = [110, 180, 150, 120, 130, 60, 130, 150];
+    for (var i = 0; i < w.length; i++) sh0.setColumnWidth(i + 1, w[i]);
+    if (secret('BOT_TOKEN')) sendTelegram(CORE_CHAT, '🔔 Создана таблица подписчиков на анонсы:\n' + ss.getUrl());
+  }
+  return ss.getSheets()[0];
+}
+
+// Строки таблицы подписчиков: [{ _row, name, handle, tgid, can }]
+function subsRows(sh) {
+  var last = sh.getLastRow();
+  if (last < 2) return [];
+  var v = sh.getRange(2, 1, last - 1, SUBS_COLS.length).getValues();
+  var out = [];
+  for (var i = 0; i < v.length; i++) {
+    var handle = String(v[i][2] || '').trim(), tgid = String(v[i][3] || '').trim();
+    if (!handle && !tgid) continue;
+    out.push({ _row: i + 2, name: String(v[i][1] || '').trim(), handle: handle, tgid: tgid, can: String(v[i][4] || '').trim().toLowerCase() === 'да' });
+  }
+  return out;
+}
+
+function findSub(rows, tgid, handle) {
+  for (var i = 0; i < rows.length; i++) {
+    if (tgid && rows[i].tgid === tgid) return rows[i];
+    if (handle && rows[i].handle && normHandle(rows[i].handle) === normHandle(handle)) return rows[i];
+  }
+  return null;
+}
+
+function subscribe(p) {
+  var name = clean(p.name, 60);
+  var handle = cleanHandle(p.handle);
+  var tgid = clean(p.telegram_id, 20);
+  if (!/^[0-9]+$/.test(tgid)) tgid = '';
+  var lang = SUBS_DM[p.lang] ? p.lang : 'ru';
+  var src = clean(p.src, 40);
+  if (!tgid && !handle) return { ok: false, reason: 'invalid' };
+
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) return { ok: false, reason: 'busy' };
+  try {
+    var sh = subsSheet();
+    var rows = subsRows(sh);
+    var cur = findSub(rows, tgid, handle);
+    // Подтверждение в личку — новому подписчику и тому, кому раньше написать не получалось
+    var can = cur ? cur.can : false;
+    if (tgid && !can && secret('BOT_TOKEN')) can = sendTelegramOk(tgid, SUBS_DM[lang]);
+
+    if (cur) {
+      if (name && !cur.name) sh.getRange(cur._row, 2).setValue(safeCellValue(name));
+      if (handle && !cur.handle) sh.getRange(cur._row, 3).setValue(safeCellValue(handle));
+      if (tgid && !cur.tgid) sh.getRange(cur._row, 4).setValue(tgid);
+      sh.getRange(cur._row, 5).setValue(can ? 'да' : 'нет');
+    } else {
+      sh.getRange(sh.getLastRow() + 1, 1, 1, SUBS_COLS.length).setValues([[
+        new Date(), safeCellValue(name), safeCellValue(handle), tgid, can ? 'да' : 'нет', lang, safeCellValue(src), ''
+      ]]);
+      if (secret('BOT_TOKEN')) {
+        sendTelegram(CORE_CHAT, '🔔 Подписка на анонс гонки\n' + (name || handle) + (name && handle ? ' (' + handle + ')' : '') +
+          (can ? '' : ' · бот написать не может') + '\nВсего в списке: ' + (rows.length + 1));
+      }
+    }
+    return { ok: true, dm: can, isNew: !cur };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Один раз: добавить в подписчики всех, кто регистрировался на прошлые гонки с Telegram ID.
+// Никому ничего не отправляет; «Бот может писать» = да (при регистрации бот им уже писал),
+// при рассылке недоставленные сами станут «нет».
+function importPastRegs() {
+  var sh = subsSheet();
+  var rows = subsRows(sh);
+  var added = 0;
+  Object.keys(EVENTS).forEach(function (id) {
+    var regs;
+    try { regs = readRows(sheetOf(EVENTS[id])); } catch (err) { console.error(err); return; }
+    regs.forEach(function (r) {
+      var tgid = /^[0-9]+$/.test(r.tgid) ? r.tgid : '';
+      if (!tgid || findSub(rows, tgid, r.handle)) return;
+      var line = [new Date(), safeCellValue(r.name), safeCellValue(r.handle), tgid, 'да', 'ru', 'reg:' + id, ''];
+      sh.getRange(sh.getLastRow() + 1, 1, 1, SUBS_COLS.length).setValues([line]);
+      rows.push({ _row: sh.getLastRow(), name: r.name, handle: r.handle, tgid: tgid, can: true });
+      added++;
+    });
+  });
+  console.log('Добавлено из прошлых регистраций: ' + added);
+}
+
+// Проверка текста: придёт только в оргчат
+function announceTest() {
+  if (!ANNOUNCE_TEXT) throw new Error('ANNOUNCE_TEXT пустой');
+  sendTelegram(CORE_CHAT, '— ТЕСТ РАССЫЛКИ, так увидят подписчики —\n\n' + ANNOUNCE_TEXT);
+}
+
+// Рассылка всем, кому бот может писать. Кому не дошло — помечаются «нет»; итог приходит в оргчат.
+function announceSend() {
+  if (!ANNOUNCE_TEXT) throw new Error('ANNOUNCE_TEXT пустой');
+  var sh = subsSheet();
+  var rows = subsRows(sh);
+  var sent = 0, failed = 0, manual = [];
+  var now = new Date();
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i];
+    if (!r.tgid || !r.can) { manual.push(r.handle || r.name); continue; }
+    if (sendTelegramOk(r.tgid, ANNOUNCE_TEXT)) {
+      sent++;
+      sh.getRange(r._row, 8).setValue(now);
+    } else {
+      failed++;
+      sh.getRange(r._row, 5).setValue('нет');
+      manual.push(r.handle || r.name);
+    }
+    Utilities.sleep(60);   // лимит Telegram — около 30 сообщений в секунду
+  }
+  sendTelegram(CORE_CHAT, '📣 Рассылка анонса: доставлено ' + sent + ', не дошло ' + failed +
+    (manual.length ? '\nНаписать руками (' + manual.length + '): ' + manual.join(', ').slice(0, 3000) : ''));
 }
 
 // Токен: из SECRETS, иначе из «Свойств скрипта»

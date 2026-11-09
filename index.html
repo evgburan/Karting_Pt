@@ -537,6 +537,18 @@
   .h-next .h-plate { width: 72px; height: 58px; font-size: 44px; background: var(--bg); box-shadow: inset 0 0 0 1.5px var(--ink); }
   .h-next-t { display: block; font: 900 26px/1 var(--display); text-transform: uppercase; }
   .h-next-s { margin-top: 6px; color: var(--ink-2); font-size: 16px; line-height: 1.45; }
+  .h-sub { grid-column: 1 / -1; padding-top: 16px; border-top: 1px solid var(--border); }
+  .h-sub-p { color: var(--ink-2); font-size: 15px; line-height: 1.45; margin-bottom: 12px; }
+  .h-btn-dark { background: var(--ink); color: #fff; width: 100%; }
+  .h-btn-dark[disabled] { opacity: .6; cursor: default; }
+  .h-sub-alt { display: block; width: 100%; margin-top: 10px; padding: 6px; background: none; border: 0; color: var(--ink-2); font: 500 14px/1.3 var(--font); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .h-sub-form { display: flex; gap: 8px; margin-top: 10px; }
+  .h-sub-form input { flex: 1; min-width: 0; height: 48px; padding: 0 14px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--bg); font: 500 16px/1 var(--font); color: var(--ink); }
+  .h-sub-form .h-btn { flex: none; }
+  .h-sub-ok { font-weight: 600; font-size: 16px; line-height: 1.4; color: var(--ink); }
+  .h-sub-ok small { display: block; margin-top: 4px; font-weight: 400; font-size: 14px; color: var(--ink-2); }
+  .h-sub-ok a { color: inherit; }
+  .h-sub-err { margin-top: 10px; color: #9c2b2b; font-size: 14px; line-height: 1.4; }
   #home-next-body > #race-wrap { margin-top: 16px; }
 
   .h-photo { margin-top: 18px; border-radius: 14px; overflow: hidden; aspect-ratio: 16 / 10; background: #c9c3b6; cursor: pointer; }
@@ -6488,6 +6500,11 @@ const HOME_T = {
     intro: 'Собираемся чатом и любим кататься на картах. Опыт не нужен, набираемся его вместе.',
     cta: 'Залетай в чат', count: n => `${ruPl(n, 'человек', 'человека', 'человек')} уже покатались с нами`,
     nextH: 'Следующая гонка', think: 'Пока думаем',
+    subP: 'Дату объявим здесь и в Telegram. Подпишись, и бот напишет тебе лично, когда откроется регистрация.',
+    subBtn: 'Сообщить мне о гонке', subTg: 'Подписаться в Telegram', subAlt: 'или оставить свой @ник', subSend: 'Готово', subWait: 'Записываем…',
+    subOk: 'Ты в списке.', subOkDm: 'Бот напишет, как только откроется регистрация.',
+    subOkNoDm: 'Чтобы бот смог написать, открой его и нажми Start:', subOkHandle: 'Напишем тебе в Telegram, когда откроется регистрация.',
+    subErr: 'Не получилось записать. Попробуй ещё раз или напиши в чат.', subNeed: 'Впиши свой ник в Telegram.',
     since: (d, place) => `С ${place} прошло ${d} ${ruPl(d, 'день', 'дня', 'дней')}. Руки уже чешутся.`,
     lastH: 'Прошлая гонка', pilots: n => `${n} ${ruPl(n, 'пилот', 'пилота', 'пилотов')}`, bestLap: 'лучший круг',
     spread: v => `Лучшие круги первой пятёрки уложились в <b>${v} секунды</b>.`, allRes: 'Все результаты',
@@ -6506,6 +6523,11 @@ const HOME_T = {
     intro: 'Juntamo-nos no chat e adoramos andar de kart. Não é preciso experiência, ganhamo-la juntos.',
     cta: 'Entra no chat', count: () => 'pessoas já correram connosco',
     nextH: 'Próxima corrida', think: 'Ainda a pensar',
+    subP: 'A data sai aqui e no Telegram. Subscreve e o bot avisa-te pessoalmente quando abrirem as inscrições.',
+    subBtn: 'Avisem-me da corrida', subTg: 'Subscrever no Telegram', subAlt: 'ou deixar o meu @nome', subSend: 'Enviar', subWait: 'A registar…',
+    subOk: 'Estás na lista.', subOkDm: 'O bot escreve-te assim que abrirem as inscrições.',
+    subOkNoDm: 'Para o bot te poder escrever, abre-o e carrega em Start:', subOkHandle: 'Escrevemos-te no Telegram quando abrirem as inscrições.',
+    subErr: 'Não foi possível registar. Tenta outra vez ou escreve no chat.', subNeed: 'Escreve o teu nome de utilizador do Telegram.',
     since: (d, place) => `Já passaram ${d} dias desde ${place}. Já dá saudades.`,
     lastH: 'Última corrida', pilots: n => `${n} pilotos`, bestLap: 'melhor volta',
     spread: v => `As melhores voltas do top 5 ficaram dentro de <b>${v} segundos</b>.`, allRes: 'Todos os resultados',
@@ -6524,6 +6546,11 @@ const HOME_T = {
     intro: 'We get together as a chat and love karting. No experience needed, we gain it together.',
     cta: 'Jump into the chat', count: () => 'people have raced with us so far',
     nextH: 'Next race', think: 'Still thinking',
+    subP: 'The date will appear here and on Telegram. Subscribe and the bot will message you when registration opens.',
+    subBtn: 'Notify me about the race', subTg: 'Subscribe on Telegram', subAlt: 'or leave my @username', subSend: 'Send', subWait: 'Saving…',
+    subOk: 'You are on the list.', subOkDm: 'The bot will message you as soon as registration opens.',
+    subOkNoDm: 'So the bot can message you, open it and press Start:', subOkHandle: 'We will message you on Telegram when registration opens.',
+    subErr: 'Could not save. Try again or write in the chat.', subNeed: 'Enter your Telegram username.',
     since: (d, place) => `${d} days since ${place}. Itching to go again.`,
     lastH: 'Last race', pilots: n => `${n} drivers`, bestLap: 'best lap',
     spread: v => `The top five’s best laps were within <b>${v} seconds</b>.`, allRes: 'All results',
@@ -6630,8 +6657,91 @@ function hNextHtml() {
     const place = ht('place')[hVenue(past.venue)] || past.venue;
     line = `<p class="h-next-s">${ht('since')(days, place)}</p>`;
   }
-  return `<div class="h-next"><span class="h-plate" aria-hidden="true">?</span><div><span class="h-next-t">${ht('think')}</span>${line}</div></div>`;
+  return `<div class="h-next"><span class="h-plate" aria-hidden="true">?</span><div><span class="h-next-t">${ht('think')}</span>${line}</div><div class="h-sub" id="h-sub">${hSubHtml()}</div></div>`;
 }
+
+// ── Подписка на анонс следующей гонки ──
+// Кнопка пишет человека в таблицу «racechat.pt — подписчики» (Apps Script, action=subscribe).
+// В Mini App: один тап + разрешение боту писать в личку. В браузере: ссылка в Mini App
+// (?startapp=notify — подписка запускается сама) или ручной ввод @ника.
+// ⬇ Прямая ссылка на Mini App бота (BotFather → Main App / Direct link). Пусто → в браузере остаётся только ввод ника.
+const TG_APP_URL = 'https://t.me/karting_pt_bot/portal';
+const TG_BOT_URL = 'https://t.me/karting_pt_bot';
+let _subBusy = false, _subErr = '', _subForm = false;
+function subSaved() { try { return JSON.parse(localStorage.getItem('rc_sub') || 'null'); } catch (e) { return null; } }
+function hSubHtml() {
+  const done = subSaved();
+  if (done) {
+    const note = done.via === 'handle' ? ht('subOkHandle')
+      : done.dm ? ht('subOkDm')
+      : `${ht('subOkNoDm')} <a href="${TG_BOT_URL}?start=notify" target="_blank" rel="noopener">@${TG_BOT_URL.split('/').pop()}</a>`;
+    return `<div class="h-sub-ok">${ht('subOk')}<small>${note}</small></div>`;
+  }
+  const err = _subErr ? `<div class="h-sub-err">${esc(_subErr)}</div>` : '';
+  if (TG_USER) {
+    return `<p class="h-sub-p">${ht('subP')}</p>
+      <button type="button" class="h-btn h-btn-dark" onclick="subscribeNext()"${_subBusy ? ' disabled' : ''}>${TG_ICON}<span>${_subBusy ? ht('subWait') : ht('subBtn')}</span></button>${err}`;
+  }
+  const form = `<form class="h-sub-form" onsubmit="subscribeHandle(event)">
+      <input id="h-sub-handle" type="text" inputmode="text" autocapitalize="off" autocomplete="off" placeholder="@username" maxlength="40">
+      <button type="submit" class="h-btn h-btn-dark" style="width:auto;"${_subBusy ? ' disabled' : ''}>${_subBusy ? '…' : ht('subSend')}</button>
+    </form>`;
+  if (!TG_APP_URL) return `<p class="h-sub-p">${ht('subP')}</p>${form}${err}`;
+  return `<p class="h-sub-p">${ht('subP')}</p>
+    <a class="h-btn h-btn-dark" href="${TG_APP_URL}?startapp=notify" target="_blank" rel="noopener">${TG_ICON}<span>${ht('subTg')}</span></a>
+    ${_subForm ? form : `<button type="button" class="h-sub-alt" onclick="_subForm=true;subRedraw();document.getElementById('h-sub-handle')?.focus()">${ht('subAlt')}</button>`}${err}`;
+}
+function subRedraw() { const el = document.getElementById('h-sub'); if (el) el.innerHTML = hSubHtml(); }
+function subCall(params) {
+  // тот же JSONP, что у регистрации; старый бэкенд без action=subscribe ответит без ok → покажем ошибку
+  return new Promise((resolve, reject) => {
+    const cb = '_subCb' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+    const sc = document.createElement('script');
+    const end = () => { clearTimeout(tm); if (sc.parentNode) sc.parentNode.removeChild(sc); delete window[cb]; };
+    const tm = setTimeout(() => { end(); reject(new Error('timeout')); }, 15000);
+    window[cb] = d => { end(); resolve(d); };
+    sc.onerror = () => { end(); reject(new Error('network')); };
+    sc.src = REG_API + '?action=subscribe&callback=' + cb + '&' + Object.entries(params).map(([k, v]) => k + '=' + encodeURIComponent(v == null ? '' : v)).join('&');
+    document.body.appendChild(sc);
+  });
+}
+function subSend(params, via) {
+  _subBusy = true; _subErr = ''; subRedraw();
+  const src = (TG && TG.initDataUnsafe && TG.initDataUnsafe.start_param) || new URLSearchParams(location.search).get('src') || (TG_USER ? 'miniapp' : 'web');
+  return subCall(Object.assign({ lang: _lang || 'ru', src }, params)).then(r => {
+    _subBusy = false;
+    if (!r || r.ok !== true) { _subErr = ht('subErr'); subRedraw(); return; }
+    try { localStorage.setItem('rc_sub', JSON.stringify({ via, dm: !!r.dm, at: Date.now() })); } catch (e) {}
+    if (window.rcTrack && params.handle) window.rcTrack.setWho(params.handle);
+    subRedraw();
+  }).catch(() => { _subBusy = false; _subErr = ht('subErr'); subRedraw(); });
+}
+// Mini App: сначала просим у Telegram разрешение боту писать в личку, потом записываем
+function subscribeNext() {
+  if (_subBusy || !TG_USER) return;
+  const go = () => subSend({ name: getTgName(), handle: getTgHandle(), telegram_id: getTgId() || '' }, 'tg');
+  let asked = false;
+  try {
+    if (TG.requestWriteAccess && TG.isVersionAtLeast && TG.isVersionAtLeast('6.9')) { asked = true; TG.requestWriteAccess(() => go()); }
+  } catch (e) { asked = false; }
+  if (!asked) go();
+}
+function subscribeHandle(e) {
+  if (e) e.preventDefault();
+  if (_subBusy) return;
+  const raw = (document.getElementById('h-sub-handle')?.value || '').trim().replace(/^@+/, '');
+  if (!/^[A-Za-z0-9_]{4,32}$/.test(raw)) { _subErr = ht('subNeed'); subRedraw(); const i = document.getElementById('h-sub-handle'); if (i) { i.value = raw; i.focus(); } return; }
+  subSend({ handle: '@' + raw }, 'handle');
+}
+// Пришли по ссылке ?startapp=notify из браузера — подписываем сразу
+window.addEventListener('load', () => {
+  try {
+    if (TG_USER && TG.initDataUnsafe.start_param === 'notify' && !subSaved() && document.getElementById('h-sub')) {
+      document.getElementById('home-next')?.scrollIntoView({ block: 'center' });
+      subscribeNext();
+    }
+  } catch (e) {}
+});
 
 function hLastHtml(stats) {
   const last = stats[stats.length - 1]; if (!last) return '';
