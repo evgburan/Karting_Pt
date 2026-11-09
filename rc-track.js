@@ -1,6 +1,6 @@
 /*
  * racechat.pt — простая аналитика: кто заходит, какие разделы открывают, откуда пришли.
- * События уходят в тот же Apps Script, что и регистрации (action: 'track'),
+ * События уходят в отдельный Apps Script (apps-script/Analytics.gs, action: 'track'),
  * и пишутся строкой в таблицу «racechat.pt — аналитика» (лист «Лог», сводка — лист «Сводка»).
  *
  * Подключение:  <script src="/rc-track.js"></script>  (+ data-page="имя" — сразу записать просмотр страницы)
@@ -11,11 +11,12 @@
  */
 (function () {
   var me = document.currentScript;
-  var API = 'https://script.google.com/macros/s/AKfycbyePWRgZqXMs90Tby6WzCnCHFyomEZ0ryLJxdDPG-bz2ziDgEmAqLeXgL1T0BPNs_KN/exec';
+  // URL веб-приложения из apps-script/Analytics.gs (отдельный проект). Пусто — трекер молчит.
+  var API = '';
 
   // Не считаем локальную разработку и превью
   var host = location.hostname;
-  var off = !/racechat\.pt$/.test(host) && !/github\.io$/.test(host);
+  var off = !API || (!/racechat\.pt$/.test(host) && !/github\.io$/.test(host));
 
   function rid() { return Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4); }
   function keep(storage, key) {
