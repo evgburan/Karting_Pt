@@ -106,6 +106,7 @@ footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--mute
 @media (max-width:480px){.slots{grid-template-columns:1fr}.slot{display:flex;justify-content:space-between;align-items:center;padding:12px 14px}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
+<script src="/rc-track.js" data-page="rotax"></script>
 </head>
 <body>
 
@@ -260,8 +261,9 @@ $('submit').onclick = () => {
   jsonp({ action: 'register', name, handle: tg, session: pick.session, kart: pick.kart, height: h, weight: w, exp: $('f-exp').value, telegram_id: tgUser ? tgUser.id : '' }, d => {
     $('submit').disabled = false;
     if (!d) return say('Нет связи с сервером. Попробуй ещё раз или напиши @evgenybu.', 'err');
-    if (!d.ok) { if (d.reason === 'full') load(); return say(REASONS[d.reason] || 'Что-то пошло не так. Напиши @evgenybu.', 'err'); }
+    if (!d.ok) { if (window.rcTrack) rcTrack('reg_fail', 'rotax-nov', d.reason || 'error'); if (d.reason === 'full') load(); return say(REASONS[d.reason] || 'Что-то пошло не так. Напиши @evgenybu.', 'err'); }
     regs = d.regs || regs;
+    if (window.rcTrack) { rcTrack.setWho(tg ? '@' + tg : name); rcTrack('reg_ok', 'rotax-nov', pick.session); }
     const c = CLASSES[pick.kart];
     $('book-box').innerHTML = `<div class="done"><div class="big">Ты в списке 🏁</div>
       <p>Суббота, 7 ноября · <b>${pick.session}</b> · <b>${pick.kart ? c.label : 'класс выберешь на месте'}</b></p>

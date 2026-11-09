@@ -677,7 +677,11 @@
   </button>
 </div>
 
+<script src="/rc-track.js"></script>
 <script>
+
+// ── Аналитика (rc-track.js → Apps Script → таблица «racechat.pt — аналитика») ──
+function trk(type, page, detail) { try { if (window.rcTrack) window.rcTrack(type, page, detail); } catch (e) {} }
 
 // ── Telegram Mini App ──────────────────────────────────────────
 const TG = window.Telegram?.WebApp;
@@ -3076,6 +3080,7 @@ function bestLapsHtml(key) {
 function openProfile(key) {
   const d = STANDINGS.find(x => x.key === key);
   if (!d) return;
+  trk('profile', 'driver', d.handle || d.name || key);
   const pos = STANDINGS.indexOf(d) + 1;
   const { rating, pos: safePos, neg: safeNeg } = getSafety(d.handle, d.name);
   const best = Math.max(...d.races.map(r => r.pts));
@@ -3594,6 +3599,7 @@ let _regMode = '';
 function openReg(evId) {
   const ev = EVENTS.find(e => e.id === evId);
   if (!ev || evState(ev) !== 'open') return;
+  trk('reg_open', evId);
   _regEv = ev;
   _regMode = '';
   const w = evWhen(ev), tx = evText(ev);
@@ -3763,6 +3769,7 @@ function submitReg() {
   }).then(resp => {
     if (!resp || resp.ok !== true) {
       const reason = resp && resp.reason;
+      trk('reg_fail', ev.id, reason || 'error');
       showRegError({ full: t('reg_full'), duplicate: t('reg_dup'), mate_dup: t('reg_mate_dup') }[reason] || t('reg_err'));
       return;
     }
@@ -3770,6 +3777,8 @@ function submitReg() {
     if (hideHandle && handle) HIDDEN_HANDLES.add(handle.replace('@','').toLowerCase());
     if (Array.isArray(resp.regs)) applyRegs(ev.id, resp.regs);
     showRegSuccess(ev, name, beginner, mode);
+    if (window.rcTrack) window.rcTrack.setWho(handle || name);
+    trk('reg_ok', ev.id, mode || '');
     // Фото профиля — отдельным POST после подтверждённой регистрации.
     // Apps Script заливает его файлом в photos/{ключ}.jpg репозитория через GitHub API.
     // GitHub Pages публикует ~минуту: сразу видны инициалы, фото подтянется после обновления.
@@ -3885,6 +3894,7 @@ function switchTab(name, btn) {
   document.querySelectorAll('.inner-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('tab-' + name).classList.add('active');
+  trk('tab', name);
 }
 
 var _currentRaceIdx = 0;
@@ -3899,6 +3909,7 @@ function showPage(name, btn) {
   document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   btn.classList.add('active');
+  trk('view', name);
 }
 
 // COUNTDOWN — до старта ивента, выбранного на главной (EVENTS[].start)
@@ -4024,6 +4035,7 @@ function _logoTap() {
 function routeHash() {
   const h = (location.hash || '').replace('#', '').toLowerCase();
   const nav = document.querySelector('.bottom-nav');
+  if (h) trk('view', h);
   if (h === 'vote' || h === 'feedback' || h === 'safety') {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + h).classList.add('active');
@@ -6228,6 +6240,7 @@ renderRaceTab();
 
 // первичная маршрутизация (если открыли по прямой ссылке #vote / #feedback)
 routeHash();
+if (!location.hash) trk('view', 'main');
 
 // язык по ссылке: racechat.pt/?lang=en или ?lang=pt
 { const ql = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(); if (ql === 'en' || ql === 'pt') setLang(ql); }
