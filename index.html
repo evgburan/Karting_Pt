@@ -488,6 +488,12 @@
   .modal-sheet { border-radius: 20px 20px 0 0; }
   @media (hover: hover) and (pointer: fine) { .btn-reg:hover { background: #2c2823; } }
 
+
+  /* Гонки: строка гонок листается вбок */
+  .race-selector { flex-wrap: nowrap !important; overflow-x: auto; margin: 0 -14px 12px !important; padding: 2px 14px 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .race-selector::-webkit-scrollbar { display: none; }
+  .race-chip { flex: none; }
+  #race-report[hidden] { display: none; }
   /* ── ГЛАВНАЯ ── */
   #home-view { padding-bottom: 8px; }
   .home-wrap { padding: 0 20px; }
@@ -542,6 +548,7 @@
   .h-plate.p2, .h-plate.p3 { background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--ink); }
   .h-names { font-weight: 600; line-height: 1.35; min-width: 0; }
   .h-names small { display: block; font-weight: 400; color: var(--muted); font-size: 14px; }
+  .h-name { display: block; }
   .h-lap { display: block; font: 800 22px/1 var(--display); text-align: right; }
   .h-lap small { display: block; font: 500 12px/1.4 var(--font); color: var(--muted); }
   .h-spread { margin-top: 14px; font-size: 16px; }
@@ -6635,19 +6642,19 @@ function hLastHtml(stats) {
   const useEnd = typeof END !== 'undefined' && END.date === r.date;
   let rows = [], spread = '';
   if (useEnd) {
-    rows = END.rows.slice(0, 3).map(x => ({ main: x.m[0][0], sub: x.kind === 'iron' ? et('pIron') : x.m.slice(1).map(m => m[0]).join(', '), lap: x.best }));
+    rows = END.rows.slice(0, 3).map(x => ({ names: x.m.map(m => m[0]), sub: x.kind === 'iron' ? et('pIron') : '', lap: x.best }));
     const top5 = END.rows.slice(0, 5).map(x => lapSec(x.best)).filter(isFinite);
     if (top5.length === 5) spread = `<p class="h-spread">${ht('spread')(hDec(Math.max(...top5) - Math.min(...top5)))}</p>`;
   } else {
     const res = (r.groups || [])[0]?.results || [];
-    [1, 2, 3].forEach(p => { const g = res.filter(x => x.pos === p); if (g.length) rows.push({ main: g[0].name, sub: g.slice(1).map(x => x.name).join(', ') || g[0].handle || '', lap: '' }); });
+    [1, 2, 3].forEach(p => { const g = res.filter(x => x.pos === p); if (g.length) rows.push({ names: g.map(x => x.name), sub: '', lap: '' }); });
   }
   const open = useEnd ? `openCampResults('end')` : `showDetail('results','${r.id}')`;
   return `<h2 class="h-h2">${ht('lastH')}</h2>
     <p class="h-sub">${esc(name)}, ${esc(hDateNoYear(r.date))} · ${ht('pilots')(last.n)}</p>
     ${photo ? `<div class="h-photo" onclick="${open}"><img src="${esc(photo)}" alt="${esc(name)}" loading="lazy" decoding="async"></div>` : ''}
     <ol class="h-podium">${rows.map((x, i) => `<li><span class="h-plate${i ? ' p' + (i + 1) : ''}">${i + 1}</span>
-      <span class="h-names">${esc(x.main)}${x.sub ? `<small>${esc(x.sub)}</small>` : ''}</span>
+      <span class="h-names">${x.names.map(n => `<span class="h-name">${esc(n)}</span>`).join('')}${x.sub ? `<small>${esc(x.sub)}</small>` : ''}</span>
       ${x.lap ? `<span class="h-lap">${esc(x.lap)}<small>${ht('bestLap')}</small></span>` : '<span></span>'}</li>`).join('')}</ol>
     ${spread}
     <button type="button" class="h-link" onclick="${open}"><span>${ht('allRes')}</span>${H_ARROW}</button>`;
@@ -6772,8 +6779,9 @@ function placeRaceWrap() {
   if (!rw || !panel || !nb) return;
   const hasEv = visibleEvents().length > 0;
   const rb = document.getElementById('tab-btn-race');
-  if (hasEv) { if (rw.parentNode !== nb) nb.appendChild(rw); if (rb) rb.hidden = true; }
-  else { if (rw.parentNode !== panel) panel.appendChild(rw); if (rb) rb.hidden = false; }
+  if (hasEv) { if (rw.parentNode !== nb) nb.appendChild(rw); }
+  else { if (rw.parentNode !== panel) panel.appendChild(rw); }
+  if (rb) rb.hidden = true;
 }
 
 // ── Главная ↔ подробные вкладки ──
@@ -6792,8 +6800,8 @@ function showDetail(tab, raceId) {
     if (btn && btn.hidden) btn = document.querySelector('.inner-tab:not([hidden])');
     if (btn) _origSwitchTab(btn.id.replace('tab-btn-', ''), btn);
   }
-  if (raceId && tab === 'results') {
-    const idx = RACE_VIEWS.findIndex(v => v.raceId === raceId);
+  if (tab === 'results') {
+    const idx = raceId ? RACE_VIEWS.findIndex(v => v.raceId === raceId) : defaultRaceIdx();
     if (idx >= 0) selectRace(idx);
   }
   window.scrollTo(0, 0);
@@ -6803,18 +6811,53 @@ switchTab = function (name, btn) { const dv = document.getElementById('detail-vi
 const _origShowPage = showPage;
 showPage = function (name, btn) { _origShowPage(name, btn); if (name === 'main') showHome(); };
 const _origLogoTap = _logoTap;
-_logoTap = function () { _origLogoTap(); placeRaceWrap(); showHome(); };
+_logoTap = function () { _origLogoTap(); placeRaceWrap(); const rb = document.getElementById('tab-btn-results'); if (rb) _origSwitchTab('results', rb); showHome(); };
 const _origOpenCamp = openCampResults;
-openCampResults = function (which) { const hv = document.getElementById('home-view'), dv = document.getElementById('detail-view'); if (hv) hv.hidden = true; if (dv) dv.hidden = false; _origOpenCamp(which); };
+openCampResults = function (which) { showDetail('results', which === 'camp' ? 'campera-oct' : which === 'mega' ? 'batalha-sep' : 'endurance-nov'); };
 const _origRenderRaceTab = renderRaceTab;
-renderRaceTab = function () { _origRenderRaceTab(); placeRaceWrap(); };
+renderRaceTab = function () { _origRenderRaceTab(); placeRaceWrap(); if (typeof racesTabSetup === 'function') racesTabSetup(); };
 const _origSetLang = setLang;
-setLang = function (lang) { _origSetLang(lang); renderHome(); };
+setLang = function (lang) { _origSetLang(lang); racesTabSetup(); renderHome(); applyRaceReport(); };
 const _origRerender = rerenderPeople;
 rerenderPeople = function () { _origRerender(); renderHome(); };
 
+// ── Гонки: одна вкладка вместо «Итоги» + «Прошедшие». Строка гонок (свежая слева),
+//    у гонки с подробным разбором (END / CAMP / MEGA) показывается разбор, у остальных — фото, номинации, таблица ──
+const RICH_REPORT = { 'endurance-nov': 'end-wrap', 'campera-oct': 'camp-wrap', 'batalha-sep': 'mega-wrap' };
+const RACES_TAB_T = { ru: 'Гонки', pt: 'Corridas', en: 'Races' };
+function racesTabSetup() {
+  ['tab-btn-race', 'tab-btn-mega'].forEach(id => { const b = document.getElementById(id); if (b) b.hidden = true; });
+  const rb = document.getElementById('tab-btn-results'); if (rb) rb.textContent = RACES_TAB_T[_lang] || RACES_TAB_T.ru;
+  const panel = document.getElementById('tab-results');
+  if (panel && !document.getElementById('race-report')) {
+    const box = document.createElement('div'); box.id = 'race-report'; box.hidden = true;
+    document.getElementById('race-sub').after(box);
+  }
+}
+function applyRaceReport() {
+  const v = RACE_VIEWS[_currentRaceIdx]; if (!v) return;
+  const box = document.getElementById('race-report'); if (!box) return;
+  const richId = RICH_REPORT[v.raceId];
+  const std = ['race-photo', 'race-nominations'].map(id => document.getElementById(id)).concat([document.querySelector('#tab-results .results-table')]);
+  Object.values(RICH_REPORT).forEach(id => { const w = document.getElementById(id); if (w && w.parentNode !== box) box.appendChild(w); if (w) w.style.display = id === richId ? '' : 'none'; });
+  box.hidden = !richId;
+  std.forEach(el => { if (el) el.style.display = richId ? 'none' : ''; });
+  const sub = document.getElementById('race-sub'); if (sub && richId) sub.hidden = true;
+}
+const _origRenderResults = renderResults;
+renderResults = function (idx) { _origRenderResults(idx); applyRaceReport(); };
+const _origRenderChips = renderChips;
+renderChips = function () {
+  _origRenderChips();
+  const a = document.querySelector('#race-chips .race-chip.active');
+  if (a) requestAnimationFrame(() => { const row = a.parentNode; if (!row || !a.isConnected) return; row.scrollLeft = Math.max(0, a.offsetLeft - (row.clientWidth - a.offsetWidth) / 2); });
+};
+
+racesTabSetup();
 placeRaceWrap();
 renderHome();
+renderChips();
+applyRaceReport();
 // прямые ссылки racechat.pt/#standings и #results
 function hRouteDetail() { const h = (location.hash || '').slice(1).toLowerCase(); if (h === 'standings' || h === 'results') showDetail(h); }
 window.addEventListener('hashchange', hRouteDetail);
