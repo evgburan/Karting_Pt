@@ -14,7 +14,7 @@
         data-cf-beacon='{"token": "ВСТАВЬ_ТОКЕН_СЮДА"}'></script>
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;600;700;800;900&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Sofia+Sans+Extra+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #f4f4f0;
@@ -34,7 +34,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { background: var(--bg); color: var(--text); font-family: 'Fira Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body { background: var(--bg); color: var(--text); font-family: 'Golos Text', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
   nav {
     position: sticky; top: 0; z-index: 100;
@@ -42,11 +42,11 @@
     border-bottom: 1px solid var(--border);
     padding: 0 16px; display: flex; align-items: center; justify-content: space-between; height: 50px;
   }
-  .logo { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; color: var(--text); text-transform: uppercase; line-height: 1.1; cursor: pointer; }
+  .logo { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; color: var(--text); text-transform: uppercase; line-height: 1.1; cursor: pointer; }
   .logo em { font-style: normal; color: var(--accent-red); }
-  .nav-meta { font-size: 11px; color: var(--muted); font-family: 'Fira Sans Extra Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-meta { font-size: 11px; color: var(--muted); font-family: 'Sofia Sans Extra Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
   .lang-switcher { display: flex; gap: 2px; }
-  .lang-btn { background: none; border: none; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--muted2); cursor: pointer; padding: 3px 5px; border-radius: 4px; text-transform: uppercase; transition: color 0.15s, background 0.15s; }
+  .lang-btn { background: none; border: none; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--muted2); cursor: pointer; padding: 3px 5px; border-radius: 4px; text-transform: uppercase; transition: color 0.15s, background 0.15s; }
   .lang-btn.active { color: var(--text); background: var(--surface2); }
 
   .bottom-nav {
@@ -57,7 +57,7 @@
   .bnav-item {
     flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
     background: none; border: none; color: var(--muted2);
-    font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 10px; font-weight: 700;
+    font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 10px; font-weight: 700;
     letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; padding: 4px 0; transition: color 0.15s;
   }
   .bnav-item.active { color: var(--text); }
@@ -73,7 +73,7 @@
   }
   .inner-tab {
     flex: 1 1 auto; background: none; border: none; border-bottom: 2px solid transparent;
-    padding: 12px 2px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 12px;
+    padding: 12px 2px; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 12px;
     font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted);
     cursor: pointer; transition: all 0.15s; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
@@ -97,13 +97,13 @@
     display: flex; align-items: flex-end; justify-content: space-between;
   }
   .venue-name-block { color: #fff; }
-  .venue-label { font-size: 10px; opacity: 0.8; letter-spacing: 1px; text-transform: uppercase; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; }
-  .venue-name { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 18px; font-weight: 900; line-height: 1.1; }
+  .venue-label { font-size: 10px; opacity: 0.8; letter-spacing: 1px; text-transform: uppercase; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 700; }
+  .venue-name { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 18px; font-weight: 900; line-height: 1.1; }
   .venue-link {
     background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);
     border: 1px solid rgba(255,255,255,0.3); border-radius: 6px;
     color: #fff; text-decoration: none;
-    padding: 5px 9px; font-size: 11px; font-family: 'Fira Sans Extra Condensed', sans-serif;
+    padding: 5px 9px; font-size: 11px; font-family: 'Sofia Sans Extra Condensed', sans-serif;
     font-weight: 700; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;
     white-space: nowrap;
   }
@@ -112,53 +112,53 @@
     background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);
     border: 1px solid rgba(255,255,255,0.3);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 13px; font-weight: 900; color: #fff;
+    font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 13px; font-weight: 900; color: #fff;
     letter-spacing: 1px;
   }
 
   /* EVENT CARD */
   .event-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
-  .event-eyebrow { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-bottom: 8px; }
+  .event-eyebrow { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-bottom: 8px; }
   .event-desc { font-size: 14px; line-height: 1.6; margin-bottom: 9px; }
   .beginner-note { background: #f0f7f1; border: 1px solid #c8e6c9; border-radius: 8px; padding: 11px 13px; font-size: 13px; line-height: 1.5; color: #2d5a30; margin: 14px 0; }
   .spots-bar { background: var(--surface2); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; }
   .spots-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .spots-lbl { font-size: 12px; color: var(--muted); }
-  .spots-val { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 13px; }
+  .spots-val { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 13px; }
   .spots-val .n { color: var(--accent-red); }
   .spots-val.going { font-size: 17px; }
   .spots-left { font-size: 12px; color: var(--muted); margin-top: 7px; }
   .prog-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
   .prog-fill { height: 100%; background: var(--accent-red); border-radius: 2px; transition: width 0.5s; }
-  .btn-reg { width: 100%; background: var(--text); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: opacity 0.15s; }
+  .btn-reg { width: 100%; background: var(--text); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: opacity 0.15s; }
   .btn-reg:active { opacity: 0.8; }
 
   .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; }
   .cd-block { background: var(--surface2); border-radius: 8px; padding: 10px 6px; text-align: center; }
-  .cd-num { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 26px; font-weight: 900; color: var(--text); line-height: 1; }
+  .cd-num { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 26px; font-weight: 900; color: var(--text); line-height: 1; }
   .cd-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
 
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
-  .card-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .card-title { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
   .sched-row { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
   .sched-row:last-child { border-bottom: none; }
-  .sched-time { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 13px; color: var(--accent-red); min-width: 44px; padding-top: 1px; }
+  .sched-time { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 13px; color: var(--accent-red); min-width: 44px; padding-top: 1px; }
   .sched-txt { font-size: 13px; line-height: 1.3; }
 
   .reg-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
   .reg-item:last-child { border-bottom: none; }
-  .reg-num { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 15px; font-weight: 700; color: var(--muted); min-width: 20px; }
+  .reg-num { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 15px; font-weight: 700; color: var(--muted); min-width: 20px; }
 
   /* RACE CHIPS */
   .race-selector { display: flex; gap: 7px; margin-bottom: 12px; flex-wrap: wrap; }
-  .race-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .race-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
   .race-chip.active { background: var(--text); color: #fff; border-color: var(--text); }
   .race-chip .mega-word { font-size: 17px; font-weight: 900; color: var(--accent-red); letter-spacing: 1px; line-height: 0; vertical-align: -1px; }
   .race-chip.active .mega-word { color: #ff6b5e; }
   .race-sub[hidden] { display: none; }
   .race-format { font-size: 13px; line-height: 1.5; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent-red); border-radius: 8px; padding: 9px 12px; margin-bottom: 10px; }
   .race-sub { display: flex; gap: 6px; margin: 0 0 12px; padding-top: 10px; border-top: 1px solid var(--border); flex-wrap: wrap; }
-  .race-sub-chip { background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 11px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; white-space: nowrap; }
+  .race-sub-chip { background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 11px; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); cursor: pointer; white-space: nowrap; }
   .race-sub-chip.active { border-color: var(--accent-red); color: var(--accent-red); background: var(--surface); }
 
   /* RESULTS TABLE */
@@ -168,7 +168,7 @@
   .res-table-header span:last-child { text-align: right; }
 
   /* sub-heading inside results */
-  .res-sub { padding: 7px 12px 3px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .res-sub { padding: 7px 12px 3px; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
 
   .result-row { display: grid; grid-template-columns: 30px 1fr 52px; padding: 9px 12px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer; transition: background 0.1s; }
   .result-row:last-child { border-bottom: none; }
@@ -176,13 +176,13 @@
   .result-row.p1 { border-left: 3px solid var(--gold); }
   .result-row.p2 { border-left: 3px solid var(--silver); }
   .result-row.p3 { border-left: 3px solid var(--bronze); }
-  .res-pos { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); }
+  .res-pos { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); }
   .p1 .res-pos { color: var(--gold); }
   .p2 .res-pos { color: var(--silver); }
   .p3 .res-pos { color: var(--bronze); }
   .res-name { font-size: 13px; font-weight: 600; }
   .res-handle { font-size: 11px; color: var(--muted); }
-  .res-pts { text-align: right; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 16px; font-weight: 700; }
+  .res-pts { text-align: right; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 16px; font-weight: 700; }
 
   /* STANDINGS */
   .standings-table { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -194,14 +194,14 @@
   .st-row.p1 { border-left: 3px solid var(--gold); }
   .st-row.p2 { border-left: 3px solid var(--silver); }
   .st-row.p3 { border-left: 3px solid var(--bronze); }
-  .st-pos { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); }
+  .st-pos { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); }
   .p1 .st-pos { color: var(--gold); }
   .p2 .st-pos { color: var(--silver); }
   .p3 .st-pos { color: var(--bronze); }
   .st-name { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .st-handle { font-size: 11px; color: var(--muted); }
   .st-races { text-align: center; font-size: 12px; color: var(--muted); }
-  .st-pts { text-align: center; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 700; }
+  .st-pts { text-align: center; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 700; }
 
   .safety-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-left: 4px; vertical-align: middle; }
   .sg { background: var(--green); }
@@ -210,12 +210,12 @@
 
   /* DRIVERS */
   .page-header { padding: 14px 14px 0; margin-bottom: 10px; }
-  .page-eyebrow { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-bottom: 3px; }
-  .page-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 26px; font-weight: 900; }
+  .page-eyebrow { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-bottom: 3px; }
+  .page-title { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 26px; font-weight: 900; }
 
   .driver-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 11px 13px; display: flex; align-items: center; gap: 11px; cursor: pointer; transition: background 0.1s; margin: 0 14px 8px; }
   .driver-card:hover { background: var(--surface2); }
-  .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); flex-shrink: 0; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 17px; font-weight: 900; color: var(--muted); flex-shrink: 0; }
 
   /* MODAL */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: flex-end; }
@@ -225,11 +225,11 @@
   .modal-handle { width: 32px; height: 3px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
 
   .profile-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .profile-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 22px; font-weight: 900; color: var(--muted); flex-shrink: 0; }
+  .profile-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 22px; font-weight: 900; color: var(--muted); flex-shrink: 0; }
 
   .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px; }
   .stat-block { background: var(--surface2); border-radius: 8px; padding: 10px 8px; text-align: center; }
-  .stat-val { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 20px; font-weight: 900; }
+  .stat-val { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 20px; font-weight: 900; }
   .stat-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
   .safety-card { background: #f0f7f1; border: 1px solid #c8e6c9; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
@@ -240,19 +240,19 @@
   .hist-row:last-child { border-bottom: none; }
   .hist-race { font-size: 13px; font-weight: 500; }
   .hist-meta { font-size: 11px; color: var(--muted); }
-  .hist-pts { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 16px; font-weight: 700; }
+  .hist-pts { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 16px; font-weight: 700; }
 
   .lap-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
   .lap-row:last-child { border-bottom: none; }
   .lap-row .lap-tr { flex: 1; min-width: 0; }
-  .lap-time { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 20px; font-weight: 900; font-variant-numeric: tabular-nums; }
+  .lap-time { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 20px; font-weight: 900; font-variant-numeric: tabular-nums; }
   .lap-rec { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: #fff; background: var(--accent-red); border-radius: 4px; padding: 1px 5px; margin-left: 4px; vertical-align: 1px; }
-  .section-lbl { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .section-lbl { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 
   /* REG FORM */
   .reg-form { display: flex; flex-direction: column; gap: 10px; }
   .form-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; display: block; }
-  .form-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Fira Sans', sans-serif; font-size: 15px; outline: none; width: 100%; transition: border-color 0.15s; }
+  .form-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Golos Text', sans-serif; font-size: 15px; outline: none; width: 100%; transition: border-color 0.15s; }
   .form-input:focus { border-color: var(--text); }
   .photo-upload-area { border: 1.5px dashed var(--border); border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: border-color 0.15s, background 0.15s; position: relative; display: flex; align-items: center; gap: 10px; }
   .photo-upload-area:hover, .photo-upload-area.has-photo { border-color: var(--text); background: var(--surface2); }
@@ -267,10 +267,10 @@
   .check-input:checked + .check-box { background: var(--text); border-color: var(--text); }
   .check-input:checked + .check-box::after { content: ''; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg); }
   .check-txt { font-size: 13px; line-height: 1.4; }
-  .btn-cancel { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 11px; font-family: 'Fira Sans', sans-serif; font-size: 14px; cursor: pointer; width: 100%; }
+  .btn-cancel { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 11px; font-family: 'Golos Text', sans-serif; font-size: 14px; cursor: pointer; width: 100%; }
   .success-box { text-align: center; padding: 16px 0 8px; }
   .success-icon { font-size: 42px; margin-bottom: 10px; }
-  .success-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 24px; font-weight: 900; margin-bottom: 5px; }
+  .success-title { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 24px; font-weight: 900; margin-bottom: 5px; }
   .success-sub { font-size: 13px; color: var(--muted); line-height: 1.5; }
 
   /* PHOTO SLIDER */
@@ -283,19 +283,19 @@
   /* ── БЛИЖАЙШИЕ ГОНКИ: кнопки ивентов + карточка ── */
   .ev-picker { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(158px, 1fr); gap: 8px; overflow-x: auto; margin-bottom: 12px; scrollbar-width: none; }
   .ev-picker::-webkit-scrollbar { display: none; }
-  .ev-btn { display: flex; align-items: center; gap: 8px; min-width: 0; text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 9px 9px; cursor: pointer; color: var(--text); font-family: 'Fira Sans', sans-serif; transition: background .15s, border-color .15s, color .15s; }
+  .ev-btn { display: flex; align-items: center; gap: 8px; min-width: 0; text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 9px 9px; cursor: pointer; color: var(--text); font-family: 'Golos Text', sans-serif; transition: background .15s, border-color .15s, color .15s; }
   .ev-btn:active { transform: scale(0.98); }
   .ev-btn.active { background: var(--text); border-color: var(--text); color: #fff; }
   .ev-date { flex-shrink: 0; width: 42px; height: 50px; border-radius: 8px; background: var(--surface2); display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .ev-btn.active .ev-date { background: rgba(255,255,255,0.12); }
-  .ev-day { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 24px; line-height: 1; }
-  .ev-mon { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-top: 1px; }
+  .ev-day { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 24px; line-height: 1; }
+  .ev-mon { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-red); margin-top: 1px; }
   .ev-btn.active .ev-mon { color: #ff8a80; }
   .ev-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .ev-name { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.05; }
+  .ev-name { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.05; }
   .ev-meta { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ev-btn.active .ev-meta { color: rgba(255,255,255,0.65); }
-  .ev-status { display: flex; align-items: center; gap: 4px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; line-height: 1.15; }
+  .ev-status { display: flex; align-items: center; gap: 4px; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; line-height: 1.15; }
   .ev-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
   .ev-status.open { color: var(--green); }
   .ev-status.soon, .ev-status.full { color: var(--muted); }
@@ -311,51 +311,51 @@
   .venue-logo { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255,255,255,0.5); background: #fff; flex-shrink: 0; }
   .ev-teaser { position: relative; aspect-ratio: 16 / 9; max-height: 320px; width: 100%; overflow: hidden; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; background: repeating-linear-gradient(135deg, #1b1b1b 0 18px, #222 18px 36px); }
   .ev-teaser-flag { position: absolute; top: 0; right: 0; width: 42%; height: 100%; opacity: .16; background: conic-gradient(#fff 25%, transparent 0 50%, #fff 0 75%, transparent 0) 0 0 / 28px 28px; -webkit-mask: linear-gradient(90deg, transparent, #000 75%); mask: linear-gradient(90deg, transparent, #000 75%); }
-  .ev-teaser-badge { position: absolute; top: 12px; left: 14px; background: var(--accent-red); color: #fff; border-radius: 4px; padding: 3px 7px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
-  .ev-teaser-title { position: relative; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 46px; line-height: .95; letter-spacing: 1px; text-transform: uppercase; }
-  .ev-teaser-sub { position: relative; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.75); margin-top: 6px; }
+  .ev-teaser-badge { position: absolute; top: 12px; left: 14px; background: var(--accent-red); color: #fff; border-radius: 4px; padding: 3px 7px; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+  .ev-teaser-title { position: relative; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 46px; line-height: .95; letter-spacing: 1px; text-transform: uppercase; }
+  .ev-teaser-sub { position: relative; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.75); margin-top: 6px; }
   .btn-reg:disabled { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); cursor: default; letter-spacing: 1px; }
-  .ev-chat-link { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; padding: 11px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); text-decoration: none; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-  .ev-modes-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin: 14px 0 8px; }
+  .ev-chat-link { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; padding: 11px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); text-decoration: none; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .ev-modes-title { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin: 14px 0 8px; }
   .ev-modes { display: flex; flex-direction: column; gap: 6px; }
   .ev-mode { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
   .ev-mode-ico { font-size: 20px; line-height: 1; flex-shrink: 0; width: 24px; text-align: center; }
   .ev-mode-body { flex: 1; min-width: 0; }
-  .ev-mode-t { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.15; }
+  .ev-mode-t { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.15; }
   .ev-mode-d { font-size: 12px; color: var(--muted); line-height: 1.4; margin-top: 2px; }
-  .ev-mode-p { flex-shrink: 0; text-align: right; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 20px; line-height: 1; color: var(--accent-red); }
+  .ev-mode-p { flex-shrink: 0; text-align: right; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 20px; line-height: 1; color: var(--accent-red); }
   .ev-mode-p span { display: block; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
   .mode-pick { display: flex; flex-direction: column; gap: 6px; }
-  .mode-opt { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; font-family: 'Fira Sans', sans-serif; color: var(--text); transition: border-color .15s, background .15s; }
+  .mode-opt { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; font-family: 'Golos Text', sans-serif; color: var(--text); transition: border-color .15s, background .15s; }
   .mode-opt.sel { border-color: var(--text); background: #fff; box-shadow: inset 0 0 0 1px var(--text); }
   .mode-opt-ico { font-size: 18px; width: 22px; text-align: center; flex-shrink: 0; }
   .mode-opt-t { flex: 1; font-size: 14px; font-weight: 600; }
-  .mode-opt-p { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .mode-opt-p { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 700; font-size: 13px; color: var(--muted); white-space: nowrap; }
   .mode-opt.sel .mode-opt-p { color: var(--accent-red); }
   .team-avs { display: flex; flex-shrink: 0; }
   .team-avs > * + * { margin-left: -10px; }
   .team-avs img, .team-avs > div { box-shadow: 0 0 0 2px var(--surface); }
-  .reg-grp { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); padding: 12px 0 2px; border-bottom: 1px solid var(--border); }
+  .reg-grp { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); padding: 12px 0 2px; border-bottom: 1px solid var(--border); }
   .reg-grp:first-of-type { padding-top: 0; }
   .ev-track { margin-top: 12px; }
   .ev-track img { width: 100%; height: auto; display: block; }
   .ev-track-cap { font-size: 11px; color: var(--muted); text-align: center; margin-top: 4px; }
-  .res-banner { display: flex; align-items: center; gap: 10px; width: 100%; margin-bottom: 10px; padding: 10px 12px; text-align: left; cursor: pointer; background: linear-gradient(90deg, rgba(201,162,39,0.16), rgba(201,162,39,0.04)); border: 1px solid rgba(201,162,39,0.45); border-radius: 12px; color: var(--text); font-family: 'Fira Sans', sans-serif; }
+  .res-banner { display: flex; align-items: center; gap: 10px; width: 100%; margin-bottom: 10px; padding: 10px 12px; text-align: left; cursor: pointer; background: linear-gradient(90deg, rgba(201,162,39,0.16), rgba(201,162,39,0.04)); border: 1px solid rgba(201,162,39,0.45); border-radius: 12px; color: var(--text); font-family: 'Golos Text', sans-serif; }
   .res-banner-ico { font-size: 22px; line-height: 1; }
   .res-banner-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-  .res-banner-t { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .5px; text-transform: uppercase; }
+  .res-banner-t { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: .5px; text-transform: uppercase; }
   .res-banner-s { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .res-banner-go { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 18px; color: var(--accent-red); }
+  .res-banner-go { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 18px; color: var(--accent-red); }
   .ev-beg-badge { font-size: 10px; font-weight: 700; color: var(--green); background: #f0f7f1; border: 1px solid #c8e6c9; border-radius: 4px; padding: 0 4px; margin-left: 6px; vertical-align: middle; }
 
   /* LAST RACE NOMINATIONS */
   .mega-acc { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0 14px; margin-bottom: 12px; }
   .mega-acc > summary { list-style: none; cursor: pointer; padding: 14px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; }
+    font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; }
   .mega-acc > summary::-webkit-details-marker { display: none; }
   .mega-acc > summary::after { content: '▾'; color: var(--muted); font-size: 13px; }
   .mega-acc[open] > summary::after { content: '▴'; }
-  .mega-acc-hint { font-family: 'Fira Sans', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted2); margin-left: auto; margin-right: 6px; }
+  .mega-acc-hint { font-family: 'Golos Text', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted2); margin-left: auto; margin-right: 6px; }
   .mega-acc > *:last-child { margin-bottom: 14px; }
   .nom-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
   .nom-card {
@@ -366,25 +366,25 @@
   }
   .nom-card.nom-pending { opacity: 0.55; }
   .nom-icon { font-size: 22px; line-height: 1; }
-  .nom-title { font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); line-height: 1.2; }
-  .nom-driver { font-size: 13px; font-weight: 700; font-family: 'Fira Sans Extra Condensed', sans-serif; letter-spacing: 0.2px; line-height: 1.2; }
+  .nom-title { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); line-height: 1.2; }
+  .nom-driver { font-size: 13px; font-weight: 700; font-family: 'Sofia Sans Extra Condensed', sans-serif; letter-spacing: 0.2px; line-height: 1.2; }
   .nom-desc { font-size: 11px; color: var(--muted); }
 
   /* LAST RACE FULL RESULTS TABLE */
-  .full-res-table { width: 100%; border-collapse: collapse; font-family: 'Fira Sans Extra Condensed', sans-serif; }
+  .full-res-table { width: 100%; border-collapse: collapse; font-family: 'Sofia Sans Extra Condensed', sans-serif; }
   .full-res-table thead tr { background: var(--surface2); }
   .full-res-table th { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 7px 6px; text-align: center; border-bottom: 1px solid var(--border); }
   .full-res-table th:nth-child(2) { text-align: left; }
   .full-res-table td { padding: 8px 6px; border-bottom: 1px solid var(--border); text-align: center; font-size: 15px; font-weight: 700; color: var(--text); vertical-align: middle; }
-  .full-res-table td:nth-child(2) { text-align: left; font-size: 13px; font-weight: 600; font-family: 'Fira Sans', sans-serif; }
+  .full-res-table td:nth-child(2) { text-align: left; font-size: 13px; font-weight: 600; font-family: 'Golos Text', sans-serif; }
   .full-res-table tr.p1 td { background: linear-gradient(90deg, rgba(201,162,39,0.12) 0%, transparent 60%); }
   .full-res-table tr.p2 td { background: linear-gradient(90deg, rgba(122,122,122,0.10) 0%, transparent 60%); }
   .full-res-table tr.p3 td { background: linear-gradient(90deg, rgba(160,103,74,0.10) 0%, transparent 60%); }
   .full-res-table .fl-badge { display: inline-block; background: var(--accent-red); color: #fff; font-size: 9px; font-weight: 900; letter-spacing: 0.5px; border-radius: 3px; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
-  .group-header-row td { background: var(--surface2); font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 6px 8px; text-align: left !important; font-family: 'Fira Sans Extra Condensed', sans-serif; }
+  .group-header-row td { background: var(--surface2); font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 6px 8px; text-align: left !important; font-family: 'Sofia Sans Extra Condensed', sans-serif; }
 
   /* ── HIDDEN PAGES: VOTE + FEEDBACK ── */
-  .hp-back { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; color: var(--muted); font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; padding: 0; }
+  .hp-back { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; color: var(--muted); font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; padding: 0; }
   .hp-intro { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
 
   .vote-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
@@ -403,11 +403,11 @@
   .star { font-size: 40px; cursor: pointer; line-height: 1; color: var(--muted2); transition: transform 0.1s; }
   .star.on { color: var(--gold); }
   .star:active { transform: scale(1.15); }
-  .star-label { text-align: center; font-size: 12px; color: var(--muted); height: 16px; margin-bottom: 14px; font-family: 'Fira Sans Extra Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
-  .form-textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Fira Sans', sans-serif; font-size: 15px; outline: none; width: 100%; min-height: 90px; resize: vertical; transition: border-color 0.15s; }
+  .star-label { text-align: center; font-size: 12px; color: var(--muted); height: 16px; margin-bottom: 14px; font-family: 'Sofia Sans Extra Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+  .form-textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; color: var(--text); font-family: 'Golos Text', sans-serif; font-size: 15px; outline: none; width: 100%; min-height: 90px; resize: vertical; transition: border-color 0.15s; }
   .form-textarea:focus { border-color: var(--text); }
 
-  .cta-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:var(--surface2); border:1px solid var(--border); color:var(--muted); text-decoration:none; border-radius:8px; padding:9px 8px; font-family:'Fira Sans Extra Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; text-align:center; line-height:1.2; }
+  .cta-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:var(--surface2); border:1px solid var(--border); color:var(--muted); text-decoration:none; border-radius:8px; padding:9px 8px; font-family:'Sofia Sans Extra Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; text-align:center; line-height:1.2; }
   .cta-btn:active { background:var(--border); }
 
   /* ── design clean-up (Nov 2026) ── */
@@ -415,7 +415,7 @@
   .nom-icon, .ev-mode-ico, .res-banner-ico, .success-icon:empty, .photo-upload-icon:empty { display: none; }
   .nom-card { gap: 4px; }
   .pm { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%;
-        font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 800; font-size: 13px; line-height: 1; color: #fff; vertical-align: middle; }
+        font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 800; font-size: 13px; line-height: 1; color: #fff; vertical-align: middle; }
   .pm1 { background: var(--gold); } .pm2 { background: var(--silver); } .pm3 { background: var(--bronze); }
   .sr { display: inline-block; width: 9px; height: 9px; border-radius: 50%; vertical-align: 1px; }
   .sr-g { background: var(--green); } .sr-y { background: #e0a800; } .sr-r { background: var(--red); }
@@ -426,7 +426,7 @@
   .full-res-table tr.p2 td:first-child { box-shadow: inset 3px 0 var(--silver); }
   .full-res-table tr.p3 td:first-child { box-shadow: inset 3px 0 var(--bronze); }
   /* race facts: a line of numbers, not a row of pills */
-  .stat-chip { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; color: var(--text); white-space: nowrap; }
+  .stat-chip { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; color: var(--text); white-space: nowrap; }
   .stat-chip + .stat-chip { border-left: 1px solid var(--border); padding-left: 10px; }
   .ev-beg-badge { color: var(--muted); background: none; border-color: var(--border); font-weight: 600; }
   .cta-btn { background: var(--surface); color: var(--text); }
@@ -434,9 +434,170 @@
   .drv-list { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin: 0 14px; overflow: hidden; }
   .drv-list .driver-card { margin: 0; border: 0; border-radius: 0; border-top: 1px solid var(--border); padding: 9px 12px; }
   .drv-list .driver-card:first-child { border-top: 0; }
-  .drv-pos { width: 22px; flex-shrink: 0; text-align: center; font-family: 'Fira Sans Extra Condensed', sans-serif; font-weight: 800; font-size: 16px; color: var(--muted); }
-  .drv-pts { font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 19px; font-weight: 800; min-width: 34px; text-align: right; }
-  .drv-head { display: flex; justify-content: space-between; margin: 0 14px 6px; padding: 0 12px; font-family: 'Fira Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+  .drv-pos { width: 22px; flex-shrink: 0; text-align: center; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 800; font-size: 16px; color: var(--muted); }
+  .drv-pts { font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 19px; font-weight: 800; min-width: 34px; text-align: right; }
+  .drv-head { display: flex; justify-content: space-between; margin: 0 14px 6px; padding: 0 12px; font-family: 'Sofia Sans Extra Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+
+  /* ════════════════════════════════════════════════════════════
+     НОВЫЙ ВИД ПОРТАЛА (ноябрь 2026): шрифты Golos Text + Sofia Sans Extra Condensed,
+     светлый холодный фон, тёмная шапка и нижнее меню, жёлтый — только акцент номерной таблички.
+     ════════════════════════════════════════════════════════════ */
+  :root {
+    --bg: #eceeec; --surface: #fbfcfa; --surface2: #e4e7e3; --border: #d6d9d5;
+    --text: #141210; --muted: #5f645e; --muted2: #9aa09a;
+    --ink: #141210; --ink-2: #3b3730; --plate: #f2c018; --plate-deep: #d9a20a; --brand-hi: #ff5a4b;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --display: 'Sofia Sans Extra Condensed', 'Arial Narrow', sans-serif;
+    --font: 'Golos Text', system-ui, sans-serif;
+  }
+  body { font-family: var(--font); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--ink); color: #fff; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  html { scrollbar-color: #b3b8b2 var(--bg); }
+
+  /* Шапка */
+  nav { background: rgba(20,18,16,0.97); border-bottom: 0; height: 56px; padding: 0 20px; }
+  nav .logo { color: #fbfcfa; font-size: 20px; letter-spacing: 0.01em; line-height: 0.92; }
+  nav .logo em { color: var(--brand-hi); }
+  .lang-switcher { background: rgba(251,252,250,0.1); border-radius: 999px; padding: 3px; gap: 0; }
+  .lang-btn { color: rgba(251,252,250,0.62); font-size: 12px; min-width: 34px; height: 28px; border-radius: 999px; padding: 0 6px; transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out); }
+  .lang-btn.active { background: #fbfcfa; color: var(--ink); }
+  nav a[href^="https://t.me"] { background: transparent !important; box-shadow: inset 0 0 0 1px rgba(251,252,250,0.3); }
+  .inner-tabs { top: 56px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .inner-tab { font-size: 14px; letter-spacing: 0.04em; padding: 14px 2px 12px; border-bottom-width: 3px; }
+  .inner-tab.active { border-bottom-color: var(--ink); }
+
+  /* Нижнее меню */
+  .bottom-nav { background: rgba(20,18,16,0.95); border-top: 0; padding: 8px 0 calc(14px + env(safe-area-inset-bottom)); backdrop-filter: blur(14px); }
+  .bnav-item { color: rgba(251,252,250,0.5); font-size: 12px; letter-spacing: 0.06em; transition: color 160ms var(--ease-out); }
+  .bnav-item.active { color: #fbfcfa; }
+  .bnav-item svg { width: 22px; height: 22px; }
+
+  /* Карточки, заголовки страниц, кнопки */
+  .card, .event-card { border: 0; border-radius: 14px; background: var(--surface); box-shadow: 0 1px 2px rgba(20,18,16,0.05), 0 8px 24px -14px rgba(20,18,16,0.2); }
+  .card-title, .section-lbl { color: var(--ink); font-size: 18px; letter-spacing: 0.01em; font-weight: 900; text-transform: uppercase; }
+  .page-header { padding: 26px 16px 14px; }
+  .page-eyebrow { display: none !important; }
+  .page-title { font-family: var(--display) !important; font-weight: 900 !important; font-size: 40px !important; line-height: 0.95 !important; text-transform: uppercase; letter-spacing: -0.005em !important; }
+  .btn-reg { border-radius: 12px; background: var(--ink); letter-spacing: 0.04em; font-size: 17px; transition: transform 140ms var(--ease-out), background-color 160ms var(--ease-out); }
+  .btn-reg:active { transform: scale(0.98); opacity: 1; }
+  .race-chip { border-radius: 999px; font-size: 13px !important; letter-spacing: 0.03em !important; padding: 7px 12px !important; }
+  .race-sub-chip { font-size: 13px !important; }
+  .race-chip.active { background: var(--ink); border-color: var(--ink); }
+  .st-row:hover, .result-row:hover { background: #f1f3f0; }
+  .modal-sheet { border-radius: 20px 20px 0 0; }
+  @media (hover: hover) and (pointer: fine) { .btn-reg:hover { background: #2c2823; } }
+
+  /* ── ГЛАВНАЯ ── */
+  #home-view { padding-bottom: 8px; }
+  .home-wrap { padding: 0 20px; }
+  .home-top { background: var(--ink); color: #fbfcfa; margin: 0 calc(50% - 50vw); padding: 0 calc(50vw - 50%); }
+  .home-top .home-wrap { padding-top: 0; }
+  .album { position: relative; display: grid; gap: 2px; grid-template-columns: repeat(2, 1fr); grid-template-rows: 62fr 38fr; height: clamp(320px, 50svh, 540px); margin: 0 -20px; overflow: hidden; }
+  @media (min-width: 640px) { .album { margin: 0; border-radius: 14px; } }
+  .album figure { position: relative; overflow: hidden; background: #2a2620; margin: 0; animation: h-open 700ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 70ms); }
+  .album figure:first-child { grid-column: 1 / -1; }
+  .album img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1100ms var(--ease-out), transform 7000ms linear; }
+  .album img.on { opacity: 1; transform: scale(1); }
+  @keyframes h-open { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+  .album-pause { position: absolute; right: 10px; bottom: 10px; z-index: 2; width: 36px; height: 36px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: #fbfcfa; background: rgba(20,18,16,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background-color 160ms var(--ease-out), transform 140ms var(--ease-out); }
+  .album-pause:active { transform: scale(0.94); }
+  .album-pause svg { width: 16px; height: 16px; }
+  .album-pause .i-play, .album-pause[aria-pressed="true"] .i-pause { display: none; }
+  .album-pause[aria-pressed="true"] .i-play { display: block; }
+  .home-intro { padding: 18px 0 24px; }
+  .home-intro p { font-size: 17px; line-height: 1.5; max-width: 38ch; color: rgba(251,252,250,0.88); }
+  .home-cta-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 18px; margin-top: 18px; }
+  .home-count { font-size: 15px; color: rgba(251,252,250,0.72); }
+  .home-count b { font: 800 24px/1 var(--display); color: #fbfcfa; margin-right: 5px; }
+  .h-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 48px; padding: 0 20px; border-radius: 12px; border: 0; cursor: pointer; font: 600 16px/1 var(--font); text-decoration: none; transition: transform 140ms var(--ease-out), background-color 160ms var(--ease-out); }
+  .h-btn:active { transform: scale(0.97); }
+  .h-btn svg { width: 19px; height: 19px; flex: none; }
+  .h-btn-light { background: #fbfcfa; color: var(--ink); }
+  @media (hover: hover) and (pointer: fine) { .h-btn-light:hover { background: #fff; } }
+  [data-enter] { animation: h-rise 600ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 70ms + 150ms); }
+  @keyframes h-rise { from { opacity: 0; transform: translateY(10px); } }
+
+  .h-block { padding: 32px 0 40px; }
+  .h-block + .h-block { padding-top: 4px; }
+  .h-h2 { font: 900 clamp(34px, 9vw, 46px)/0.94 var(--display); text-transform: uppercase; letter-spacing: -0.005em; text-wrap: balance; margin: 0; }
+  .h-sub { margin-top: 10px; color: var(--muted); max-width: 48ch; font-size: 15px; line-height: 1.5; }
+  .h-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; min-height: 44px; font: 600 16px var(--font); color: var(--ink); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 5px; }
+  .h-link svg { width: 18px; height: 18px; transition: transform 160ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) { .h-link:hover svg { transform: translateX(3px); } }
+
+  .h-next { margin-top: 18px; display: grid; grid-template-columns: 72px 1fr; gap: 16px 18px; align-items: center; padding: 20px; border-radius: 16px; background: var(--surface); box-shadow: 0 1px 2px rgba(20,18,16,0.06), 0 8px 24px -12px rgba(20,18,16,0.18); }
+  .h-next .h-plate { width: 72px; height: 58px; font-size: 44px; background: var(--bg); box-shadow: inset 0 0 0 1.5px var(--ink); }
+  .h-next-t { display: block; font: 900 26px/1 var(--display); text-transform: uppercase; }
+  .h-next-s { margin-top: 6px; color: var(--ink-2); font-size: 16px; line-height: 1.45; }
+  #home-next-body > #race-wrap { margin-top: 16px; }
+
+  .h-photo { margin-top: 18px; border-radius: 14px; overflow: hidden; aspect-ratio: 16 / 10; background: #c9c3b6; cursor: pointer; }
+  .h-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; transition: transform 500ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) { .h-photo:hover img { transform: scale(1.025); } }
+  .h-podium { list-style: none; margin: 16px 0 0; padding: 0; }
+  .h-podium li { display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .h-plate { display: grid; place-items: center; width: 56px; height: 44px; border-radius: 9px 9px 13px 13px; background: var(--plate); color: var(--ink); font: 900 italic 34px/1 var(--display); letter-spacing: -0.02em; }
+  .h-plate.p2, .h-plate.p3 { background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--ink); }
+  .h-names { font-weight: 600; line-height: 1.35; min-width: 0; }
+  .h-names small { display: block; font-weight: 400; color: var(--muted); font-size: 14px; }
+  .h-lap { display: block; font: 800 22px/1 var(--display); text-align: right; }
+  .h-lap small { display: block; font: 500 12px/1.4 var(--font); color: var(--muted); }
+  .h-spread { margin-top: 14px; font-size: 16px; }
+
+  .h-standings { background: var(--surface); margin: 28px calc(50% - 50vw) 0; padding: 36px calc(50vw - 50%) 36px !important; }
+  .h-table { list-style: none; margin: 22px 0 0; padding: 0; border-top: 2px solid var(--ink); }
+  .h-row { display: grid; grid-template-columns: 36px 40px 1fr auto; align-items: center; gap: 12px; padding: 11px 0 13px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .h-pos { font: 900 italic 30px/1 var(--display); letter-spacing: -0.02em; }
+  .h-who { min-width: 0; }
+  .h-who b { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .h-who small { display: block; color: var(--muted); font-size: 13px; }
+  .h-gap { display: block; position: relative; height: 4px; margin-top: 7px; border-radius: 2px; background: var(--surface2); overflow: hidden; }
+  .h-gap i { position: absolute; inset: 0; background: var(--ink); border-radius: 2px; transform-origin: left center; transform: scaleX(var(--w)); }
+  .h-score { text-align: right; font: 800 28px/1 var(--display); }
+  .h-score small { display: block; font: 500 12px/1.4 var(--font); color: var(--muted); margin-top: 2px; }
+  .h-js .h-table:not(.shown) .h-gap i { transform: scaleX(0); }
+  .h-js .h-table.shown .h-gap i { transition: transform 900ms var(--ease-out); transition-delay: calc(var(--n) * 55ms); }
+  .h-notes { list-style: none; margin: 0; padding: 0; }
+  .h-notes li { padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.5; }
+  @media (hover: hover) and (pointer: fine) { .h-row:hover .h-who b { text-decoration: underline; text-underline-offset: 4px; } }
+
+  .h-chart { margin: 22px 0 0; position: relative; }
+  .h-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .h-chart .col { cursor: pointer; }
+  .h-chart .col:focus { outline: none; }
+  .h-chart .col:focus-visible .hit { stroke: var(--ink); stroke-width: 1.5; }
+  .h-chart .col.dim .seg { opacity: 0.45; }
+  .h-chart text { font-family: var(--font); }
+  .h-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font-size: 14px; color: var(--ink-2); }
+  .h-legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .h-legend i { width: 12px; height: 12px; border-radius: 3px; }
+  .h-tip { position: absolute; z-index: 3; pointer-events: none; transform: translate(-50%, calc(-100% - 10px)); background: var(--ink); color: #fbfcfa; border-radius: 8px; padding: 8px 10px; font-size: 13px; line-height: 1.35; white-space: nowrap; opacity: 0; transition: opacity 120ms var(--ease-out); }
+  .h-tip.on { opacity: 1; }
+  .h-tip b { display: block; font-weight: 600; }
+  .h-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; display: block; }
+
+  .h-races { list-style: none; margin: 18px 0 0; padding: 0; border-top: 2px solid var(--ink); }
+  .h-races li { display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .h-races img { width: 44px; height: 44px; border-radius: 10px; background: var(--surface); object-fit: contain; padding: 3px; box-shadow: inset 0 0 0 1px var(--border); }
+  .h-races img.photo { object-fit: cover; padding: 0; }
+  .h-races b { display: block; font-weight: 600; }
+  .h-races small { color: var(--muted); font-size: 14px; }
+  .h-races .n { text-align: right; font: 800 22px/1 var(--display); }
+  .h-races .n small { display: block; font: 500 12px/1.4 var(--font); }
+  @media (hover: hover) and (pointer: fine) { .h-races li:hover b { text-decoration: underline; text-underline-offset: 4px; } }
+
+  .detail-back-row { padding: 10px 14px 0; }
+  .detail-back { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; background: none; border: 0; padding: 0 4px; cursor: pointer; font: 600 15px var(--font); color: var(--ink); }
+  .detail-back svg { width: 18px; height: 18px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .album figure, [data-enter] { animation: none; }
+    .album img { transition: opacity 400ms ease; transform: none; }
+    .album img.on { transform: none; }
+    .h-js .h-table:not(.shown) .h-gap i { transform: scaleX(var(--w)); }
+    .h-js .h-table.shown .h-gap i { transition: none; }
+  }
 </style>
 
 </head>
@@ -450,7 +611,7 @@
       <button class="lang-btn" onclick="setLang('pt')">PT</button>
       <button class="lang-btn" onclick="setLang('en')">EN</button>
     </div>
-    <a href="https://t.me/+xF4eAlUWBddjMjgy" target="_blank" style="display:flex;align-items:center;gap:5px;background:var(--text);color:#fff;text-decoration:none;border-radius:20px;padding:6px 12px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">
+    <a href="https://t.me/+xF4eAlUWBddjMjgy" target="_blank" style="display:flex;align-items:center;gap:5px;background:var(--text);color:#fff;text-decoration:none;border-radius:20px;padding:6px 12px;font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">
       <svg viewBox="0 0 24 24" width="13" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.247l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.95 14.382l-2.95-.924c-.64-.203-.652-.64.136-.953l11.527-4.445c.534-.194 1.001.13.899.187z"/></svg>
       Join us
     </a>
@@ -458,6 +619,68 @@
 </nav>
 <!-- PAGE: ГЛАВНАЯ -->
 <div class="page active" id="page-main">
+
+  <!-- ── ГЛАВНАЯ: фото, следующая гонка, прошлая гонка, зачёт, новенькие, где катались ── -->
+  <!-- Всё содержимое рисует renderHome() из RACES / STANDINGS / END / EVENTS (блок «ГЛАВНАЯ» в конце файла). -->
+  <div id="home-view">
+    <div class="home-top">
+      <div class="home-wrap">
+        <div class="album" id="album" aria-label="Фото с наших гонок">
+          <figure style="--i:0" data-every="5200" data-photos="campera:50% 48%|palmela-group:50% 55%|batalha-group:50% 60%|kiro:45% 55%|campera-oct:50% 60%|almeirim:50% 50%"></figure>
+          <figure style="--i:1" data-every="4300" data-photos="kip-sodi:50% 50%|batalha-helmets:50% 40%|campera-pack:50% 60%|palmela-draft:50% 40%|kip-karts:55% 50%"></figure>
+          <figure style="--i:2" data-every="4700" data-photos="palmela-ironman:50% 40%|campera-start:30% 60%|batalha-a:50% 30%|kiro:30% 50%"></figure>
+          <button type="button" class="album-pause" id="album-pause" aria-pressed="false" aria-label="Пауза">
+            <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="5" width="3.5" height="14" rx="1"/><rect x="13.5" y="5" width="3.5" height="14" rx="1"/></svg>
+            <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.87l10.5-6.5a1 1 0 0 0 0-1.74L9.5 4.63A1 1 0 0 0 8 5.5z"/></svg>
+          </button>
+        </div>
+        <div class="home-intro">
+          <p id="home-intro-txt"></p>
+          <div class="home-cta-row">
+            <a class="h-btn h-btn-light" id="home-cta" href="https://t.me/+xF4eAlUWBddjMjgy" target="_blank" rel="noopener"></a>
+            <span class="home-count" id="home-count"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="h-block" id="home-next">
+      <div class="home-wrap">
+        <h2 class="h-h2" id="home-next-h"></h2>
+        <div id="home-next-body"></div>
+      </div>
+    </section>
+
+    <section class="h-block" id="home-last"><div class="home-wrap" id="home-last-body"></div></section>
+
+    <section class="h-block h-standings" id="home-standings"><div class="home-wrap" id="home-st-body"></div></section>
+
+    <section class="h-block" id="home-newbies">
+      <div class="home-wrap">
+        <h2 class="h-h2" id="home-nb-h"></h2>
+        <p class="h-sub" id="home-nb-sub"></p>
+        <figure class="h-chart" id="h-chart">
+          <svg id="h-chart-svg" viewBox="0 0 340 196" role="img" aria-labelledby="h-chart-cap"></svg>
+          <div class="h-tip" id="h-tip" role="status" aria-live="polite"></div>
+          <figcaption id="h-chart-cap" class="h-sr"></figcaption>
+        </figure>
+        <div class="h-legend" id="h-legend" aria-hidden="true"></div>
+        <table class="h-sr" id="h-chart-table"></table>
+      </div>
+    </section>
+
+    <section class="h-block" id="home-where">
+      <div class="home-wrap">
+        <h2 class="h-h2" id="home-where-h"></h2>
+        <ul class="h-races" id="home-where-list"></ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── ПОДРОБНО: вкладки итогов, результатов и зачёта (открываются из главной) ── -->
+  <div id="detail-view" hidden>
+  <div class="detail-back-row"><button type="button" class="detail-back" id="detail-back" onclick="showHome()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span id="detail-back-txt">Главная</span></button></div>
 
   <div class="inner-tabs">
     <button class="inner-tab active" onclick="switchTab('race',this)" id="tab-btn-race">Ближайшие</button>
@@ -519,8 +742,8 @@
     </div>
 
     <div style="display:flex;gap:8px;margin-bottom:10px;">
-      <button id="btn-all" onclick="filterStandings('all',this)" style="background:var(--text);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Все</button>
-      <button id="btn-beg" onclick="filterStandings('beg',this)" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Начинающие</button>
+      <button id="btn-all" onclick="filterStandings('all',this)" style="background:var(--text);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Все</button>
+      <button id="btn-beg" onclick="filterStandings('beg',this)" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Начинающие</button>
     </div>
 
     <div id="nominations-block" class="card" style="margin-bottom:12px;"></div>
@@ -533,6 +756,7 @@
     </div>
   </div>
 
+  </div><!-- /detail-view -->
 </div>
 
 <!-- PAGE: HEAD TO HEAD -->
@@ -544,13 +768,13 @@
   <div style="padding:0 14px 12px;">
     <div style="display:flex;gap:8px;margin-bottom:12px;">
       <div style="flex:1;position:relative;">
-        <select id="h2h-select1" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Fira Sans',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
+        <select id="h2h-select1" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Golos Text',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
           <option value="">Гонщик 1...</option>
         </select>
       </div>
-      <div style="display:flex;align-items:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--muted);letter-spacing:1px;">VS</div>
+      <div style="display:flex;align-items:center;font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--muted);letter-spacing:1px;">VS</div>
       <div style="flex:1;position:relative;">
-        <select id="h2h-select2" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Fira Sans',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
+        <select id="h2h-select2" onchange="updateH2HPage()" style="width:100%;appearance:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Golos Text',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;">
           <option value="">Гонщик 2...</option>
         </select>
       </div>
@@ -691,7 +915,7 @@ if (TG) {
   TG.ready();
   TG.expand();
   // Цвет хедера под портал
-  try { TG.setHeaderColor('#f4f4f0'); } catch(e) {}
+  try { TG.setHeaderColor('#141210'); TG.setBackgroundColor && TG.setBackgroundColor('#eceeec'); } catch(e) {}
 }
 
 // Данные пользователя из Telegram (если открыто как Mini App)
@@ -1890,7 +2114,7 @@ function renderLastRace() {
     ? `<img src="${podSrc}" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML=_podiumPlaceholder()" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" alt="Podium">`
     : _podiumPlaceholder();
   html += `</div>`;
-  html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">${venueLogoTile((LAST_RACE.location||'') + ' ' + (LAST_RACE.title||''), 44)}<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;">${LAST_RACE.title}</div></div>`;
+  html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">${venueLogoTile((LAST_RACE.location||'') + ' ' + (LAST_RACE.title||''), 44)}<div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:17px;letter-spacing:0.5px;text-transform:uppercase;">${LAST_RACE.title}</div></div>`;
 
   // ── 2. Ссылки: отзыв + итоги Safety Rating (вторичные, не отвлекают) ──
   html += `<div style="display:flex;gap:8px;margin-bottom:16px;">
@@ -1954,7 +2178,7 @@ function renderLastRace() {
   noms += (nm && nm.clean && nm.clean.length) ? multiNom('', nt('clean'), nm.clean) : teaser('', nt('clean'));
   noms += (nm && nm.dirty && nm.dirty.length) ? multiNom('', nt('dirty'), nm.dirty) : teaser('', nt('dirty'));
 
-  html += `<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${nt('awards')}</div>`;
+  html += `<div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${nt('awards')}</div>`;
   html += `<div class="nom-cards" style="margin-bottom:14px;">${noms}</div>`;
 
   // ── 4. Результаты ──
@@ -1994,7 +2218,7 @@ function renderLastRace() {
 
 function _podiumPlaceholder() {
   const txt = { ru:'Фото с подиума<br>появится здесь после гонки', en:'Podium photo<br>coming after the race', pt:'Foto do pódio<br>em breve após a corrida' }[_lang||'ru'];
-  return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted2);font-family:'Fira Sans Extra Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.6;padding:30px;">${txt}</div>`;
+  return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted2);font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.6;padding:30px;">${txt}</div>`;
 }
 
 
@@ -2270,9 +2494,9 @@ function getPhoto(handle, name) {
 function avatarDiv(photoUrls, letter, size) {
   const sz = size || 40;
   const L = esc(letter || '?');
-  const initials = `<div style="display:none;width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);align-items:center;justify-content:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${L}</div>`;
+  const initials = `<div style="display:none;width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);align-items:center;justify-content:center;font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${L}</div>`;
   if (!photoUrls || !photoUrls.length) {
-    return `<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${L}</div>`;
+    return `<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;color:var(--muted);font-size:${Math.round(sz*0.4)}px;flex-shrink:0;">${L}</div>`;
   }
   // esc() и для src, и для JSON-цепочки — photoUrl приходит с сервера
   const srcsJson = esc(JSON.stringify(photoUrls));
@@ -2358,7 +2582,7 @@ function renderRaceNominations(raceId) {
 
   return `
     <div style="padding:14px 14px 0;">
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${{ ru:'Номинации', en:'Awards', pt:'Destaques' }[_lang||'ru']}</div>
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${{ ru:'Номинации', en:'Awards', pt:'Destaques' }[_lang||'ru']}</div>
       <div class="nom-cards" style="margin-bottom:14px;">${cards}</div>
     </div>`;
 }
@@ -2735,7 +2959,7 @@ function openH2H(key1) {
 
   document.getElementById('h2h-body').innerHTML = `
     <div style="padding:16px 16px 0;">
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:18px;font-weight:900;margin-bottom:4px;">
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:18px;font-weight:900;margin-bottom:4px;">
         ${d1.name}
       </div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">${t('h2h_pick_opp')}</div>
@@ -2797,12 +3021,12 @@ function loadH2H(key1, key2) {
         const win1 = r.pts1 > r.pts2, win2 = r.pts2 > r.pts1;
         return `<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);gap:8px;">
           <div style="text-align:left;">
-            <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:18px;font-weight:900;color:${win1?'var(--green)':'var(--text)'};">${r.pts1}</div>
+            <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:18px;font-weight:900;color:${win1?'var(--green)':'var(--text)'};">${r.pts1}</div>
             <div style="font-size:10px;color:var(--muted);">P${r.pos1}</div>
           </div>
           <div style="text-align:center;font-size:10px;color:var(--muted);white-space:nowrap;">${r.race.replace('Campera Karting · ','').replace('KIRO Karting','KIRO')}</div>
           <div style="text-align:right;">
-            <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:18px;font-weight:900;color:${win2?'var(--green)':'var(--text)'};">${r.pts2}</div>
+            <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:18px;font-weight:900;color:${win2?'var(--green)':'var(--text)'};">${r.pts2}</div>
             <div style="font-size:10px;color:var(--muted);">P${r.pos2}</div>
           </div>
         </div>`;
@@ -2811,8 +3035,8 @@ function loadH2H(key1, key2) {
   document.getElementById('h2h-body').innerHTML = `
     <div style="padding:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-        <button onclick="openH2H('${key1}')" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--muted);">${t('h2h_back')}</button>
-        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);">Head to Head</div>
+        <button onclick="openH2H('${key1}')" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--muted);">${t('h2h_back')}</button>
+        <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);">Head to Head</div>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:16px;">
@@ -2822,7 +3046,7 @@ function loadH2H(key1, key2) {
           <div style="font-size:10px;color:var(--muted);">${d1.handle||'—'}</div>
         </div>
         <div style="text-align:center;">
-          <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1;">
+          <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1;">
             <span style="color:${scoreColor1};">${w1}</span>
             <span style="color:var(--muted);font-size:16px;">–</span>
             <span style="color:${scoreColor2};">${w2}</span>
@@ -2839,11 +3063,11 @@ function loadH2H(key1, key2) {
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
         <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
-          <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;">${avg1}</div>
+          <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;">${avg1}</div>
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Avg очков</div>
         </div>
         <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
-          <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;">${avg2}</div>
+          <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;">${avg2}</div>
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Avg очков</div>
         </div>
       </div>
@@ -2922,11 +3146,11 @@ function updateH2HPage() {
     return `<div style="margin-bottom:10px;">
       <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;text-align:center;">${label}</div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;text-align:right;">${v1}</div>
+        <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;text-align:right;">${v1}</div>
         <div style="flex:1;height:6px;border-radius:3px;overflow:hidden;background:var(--border);display:flex;">
           <div style="width:${pct1}%;background:var(--accent-red);transition:width .3s;"></div>
         </div>
-        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;">${v2}</div>
+        <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;min-width:28px;">${v2}</div>
       </div>
     </div>`;
   };
@@ -2938,12 +3162,12 @@ function updateH2HPage() {
         const label = r.race.replace('KIRO Karting','KIRO').replace('Campera Karting · ','');
         return `<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:8px;">
           <div>
-            <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;color:${win1?'var(--green)':win2?'var(--muted)':'var(--text)'};">${r.pts1}</div>
+            <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;color:${win1?'var(--green)':win2?'var(--muted)':'var(--text)'};">${r.pts1}</div>
             <div style="font-size:10px;color:var(--muted);">P${r.pos1}</div>
           </div>
           <div style="text-align:center;font-size:10px;color:var(--muted);white-space:nowrap;padding:0 4px;">${label}</div>
           <div style="text-align:right;">
-            <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;color:${win2?'var(--green)':win1?'var(--muted)':'var(--text)'};">${r.pts2}</div>
+            <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;color:${win2?'var(--green)':win1?'var(--muted)':'var(--text)'};">${r.pts2}</div>
             <div style="font-size:10px;color:var(--muted);">P${r.pos2}</div>
           </div>
         </div>`;
@@ -2957,7 +3181,7 @@ function updateH2HPage() {
           <div style="font-size:12px;font-weight:600;">${d1.name.split(' ')[0]}</div>
         </div>
         <div style="text-align:center;">
-          <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1;">
+          <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1;">
             <span style="color:${sc1};">${w1}</span><span style="color:var(--muted);font-size:18px;"> – </span><span style="color:${sc2};">${w2}</span>
           </div>
           ${ties > 0 ? `<div style="font-size:10px;color:var(--muted);">${t('h2h_ties')(ties)}</div>` : ''}
@@ -3068,7 +3292,7 @@ function bestLapsHtml(key) {
       ? [own.ev, indiv.length > 1 ? t('lap_of')(indiv.filter(y => y.sec < own.sec).length + 1, indiv.length) : ''].filter(Boolean).join(' · ')
       : `${tb.ev} · ${t('lap_team')}`;
     if (own && tb && tb.sec < own.sec) meta += `<br>${t('lap_team')} ${tb.ev}: ${tb.t}`;
-    return `<div class="lap-row">${venueLogoTile(tr.logo, 32) || `<div style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:13px;color:var(--muted);flex-shrink:0;">${tr.name.replace(/^Kart[óo]dromo d[aoe] /,'')[0]}</div>`}
+    return `<div class="lap-row">${venueLogoTile(tr.logo, 32) || `<div style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:13px;color:var(--muted);flex-shrink:0;">${tr.name.replace(/^Kart[óo]dromo d[aoe] /,'')[0]}</div>`}
       <div class="lap-tr"><div class="hist-race">${tr.name}</div><div class="hist-meta">${meta}</div></div>
       <div class="lap-time">${x.t}${isRec ? `<span class="lap-rec">${t('lap_rec')}</span>` : ''}</div></div>`;
   }).join('');
@@ -3092,7 +3316,7 @@ function openProfile(key) {
     <div class="profile-head">
       ${avatarDiv(getPhoto(d.handle, d.name), d.name[0], 52)}
       <div>
-        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;line-height:1.1;">${d.name}</div>
+        <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;line-height:1.1;">${d.name}</div>
         <div style="font-size:12px;color:var(--muted);margin-top:2px;">${visHandle(d.handle,d.hideHandle)||''} ${visHandle(d.handle,d.hideHandle)?'·':''} ${pos}-е место</div>
       </div>
     </div>
@@ -3118,7 +3342,7 @@ function openProfile(key) {
     </div>
 
     <div style="margin-bottom:14px;">
-      <button onclick="document.getElementById('profile-modal').classList.remove('open');openH2H('${d.key}')" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.5px;cursor:pointer;color:var(--text);">
+      <button onclick="document.getElementById('profile-modal').classList.remove('open');openH2H('${d.key}')" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px;font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.5px;cursor:pointer;color:var(--text);">
         ${t('h2h_btn')}
       </button>
     </div>
@@ -3583,7 +3807,7 @@ function paymentHtml(amount, subtitle) {
   const revHref = revTag ? (/^https?:/i.test(revTag) ? revTag : 'https://revolut.me/' + revTag) : '';
   return `
     <div style="margin-top:16px;text-align:left;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;margin-bottom:${subtitle ? 2 : 10}px;text-align:center;">${t('pay_title')} · €${esc(amount)}</div>
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;margin-bottom:${subtitle ? 2 : 10}px;text-align:center;">${t('pay_title')} · €${esc(amount)}</div>
       ${subtitle ? `<div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:10px;">${esc(subtitle)}</div>` : ''}
       ${revHref ? `<a href="${esc(revHref)}" target="_blank" rel="noopener" style="display:block;background:#0666EB;color:#fff;text-align:center;padding:12px;border-radius:10px;font-weight:700;text-decoration:none;margin-bottom:12px;">Revolut · ${esc(rev.startsWith('@') ? rev : '@' + revTag)}</a>` : ''}
       <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">IBAN · ${esc(PAY.ibanName)}</div>
@@ -3640,7 +3864,7 @@ function openReg(evId) {
       </div>` : '';
 
   document.getElementById('reg-content').innerHTML = `
-    <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">${t('reg_title')} · ${esc(tx.name || '')}</div>
+    <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;">${t('reg_title')} · ${esc(tx.name || '')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">${esc(w.date)}, ${esc(w.time)}${leftTxt}${pr ? ' · ' + pr : ''}</div>
     ${isTg ? `<div style="font-size:12px;background:#e8f5e9;border:1px solid #c8e6c9;border-radius:8px;padding:8px 12px;margin-bottom:12px;color:#2d5a30;">${t('tg_prefill')}</div>` : ''}
     <div class="reg-form">
@@ -3920,7 +4144,7 @@ function tick() {
   if (!ev || !cdEl) return;
   const diff = new Date(ev.start) - new Date();
   if (diff <= 0) {
-    if (!cdEl.dataset.done) { cdEl.dataset.done = '1'; cdEl.innerHTML = `<div style="grid-column:span 4;text-align:center;font-family:'Fira Sans Extra Condensed',sans-serif;font-size:18px;font-weight:700;padding:10px;color:var(--accent-red);">${t('race_today')}</div>`; }
+    if (!cdEl.dataset.done) { cdEl.dataset.done = '1'; cdEl.innerHTML = `<div style="grid-column:span 4;text-align:center;font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:18px;font-weight:700;padding:10px;color:var(--accent-red);">${t('race_today')}</div>`; }
     return;
   }
   const p = n => String(n).padStart(2, '0');
@@ -5766,7 +5990,7 @@ function megaHeatsBlock(letter) {
   let inner = '';
   list.forEach(h => {
     inner += `<div style="padding:10px 0 2px;">
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">
         ${mt('heat')} ${h.no} · ${esc(h.time)} · ${h.laps} ${mt('laps')}</div>
       ${megaRaceTable(h.rows)}
     </div>`;
@@ -5786,7 +6010,7 @@ function renderMega() {
 
   h += `<div style="padding:14px 14px 0;">`;
   h += `<div class="page-eyebrow">${mt('eyebrow')} · ${esc(translateFullDate(MEGA.date))}</div>
-    <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${mt('title')}</div>
+    <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${mt('title')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(MEGA.venue)}</div>`;
 
   const chip = txt => `<span class="stat-chip">${txt}</span>`;
@@ -5800,13 +6024,13 @@ function renderMega() {
   </div>`;
 
   // ── номинации ──
-  h += `<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${mt('awards')}</div>`;
+  h += `<div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${mt('awards')}</div>`;
   h += `<div class="nom-cards">${megaNomCards()}</div>`;
 
   // ── итог дня ──
   h += `<div class="card" style="padding:0;overflow:hidden;">
     <div style="padding:14px 14px 8px;">
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${mt('resTitle')}</div>
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${mt('resTitle')}</div>
       <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">${mt('resNote')}</div>
     </div>
     <table class="full-res-table"><thead><tr>
@@ -5836,7 +6060,7 @@ function renderMega() {
     h += `<div class="card" style="padding:0;overflow:hidden;">
       ${f.photo ? `<div style="width:100%;aspect-ratio:3/2;overflow:hidden;background:var(--surface2);"><img src="${f.photo}" loading="lazy" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;" alt="${lbl}"></div>` : ''}
       <div style="padding:12px 14px 6px;">
-        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${lbl}</div>
+        <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${lbl}</div>
         <div style="font-size:11px;color:var(--muted);margin-top:2px;">${esc(f.time)} · ${f.laps} ${mt('laps')} · ${mt('dblPts')}</div>
       </div>
       ${megaRaceTable(f.rows)}
@@ -5958,7 +6182,7 @@ function renderCampera() {
   </div><div style="padding:14px 14px 0;">`;
 
   h += `<div class="page-eyebrow">${ct('eyebrow')} · ${esc(translateFullDate(CAMP.date))}</div>
-    <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${ct('title')}</div>
+    <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${ct('title')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(CAMP.venue)}</div>`;
   const chip = txt => `<span class="stat-chip">${txt}</span>`;
   h += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
@@ -5972,7 +6196,7 @@ function renderCampera() {
 
   // подиум
   const medals = ['<span class="pm pm1">1</span>', '<span class="pm pm2">2</span>', '<span class="pm pm3">3</span>'];
-  h += `<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${ct('podium')}</div>
+  h += `<div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">${ct('podium')}</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">` +
     CAMP.total.slice(0, 3).map((r, i) => `<div class="nom-card" style="align-items:center;text-align:center;">
       <div class="nom-icon">${medals[i]}</div>${campAvatar(r[0], 44)}
@@ -5982,7 +6206,7 @@ function renderCampera() {
   // итог этапа
   h += `<div class="card" style="padding:0;overflow:hidden;">
     <div style="padding:14px 14px 8px;">
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${ct('resTitle')}</div>
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${ct('resTitle')}</div>
       <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">${ct('resNote')}</div>
     </div>
     <table class="full-res-table"><thead><tr>
@@ -6138,7 +6362,7 @@ function renderEndurance() {
 function endHtml() {
   const medals = ['<span class="pm pm1">1</span>', '<span class="pm pm2">2</span>', '<span class="pm pm3">3</span>'];
   const fl = '<span class="fl-badge">FL</span>';
-  const lbl = txt => `<div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin:4px 0 10px;">${txt}</div>`;
+  const lbl = txt => `<div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing: 1px;text-transform:uppercase;color:var(--muted);margin:4px 0 10px;">${txt}</div>`;
   const chip = txt => `<span class="stat-chip">${txt}</span>`;
   const pilots = END.rows.reduce((n, r) => n + r.m.length, 0);
 
@@ -6146,7 +6370,7 @@ function endHtml() {
     <img src="photos/palmela-group.jpg" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Palmela endurance">
   </div><div style="padding:14px 14px 0;">`;
   h += `<div class="page-eyebrow">${et('eyebrow')} · ${esc(translateFullDate(END.date))}</div>
-    <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${et('title')}</div>
+    <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">${et('title')}</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">${esc(END.venue)}</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${chip(pilots + ' ' + ((_lang || 'ru') === 'ru' ? ruPl(pilots, 'пилот', 'пилота', 'пилотов') : et('pilots')))}${chip(END.rows.length + ' ' + ((_lang || 'ru') === 'ru' ? ruPl(END.rows.length, 'карт', 'карта', 'картов') : et('karts')))}${chip(et('race'))}${chip('FL ' + END.fl.time + ' · ' + esc(endRow(END.fl.k).name))}</div>
     <div style="display:flex;gap:8px;margin-bottom:16px;">
@@ -6162,7 +6386,7 @@ function endHtml() {
   const podCard = (title, keys, photo) => `<div class="card" style="padding:0;overflow:hidden;margin-bottom:10px;">
     ${photo ? `<div style="aspect-ratio:4/3;overflow:hidden;background:var(--surface2);"><img src="${photo}" loading="lazy" onerror="this.parentNode.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""></div>` : ''}
     <div style="padding:12px 14px;">
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">${title}</div>
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">${title}</div>
       ${keys.map((k, i) => { const r = endRow(k); return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;${i ? 'border-top:1px solid var(--border);' : ''}">
         <div style="font-size:20px;width:26px;">${medals[i]}</div>${endAvatars(r, 30)}${endWho(r)}</div>`; }).join('')}
     </div></div>`;
@@ -6174,7 +6398,7 @@ function endHtml() {
   // протокол
   h += `<div class="card" style="padding:0;overflow:hidden;margin-top:6px;">
     <div style="padding:14px 14px 8px;">
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${et('resTitle')}</div>
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;text-transform:uppercase;">${et('resTitle')}</div>
       <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">${et('resNote')}</div>
     </div>
     <div style="overflow-x:auto;"><table class="full-res-table"><thead><tr>
@@ -6197,10 +6421,10 @@ function endHtml() {
     return rows.map((r, i) => {
       const v = val(r), w = lowGood ? 100 - (v - mn) / ((mx - mn) || 1) * 70 : 30 + (v - mn) / ((mx - mn) || 1) * 70;
       return `<div style="display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:4px 0;">
-        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
+        <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
         <div style="min-width:0;"><div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(r.name)}</div>
           <div style="height:4px;border-radius:2px;background:var(--surface2);margin-top:3px;"><div style="height:4px;border-radius:2px;width:${w.toFixed(0)}%;background:${i === 0 ? 'var(--accent-red)' : 'var(--muted2)'};"></div></div></div>
-        <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;">${fmt(r)}</div></div>`;
+        <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;">${fmt(r)}</div></div>`;
     }).join('');
   };
   const secs = t => { const [m, x] = t.split(':'); return +m * 60 + +x; };
@@ -6214,9 +6438,9 @@ function endHtml() {
   h += statBox('' + et('sPit'), et('sPitN'), bar(byPit, r => r.loss, r => r.loss + ' ' + et('sec'), '', true));
   const byGain = END.rows.map((r, i) => ({ ...r, fin: i + 1, gain: r.q - (i + 1) })).sort((a, b) => b.gain - a.gain);
   h += statBox('' + et('sGain'), et('sGainN'), byGain.map((r, i) => `<div style="display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:4px 0;font-size:12px;">
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:700;color:var(--muted);">${i + 1}</div>
       <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(r.name)}</div>
-      <div style="font-family:'Fira Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;">P${r.q} → P${r.fin} <span style="color:${r.gain > 0 ? 'var(--green)' : r.gain < 0 ? 'var(--accent-red)' : 'var(--muted)'};">${r.gain > 0 ? '+' + r.gain : r.gain || '='}</span></div></div>`).join(''));
+      <div style="font-family:'Sofia Sans Extra Condensed',sans-serif;font-weight:700;font-size:14px;">P${r.q} → P${r.fin} <span style="color:${r.gain > 0 ? 'var(--green)' : r.gain < 0 ? 'var(--accent-red)' : 'var(--muted)'};">${r.gain > 0 ? '+' + r.gain : r.gain || '='}</span></div></div>`).join(''));
   h += statBox('' + et('sStint'), et('sStintN'), `<div style="overflow-x:auto;"><table class="full-res-table"><thead><tr><th>${et('colTeam')}</th><th>${et('s1')}</th><th>${et('s2')}</th></tr></thead><tbody>` +
     END.rows.map(r => { const d = secs(r.s2) - secs(r.s1); return `<tr><td style="font-size:12px;">${esc(r.name)}</td><td style="font-size:12px;">${r.s1}</td><td style="font-size:12px;">${r.s2} <span style="color:${d < 0 ? 'var(--green)' : 'var(--accent-red)'};font-size:10px;">${d < 0 ? '' : '+'}${d.toFixed(2)}</span></td></tr>`; }).join('') + `</tbody></table></div>`);
   // квалификация
@@ -6246,5 +6470,335 @@ if (!location.hash) trk('view', 'main');
 { const ql = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(); if (ql === 'en' || ql === 'pt') setLang(ql); }
 
 </script>
+<script>
+// ════════════════════════════════════════════════════════════
+//  ГЛАВНАЯ (ноябрь 2026): слайдшоу, следующая гонка, прошлая гонка, зачёт, новенькие, где катались.
+//  Все цифры считаются из RACES / STANDINGS / END / EVENTS — после новой гонки обновятся сами.
+//  Подробные вкладки (Итоги / Прошедшие / Зачёт) открываются в #detail-view кнопками «Все результаты» и т.п.
+// ════════════════════════════════════════════════════════════
+document.documentElement.classList.add('h-js');
+
+const HOME_T = {
+  ru: {
+    intro: 'Собираемся чатом и ездим на любительские гонки на картах. Опыт не нужен, новенькие у нас на каждой гонке.',
+    cta: 'Залетай в чат', count: n => `${ruPl(n, 'человек', 'человека', 'человек')} уже покатались с нами`,
+    nextH: 'Следующая гонка', think: 'Пока думаем',
+    since: (d, place) => `С ${place} прошло ${d} ${ruPl(d, 'день', 'дня', 'дней')}. Руки уже чешутся.`,
+    lastH: 'Прошлая гонка', pilots: n => `${n} ${ruPl(n, 'пилот', 'пилота', 'пилотов')}`, bestLap: 'лучший круг',
+    spread: v => `Лучшие круги первой пятёрки уложились в <b>${v} секунды</b>.`, allRes: 'Все результаты',
+    stH: 'Зачёт сезона', stSub: 'Очки за все гонки. Худшие результаты не считаются, так что одна неудачная гонка ничего не ломает.',
+    races: n => `${n} ${ruPl(n, 'гонка', 'гонки', 'гонок')}`, pts: 'очков', allSt: 'Весь зачёт',
+    hot: (names, n) => `Больше всех быстрых кругов у ${names}${names.includes('</b> и <b>') ? ', по ' + n : ': ' + n}.`,
+    prog: (name, v) => `Сильнее всех прибавил ${name}: +${v} очков за гонку во второй половине сезона.`, and: ' и ',
+    nbH: 'Новенькие на гонках', nbSub: 'Жёлтым отмечены те, кто приехал к нам в первый раз.', lgNew: 'первый раз', lgOld: 'уже катались',
+    chartCap: 'Пилоты на каждой гонке: сколько из них приехали впервые', tip: (n, f) => `${n} ${ruPl(n, 'пилот', 'пилота', 'пилотов')}, ${f} впервые`,
+    thEv: 'Гонка', thAll: 'Пилотов', thNew: 'Впервые', whereH: y => `Где уже катались в ${y}`,
+    fmt: { sprint1: 'Спринт', sprint: 'Спринты', mega: 'Мега-спринты', endurance: 'Эндуранс' }, pilotsW: n => ruPl(n, 'пилот', 'пилота', 'пилотов'),
+    back: 'Главная', pause: 'Пауза', play: 'Смотреть фото дальше', album: 'Фото с наших гонок',
+    place: { kip: 'Палмелы', campera: 'Камперы', almeirim: 'Алмейрина', batalha: 'Баталии', kiro: 'KIRO' },
+  },
+  pt: {
+    intro: 'Juntamo-nos no chat e vamos a corridas de karts amadoras. Não é preciso experiência, há estreantes em todas as corridas.',
+    cta: 'Entra no chat', count: () => 'pessoas já correram connosco',
+    nextH: 'Próxima corrida', think: 'Ainda a pensar',
+    since: (d, place) => `Já passaram ${d} dias desde ${place}. Já dá saudades.`,
+    lastH: 'Última corrida', pilots: n => `${n} pilotos`, bestLap: 'melhor volta',
+    spread: v => `As melhores voltas do top 5 ficaram dentro de <b>${v} segundos</b>.`, allRes: 'Todos os resultados',
+    stH: 'Classificação', stSub: 'Pontos de todas as corridas. Os piores resultados não contam, por isso uma corrida má não estraga nada.',
+    races: n => `${n} corridas`, pts: 'pontos', allSt: 'Classificação completa',
+    hot: (names, n) => `Mais voltas mais rápidas: ${names}, ${n}${names.includes('</b> e <b>') ? ' cada' : ''}.`,
+    prog: (name, v) => `Quem mais subiu: ${name}, +${v} pontos por corrida na segunda metade da época.`, and: ' e ',
+    nbH: 'Estreantes nas corridas', nbSub: 'A amarelo, quem veio pela primeira vez.', lgNew: 'primeira vez', lgOld: 'já tinham corrido',
+    chartCap: 'Pilotos em cada corrida: quantos vieram pela primeira vez', tip: (n, f) => `${n} pilotos, ${f} pela primeira vez`,
+    thEv: 'Corrida', thAll: 'Pilotos', thNew: 'Primeira vez', whereH: y => `Onde já corremos em ${y}`,
+    fmt: { sprint1: 'Sprint', sprint: 'Sprints', mega: 'Mega Sprints', endurance: 'Endurance' }, pilotsW: () => 'pilotos',
+    back: 'Início', pause: 'Pausa', play: 'Continuar fotos', album: 'Fotos das nossas corridas',
+    place: { kip: 'Palmela', campera: 'Campera', almeirim: 'Almeirim', batalha: 'Batalha', kiro: 'KIRO' },
+  },
+  en: {
+    intro: 'We get together as a chat and go to amateur kart races. No experience needed, there are first-timers at every race.',
+    cta: 'Jump into the chat', count: () => 'people have raced with us so far',
+    nextH: 'Next race', think: 'Still thinking',
+    since: (d, place) => `${d} days since ${place}. Itching to go again.`,
+    lastH: 'Last race', pilots: n => `${n} drivers`, bestLap: 'best lap',
+    spread: v => `The top five’s best laps were within <b>${v} seconds</b>.`, allRes: 'All results',
+    stH: 'Season standings', stSub: 'Points from every race. Worst results are dropped, so one bad race doesn’t ruin anything.',
+    races: n => `${n} ${n === 1 ? 'race' : 'races'}`, pts: 'points', allSt: 'Full standings',
+    hot: (names, n) => `Most fastest laps: ${names}, ${n}${names.includes('</b> and <b>') ? ' each' : ''}.`,
+    prog: (name, v) => `Most improved: ${name}, +${v} points a race in the second half of the season.`, and: ' and ',
+    nbH: 'First-timers at races', nbSub: 'Yellow marks people who came for the first time.', lgNew: 'first time', lgOld: 'raced before',
+    chartCap: 'Drivers at each race: how many were first-timers', tip: (n, f) => `${n} drivers, ${f} first-timers`,
+    thEv: 'Race', thAll: 'Drivers', thNew: 'First time', whereH: y => `Where we raced in ${y}`,
+    fmt: { sprint1: 'Sprint', sprint: 'Sprints', mega: 'Mega Sprints', endurance: 'Endurance' }, pilotsW: () => 'drivers',
+    back: 'Home', pause: 'Pause', play: 'Resume photos', album: 'Photos from our races',
+    place: { kip: 'Palmela', campera: 'Campera', almeirim: 'Almeirim', batalha: 'Batalha', kiro: 'KIRO' },
+  },
+};
+function ht(k) { return (HOME_T[_lang] || HOME_T.ru)[k]; }
+const H_ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const H_NEW = '#d9a20a', H_OLD = '#bcc0bb';
+const H_RU_MON = { 'января': 1, 'февраля': 2, 'марта': 3, 'апреля': 4, 'мая': 5, 'июня': 6, 'июля': 7, 'августа': 8, 'сентября': 9, 'октября': 10, 'ноября': 11, 'декабря': 12 };
+function hVenue(loc) { const l = String(loc || '').toLowerCase(); return ['kip', 'campera', 'almeir', 'batalha', 'kiro'].find(k => l.includes(k))?.replace('almeir', 'almeirim') || ''; }
+function hShortDate(d) { const m = String(d).match(/(\d+)\s+(\S+)/); return m ? `${m[1].padStart(2, '0')}.${String(H_RU_MON[m[2]] || 0).padStart(2, '0')}` : ''; }
+function hDateNoYear(d) { const x = translateFullDate(d).replace(/\s*\d{4}\s*$/, ''); return _lang === 'pt' ? x.replace(/^(\d+)\s+/, '$1 de ') : x; }
+function hFmt(name) { return /endur/i.test(name) ? 'endurance' : /mega/i.test(name) ? 'mega' : /sprints/i.test(name) ? 'sprint' : 'sprint1'; }
+function hDec(v) { const s = (Math.round(v * 10) / 10).toFixed(1); return _lang === 'en' ? s : s.replace('.', ','); }
+
+// Пилоты на каждой гонке и сколько из них впервые (по RACES, в порядке гонок)
+function hRaceStats() {
+  const seen = new Set();
+  return RACES.map(r => {
+    const keys = new Set((r.groups || []).flatMap(g => g.results || []).map(x => driverKey(x.handle, x.name)).filter(Boolean));
+    const first = [...keys].filter(k => !seen.has(k)).length;
+    keys.forEach(k => seen.add(k));
+    const short = (String(r.chipLabel || '').split('·')[1] || r.location || '').trim();
+    return { r, n: keys.size, first, short, dd: hShortDate(r.date), venue: hVenue(r.location) };
+  });
+}
+
+// ── Слайдшоу: каждая плитка меняет фото в своём ритме ──
+const _album = document.getElementById('album');
+let _albumPaused = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const _albumTiles = _album ? [..._album.querySelectorAll('figure')].map((fig, ti) => {
+  const imgs = fig.dataset.photos.split('|').map((x, k) => {
+    const [src, pos] = x.split(':');
+    const img = new Image(); img.alt = ''; img.decoding = 'async'; img.style.objectPosition = pos;
+    if (k === 0) { img.src = `photos/home/${src}.jpg`; img.className = 'on'; if (ti === 0) img.fetchPriority = 'high'; }
+    else img.dataset.src = `photos/home/${src}.jpg`;
+    fig.appendChild(img); return img;
+  });
+  return { imgs, i: 0, every: +fig.dataset.every, next: performance.now() + 2600 + ti * 900 };
+}) : [];
+function _albumLoad(img) { if (img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; } }
+function _albumStep(now) {
+  const homeOn = document.getElementById('page-main')?.classList.contains('active') && !document.getElementById('home-view').hidden;
+  if (!_albumPaused && !document.hidden && homeOn) _albumTiles.forEach(t => {
+    if (now < t.next) return;
+    const n = (t.i + 1) % t.imgs.length, img = t.imgs[n];
+    _albumLoad(img); _albumLoad(t.imgs[(n + 1) % t.imgs.length]);
+    const go = () => { t.imgs[t.i].classList.remove('on'); img.classList.add('on'); t.i = n; };
+    img.complete ? go() : img.addEventListener('load', go, { once: true });
+    t.next = now + t.every;
+  });
+  requestAnimationFrame(_albumStep);
+}
+if (_albumTiles.length) requestAnimationFrame(_albumStep);
+function _albumSetPaused(v) {
+  _albumPaused = v;
+  const b = document.getElementById('album-pause'); if (!b) return;
+  b.setAttribute('aria-pressed', String(v)); b.setAttribute('aria-label', v ? ht('play') : ht('pause'));
+  if (!v) { const now = performance.now(); _albumTiles.forEach((t, k) => { t.next = now + 600 + k * 700; }); }
+}
+document.getElementById('album-pause')?.addEventListener('click', () => _albumSetPaused(!_albumPaused));
+
+// ── Блоки главной ──
+function hNextHtml() {
+  const has = visibleEvents().length > 0;
+  if (has) return '';
+  const now = Date.now();
+  const past = EVENTS.filter(e => new Date(e.start).getTime() <= now).sort((a, b) => new Date(b.start) - new Date(a.start))[0];
+  let line = '';
+  if (past) {
+    const days = Math.max(0, Math.floor((now - new Date(past.start).getTime()) / 864e5));
+    const place = ht('place')[hVenue(past.venue)] || past.venue;
+    line = `<p class="h-next-s">${ht('since')(days, place)}</p>`;
+  }
+  return `<div class="h-next"><span class="h-plate" aria-hidden="true">?</span><div><span class="h-next-t">${ht('think')}</span>${line}</div></div>`;
+}
+
+function hLastHtml(stats) {
+  const last = stats[stats.length - 1]; if (!last) return '';
+  const r = last.r;
+  const ev = EVENTS.find(e => e.id === r.id);
+  const name = (ev && evText(ev).name) || r.eventName;
+  const photo = RACE_PHOTOS[r.photo];
+  const useEnd = typeof END !== 'undefined' && END.date === r.date;
+  let rows = [], spread = '';
+  if (useEnd) {
+    rows = END.rows.slice(0, 3).map(x => ({ main: x.m[0][0], sub: x.kind === 'iron' ? et('pIron') : x.m.slice(1).map(m => m[0]).join(', '), lap: x.best }));
+    const top5 = END.rows.slice(0, 5).map(x => lapSec(x.best)).filter(isFinite);
+    if (top5.length === 5) spread = `<p class="h-spread">${ht('spread')(hDec(Math.max(...top5) - Math.min(...top5)))}</p>`;
+  } else {
+    const res = (r.groups || [])[0]?.results || [];
+    [1, 2, 3].forEach(p => { const g = res.filter(x => x.pos === p); if (g.length) rows.push({ main: g[0].name, sub: g.slice(1).map(x => x.name).join(', ') || g[0].handle || '', lap: '' }); });
+  }
+  const open = useEnd ? `openCampResults('end')` : `showDetail('results','${r.id}')`;
+  return `<h2 class="h-h2">${ht('lastH')}</h2>
+    <p class="h-sub">${esc(name)}, ${esc(hDateNoYear(r.date))} · ${ht('pilots')(last.n)}</p>
+    ${photo ? `<div class="h-photo" onclick="${open}"><img src="${esc(photo)}" alt="${esc(name)}" loading="lazy" decoding="async"></div>` : ''}
+    <ol class="h-podium">${rows.map((x, i) => `<li><span class="h-plate${i ? ' p' + (i + 1) : ''}">${i + 1}</span>
+      <span class="h-names">${esc(x.main)}${x.sub ? `<small>${esc(x.sub)}</small>` : ''}</span>
+      ${x.lap ? `<span class="h-lap">${esc(x.lap)}<small>${ht('bestLap')}</small></span>` : '<span></span>'}</li>`).join('')}</ol>
+    ${spread}
+    <button type="button" class="h-link" onclick="${open}"><span>${ht('allRes')}</span>${H_ARROW}</button>`;
+}
+
+function hStandingsHtml() {
+  const top = STANDINGS.slice(0, 10), max = top[0]?.totalPts || 1;
+  const rows = top.map((d, i) => {
+    const ph = getPhoto(d.handle, d.name);
+    const initials = d.name.split(/\s+/).map(s => s[0] || '').join('').slice(0, 2);
+    return `<li class="h-row" style="--n:${i}" onclick="openProfileFromHome(${i})"><span class="h-pos">${i + 1}</span>${avatarDiv(ph, initials, 40)}
+      <span class="h-who"><b>${esc(d.name)}</b><small>${ht('races')(d.raceCount)}${/^@\S+$/.test(d.handle || '') ? ' · ' + esc(d.handle) : ''}</small><span class="h-gap"><i style="--w:${(d.totalPts / max).toFixed(3)}"></i></span></span>
+      <span class="h-score">${d.totalPts}<small>${ht('pts')}</small></span></li>`;
+  }).join('');
+  let notes = '';
+  try {
+    const noms = buildNominations(false);
+    const hot = noms[0] && countFastestLaps(noms[0].drivers[0].key);
+    if (noms[0] && hot) notes += `<li>${ht('hot')(noms[0].drivers.map(d => `<b>${esc(d.name)}</b>`).join(ht('and')), hot)}</li>`;
+    const pr = noms[1]; const v = pr && (pr.desc.match(/[\d.,]+/) || [])[0];
+    if (pr && v) notes += `<li>${ht('prog')(`<b>${esc(pr.drivers[0].name)}</b>`, v)}</li>`;
+  } catch (e) {}
+  return `<h2 class="h-h2">${ht('stH')}</h2><p class="h-sub">${ht('stSub')}</p>
+    <ol class="h-table" id="h-table">${rows}</ol>${notes ? `<ul class="h-notes">${notes}</ul>` : ''}
+    <button type="button" class="h-link" onclick="showDetail('standings')"><span>${ht('allSt')}</span>${H_ARROW}</button>`;
+}
+function openProfileFromHome(i) {
+  const d = STANDINGS[i]; if (!d) return;
+  if (typeof openProfile === 'function') { try { openProfile(d.key); return; } catch (e) {} }
+  showDetail('standings');
+}
+
+function hChart(stats) {
+  const svg = document.getElementById('h-chart-svg'); if (!svg) return;
+  const W = 340, top = 8, base = 156, max = Math.max(...stats.map(s => s.n), 1) * 1.04;
+  const step = W / stats.length, bw = Math.min(24, step - 10), gap = 2, y = v => (v / max) * (base - top);
+  const roundTop = (x, yt, w, h, r) => h <= 0 ? '' : `M${x},${yt + h}V${yt + r}Q${x},${yt} ${x + r},${yt}H${x + w - r}Q${x + w},${yt} ${x + w},${yt + r}V${yt + h}Z`;
+  let out = `<line x1="0" x2="${W}" y1="${base + 0.5}" y2="${base + 0.5}" stroke="#c4c8c3" stroke-width="1"/>`;
+  stats.forEach((s, i) => {
+    const cx = step * i + step / 2, x = cx - bw / 2, hN = y(s.first), hO = y(s.n - s.first), yN = base - hN, yO = yN - gap - hO;
+    const newPath = hO > 0 ? `M${x},${base}V${yN}H${x + bw}V${base}Z` : roundTop(x, yN, bw, hN, 4);
+    const ly = hN >= 18 ? yN + 15 : yN - (hO > 0 ? hO + gap + 6 : 6);
+    out += `<g class="col" tabindex="0" data-i="${i}" aria-label="${esc(s.short)} ${s.dd}: ${ht('tip')(s.n, s.first)}">
+      <rect class="hit" x="${cx - step / 2 + 2}" y="0" width="${step - 4}" height="${base + 40}" fill="transparent" rx="6"/>
+      <path class="seg" d="${roundTop(x, yO, bw, hO, 4)}" fill="${H_OLD}"/><path class="seg" d="${newPath}" fill="${H_NEW}"/>
+      <text x="${cx}" y="${ly}" text-anchor="middle" font-size="12" font-weight="700" fill="#141210">${s.first}</text>
+      <text x="${cx}" y="${base + 17}" text-anchor="middle" font-size="11" font-weight="600" fill="#3b3730">${esc(s.short)}</text>
+      <text x="${cx}" y="${base + 31}" text-anchor="middle" font-size="11" fill="#5f645e">${s.dd}</text></g>`;
+  });
+  svg.innerHTML = out;
+  document.getElementById('h-chart-cap').textContent = ht('chartCap');
+  document.getElementById('h-chart-table').innerHTML = `<caption>${ht('chartCap')}</caption><tr><th>${ht('thEv')}</th><th>${ht('thAll')}</th><th>${ht('thNew')}</th></tr>` +
+    stats.map(s => `<tr><td>${esc(s.short)} ${s.dd}</td><td>${s.n}</td><td>${s.first}</td></tr>`).join('');
+  document.getElementById('h-legend').innerHTML = `<span><i style="background:${H_NEW}"></i>${ht('lgNew')}</span><span><i style="background:${H_OLD}"></i>${ht('lgOld')}</span>`;
+  const tip = document.getElementById('h-tip');
+  const show = g => {
+    const i = +g.dataset.i, s = stats[i];
+    svg.querySelectorAll('.col').forEach(c => c.classList.toggle('dim', c !== g));
+    tip.innerHTML = `<b>${esc(s.short)}, ${s.dd}</b>${ht('tip')(s.n, s.first)}`;
+    const rc = svg.getBoundingClientRect(), k = rc.width / W, cx = (step * i + step / 2) * k;
+    tip.style.left = Math.min(Math.max(cx, 80), rc.width - 80) + 'px';
+    tip.style.top = Math.max((base - y(s.n) - gap) * k, 0) + 'px';
+    tip.classList.add('on');
+  };
+  const hide = () => { tip.classList.remove('on'); svg.querySelectorAll('.col').forEach(c => c.classList.remove('dim')); };
+  svg.querySelectorAll('.col').forEach(g => {
+    g.addEventListener('pointerenter', () => show(g)); g.addEventListener('click', () => show(g));
+    g.addEventListener('focus', () => show(g)); g.addEventListener('blur', hide);
+  });
+  svg.onpointerleave = e => { if (e.pointerType === 'mouse') hide(); };
+}
+
+function hWhereHtml(stats) {
+  return [...stats].reverse().map(s => {
+    const logo = VENUE_LOGOS[s.venue] || (s.venue === 'batalha' ? 'photos/home/batalha-thumb.jpg' : '');
+    const fmt = ht('fmt')[hFmt(s.r.eventName)];
+    return `<li onclick="showDetail('results','${s.r.id}')">${logo ? `<img src="${logo}" alt=""${logo.endsWith('.jpg') ? ' class="photo"' : ''} loading="lazy">` : '<span></span>'}
+      <span><b>${esc(s.r.location)}</b><small>${fmt} · ${esc(hDateNoYear(s.r.date))}</small></span>
+      <span class="n">${s.n}<small>${ht('pilotsW')(s.n)}</small></span></li>`;
+  }).join('');
+}
+
+function renderHome() {
+  if (!document.getElementById('home-view')) return;
+  const stats = hRaceStats();
+  const set = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+  set('home-intro-txt', ht('intro'));
+  set('home-cta', `${TG_ICON}<span>${ht('cta')}</span>`);
+  set('home-count', `<b>${STANDINGS.length}</b>${ht('count')(STANDINGS.length)}`);
+  set('home-next-h', ht('nextH'));
+  const nb = document.getElementById('home-next-body'), rw = document.getElementById('race-wrap');
+  const hasEv = visibleEvents().length > 0;
+  if (nb) {
+    [...nb.children].forEach(c => { if (c !== rw) c.remove(); });
+    if (hasEv) { if (rw && rw.parentNode !== nb) nb.appendChild(rw); }
+    else nb.insertAdjacentHTML('afterbegin', hNextHtml());
+  }
+  set('home-last-body', hLastHtml(stats));
+  set('home-st-body', hStandingsHtml());
+  set('home-nb-h', ht('nbH')); set('home-nb-sub', ht('nbSub'));
+  hChart(stats);
+  const yr = (String(RACES[RACES.length - 1]?.date || '').match(/\d{4}/) || [''])[0];
+  set('home-where-h', ht('whereH')(yr));
+  set('home-where-list', hWhereHtml(stats));
+  set('detail-back-txt', ht('back'));
+  if (_album) _album.setAttribute('aria-label', ht('album'));
+  _albumSetPaused(_albumPaused);
+  const tb = document.getElementById('h-table');
+  if (tb) {
+    if (_hTableSeen) tb.classList.add('shown');
+    else if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { _hTableSeen = true; requestAnimationFrame(() => tb.classList.add('shown')); io.disconnect(); } }), { rootMargin: '0px 0px -25% 0px' });
+      io.observe(tb);
+    } else tb.classList.add('shown');
+  }
+}
+let _hTableSeen = false;
+
+// Блок регистрации живёт на главной, пока есть ближайшая гонка; иначе — во вкладке «Итоги»
+function placeRaceWrap() {
+  const rw = document.getElementById('race-wrap'), panel = document.getElementById('tab-race'), nb = document.getElementById('home-next-body');
+  if (!rw || !panel || !nb) return;
+  const hasEv = visibleEvents().length > 0;
+  const rb = document.getElementById('tab-btn-race');
+  if (hasEv) { if (rw.parentNode !== nb) nb.appendChild(rw); if (rb) rb.hidden = true; }
+  else { if (rw.parentNode !== panel) panel.appendChild(rw); if (rb) rb.hidden = false; }
+}
+
+// ── Главная ↔ подробные вкладки ──
+function showHome() {
+  const hv = document.getElementById('home-view'), dv = document.getElementById('detail-view');
+  if (hv) hv.hidden = false; if (dv) dv.hidden = true;
+  if (location.hash === '#standings' || location.hash === '#results') history.replaceState(null, '', location.pathname + location.search);
+  window.scrollTo(0, 0);
+}
+function showDetail(tab, raceId) {
+  const hv = document.getElementById('home-view'), dv = document.getElementById('detail-view');
+  if (hv) hv.hidden = true; if (dv) dv.hidden = false;
+  if (tab) {
+    let btn = document.getElementById('tab-btn-' + tab);
+    if (btn && btn.hidden) btn = document.querySelector('.inner-tab:not([hidden])');
+    if (btn) _origSwitchTab(btn.id.replace('tab-btn-', ''), btn);
+  }
+  if (raceId && tab === 'results') {
+    const idx = RACE_VIEWS.findIndex(v => v.raceId === raceId);
+    if (idx >= 0) selectRace(idx);
+  }
+  window.scrollTo(0, 0);
+}
+const _origSwitchTab = switchTab;
+switchTab = function (name, btn) { const dv = document.getElementById('detail-view'); if (dv && dv.hidden) { dv.hidden = false; document.getElementById('home-view').hidden = true; } _origSwitchTab(name, btn); };
+const _origShowPage = showPage;
+showPage = function (name, btn) { _origShowPage(name, btn); if (name === 'main') showHome(); };
+const _origLogoTap = _logoTap;
+_logoTap = function () { _origLogoTap(); placeRaceWrap(); showHome(); };
+const _origOpenCamp = openCampResults;
+openCampResults = function (which) { const hv = document.getElementById('home-view'), dv = document.getElementById('detail-view'); if (hv) hv.hidden = true; if (dv) dv.hidden = false; _origOpenCamp(which); };
+const _origRenderRaceTab = renderRaceTab;
+renderRaceTab = function () { _origRenderRaceTab(); placeRaceWrap(); };
+const _origSetLang = setLang;
+setLang = function (lang) { _origSetLang(lang); renderHome(); };
+const _origRerender = rerenderPeople;
+rerenderPeople = function () { _origRerender(); renderHome(); };
+
+placeRaceWrap();
+renderHome();
+// прямые ссылки racechat.pt/#standings и #results
+function hRouteDetail() { const h = (location.hash || '').slice(1).toLowerCase(); if (h === 'standings' || h === 'results') showDetail(h); }
+window.addEventListener('hashchange', hRouteDetail);
+hRouteDetail();
+</script>
+
 </body>
 </html>
